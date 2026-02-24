@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuestionario - Lenguaje Algebraico</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a472a;
+            --primary-light: #2d5a3d;
+            --accent: #d4a574;
+            --bg: #faf8f5;
+            --paper: #ffffff;
+            --text: #2c2c2c;
+            --text-light: #666;
+            --border: #e0ddd8;
+            --correct: #2d5a3d;
+            --incorrect: #a13d3d;
+            --timer-warning: #d97b3d;
+        }
+
+        body {
+            font-family: 'Source Sans 3', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: var(--primary);
+            color: white;
+            padding: 30px 25px;
+            border-radius: 12px 12px 0 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .header .semester {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .header .professor {
+            font-size: 0.9rem;
+            opacity: 0.85;
+            font-style: italic;
+        }
+
+        .paper-card {
+            background: var(--paper);
+            border: 2px solid var(--border);
+            border-top: none;
+            border-radius: 0 0 12px 12px;
+            padding: 30px 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        .instructions {
+            background: #f5f3ef;
+            border-left: 4px solid var(--accent);
+            padding: 15px 18px;
+            margin-bottom: 25px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            color: var(--text-light);
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--primary);
+            font-size: 0.95rem;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 71, 42, 0.1);
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-family: inherit;
+        }
+
+        .btn:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(26, 71, 42, 0.3);
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .question-counter {
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 1rem;
+        }
+
+        .timer {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--primary);
+            padding: 8px 16px;
+            background: #f5f3ef;
+            border-radius: 20px;
+        }
+
+        .timer.warning {
+            color: var(--timer-warning);
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .question-text {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            padding: 16px 18px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: white;
+            font-size: 1rem;
+        }
+
+        .option:hover:not(.selected):not(.disabled) {
+            border-color: var(--primary);
+            background: #fafafa;
+            transform: translateX(4px);
+        }
+
+        .option.selected {
+            border-color: var(--primary);
+            background: rgba(26, 71, 42, 0.05);
+        }
+
+        .option.correct {
+            border-color: var(--correct);
+            background: rgba(45, 90, 61, 0.1);
+        }
+
+        .option.incorrect {
+            border-color: var(--incorrect);
+            background: rgba(161, 61, 61, 0.1);
+        }
+
+        .option.disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 15px 18px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .feedback.correct {
+            background: rgba(45, 90, 61, 0.1);
+            border-left: 4px solid var(--correct);
+            color: var(--correct);
+        }
+
+        .feedback.incorrect {
+            background: rgba(161, 61, 61, 0.1);
+            border-left: 4px solid var(--incorrect);
+            color: var(--incorrect);
+        }
+
+        .btn-next {
+            margin-top: 20px;
+        }
+
+        .results {
+            text-align: center;
+        }
+
+        .results-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 40px 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+
+        .results-header h2 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .student-name {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .score-display {
+            font-size: 3.5rem;
+            font-weight: 700;
+            font-family: 'Crimson Pro', serif;
+            margin: 20px 0;
+        }
+
+        .score-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .results-details {
+            background: var(--paper);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: left;
+        }
+
+        .results-details h3 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .review-item {
+            padding: 15px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            border-left: 4px solid transparent;
+        }
+
+        .review-item.correct {
+            background: rgba(45, 90, 61, 0.05);
+            border-left-color: var(--correct);
+        }
+
+        .review-item.incorrect {
+            background: rgba(161, 61, 61, 0.05);
+            border-left-color: var(--incorrect);
+        }
+
+        .review-question {
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .review-answer {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            .header {
+                padding: 20px 15px;
+            }
+
+            .header h1 {
+                font-size: 1.1rem;
+            }
+
+            .paper-card {
+                padding: 20px 15px;
+            }
+
+            .question-text {
+                font-size: 1.1rem;
+            }
+
+            .quiz-header {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
+
+            .score-display {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useCallback } = React;
+
+        // Banco completo de preguntas (3-4 versiones de cada tipo)
+        const questionBank = {
+            tipo1: [ // Comprensión de paréntesis
+                {
+                    question: "¿Cuál es la diferencia fundamental entre las expresiones 3x + 5 y 3(x + 5)?",
+                    options: [
+                        "No hay diferencia, ambas dan el mismo resultado",
+                        "En la primera el 3 solo multiplica a x; en la segunda el 3 multiplica a toda la suma (x + 5)",
+                        "La segunda tiene paréntesis decorativos que no cambian nada",
+                        "En la primera sumamos primero; en la segunda multiplicamos primero",
+                        "Ambas tienen los mismos términos en diferente orden"
+                    ],
+                    correct: 1,
+                    explanation: "En 3x + 5, el 3 solo multiplica a x. En 3(x + 5), el 3 multiplica a toda la expresión dentro del paréntesis, dando 3x + 15."
+                },
+                {
+                    question: "¿Cuál es la diferencia fundamental entre las expresiones 2x + 7 y 2(x + 7)?",
+                    options: [
+                        "Ambas expresiones son equivalentes",
+                        "En la segunda el 2 multiplica solo a x",
+                        "En la primera el 2 solo multiplica a x; en la segunda el 2 multiplica a toda la suma (x + 7)",
+                        "La primera se lee primero suma, luego multiplicación",
+                        "En la segunda el paréntesis es opcional"
+                    ],
+                    correct: 2,
+                    explanation: "En 2x + 7, el 2 solo multiplica a x. En 2(x + 7), el 2 multiplica a toda la suma, dando 2x + 14."
+                },
+                {
+                    question: "¿Cuál es la diferencia fundamental entre las expresiones 4x + 3 y 4(x + 3)?",
+                    options: [
+                        "El orden de las operaciones es el mismo en ambas",
+                        "En la primera el 4 solo multiplica a x; en la segunda el 4 multiplica a toda la suma (x + 3)",
+                        "Ambas producen el mismo resultado numérico",
+                        "La segunda es una forma simplificada de la primera",
+                        "El paréntesis solo agrupa pero no afecta el resultado"
+                    ],
+                    correct: 1,
+                    explanation: "En 4x + 3, el 4 solo multiplica a x. En 4(x + 3), el 4 multiplica toda la suma, resultando en 4x + 12."
+                }
+            ],
+            tipo2: [ // Estructura y cambios
+                {
+                    question: "En la expresión 5x - 8, ¿qué sucede si x aumenta su valor?",
+                    options: [
+                        "El resultado disminuye porque restamos 8",
+                        "El resultado aumenta porque x tiene coeficiente positivo (5)",
+                        "No cambia nada, el -8 lo compensa",
+                        "Depende si x es positivo o negativo",
+                        "El término independiente -8 también cambia"
+                    ],
+                    correct: 1,
+                    explanation: "Como x tiene coeficiente positivo (5), al aumentar x, el término 5x aumenta. Aunque restamos 8, el efecto neto es que el resultado aumenta."
+                },
+                {
+                    question: "En la expresión 7x - 3, ¿qué sucede si x aumenta su valor?",
+                    options: [
+                        "Disminuye porque tenemos una resta",
+                        "El resultado aumenta porque el coeficiente de x es positivo (7)",
+                        "Permanece constante",
+                        "Depende del valor inicial de x",
+                        "El -3 hace que el resultado disminuya"
+                    ],
+                    correct: 1,
+                    explanation: "El coeficiente positivo 7 hace que cuando x aumenta, 7x también aumenta. El -3 es constante, por lo que el resultado total aumenta."
+                },
+                {
+                    question: "En la expresión 4x + 6, ¿qué sucede con el resultado si x aumenta su valor?",
+                    options: [
+                        "Permanece igual porque el 6 no cambia",
+                        "El resultado aumenta porque x tiene coeficiente positivo (4)",
+                        "Disminuye porque hay suma",
+                        "El resultado depende de si x es mayor o menor que 6",
+                        "El término 6 también aumenta proporcionalmente"
+                    ],
+                    correct: 1,
+                    explanation: "Con coeficiente positivo 4, cuando x aumenta, el término 4x aumenta. El +6 es constante, así que el resultado total aumenta."
+                }
+            ],
+            tipo3: [ // Suma vs exponente
+                {
+                    question: "¿Por qué 2x + 2x NO es igual a 2x²?",
+                    options: [
+                        "Porque 2x + 2x = 4x (suma de términos semejantes) mientras que 2x² significa 2 veces x al cuadrado",
+                        "Porque el exponente cambia el signo",
+                        "Porque en 2x² se multiplica por 2 dos veces",
+                        "Son iguales si x = 2",
+                        "Porque 2x² tiene menos términos"
+                    ],
+                    correct: 0,
+                    explanation: "2x + 2x suma dos términos iguales, dando 4x. En cambio, 2x² significa multiplicar x por sí mismo y luego por 2, lo cual es completamente diferente."
+                },
+                {
+                    question: "¿Por qué 3x + 3x NO es igual a 3x²?",
+                    options: [
+                        "Son equivalentes cuando x = 3",
+                        "Porque 3x + 3x = 6x (suma de términos semejantes) mientras que 3x² significa 3 veces x al cuadrado",
+                        "Porque en 3x² el exponente duplica el resultado",
+                        "El exponente solo afecta al coeficiente",
+                        "No hay diferencia, es solo notación"
+                    ],
+                    correct: 1,
+                    explanation: "3x + 3x = 6x es una suma simple. En 3x², primero elevamos x al cuadrado (x·x) y luego multiplicamos por 3, operación completamente diferente."
+                },
+                {
+                    question: "¿Por qué 5x + 5x NO es igual a 5x²?",
+                    options: [
+                        "Porque 5x + 5x = 10x (suma de términos semejantes) mientras que 5x² significa 5 veces x al cuadrado",
+                        "Son iguales cuando simplificamos",
+                        "El exponente afecta al coeficiente 5",
+                        "Porque x² es el doble de x",
+                        "No hay diferencia real entre ambas expresiones"
+                    ],
+                    correct: 0,
+                    explanation: "5x + 5x = 10x es sumar términos. 5x² es multiplicar x por x y luego por 5. Son operaciones totalmente distintas con resultados diferentes."
+                }
+            ],
+            tipo4: [ // Propiedad distributiva
+                {
+                    question: "Evalúa 5(x - 2) y 5x - 2 cuando x = 4. ¿Son iguales?",
+                    options: [
+                        "Sí, ambas dan 18",
+                        "No, la primera da 10 y la segunda da 18",
+                        "Sí, ambas dan 10",
+                        "No, la primera da 18 y la segunda da 10",
+                        "Ambas dan el mismo resultado siempre"
+                    ],
+                    correct: 1,
+                    explanation: "5(x-2) con x=4: 5(4-2) = 5(2) = 10. En cambio, 5x-2 con x=4: 5(4)-2 = 20-2 = 18. El paréntesis hace que el 5 multiplique a toda la diferencia."
+                },
+                {
+                    question: "Evalúa 3(x + 4) y 3x + 4 cuando x = 2. ¿Son iguales?",
+                    options: [
+                        "No, la primera da 18 y la segunda da 10",
+                        "Sí, ambas dan 10",
+                        "No, la primera da 10 y la segunda da 18",
+                        "Sí, siempre son equivalentes",
+                        "Solo son iguales cuando x = 0"
+                    ],
+                    correct: 0,
+                    explanation: "3(x+4) con x=2: 3(2+4) = 3(6) = 18. Pero 3x+4 con x=2: 3(2)+4 = 6+4 = 10. El paréntesis cambia completamente el resultado."
+                },
+                {
+                    question: "Evalúa 4(x - 1) y 4x - 1 cuando x = 3. ¿Son iguales?",
+                    options: [
+                        "Sí, ambas dan 11",
+                        "No, la primera da 8 y la segunda da 11",
+                        "Sí, ambas dan 8",
+                        "No, la primera da 11 y la segunda da 8",
+                        "Depende del valor de x"
+                    ],
+                    correct: 1,
+                    explanation: "4(x-1) con x=3: 4(3-1) = 4(2) = 8. En cambio, 4x-1 con x=3: 4(3)-1 = 12-1 = 11. El paréntesis marca una diferencia crucial."
+                }
+            ],
+            tipo5: [ // Modelar situación real
+                {
+                    question: "Cada semana recibes d pesos. Gastas 80 en transporte y 50 en internet. ¿Cuál expresión representa tu dinero restante?",
+                    options: [
+                        "d + 80 + 50",
+                        "80 + 50 - d",
+                        "d - 130",
+                        "d - 80 - 50",
+                        "130 - d"
+                    ],
+                    correct: 3,
+                    explanation: "Recibes d pesos y gastas 80 y 50, entonces te quedan d - 80 - 50 pesos. Esto también puede escribirse como d - 130."
+                },
+                {
+                    question: "Juan tiene m pesos ahorrados. Compra un videojuego de 450 pesos y una suscripción de 120 pesos mensuales. ¿Cuánto le queda?",
+                    options: [
+                        "m + 450 + 120",
+                        "570 - m",
+                        "m - 450 - 120",
+                        "m - 570",
+                        "450 + 120 - m"
+                    ],
+                    correct: 2,
+                    explanation: "Juan tiene m pesos y gasta 450 y 120, por lo que le quedan m - 450 - 120 pesos (también puede expresarse como m - 570)."
+                },
+                {
+                    question: "María gana s pesos al mes. Paga 200 de luz y 150 de agua. ¿Cuánto dinero le queda disponible?",
+                    options: [
+                        "s + 350",
+                        "350 - s",
+                        "s - 200 - 150",
+                        "s - 350",
+                        "200 + 150 - s"
+                    ],
+                    correct: 2,
+                    explanation: "María gana s pesos y paga 200 y 150, entonces le quedan s - 200 - 150 pesos disponibles (equivalente a s - 350)."
+                }
+            ],
+            tipo6: [ // Expresión vs ecuación
+                {
+                    question: "¿Cuál es la diferencia entre 2x - 3 y 2x - 3 = 7?",
+                    options: [
+                        "No hay diferencia, solo se agregó un número",
+                        "La primera es una expresión (puede tomar muchos valores); la segunda es una ecuación (busca un valor específico de x)",
+                        "La segunda tiene más operaciones que la primera",
+                        "En la primera no se puede encontrar x",
+                        "El signo igual significa que todo vale 7"
+                    ],
+                    correct: 1,
+                    explanation: "Una expresión (2x - 3) puede evaluarse con cualquier valor de x. Una ecuación (2x - 3 = 7) establece una igualdad y buscamos el valor específico de x que la hace verdadera."
+                },
+                {
+                    question: "¿Cuál es la diferencia entre 3x + 5 y 3x + 5 = 11?",
+                    options: [
+                        "La primera es una expresión que varía con x; la segunda es una ecuación que tiene una solución específica",
+                        "Ambas son lo mismo, solo que la segunda está igualada",
+                        "La segunda no puede resolverse",
+                        "En la primera x puede ser cualquier número, igual que en la segunda",
+                        "No hay diferencia matemática real"
+                    ],
+                    correct: 0,
+                    explanation: "3x + 5 es una expresión abierta. 3x + 5 = 11 es una ecuación donde buscamos el valor de x que hace verdadera la igualdad (en este caso x = 2)."
+                },
+                {
+                    question: "¿Cuál es la diferencia entre 4x - 7 y 4x - 7 = 9?",
+                    options: [
+                        "La primera necesita un valor de x para evaluarse; la segunda busca el valor de x que satisface la igualdad",
+                        "Son equivalentes",
+                        "La primera es más compleja",
+                        "La segunda solo agrega un resultado",
+                        "En ambas x vale lo mismo"
+                    ],
+                    correct: 0,
+                    explanation: "4x - 7 es una expresión que cambia según x. 4x - 7 = 9 es una ecuación que pregunta: ¿qué valor de x hace que 4x - 7 sea igual a 9?"
+                }
+            ],
+            tipo7: [ // Traducción verbal-algebraica
+                {
+                    question: "¿Cómo se expresa correctamente: 'El triple de un número aumentado en 4'?",
+                    options: [
+                        "3(x + 4)",
+                        "3x + 4",
+                        "3 + x + 4",
+                        "x³ + 4",
+                        "(3x)4"
+                    ],
+                    correct: 1,
+                    explanation: "'El triple de un número' es 3x, y 'aumentado en 4' significa +4, por lo tanto: 3x + 4. No confundir con 'el triple de (un número aumentado en 4)' que sería 3(x + 4)."
+                },
+                {
+                    question: "¿Cómo se expresa correctamente: 'El doble de un número disminuido en 3'?",
+                    options: [
+                        "2(x - 3)",
+                        "(2x) - 3",
+                        "2x - 3",
+                        "2 - x - 3",
+                        "x² - 3"
+                    ],
+                    correct: 2,
+                    explanation: "'El doble de un número' es 2x, y 'disminuido en 3' significa -3, entonces: 2x - 3."
+                },
+                {
+                    question: "¿Cómo se expresa correctamente: 'El cuádruple de un número más 5'?",
+                    options: [
+                        "x⁴ + 5",
+                        "4(x + 5)",
+                        "4x + 5",
+                        "4 + x + 5",
+                        "(4 + x)5"
+                    ],
+                    correct: 2,
+                    explanation: "'El cuádruple de un número' es 4x (cuatro veces x), y 'más 5' significa +5, resultando en: 4x + 5."
+                },
+                {
+                    question: "¿Cómo se expresa correctamente: 'La mitad de un número menos 2'?",
+                    options: [
+                        "x/2 - 2",
+                        "2x - 2",
+                        "(x - 2)/2",
+                        "x - 2/2",
+                        "2/x - 2"
+                    ],
+                    correct: 0,
+                    explanation: "'La mitad de un número' es x/2 (dividir x entre 2), y 'menos 2' significa -2, dando: x/2 - 2."
+                }
+            ]
+        };
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        function selectQuestions() {
+            const selected = [];
+            Object.keys(questionBank).forEach(tipo => {
+                const randomIndex = Math.floor(Math.random() * questionBank[tipo].length);
+                const question = { ...questionBank[tipo][randomIndex] };
+                
+                // Crear un array de índices para barajar opciones
+                const indices = question.options.map((_, i) => i);
+                const shuffledIndices = shuffleArray(indices);
+                
+                // Reordenar opciones y ajustar el índice de la respuesta correcta
+                question.options = shuffledIndices.map(i => question.options[i]);
+                question.correct = shuffledIndices.indexOf(question.correct);
+                
+                selected.push(question);
+            });
+            
+            return shuffleArray(selected);
+        }
+
+        function App() {
+            const [stage, setStage] = useState('welcome'); // welcome, quiz, results
+            const [studentName, setStudentName] = useState('');
+            const [questions, setQuestions] = useState([]);
+            const [currentQuestion, setCurrentQuestion] = useState(0);
+            const [selectedAnswer, setSelectedAnswer] = useState(null);
+            const [showFeedback, setShowFeedback] = useState(false);
+            const [answers, setAnswers] = useState([]);
+            const [timer, setTimer] = useState(90);
+
+            useEffect(() => {
+                if (stage === 'quiz' && !showFeedback && timer > 0) {
+                    const interval = setInterval(() => {
+                        setTimer(t => t - 1);
+                    }, 1000);
+                    return () => clearInterval(interval);
+                } else if (timer === 0 && !showFeedback) {
+                    handleTimeOut();
+                }
+            }, [stage, timer, showFeedback]);
+
+            const handleTimeOut = () => {
+                setAnswers([...answers, {
+                    question: questions[currentQuestion].question,
+                    correct: false,
+                    userAnswer: "Sin responder (tiempo agotado)",
+                    correctAnswer: questions[currentQuestion].options[questions[currentQuestion].correct]
+                }]);
+                
+                if (currentQuestion < questions.length - 1) {
+                    setTimeout(() => {
+                        setCurrentQuestion(currentQuestion + 1);
+                        setSelectedAnswer(null);
+                        setShowFeedback(false);
+                        setTimer(90);
+                    }, 2000);
+                } else {
+                    setTimeout(() => {
+                        setStage('results');
+                    }, 2000);
+                }
+            };
+
+            const startQuiz = () => {
+                if (studentName.trim()) {
+                    setQuestions(selectQuestions());
+                    setStage('quiz');
+                }
+            };
+
+            const handleAnswer = (index) => {
+                if (showFeedback) return;
+                setSelectedAnswer(index);
+                setShowFeedback(true);
+                
+                const isCorrect = index === questions[currentQuestion].correct;
+                setAnswers([...answers, {
+                    question: questions[currentQuestion].question,
+                    correct: isCorrect,
+                    userAnswer: questions[currentQuestion].options[index],
+                    correctAnswer: questions[currentQuestion].options[questions[currentQuestion].correct]
+                }]);
+            };
+
+            const nextQuestion = () => {
+                if (currentQuestion < questions.length - 1) {
+                    setCurrentQuestion(currentQuestion + 1);
+                    setSelectedAnswer(null);
+                    setShowFeedback(false);
+                    setTimer(90);
+                } else {
+                    setStage('results');
+                }
+            };
+
+            const score = answers.filter(a => a.correct).length;
+            const percentage = Math.round((score / 7) * 100);
+
+            if (stage === 'welcome') {
+                return (
+                    <div className="container">
+                        <div className="header">
+                            <h1>Pensamiento Matemático II</h1>
+                            <div className="semester">Segundo Semestre</div>
+                            <div className="professor">Prof. Adrián Cruz</div>
+                        </div>
+                        <div className="paper-card">
+                            <div className="instructions">
+                                <strong>Instrucciones:</strong> Este cuestionario evalúa tu comprensión del lenguaje algebraico. 
+                                Contiene 7 preguntas con 90 segundos para responder cada una. Lee cuidadosamente y selecciona 
+                                la mejor respuesta. Ingresa tu nombre completo comenzando por apellidos.
+                            </div>
+                            <div className="input-group">
+                                <label>Nombre completo (Apellidos, Nombre):</label>
+                                <input
+                                    type="text"
+                                    value={studentName}
+                                    onChange={(e) => setStudentName(e.target.value)}
+                                    placeholder="Ej: García López Juan Carlos"
+                                    onKeyPress={(e) => e.key === 'Enter' && startQuiz()}
+                                />
+                            </div>
+                            <button 
+                                className="btn" 
+                                onClick={startQuiz}
+                                disabled={!studentName.trim()}
+                            >
+                                Iniciar Cuestionario
+                            </button>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (stage === 'quiz') {
+                const question = questions[currentQuestion];
+                const isCorrect = selectedAnswer === question.correct;
+
+                return (
+                    <div className="container">
+                        <div className="header">
+                            <h1>Pensamiento Matemático II</h1>
+                            <div className="professor">Prof. Adrián Cruz</div>
+                        </div>
+                        <div className="paper-card">
+                            <div className="quiz-header">
+                                <div className="question-counter">
+                                    Pregunta {currentQuestion + 1} de 7
+                                </div>
+                                <div className={`timer ${timer <= 30 ? 'warning' : ''}`}>
+                                    ⏱️ {timer}s
+                                </div>
+                            </div>
+                            
+                            <div className="question-text">
+                                {question.question}
+                            </div>
+
+                            <div className="options">
+                                {question.options.map((option, index) => (
+                                    <div
+                                        key={index}
+                                        className={`option ${
+                                            selectedAnswer === index ? 'selected' : ''
+                                        } ${
+                                            showFeedback && index === question.correct ? 'correct' : ''
+                                        } ${
+                                            showFeedback && selectedAnswer === index && !isCorrect ? 'incorrect' : ''
+                                        } ${
+                                            showFeedback ? 'disabled' : ''
+                                        }`}
+                                        onClick={() => handleAnswer(index)}
+                                    >
+                                        {option}
+                                    </div>
+                                ))}
+                            </div>
+
+                            {showFeedback && (
+                                <>
+                                    <div className={`feedback ${isCorrect ? 'correct' : 'incorrect'}`}>
+                                        <strong>{isCorrect ? '✓ ¡Correcto!' : '✗ Incorrecto.'}</strong>
+                                        <br />
+                                        {question.explanation}
+                                    </div>
+                                    <button className="btn btn-next" onClick={nextQuestion}>
+                                        {currentQuestion < questions.length - 1 ? 'Siguiente Pregunta' : 'Ver Resultados'}
+                                    </button>
+                                </>
+                            )}
+                        </div>
+                    </div>
+                );
+            }
+
+            if (stage === 'results') {
+                return (
+                    <div className="container">
+                        <div className="results">
+                            <div className="results-header">
+                                <h2>Cuestionario Completado</h2>
+                                <div className="student-name">{studentName}</div>
+                                <div className="score-display">{score}/7</div>
+                                <div className="score-label">Calificación: {percentage}%</div>
+                            </div>
+
+                            <div className="results-details">
+                                <h3>Detalle de Respuestas</h3>
+                                {answers.map((answer, index) => (
+                                    <div key={index} className={`review-item ${answer.correct ? 'correct' : 'incorrect'}`}>
+                                        <div className="review-question">
+                                            {answer.correct ? '✓' : '✗'} Pregunta {index + 1}: {answer.question}
+                                        </div>
+                                        <div className="review-answer">
+                                            {answer.correct ? (
+                                                <span><strong>Tu respuesta:</strong> {answer.userAnswer}</span>
+                                            ) : (
+                                                <>
+                                                    <strong>Tu respuesta:</strong> {answer.userAnswer}<br />
+                                                    <strong>Respuesta correcta:</strong> {answer.correctAnswer}
+                                                </>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
