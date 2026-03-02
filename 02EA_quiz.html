@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Clase 2 · Quiz de Práctica · PMII · PF2</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --azul:#023E8A; --azul2:#0077B6; --azul3:#90E0EF; --azul-fondo:#e8f4fd;
+  --n:#E85D04; --verde:#1B6B45; --verde2:#52B788;
+  --rojo:#C1121F; --crema:#F0F7FF; --gris:#EEF3F8; --gris2:#D9E4EF;
+  --texto:#0a1628; --blanco:#fff;
+  --sombra:0 3px 16px rgba(2,62,138,0.10);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--crema);color:var(--texto);font-size:15px;overflow-x:hidden;}
+
+/* HEADER */
+.hdr{background:linear-gradient(135deg,var(--azul) 0%,#034078 100%);padding:20px 16px 16px;position:relative;overflow:hidden;}
+.hdr::after{content:'';position:absolute;right:-20px;top:-20px;width:120px;height:120px;background:var(--azul3);opacity:.08;border-radius:50%;}
+.hdr-tag{font-size:.7rem;font-weight:800;letter-spacing:3px;color:var(--azul3);margin-bottom:4px;text-transform:uppercase;}
+.hdr h1{font-family:'Bebas Neue',sans-serif;font-size:1.9rem;color:white;line-height:1;letter-spacing:1px;}
+.hdr h1 em{color:#90E0EF;font-style:normal;}
+.hdr-sub{font-size:.78rem;color:rgba(255,255,255,.55);margin-top:5px;}
+.hdr-badges{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;}
+.hbadge{display:inline-block;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.85);font-size:.68rem;font-weight:700;padding:3px 10px;border-radius:10px;letter-spacing:.3px;}
+
+/* SECTIONS */
+.sec{display:none;padding:16px;max-width:680px;margin:0 auto;animation:up .3s ease;}
+.sec.on{display:block;}
+@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* CARDS */
+.card{background:white;border-radius:12px;padding:16px;margin-bottom:12px;box-shadow:var(--sombra);}
+.card-a{border-left:4px solid var(--azul);}
+.card-n{border-left:4px solid var(--n);}
+.card-v{border-left:4px solid var(--verde);}
+
+/* PILL */
+.pill{display:inline-block;font-size:.67rem;font-weight:800;letter-spacing:.5px;padding:3px 10px;border-radius:14px;margin-bottom:8px;text-transform:uppercase;}
+.pill-a{background:var(--azul-fondo);color:var(--azul);}
+
+/* INPUTS */
+.inp{width:100%;padding:11px 14px;border:2.5px solid var(--gris2);border-radius:9px;font-size:.93rem;font-family:'Nunito',sans-serif;color:var(--texto);background:white;transition:border-color .2s;margin-top:5px;}
+.inp:focus{outline:none;border-color:var(--azul2);}
+.inp.error{border-color:var(--rojo)!important;}
+label{font-size:.84rem;font-weight:700;color:var(--azul);display:block;margin-top:10px;}
+label:first-child{margin-top:0;}
+.hint{font-size:.73rem;color:#888;margin-top:3px;}
+
+/* BTN */
+.btn{display:block;width:100%;padding:14px;border:none;border-radius:11px;font-size:1rem;font-weight:800;cursor:pointer;transition:all .2s;font-family:'Nunito',sans-serif;margin-top:12px;}
+.btn-azul{background:var(--azul2);color:white;}
+.btn-azul:hover{background:var(--azul);transform:translateY(-1px);}
+.btn-v{background:var(--verde);color:white;}
+.btn-n{background:var(--n);color:white;}
+
+/* INSTRUCCIONES */
+.inst-list{padding-left:18px;font-size:.87rem;}
+.inst-list li{margin-bottom:8px;line-height:1.5;}
+.inst-list li strong{color:var(--azul);}
+
+/* NOMBRE BOX */
+.nombre-box{background:white;border-radius:12px;padding:18px 16px;box-shadow:var(--sombra);margin-bottom:12px;border-top:5px solid var(--azul2);}
+.nombre-box h2{font-size:1rem;font-weight:900;color:var(--azul);margin-bottom:4px;}
+.nombre-box p{font-size:.82rem;color:#555;margin-bottom:12px;line-height:1.5;}
+.err-msg{display:none;background:#fdecea;border:2px solid var(--rojo);border-radius:8px;padding:9px 13px;font-size:.82rem;color:var(--rojo);font-weight:700;margin-bottom:10px;}
+
+/* PROGRESO QUIZ */
+.qprog{background:white;border-radius:12px;padding:14px 16px;box-shadow:var(--sombra);margin-bottom:12px;}
+.qprog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.q-label{font-size:.85rem;font-weight:700;color:var(--azul);}
+.timer{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:1px;transition:color .3s;}
+.timer.ok{color:var(--verde);}
+.timer.warn{color:var(--n);}
+.timer.danger{color:var(--rojo);}
+.pbar-bg{background:var(--gris2);border-radius:8px;height:7px;}
+.pbar-fill{background:linear-gradient(90deg,var(--azul2),var(--azul3));height:7px;border-radius:8px;transition:width .4s ease;}
+
+/* PREGUNTA */
+.preg-card{background:white;border-radius:12px;padding:18px 16px;box-shadow:var(--sombra);margin-bottom:12px;}
+.preg-contexto{background:var(--azul-fondo);border-left:4px solid var(--azul2);border-radius:0 8px 8px 0;padding:10px 14px;font-size:.86rem;line-height:1.7;margin-bottom:14px;color:#1a2a3a;}
+.preg-pregunta{font-size:.94rem;font-weight:800;line-height:1.6;margin-bottom:16px;color:var(--texto);}
+.opcion{display:block;width:100%;text-align:left;padding:12px 16px;border:2.5px solid var(--gris2);border-radius:9px;background:white;font-size:.87rem;cursor:pointer;margin-bottom:9px;transition:all .2s;color:var(--texto);font-family:'Nunito',sans-serif;font-weight:600;line-height:1.4;}
+.opcion:hover:not(.bloq){border-color:var(--azul2);background:var(--azul-fondo);}
+.opcion.correcta{border-color:var(--verde2);background:#e8f5e9;color:var(--verde);font-weight:800;}
+.opcion.incorrecta{border-color:var(--rojo);background:#fdecea;color:var(--rojo);}
+.opcion.bloq{cursor:default;}
+.feedback{border-radius:9px;padding:11px 14px;font-size:.84rem;margin-top:6px;line-height:1.6;}
+.fb-bien{background:#e8f5e9;border:1.5px solid var(--verde2);color:var(--verde);}
+.fb-mal{background:#fdecea;border:1.5px solid var(--rojo);color:var(--rojo);}
+
+/* RESULTADO */
+.res-banner{border-radius:14px;padding:22px 16px;text-align:center;margin-bottom:14px;color:white;}
+.res-aprobado{background:linear-gradient(135deg,var(--verde),#0f3d25);}
+.res-reprobado{background:linear-gradient(135deg,#7a0000,var(--rojo));}
+.res-emoji{font-size:3rem;margin-bottom:8px;}
+.res-nombre{font-size:.95rem;font-weight:700;opacity:.9;margin-bottom:4px;}
+.res-cal{font-family:'Bebas Neue',sans-serif;font-size:3.5rem;letter-spacing:2px;line-height:1;}
+.res-detalle{font-size:.84rem;opacity:.8;margin-top:6px;}
+.res-msg{border-radius:10px;padding:12px 14px;font-size:.86rem;font-weight:700;margin-bottom:12px;text-align:center;}
+.msg-ap{background:#e8f5e9;color:var(--verde);border:2px solid var(--verde2);}
+.msg-re{background:#fdecea;color:var(--rojo);border:2px solid var(--rojo);}
+
+/* RESUMEN PREGUNTAS */
+.resumen-q{margin-bottom:12px;}
+.rq-item{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;border-radius:8px;margin-bottom:6px;font-size:.83rem;}
+.rq-bien{background:#e8f5e9;}.rq-mal{background:#fdecea;}
+.rq-ico{flex-shrink:0;font-weight:800;font-size:1rem;}
+.rq-txt{line-height:1.4;}
+.rq-cor{font-size:.76rem;color:var(--verde);margin-top:2px;}
+
+/* CAPTURA */
+.captura-aviso{background:#fff8e1;border:2px solid #f9a825;border-radius:10px;padding:12px 14px;font-size:.82rem;margin-top:12px;}
+.captura-aviso h4{color:#f57f17;margin-bottom:6px;font-size:.9rem;}
+.captura-aviso ol{padding-left:18px;}
+.captura-aviso li{margin-bottom:4px;}
+
+/* NOTA EXAM */
+.nota-exam{background:var(--azul-fondo);border:1.5px solid var(--azul2);border-radius:9px;padding:10px 14px;font-size:.82rem;color:var(--azul);margin-bottom:14px;line-height:1.6;}
+.nota-exam strong{display:block;margin-bottom:3px;}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-tag">Pensamiento Matemático II · Clase 2</div>
+  <h1>Quiz de <em>Práctica</em></h1>
+  <div class="hdr-sub">Expresiones algebraicas · Prof. Adrián Cruz · CEB 4/2</div>
+  <div class="hdr-badges">
+    <span class="hbadge">10 preguntas</span>
+    <span class="hbadge">Estilo COMIPEMS / UNAM</span>
+    <span class="hbadge">80% para aprobar</span>
+    <span class="hbadge">60 seg. por pregunta</span>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  PANTALLA INICIO                                             -->
+<!-- ============================================================ -->
+<div class="sec on" id="s-inicio">
+  <div class="nota-exam">
+    <strong>📝 Formato estilo examen de admisión</strong>
+    Las preguntas de esta práctica están redactadas como en el COMIPEMS y el examen de la UNAM: con una situación real de la CDMX y cuatro opciones donde los errores frecuentes son opciones posibles. Esto te prepara para ese tipo de examen.
+  </div>
+
+  <div class="card card-a">
+    <div class="pill pill-a">Instrucciones</div>
+    <ul class="inst-list">
+      <li>Tendrás <strong>60 segundos</strong> por pregunta. Si se acaba el tiempo, la pregunta cuenta como incorrecta.</li>
+      <li>Las preguntas y sus opciones cambian de <strong>orden aleatorio</strong> en cada intento.</li>
+      <li>Necesitas <strong>8 de 10 (80%)</strong> para aprobar.</li>
+      <li>Si no apruebas, puedes <strong>volver a intentarlo</strong> las veces que quieras.</li>
+      <li>Al terminar: <strong>captura de pantalla</strong> y sube a Google Classroom.</li>
+      <li>Lee bien el contexto de cada pregunta antes de elegir.</li>
+    </ul>
+  </div>
+
+  <div id="inicio-err" class="err-msg">⚠️ Escribe tu nombre completo antes de iniciar.</div>
+
+  <div class="nombre-box">
+    <h2>Escribe tu nombre completo</h2>
+    <p>Empieza por apellidos. Ej: <em>Hernández Torres María Fernanda</em></p>
+    <label>Nombre:</label>
+    <input class="inp" id="nombre-quiz" autocomplete="off" placeholder="Apellido Paterno Materno Nombre(s)">
+    <label style="margin-top:10px;">Grupo:</label>
+    <input class="inp" id="grupo-quiz" autocomplete="off" placeholder="231 / 232 / 233 / 234">
+    <div class="hint" style="margin-top:5px;">Este nombre aparecerá en tu resultado final.</div>
+  </div>
+
+  <button class="btn btn-azul" onclick="iniciarQuiz()">🚀 Iniciar Quiz</button>
+</div>
+
+<!-- ============================================================ -->
+<!--  PANTALLA PREGUNTA                                           -->
+<!-- ============================================================ -->
+<div class="sec" id="s-preg">
+  <div class="qprog">
+    <div class="qprog-top">
+      <span class="q-label" id="q-num">Pregunta 1 de 10</span>
+      <span class="timer ok" id="q-timer">60</span>
+    </div>
+    <div class="pbar-bg"><div class="pbar-fill" id="q-pbar" style="width:0%"></div></div>
+  </div>
+
+  <div class="preg-card">
+    <div class="preg-contexto" id="q-contexto"></div>
+    <div class="preg-pregunta" id="q-pregunta"></div>
+    <div id="q-opciones"></div>
+    <div id="q-feedback" style="display:none;"></div>
+  </div>
+
+  <button class="btn btn-azul" id="btn-sig" style="display:none;" onclick="siguientePregunta()">Siguiente →</button>
+</div>
+
+<!-- ============================================================ -->
+<!--  PANTALLA RESULTADO                                          -->
+<!-- ============================================================ -->
+<div class="sec" id="s-resultado">
+
+  <div class="res-banner" id="res-banner">
+    <div class="res-emoji" id="res-emoji"></div>
+    <div class="res-nombre" id="res-nombre"></div>
+    <div class="res-cal" id="res-cal"></div>
+    <div class="res-detalle" id="res-detalle"></div>
+  </div>
+
+  <div class="res-msg" id="res-msg"></div>
+
+  <div class="captura-aviso">
+    <h4>📸 Registra tu resultado:</h4>
+    <ol>
+      <li>Toma una captura de pantalla de esta página completa</li>
+      <li>Verifica que aparezcan tu nombre y la calificación</li>
+      <li>Sube la captura a <strong>Google Classroom</strong> en la tarea correspondiente</li>
+    </ol>
+    <div style="margin-top:8px;font-weight:800;color:#e65100;">🎯 Solo Classroom es válido. No envíes por WhatsApp ni correo.</div>
+  </div>
+
+  <div class="card card-a" style="margin-top:12px;">
+    <div class="pill pill-a">Resumen de respuestas</div>
+    <div class="resumen-q" id="res-lista"></div>
+  </div>
+
+  <button class="btn btn-n" onclick="reiniciarQuiz()">🔄 Volver a intentar</button>
+  <div style="text-align:center;font-size:.75rem;color:#888;margin-top:8px;">Si quieres repasar el tema antes de volver a intentarlo, revisa los materiales de la Clase 1.</div>
+</div>
+
+<!-- ============================================================ -->
+<!--  JAVASCRIPT                                                  -->
+<!-- ============================================================ -->
+<script>
+// ─── BANCO DE PREGUNTAS (36) ───────────────────────────────────
+// Formato: {ctx, preg, cor, ops[], exp}
+// ops[0] siempre es la correcta (se barajan al mostrar)
+const BANCO = [
+
+/* ══ BLOQUE 1: IDENTIFICAR TIPO DE EXPRESIÓN (12) ══ */
+
+{ ctx:"En la Central de Abasto, un vendedor cobra $18 por cada kilo de naranja. Si vende <em>k</em> kilos, su ingreso se escribe como <strong>18k</strong>.",
+  preg:"¿Cómo se clasifica la expresión 18k?",
+  cor:"Monomio — tiene 1 solo término",
+  ops:["Monomio — tiene 1 solo término",
+       "Binomio — porque tiene un número y una letra",
+       "Trinomio — porque hay tres elementos: 18, k y la multiplicación",
+       "No es algebraica — falta el signo igual"],
+  exp:"18k tiene un único término (18 multiplicado por k). Un solo término = MONOMIO. El error frecuente es confundir coeficiente y variable como si fueran términos separados."
+},
+
+{ ctx:"Valeria va al Metro Tasqueña. El boleto cuesta $5 y también gasta $20 de comida. Su gasto total es <strong>5n + 20</strong>, donde n es el número de veces que toma el metro.",
+  preg:"¿Cuántos términos tiene la expresión 5n + 20?",
+  cor:"2 — los términos son 5n y 20",
+  ops:["2 — los términos son 5n y 20",
+       "1 — es una sola operación de suma",
+       "3 — hay un número, una letra y otro número",
+       "4 — hay 5, n, el signo + y el 20"],
+  exp:"Los TÉRMINOS son las partes separadas por + o −. En 5n + 20: término 1 = 5n, término 2 = 20. Los símbolos operativos (+, −) no son términos."
+},
+
+{ ctx:"Un microbús en Periférico gana $9 por pasajero adulto (<em>a</em>) y $5 por estudiante (<em>e</em>). Su ingreso es <strong>9a + 5e</strong>.",
+  preg:"¿Cómo se clasifica 9a + 5e?",
+  cor:"Binomio — 2 términos",
+  ops:["Binomio — 2 términos",
+       "Monomio — porque es un solo cálculo de ingreso",
+       "Trinomio — porque hay dos variables más el ingreso total",
+       "No se puede clasificar — tiene dos letras diferentes"],
+  exp:"9a + 5e tiene 2 términos: 9a y 5e. Dos términos = BINOMIO. No importa cuántas variables distintas haya; lo que define el tipo es el número de términos."
+},
+
+{ ctx:"Para la kermés del plantel se vende agua ($12 por litro), torta ($35) y jugo ($20). El ingreso total es <strong>12a + 35t + 20j</strong>.",
+  preg:"¿Cómo se clasifica 12a + 35t + 20j?",
+  cor:"Trinomio — 3 términos",
+  ops:["Trinomio — 3 términos",
+       "Monomio — porque todo se suma en una sola expresión",
+       "Binomio — porque hay dos operaciones de suma",
+       "Polinomio de 6 términos — porque hay 3 números y 3 letras"],
+  exp:"12a + 35t + 20j tiene 3 términos separados por +. Tres términos = TRINOMIO."
+},
+
+{ ctx:"La renta mensual de un cuarto en Iztapalapa se calcula como <strong>3500 + 200s − 100d</strong>, donde s son servicios extras y d son días de descuento.",
+  preg:"¿Cuántos términos tiene esta expresión?",
+  cor:"3 — son: 3500, 200s y −100d",
+  ops:["3 — son: 3500, 200s y −100d",
+       "2 — porque hay dos variables (s y d)",
+       "5 — porque hay los signos + y − más los tres números",
+       "1 — porque todo es parte del mismo cobro de renta"],
+  exp:"Los términos se cuentan separando por + o −: 3500 | 200s | −100d → 3 términos. Los signos son separadores, no términos. El −100d sí es un término (con coeficiente negativo)."
+},
+
+{ ctx:"Un jardín cuadrado en Tlalpan tiene lado <em>x</em> metros. El área se calcula elevando el lado al cuadrado.",
+  preg:"¿Cuál expresión representa el área y cómo se clasifica?",
+  cor:"x² — monomio de grado 2",
+  ops:["x² — monomio de grado 2",
+       "x² — binomio, porque tiene base y exponente",
+       "2x — monomio, porque el 2 es el coeficiente del lado",
+       "x + x — binomio, porque el área es lado más lado"],
+  exp:"Área = lado × lado = x · x = x². x² es un único término con coeficiente 1 (implícito), variable x y exponente 2. Un término = MONOMIO."
+},
+
+{ ctx:"La ganancia de un puesto de elotes en el Zócalo es <strong>15e − 80</strong>, donde e es el número de elotes y 80 son los gastos fijos del día.",
+  preg:"¿Cómo se clasifica 15e − 80?",
+  cor:"Binomio — 2 términos",
+  ops:["Binomio — 2 términos",
+       "Monomio — porque es el ingreso de un solo negocio",
+       "Trinomio — tiene número, letra y otro número",
+       "No es algebraica — tiene un número negativo"],
+  exp:"15e − 80 tiene dos términos: 15e y −80. El signo − separa los términos; no los elimina ni significa que la expresión no es algebraica."
+},
+
+{ ctx:"El estudiante Carlos escribe: 'La expresión −5x tiene dos términos: +5 y −x, entonces es un binomio.'",
+  preg:"¿Tiene razón Carlos?",
+  cor:"No — −5x es un monomio; el signo − es parte del coeficiente (−5), no un separador",
+  ops:["No — −5x es un monomio; el signo − es parte del coeficiente (−5), no un separador",
+       "Sí — el signo − siempre crea un segundo término",
+       "Sí — porque hay un positivo y un negativo",
+       "Depende — si x tiene exponente entonces sí es binomio"],
+  exp:"El signo − SOLO genera un nuevo término cuando separa dos grupos (como en 3x − 5). En −5x, el − forma parte del coeficiente: coef = −5. Es un MONOMIO."
+},
+
+{ ctx:"La expresión <strong>4x² + 2x − 9</strong> representa el área de una figura en un plano.",
+  preg:"¿Cómo se clasifica 4x² + 2x − 9?",
+  cor:"Trinomio — 3 términos",
+  ops:["Trinomio — 3 términos",
+       "Binomio — porque hay dos tipos de x (con y sin cuadrado)",
+       "Polinomio de 4 términos — porque hay 4, 2 y 9 como números",
+       "Monomio de grado 2 — porque el exponente mayor es 2"],
+  exp:"Los términos de 4x² + 2x − 9 son: 4x², 2x y −9. Tres términos = TRINOMIO. x² y x son términos diferentes, no uno solo."
+},
+
+{ ctx:"Marco cobra $22 por corte de cabello en su estética de Pedregal. Atiende <em>n</em> clientes al día. Su ingreso es <strong>22n</strong>.",
+  preg:"¿Qué tipo de expresión es 22n?",
+  cor:"Monomio — 1 término",
+  ops:["Monomio — 1 término",
+       "Binomio — porque el 22 y la n son cosas distintas",
+       "Trinomio — coeficiente, variable y la operación son tres cosas",
+       "No es una expresión algebraica — es solo un precio por cantidad"],
+  exp:"22n es un único término: el número 22 multiplica a la variable n. Eso es una sola unidad, no varios términos. Un término = MONOMIO."
+},
+
+{ ctx:"En la expresión <strong>x² + 4x</strong>, x representa el lado de un cuadrado. La expresión suma el área (x²) y el perímetro menos algo (4x).",
+  preg:"¿Cuántos términos tiene x² + 4x y cómo se clasifica?",
+  cor:"2 términos — binomio",
+  ops:["2 términos — binomio",
+       "1 término — monomio, porque las dos x son la misma variable",
+       "3 términos — trinomio, porque hay x², 4 y x",
+       "4 términos — porque hay x, ², 4 y x otra vez"],
+  exp:"x² + 4x tiene DOS términos: x² y 4x. Aunque la variable es la misma (x), los términos son distintos porque los exponentes son distintos. Dos términos = BINOMIO."
+},
+
+{ ctx:"Un estudiante escribe <strong>5 + 3</strong> y dice que es un binomio algebraico porque tiene dos términos.",
+  preg:"¿Tiene razón?",
+  cor:"No — 5 + 3 es aritmética, no algebra; no tiene variables",
+  ops:["No — 5 + 3 es aritmética, no algebra; no tiene variables",
+       "Sí — tiene dos términos separados por +, eso lo hace binomio",
+       "Sí — es un binomio de grado 0",
+       "Depende — si el resultado se usa en álgebra, sí es algebraico"],
+  exp:"Una expresión es ALGEBRAICA solo si tiene al menos una variable (letra). 5 + 3 es puramente aritmética. No se puede clasificar como monomio, binomio ni trinomio."
+},
+
+/* ══ BLOQUE 2: COMPONENTES DEL MONOMIO (12) ══ */
+
+{ ctx:"Don Jorge vende jugos en Metro Hidalgo. Su ingreso por venta es el monomio <strong>8j</strong>, donde j es el número de jugos.",
+  preg:"¿Cuál es el coeficiente del monomio 8j?",
+  cor:"8",
+  ops:["8","j","8j completo","No tiene coeficiente — j es la variable"],
+  exp:"El COEFICIENTE es el número que multiplica a la variable. En 8j, el coeficiente es 8. La variable j no es el coeficiente."
+},
+
+{ ctx:"El área de un cuadrado con lado <em>x</em> metros se expresa como <strong>x²</strong> metros cuadrados.",
+  preg:"¿Cuál es el coeficiente de x²?",
+  cor:"1 — está implícito y no se escribe",
+  ops:["1 — está implícito y no se escribe",
+       "2 — es el número que aparece en la expresión",
+       "x — porque es la parte con letra",
+       "No tiene coeficiente"],
+  exp:"Cuando no hay número visible, el coeficiente es 1 implícito. x² = 1·x². Este error (confundir el exponente 2 con el coeficiente) es muy frecuente y lleva a errores de cálculo."
+},
+
+{ ctx:"El volumen de un cubo de lado <em>a</em> centímetros se expresa como <strong>a³</strong>.",
+  preg:"¿Cuál es el grado del monomio a³?",
+  cor:"3 — es el valor del exponente",
+  ops:["3 — es el valor del exponente",
+       "1 — porque solo hay una variable (a)",
+       "a — porque es la letra base",
+       "0 — porque no hay coeficiente visible"],
+  exp:"El GRADO de un monomio es el valor del exponente. En a³, el exponente es 3. No confundir el número de variables con el grado."
+},
+
+{ ctx:"En una tienda de Tepito, un descuento se modela con el monomio <strong>−7m²</strong>.",
+  preg:"¿Cuál es el coeficiente de −7m²?",
+  cor:"−7 — el signo forma parte del coeficiente",
+  ops:["−7 — el signo forma parte del coeficiente",
+       "7 — el signo negativo no cuenta para el coeficiente",
+       "m",
+       "2 — porque es el exponente y está al frente"],
+  exp:"El signo SIEMPRE forma parte del coeficiente. En −7m², el coeficiente es −7, no 7. Olvidar el signo en el coeficiente es uno de los errores más comunes en operaciones algebraicas."
+},
+
+{ ctx:"En una fórmula de geometría aparece el monomio <strong>5x³</strong>.",
+  preg:"¿Cuál es el exponente del monomio 5x³?",
+  cor:"3",
+  ops:["3","5 — es el número de adelante","x — es la variable","15 — porque 5 × 3 = 15"],
+  exp:"El EXPONENTE es el número pequeño que va arriba de la variable. En 5x³, el exponente es 3. El 5 es el coeficiente. Nunca se multiplica coeficiente por exponente."
+},
+
+{ ctx:"La señora Rosa de Tlalpan cobra $20 por kilo de ropa. Su ingreso es <strong>20k</strong>.",
+  preg:"¿Cuál es el exponente del monomio 20k?",
+  cor:"1 — está implícito",
+  ops:["1 — está implícito",
+       "20 — porque es el número que multiplica",
+       "k — porque es la variable",
+       "0 — no aparece exponente, entonces es cero"],
+  exp:"Cuando no hay exponente visible, es 1 implícito. 20k = 20k¹. El grado del monomio es 1."
+},
+
+{ ctx:"Una estética en Iztapalapa modela su ingreso especial con el monomio <strong>9c²</strong>.",
+  preg:"¿Cuál es el grado del monomio 9c²?",
+  cor:"2",
+  ops:["2","9 — es el coeficiente y está al frente","c — porque es la variable","18 — porque 9 × 2 = 18"],
+  exp:"El GRADO es el valor del exponente. En 9c², el exponente es 2, entonces el grado es 2. Nunca se multiplica coeficiente por exponente para encontrar el grado."
+},
+
+{ ctx:"En una deuda familiar, el monto se representa como <strong>−n</strong>.",
+  preg:"¿Cuál es el coeficiente de −n?",
+  cor:"−1 — está implícito",
+  ops:["−1 — está implícito","1 — el signo no cuenta","n — porque es la variable","No tiene coeficiente — no hay número escrito"],
+  exp:"−n = −1·n. El signo negativo indica un coeficiente de −1. Toda variable siempre tiene coeficiente, aunque no se escriba: 1 o −1."
+},
+
+{ ctx:"Un monomio tiene dos variables: <strong>4xy</strong>. Representa el área de un rectángulo.",
+  preg:"¿Cuál es el grado del monomio 4xy?",
+  cor:"2 — los exponentes de x e y son 1+1=2",
+  ops:["2 — los exponentes de x e y son 1+1=2",
+       "1 — porque el coeficiente es 4 y solo hay una multiplicación",
+       "4 — porque es el coeficiente",
+       "0 — no hay exponente visible"],
+  exp:"En monomios con varias variables, el grado es la SUMA de los exponentes. 4xy = 4x¹y¹, grado = 1+1 = 2."
+},
+
+{ ctx:"En álgebra, el número <strong>7</strong> solo (sin variable) puede verse como un monomio.",
+  preg:"¿Cuál es el grado del monomio 7?",
+  cor:"0 — porque 7 = 7x⁰",
+  ops:["0 — porque 7 = 7x⁰","7 — es el coeficiente y también el grado","1 — porque hay un solo número","No tiene grado — no hay variable"],
+  exp:"Cualquier constante (número sin variable) es un monomio de grado 0. Esto es porque x⁰ = 1, entonces 7 = 7·1 = 7x⁰."
+},
+
+{ ctx:"En el monomio <strong>3a²b</strong> que modela un área de construcción:",
+  preg:"¿Cuál es el coeficiente?",
+  cor:"3",
+  ops:["3","a² — porque tiene exponente y va primero","b — es la segunda variable","a²b — porque es toda la parte con letras"],
+  exp:"El coeficiente es siempre el número (con su signo) que multiplica a toda la parte de letras. En 3a²b, el coeficiente es 3."
+},
+
+{ ctx:"Analiza el monomio <strong>5x²</strong>. Un estudiante afirma que el exponente es 5.",
+  preg:"¿Cuál afirmación sobre 5x² es INCORRECTA?",
+  cor:"El exponente es 5 — INCORRECTO; el exponente es 2",
+  ops:["El exponente es 5 — INCORRECTO; el exponente es 2",
+       "El coeficiente es 5 — incorrecto",
+       "La variable es x — incorrecto",
+       "El grado es 2 — incorrecto"],
+  exp:"En 5x²: coeficiente=5 ✓, variable=x ✓, exponente=2 ✓, grado=2 ✓. La afirmación 'el exponente es 5' es INCORRECTA porque 5 es el coeficiente. El exponente es el 2 que va arriba de x."
+},
+
+/* ══ BLOQUE 3: APLICACIÓN EN CONTEXTO (8) ══ */
+
+{ ctx:"Marco cobra $22 por corte en su estética. Su ingreso es 22n. Llega un alumno que pregunta '¿qué representa el 22?'",
+  preg:"¿Qué representa el 22 en la expresión 22n?",
+  cor:"El coeficiente — indica el precio fijo por cliente",
+  ops:["El coeficiente — indica el precio fijo por cliente",
+       "La variable — porque puede cambiar si sube el precio",
+       "El exponente — porque multiplica a n",
+       "El grado de la expresión"],
+  exp:"22 es el COEFICIENTE: el número constante que multiplica a la variable. Aquí representa el precio por cliente. n es la variable (cantidad de clientes, que sí cambia)."
+},
+
+{ ctx:"El cobro de un servicio de Wi-Fi es <strong>15t + 8</strong>: $15 por GB consumido (<em>t</em>) más $8 de renta del módem.",
+  preg:"¿Qué representa el 8 en esta expresión?",
+  cor:"El término independiente — costo fijo que no depende de t",
+  ops:["El término independiente — costo fijo que no depende de t",
+       "El coeficiente de t",
+       "El exponente de la expresión",
+       "La variable, porque el precio del módem puede cambiar"],
+  exp:"El 8 no tiene variable: es el TÉRMINO INDEPENDIENTE (constante). Representa el costo fijo ($8 de renta) que se paga sin importar cuántos GB se consuman."
+},
+
+{ ctx:"Luisa vende tlayudas ($45) y quesadillas ($30) en Tepito. Vende <em>t</em> tlayudas y <em>q</em> quesadillas. Ingreso: <strong>45t + 30q</strong>.",
+  preg:"¿Cuál es el coeficiente de q?",
+  cor:"30",
+  ops:["30","45 — es el primer número que aparece","q — es la variable de las quesadillas","75 — porque 45 + 30 = 75"],
+  exp:"Cada variable tiene su propio coeficiente. El coeficiente de q es el número que la multiplica directamente: 30. El 45 es el coeficiente de t."
+},
+
+{ ctx:"El perímetro de un hexágono regular de lado <em>x</em> es <strong>6x</strong>. El lado mide 5 cm.",
+  preg:"¿Cuánto vale 6x cuando x = 5?",
+  cor:"30 cm — porque 6 × 5 = 30",
+  ops:["30 cm — porque 6 × 5 = 30","11 cm — porque 6 + 5 = 11","65 cm — se escriben los dígitos juntos","1 cm — porque 6 − 5 = 1"],
+  exp:"Para evaluar 6x con x = 5: sustituir y multiplicar → 6(5) = 30 cm. Nunca se suman el coeficiente y el valor de la variable."
+},
+
+{ ctx:"Al pintar una pared rectangular de largo <em>l</em> y alto <em>a</em>, el costo es $80 por m². La expresión es <strong>80la</strong>.",
+  preg:"¿Cuántos términos tiene 80la?",
+  cor:"1 — es un monomio con dos variables",
+  ops:["1 — es un monomio con dos variables",
+       "2 — porque hay dos variables (l y a)",
+       "3 — porque hay 80, l y a",
+       "4 — porque la multiplicación 80 × l × a tiene cuatro elementos"],
+  exp:"80la es un ÚNICO término: todo está multiplicado. No hay + ni − que lo separe. Un monomio puede tener más de una variable sin dejar de ser monomio."
+},
+
+{ ctx:"Un estudiante dice: 'En la expresión 3x + 5, hay 3 términos porque veo los números 3, 5 y la letra x.'",
+  preg:"¿Cuántos términos tiene realmente 3x + 5?",
+  cor:"2 — los términos son 3x y 5",
+  ops:["2 — los términos son 3x y 5",
+       "3 — tiene razón el estudiante",
+       "4 — hay 3, x, el signo + y el 5",
+       "1 — es una sola expresión"],
+  exp:"Los TÉRMINOS son grupos separados por + o −, no números individuales. 3x es un solo término. 5 es otro. Total = 2 términos. El error del estudiante es contar las partes del término 3x como términos separados."
+},
+
+{ ctx:"La expresión <strong>2a³ + 5a − 8</strong> aparece en un problema de física.",
+  preg:"¿Cuál es el grado de este polinomio?",
+  cor:"3 — es el exponente más alto de todos los términos",
+  ops:["3 — es el exponente más alto de todos los términos",
+       "8 — porque es el número más grande",
+       "1 — porque hay una sola variable (a)",
+       "6 — porque hay 3 términos y se suman sus grados: 3+1+0=4… espera, 6"],
+  exp:"El GRADO del polinomio es el exponente más alto entre todos sus términos. En 2a³: grado 3. En 5a: grado 1. En −8: grado 0. El mayor es 3."
+},
+
+{ ctx:"La expresión <strong>x² + 4x</strong> (binomio) y <strong>x² + 4x + 4</strong> (con un término más). Ana nota que se parecen.",
+  preg:"¿En qué se diferencian respecto a su clasificación?",
+  cor:"La primera es binomio (2 términos) y la segunda es trinomio (3 términos)",
+  ops:["La primera es binomio (2 términos) y la segunda es trinomio (3 términos)",
+       "Son iguales — misma variable, misma clasificación",
+       "La primera es monomio y la segunda es binomio",
+       "Las dos son trinomios — x² cuenta como dos términos separados"],
+  exp:"x² + 4x tiene 2 términos = BINOMIO. x² + 4x + 4 tiene 3 términos = TRINOMIO. Agregar un término siempre cambia la clasificación. x² es un solo término aunque tenga exponente."
+},
+
+/* ══ BLOQUE 4: RAZONAMIENTO (4) ══ */
+
+{ ctx:"Sofía analiza el monomio 3x² y dice: 'El grado es 6 porque el coeficiente es 3 y el exponente es 2, y 3 × 2 = 6.'",
+  preg:"¿Cuál es el error de Sofía?",
+  cor:"Confundió la operación: el grado es el exponente (2), no coeficiente × exponente",
+  ops:["Confundió la operación: el grado es el exponente (2), no coeficiente × exponente",
+       "No hay error — el grado sí es 6",
+       "El error está en que el grado debería ser 3 (el coeficiente)",
+       "El error es que 3x² no es un monomio"],
+  exp:"El GRADO es solo el valor del exponente, independientemente del coeficiente. En 3x², grado = 2. El coeficiente (3) no interviene en el grado bajo ninguna circunstancia."
+},
+
+{ ctx:"Para el examen tipo COMIPEMS, identifica cuál de las siguientes expresiones NO es un monomio:",
+  preg:"¿Cuál de estas NO es un monomio?",
+  cor:"4a − 3b — tiene dos términos separados por −",
+  ops:["4a − 3b — tiene dos términos separados por −",
+       "−9x² — es monomio aunque el coeficiente sea negativo",
+       "12mn — es monomio con dos variables",
+       "7 — es monomio de grado cero"],
+  exp:"4a − 3b tiene DOS términos (4a y −3b) separados por el signo −. Por eso es BINOMIO, no monomio. Los demás son monomios: −9x² (1 término), 12mn (1 término con 2 variables), 7 (constante = monomio grado 0)."
+},
+
+{ ctx:"La expresión <strong>4x + 3x</strong> puede simplificarse a <strong>7x</strong> porque los términos son semejantes.",
+  preg:"Antes de simplificar, ¿qué tipo es 4x + 3x? ¿Y después de simplificar?",
+  cor:"Antes: binomio. Después: monomio",
+  ops:["Antes: binomio. Después: monomio",
+       "Antes y después: monomio — misma variable x",
+       "Antes y después: binomio — siempre se puede separar en dos",
+       "Antes: trinomio. Después: binomio"],
+  exp:"La clasificación depende de cómo está ESCRITA la expresión. 4x + 3x tiene 2 términos escritos = BINOMIO. Al simplificar a 7x, queda 1 término = MONOMIO. La forma escrita determina la clasificación."
+},
+
+{ ctx:"Para el examen de admisión, identifica la opción correcta sobre la expresión <strong>5x² + 3x + 8</strong>:",
+  preg:"¿Cuál afirmación sobre 5x² + 3x + 8 es CORRECTA?",
+  cor:"Es un trinomio de grado 2 con término independiente 8",
+  ops:["Es un trinomio de grado 2 con término independiente 8",
+       "Es un binomio de grado 3 porque hay 3 términos",
+       "Es un monomio de grado 5 porque el coeficiente mayor es 5",
+       "Es un trinomio de grado 3 porque 5 + 3 + 8 = 16 y tiene 3 cifras"],
+  exp:"5x² + 3x + 8: ✓ tiene 3 términos (trinomio) ✓ grado = 2 (el exponente más alto, de x²) ✓ término independiente = 8 (sin variable). El grado nunca se calcula sumando coeficientes."
+}
+
+]; // fin BANCO
+
+// ─── ESTADO DEL QUIZ ──────────────────────────────────────────
+let preguntas = [];
+let idxActual = 0;
+let respuestas = [];
+let nombreAlumno = '';
+let grupoAlumno  = '';
+let intervalo = null;
+let tiempoRestante = 60;
+
+// ─── INICIAR ──────────────────────────────────────────────────
+function iniciarQuiz(){
+  nombreAlumno = document.getElementById('nombre-quiz').value.trim();
+  grupoAlumno  = document.getElementById('grupo-quiz').value.trim();
+  const errEl  = document.getElementById('inicio-err');
+  if(nombreAlumno.length < 4){ errEl.style.display='block'; document.getElementById('nombre-quiz').classList.add('error'); return; }
+  errEl.style.display='none';
+
+  // Seleccionar 10 preguntas aleatorias
+  const banco = [...BANCO];
+  for(let i=banco.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [banco[i],banco[j]]=[banco[j],banco[i]]; }
+  preguntas = banco.slice(0,10);
+  idxActual = 0;
+  respuestas = [];
+
+  document.getElementById('s-inicio').classList.remove('on');
+  document.getElementById('s-preg').classList.add('on');
+  mostrarPregunta();
+}
+
+// ─── MOSTRAR PREGUNTA ─────────────────────────────────────────
+function mostrarPregunta(){
+  const p = preguntas[idxActual];
+  document.getElementById('q-num').textContent = 'Pregunta '+(idxActual+1)+' de 10';
+  document.getElementById('q-pbar').style.width = (idxActual/10*100)+'%';
+  document.getElementById('q-contexto').innerHTML = p.ctx;
+  document.getElementById('q-pregunta').textContent = p.preg;
+  document.getElementById('q-feedback').style.display = 'none';
+  document.getElementById('btn-sig').style.display = 'none';
+
+  // Barajar opciones (primer elemento siempre es la correcta, se baraja)
+  const ops = [...p.ops];
+  for(let i=ops.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [ops[i],ops[j]]=[ops[j],ops[i]]; }
+
+  const cont = document.getElementById('q-opciones');
+  cont.innerHTML = '';
+  ops.forEach(op => {
+    const btn = document.createElement('button');
+    btn.className = 'opcion';
+    btn.textContent = op;
+    btn.onclick = () => seleccionar(op, btn, p);
+    cont.appendChild(btn);
+  });
+
+  // Timer
+  clearInterval(intervalo);
+  tiempoRestante = 60;
+  actualizarTimer();
+  intervalo = setInterval(()=>{
+    tiempoRestante--;
+    actualizarTimer();
+    if(tiempoRestante <= 0){
+      clearInterval(intervalo);
+      registrar(false, '⏱️ Tiempo agotado. La respuesta correcta era: <strong>'+p.cor+'</strong>. '+p.exp);
+      bloquearOpciones(null, p.cor);
+    }
+  },1000);
+}
+
+function actualizarTimer(){
+  const el = document.getElementById('q-timer');
+  el.textContent = tiempoRestante+'s';
+  el.className = 'timer ' + (tiempoRestante>15?'ok': tiempoRestante>6?'warn':'danger');
+}
+
+// ─── SELECCIONAR RESPUESTA ────────────────────────────────────
+function seleccionar(seleccion, btn, p){
+  clearInterval(intervalo);
+  const correcta = seleccion === p.cor;
+  const msg = correcta
+    ? '✅ <strong>¡Correcto!</strong> '+p.exp
+    : '❌ <strong>Incorrecto.</strong> La respuesta correcta es: <em>'+p.cor+'</em>. '+p.exp;
+  registrar(correcta, msg);
+  bloquearOpciones(btn, p.cor);
+  if(!correcta) btn.classList.add('incorrecta');
+}
+
+function bloquearOpciones(btnSeleccionado, correcta){
+  document.querySelectorAll('.opcion').forEach(b => {
+    b.classList.add('bloq');
+    b.onclick = null;
+    if(b.textContent === correcta) b.classList.add('correcta');
+  });
+  document.getElementById('btn-sig').style.display = 'block';
+}
+
+function registrar(correcta, mensajeHTML){
+  respuestas.push({
+    preg: preguntas[idxActual].preg,
+    correcta: correcta,
+    cor: preguntas[idxActual].cor
+  });
+  const fb = document.getElementById('q-feedback');
+  fb.innerHTML = mensajeHTML;
+  fb.className = 'feedback '+(correcta?'fb-bien':'fb-mal');
+  fb.style.display = 'block';
+}
+
+// ─── SIGUIENTE PREGUNTA ───────────────────────────────────────
+function siguientePregunta(){
+  idxActual++;
+  if(idxActual < preguntas.length){
+    mostrarPregunta();
+    window.scrollTo({top:0,behavior:'smooth'});
+  } else {
+    mostrarResultado();
+  }
+}
+
+// ─── RESULTADO ────────────────────────────────────────────────
+function mostrarResultado(){
+  clearInterval(intervalo);
+  document.getElementById('s-preg').classList.remove('on');
+  document.getElementById('s-resultado').classList.add('on');
+
+  const correctas = respuestas.filter(r=>r.correcta).length;
+  const total = respuestas.length;
+  const pct = Math.round(correctas/total*100);
+  const calStr = (correctas/total*10).toFixed(1);
+  const aprobado = pct >= 80;
+
+  const banner = document.getElementById('res-banner');
+  banner.className = 'res-banner '+(aprobado?'res-aprobado':'res-reprobado');
+  document.getElementById('res-emoji').textContent = aprobado ? '🎉' : '📚';
+  document.getElementById('res-nombre').textContent = '👤 '+nombreAlumno+(grupoAlumno?' · Grupo '+grupoAlumno:'');
+  document.getElementById('res-cal').textContent = calStr+' / 10';
+  document.getElementById('res-detalle').textContent = correctas+' de '+total+' correctas · '+pct+'%';
+
+  const msg = document.getElementById('res-msg');
+  if(aprobado){
+    msg.className = 'res-msg msg-ap';
+    msg.innerHTML = '✅ ¡Aprobado! Toma tu captura de pantalla y súbela a Classroom.';
+  } else {
+    msg.className = 'res-msg msg-re';
+    msg.innerHTML = '📚 No alcanzaste el 80%. Revisa tus notas de la Clase 1 y vuelve a intentarlo.';
+  }
+
+  // Lista de respuestas
+  const lista = document.getElementById('res-lista');
+  lista.innerHTML = respuestas.map((r,i)=>`
+    <div class="rq-item ${r.correcta?'rq-bien':'rq-mal'}">
+      <div class="rq-ico">${r.correcta?'✅':'❌'}</div>
+      <div class="rq-txt">
+        <div>Pregunta ${i+1}</div>
+        ${!r.correcta?`<div class="rq-cor">Correcta: ${r.cor}</div>`:''}
+      </div>
+    </div>`).join('');
+
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ─── REINICIAR ────────────────────────────────────────────────
+function reiniciarQuiz(){
+  clearInterval(intervalo);
+  document.getElementById('s-resultado').classList.remove('on');
+  document.getElementById('s-inicio').classList.add('on');
+  document.getElementById('nombre-quiz').value = nombreAlumno;
+  document.getElementById('grupo-quiz').value  = grupoAlumno;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+
+<div style="text-align:center;padding:16px 0 24px;font-size:.73rem;color:#aaa;">
+  Pensamiento Matemático II · Prof. Adrián Cruz · CEB 4/2 Jesús Reyes Heroles · 2025–2026
+</div>
+</body>
+</html>
