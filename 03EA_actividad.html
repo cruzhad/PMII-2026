@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Clase 3 · ¿Por qué no puedo sumarlos? · PMII</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --mo:#6A1B9A; --mo2:#9C27B0; --mo3:#CE93D8; --mo-fondo:#f5edfb;
+  --n:#E85D04; --n2:#F48C06;
+  --verde:#1B6B45; --verde2:#52B788;
+  --rojo:#C1121F; --azul:#023E8A;
+  --tierra:#1a0a2e; --crema:#fdf8ff;
+  --gris:#f0ebf7; --gris2:#ddd0ea;
+  --texto:#1a0a2e; --blanco:#fff;
+  --sombra:0 3px 16px rgba(106,27,154,0.10);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Nunito',sans-serif;background:var(--crema);color:var(--texto);font-size:15px;overflow-x:hidden;}
+
+/* PROGRESS BAR */
+.prog-wrap{background:var(--tierra);padding:10px 16px 8px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.35);}
+.prog-dots{display:flex;align-items:center;justify-content:center;gap:0;}
+.pdot{display:flex;flex-direction:column;align-items:center;flex-shrink:0;}
+.pdot-c{width:30px;height:30px;border-radius:50%;border:2.5px solid rgba(255,255,255,.2);background:rgba(255,255,255,.07);color:rgba(255,255,255,.35);font-family:'Bebas Neue',sans-serif;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all .3s;}
+.pdot-c.on{background:var(--mo2);border-color:var(--mo2);color:white;}
+.pdot-c.ok{background:var(--verde2);border-color:var(--verde2);color:white;}
+.pdot-l{font-size:.58rem;font-weight:700;color:rgba(255,255,255,.3);margin-top:2px;letter-spacing:.3px;text-align:center;max-width:50px;line-height:1.2;}
+.pdot-l.on{color:var(--mo3);}
+.pdot-l.ok{color:var(--verde2);}
+.plinea{flex:1;height:2px;background:rgba(255,255,255,.12);min-width:8px;max-width:28px;transition:background .3s;}
+.plinea.ok{background:var(--verde2);}
+.vbadge{display:block;text-align:center;font-size:.6rem;color:rgba(255,255,255,.35);margin-top:4px;letter-spacing:1px;}
+.vbadge span{color:var(--mo3);font-weight:800;}
+
+/* HEADER */
+.hdr{background:linear-gradient(135deg,var(--tierra) 0%,#2d0a4a 100%);padding:20px 16px 16px;position:relative;overflow:hidden;}
+.hdr::after{content:'';position:absolute;right:-25px;top:-25px;width:130px;height:130px;background:var(--mo2);opacity:.1;border-radius:50%;}
+.hdr::before{content:'';position:absolute;left:-15px;bottom:-15px;width:80px;height:80px;background:var(--n);opacity:.08;border-radius:50%;}
+.hdr-tag{font-size:.7rem;font-weight:800;letter-spacing:3px;color:var(--mo3);margin-bottom:4px;text-transform:uppercase;}
+.hdr h1{font-family:'Bebas Neue',sans-serif;font-size:1.85rem;color:white;line-height:1;letter-spacing:.5px;}
+.hdr h1 em{color:var(--mo3);font-style:normal;}
+.hdr-sub{font-size:.77rem;color:rgba(255,255,255,.5);margin-top:5px;}
+
+/* SECTIONS */
+.sec{display:none;padding:16px;max-width:700px;margin:0 auto;animation:up .35s ease;}
+.sec.on{display:block;}
+@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* PLABEL */
+.plabel{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--gris2);}
+.pnum{font-family:'Bebas Neue',sans-serif;font-size:3rem;line-height:1;color:var(--mo2);}
+.pinfo-tag{font-size:.65rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--mo2);margin-bottom:2px;}
+.pinfo-titulo{font-size:1.05rem;font-weight:900;color:var(--tierra);line-height:1.2;}
+
+/* CARDS */
+.card{background:white;border-radius:12px;padding:16px;margin-bottom:12px;box-shadow:var(--sombra);}
+.card-mo{border-left:4px solid var(--mo2);}
+.card-v{border-left:4px solid var(--verde);}
+.card-a{border-left:4px solid var(--azul);}
+.card-n{border-left:4px solid var(--n);}
+.card-r{border-left:4px solid var(--rojo);}
+
+/* NARRATIVA */
+.narr{background:linear-gradient(135deg,var(--tierra),#3a0a5e);border-radius:12px;padding:16px;margin-bottom:12px;color:white;position:relative;overflow:hidden;}
+.narr::before{content:'';position:absolute;right:-20px;bottom:-20px;width:100px;height:100px;background:var(--mo2);opacity:.12;border-radius:50%;}
+.narr-ico{font-size:1.8rem;margin-bottom:6px;display:block;}
+.narr p{font-size:.88rem;line-height:1.75;opacity:.95;}
+.narr strong{color:var(--mo3);}
+
+/* PILL */
+.pill{display:inline-block;font-size:.67rem;font-weight:800;letter-spacing:.5px;padding:3px 10px;border-radius:14px;margin-bottom:8px;text-transform:uppercase;}
+.pill-mo{background:var(--mo-fondo);color:var(--mo);}
+.pill-v{background:#d4edda;color:var(--verde);}
+.pill-a{background:#cce5ff;color:var(--azul);}
+.pill-n{background:#ffe0cc;color:var(--n);}
+.pill-r{background:#fdecea;color:var(--rojo);}
+
+/* INPUTS */
+.inp{width:100%;padding:10px 13px;border:2.5px solid var(--gris2);border-radius:9px;font-size:.92rem;font-family:'Nunito',sans-serif;color:var(--texto);background:white;transition:border-color .2s,box-shadow .2s;margin-top:5px;}
+.inp:focus{outline:none;border-color:var(--mo2);box-shadow:0 0 0 3px rgba(156,39,176,.1);}
+.inp.error{border-color:var(--rojo)!important;background:#fff8f8;}
+.inp-sm{width:76px;text-align:center;padding:7px 4px;font-size:.88rem;}
+.ta{min-height:66px;resize:vertical;}
+label{font-size:.84rem;font-weight:700;color:var(--tierra);display:block;margin-top:11px;}
+label:first-child{margin-top:0;}
+.hint{font-size:.73rem;color:#888;margin-top:3px;line-height:1.4;}
+
+/* TABLA */
+.tbwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:10px 0;}
+table{width:100%;border-collapse:collapse;font-size:.84rem;}
+th{background:var(--tierra);color:white;padding:8px 10px;text-align:center;font-weight:700;white-space:nowrap;}
+td{padding:7px 8px;border:2px solid var(--gris2);text-align:center;vertical-align:middle;}
+tr:nth-child(even) td{background:#faf8ff;}
+td.fijo{font-weight:800;color:var(--tierra);background:#f0ebf7;}
+
+/* ERR MSG */
+.err-msg{display:none;background:#fdecea;border:2px solid var(--rojo);border-radius:9px;padding:10px 14px;font-size:.83rem;color:var(--rojo);font-weight:700;margin-bottom:12px;}
+
+/* BTNS */
+.btn{display:block;width:100%;padding:13px;border:none;border-radius:11px;font-size:.97rem;font-weight:800;cursor:pointer;transition:all .2s;font-family:'Nunito',sans-serif;letter-spacing:.2px;margin-top:12px;}
+.btn-mo{background:var(--mo2);color:white;}
+.btn-mo:hover{background:var(--mo);transform:translateY(-1px);}
+.btn-v{background:var(--verde);color:white;}
+.btn-v:hover{background:#144d31;}
+
+/* PREG BOX */
+.preg-box{background:var(--gris);border-radius:9px;padding:12px 14px;margin:10px 0;}
+.preg-box p{font-size:.88rem;line-height:1.7;font-weight:600;color:var(--tierra);}
+.preg-box p em{color:var(--mo2);font-style:normal;font-weight:800;}
+
+/* EXPR BADGE */
+.expr-b{display:inline-block;background:#f0ebf7;color:var(--tierra);padding:4px 12px;border-radius:6px;font-family:monospace;font-size:1.05rem;font-weight:800;border:1.5px solid var(--gris2);}
+
+/* INTENTAR SUMAR */
+.suma-wrap{background:white;border-radius:12px;padding:16px;box-shadow:var(--sombra);margin-bottom:12px;border:2px solid var(--gris2);}
+.suma-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
+.suma-term{background:var(--mo-fondo);border:2px solid var(--mo2);border-radius:8px;padding:8px 14px;font-family:monospace;font-size:1.1rem;font-weight:900;color:var(--mo);flex-shrink:0;}
+.suma-op{font-size:1.4rem;color:#aaa;font-weight:300;}
+.suma-igual{font-size:1.4rem;color:var(--tierra);font-weight:800;}
+.suma-result{border:2.5px dashed var(--gris2);border-radius:8px;padding:8px 14px;min-width:100px;text-align:center;font-family:monospace;font-size:1rem;font-weight:800;color:#bbb;}
+.suma-result.relleno{border-color:var(--mo2);color:var(--mo);background:var(--mo-fondo);}
+
+/* SEMEJANTES VISUAL */
+.sem-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0;}
+.sem-item{border-radius:10px;padding:12px;text-align:center;}
+.sem-si{background:#e8f5e9;border:2px solid var(--verde2);}
+.sem-no{background:#fdecea;border:2px solid var(--rojo);}
+.sem-titulo{font-size:.72rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px;}
+.sem-si .sem-titulo{color:var(--verde);}
+.sem-no .sem-titulo{color:var(--rojo);}
+.sem-ejemplo{font-family:monospace;font-size:1.1rem;font-weight:900;margin-bottom:4px;}
+.sem-razon{font-size:.73rem;line-height:1.4;}
+.sem-si .sem-razon{color:#2e7d32;}
+.sem-no .sem-razon{color:var(--rojo);}
+
+/* PAUSA */
+.pausa-wrap{background:linear-gradient(135deg,#0a2e1a,var(--verde));border-radius:14px;padding:18px 16px;margin-bottom:14px;}
+.pausa-hdr{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.pausa-ico{font-size:2.2rem;}
+.pausa-tit{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:white;letter-spacing:1px;line-height:1;}
+.pausa-sub{font-size:.78rem;color:rgba(255,255,255,.7);margin-top:2px;}
+.pausa-inst{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);border-radius:9px;padding:10px 13px;font-size:.83rem;color:rgba(255,255,255,.9);margin-bottom:14px;line-height:1.6;}
+.pausa-contenido{background:white;border-radius:12px;padding:16px;margin:12px 0;}
+.pausa-contenido h4{font-size:.8rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#666;margin-bottom:10px;}
+.check-pausa{display:flex;align-items:flex-start;gap:10px;background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.25);border-radius:9px;padding:12px 14px;cursor:pointer;margin-top:12px;}
+.check-pausa input[type=checkbox]{width:22px;height:22px;cursor:pointer;flex-shrink:0;margin-top:1px;accent-color:var(--verde2);}
+.check-pausa label{font-size:.88rem;font-weight:700;color:white;cursor:pointer;line-height:1.4;margin:0;}
+.check-pausa.err-chk{border-color:var(--rojo);}
+
+/* REGLA VISUAL */
+.regla-box{background:#f8f5ff;border:2px solid var(--mo2);border-radius:10px;padding:14px 16px;margin:10px 0;}
+.regla-box h4{color:var(--mo);font-size:.85rem;font-weight:800;margin-bottom:10px;}
+.regla-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:.84rem;}
+.regla-ico{font-size:1.1rem;flex-shrink:0;}
+.term-chip{display:inline-block;padding:3px 10px;border-radius:6px;font-family:monospace;font-size:.95rem;font-weight:800;}
+.chip-mo{background:var(--mo-fondo);color:var(--mo);border:1.5px solid var(--mo2);}
+.chip-az{background:#e3f2fd;color:#1565c0;border:1.5px solid #1565c0;}
+.chip-ve{background:#e8f5e9;color:#2e7d32;border:1.5px solid #2e7d32;}
+.chip-ro{background:#fdecea;color:var(--rojo);border:1.5px solid var(--rojo);}
+.chip-na{background:#fff3e0;color:#e65100;border:1.5px solid #e65100;}
+
+/* TABLA CLASIF EXTENDIDA */
+.clasif-ext{width:100%;border-collapse:collapse;font-size:.82rem;margin-top:10px;}
+.clasif-ext th{background:var(--tierra);color:white;padding:9px 11px;text-align:left;}
+.clasif-ext td{padding:9px 11px;border-bottom:1.5px solid var(--gris2);vertical-align:top;}
+.clasif-ext tr:last-child td{border-bottom:none;}
+
+/* CRECIMIENTO VISUAL */
+.crece-wrap{margin:12px 0;}
+.crece-paso{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.crece-num{width:28px;height:28px;border-radius:50%;background:var(--mo2);color:white;font-family:'Bebas Neue',sans-serif;font-size:1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.crece-expr{font-family:monospace;font-size:1rem;font-weight:800;padding:6px 12px;border-radius:6px;flex:1;}
+.crece-tipo{font-size:.72rem;font-weight:800;padding:3px 8px;border-radius:10px;flex-shrink:0;}
+.c1{background:#e3f2fd;color:#1565c0;} .ct1{background:#e3f2fd;color:#1565c0;}
+.c2{background:#e8f5e9;color:#2e7d32;} .ct2{background:#e8f5e9;color:#2e7d32;}
+.c3{background:var(--mo-fondo);color:var(--mo);} .ct3{background:var(--mo-fondo);color:var(--mo);}
+.c4{background:#fff3e0;color:#e65100;} .ct4{background:#fff3e0;color:#e65100;}
+.crece-flecha{font-size:.9rem;color:#bbb;margin:2px 0 2px 14px;}
+
+/* FINAL */
+.final-banner{background:linear-gradient(135deg,var(--mo),#3a0a5e);border-radius:14px;padding:20px 16px;text-align:center;color:white;margin-bottom:14px;}
+.final-banner h2{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:1px;margin-bottom:4px;}
+.resumen-tabla{width:100%;border-collapse:collapse;font-size:.83rem;}
+.resumen-tabla td{padding:9px 12px;border-bottom:1.5px solid var(--gris2);vertical-align:top;}
+.resumen-tabla td:first-child{font-weight:800;color:var(--tierra);width:42%;background:#faf8ff;}
+.captura-aviso{background:#fff8e1;border:2px solid #f9a825;border-radius:10px;padding:12px 14px;font-size:.82rem;margin-top:14px;}
+.captura-aviso h4{color:#f57f17;margin-bottom:6px;}
+.captura-aviso ol{padding-left:18px;}
+.captura-aviso li{margin-bottom:4px;}
+.sep{height:1.5px;background:var(--gris2);margin:12px 0;}
+</style>
+</head>
+<body>
+
+<!-- BARRA PROGRESO -->
+<div class="prog-wrap">
+  <div class="prog-dots">
+    <div class="pdot"><div class="pdot-c on" id="pd0">1</div><div class="pdot-l on" id="pl0">Inicio</div></div>
+    <div class="plinea" id="pln0"></div>
+    <div class="pdot"><div class="pdot-c" id="pd1">2</div><div class="pdot-l" id="pl1">Un gasto</div></div>
+    <div class="plinea" id="pln1"></div>
+    <div class="pdot"><div class="pdot-c" id="pd2">3</div><div class="pdot-l" id="pl2">¿Se suman?</div></div>
+    <div class="plinea" id="pln2"></div>
+    <div class="pdot"><div class="pdot-c" id="pd3">4</div><div class="pdot-l" id="pl3">Tercer gasto</div></div>
+    <div class="plinea" id="pln3"></div>
+    <div class="pdot"><div class="pdot-c" id="pd4">5</div><div class="pdot-l" id="pl4">Cierre</div></div>
+  </div>
+  <div class="vbadge">Propósito Formativo 2 · Clase 3 · Prof. Adrián Cruz · Variante: <span id="v-badge">—</span></div>
+</div>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-tag">Pensamiento Matemático II · Clase 3</div>
+  <h1>¿Por qué <em>no puedo sumarlos?</em></h1>
+  <div class="hdr-sub">Términos semejantes · Trinomios y polinomios · Trabajo individual</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!--  STEP 0 · INICIO                                       -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="sec on" id="s0">
+  <div class="plabel">
+    <div class="pnum">1</div>
+    <div><div class="pinfo-tag">Antes de empezar</div><div class="pinfo-titulo">Lo que ya sabes y lo que descubrirás</div></div>
+  </div>
+
+  <div id="s0-err" class="err-msg">⚠️ Completa todos los campos antes de continuar.</div>
+
+  <div class="card card-mo">
+    <div class="pill pill-mo">Datos del alumno</div>
+    <label>Nombre completo (comienza por apellidos):</label>
+    <input class="inp" id="nombre" data-req data-minlen="4" autocomplete="off" placeholder="Apellido Paterno Materno Nombre(s)">
+    <label>Grupo:</label>
+    <input class="inp" id="grupo" data-req data-minlen="1" autocomplete="off" placeholder="Ej: 231">
+  </div>
+
+  <div class="card card-a">
+    <div class="pill pill-a">Pregunta de activación</div>
+    <div class="preg-box">
+      <p>En la clase anterior construiste expresiones como <em>14n</em> (monomio) y <em>500 + 40p</em> (binomio). Antes de continuar: <em>¿crees que siempre se pueden sumar todos los términos de una expresión? ¿Por qué sí o por qué no?</em></p>
+    </div>
+    <label>Mi respuesta inicial:</label>
+    <textarea class="inp ta" id="pre-resp" data-req data-minlen="8" placeholder="Creo que... porque..."></textarea>
+    <div class="hint">No hay respuesta incorrecta. Esto es tu punto de partida.</div>
+  </div>
+
+  <div class="card card-v">
+    <div class="pill pill-v">¿Qué vas a descubrir hoy?</div>
+    <p style="font-size:.88rem;line-height:1.75;">Hoy vas a ver cómo una situación simple <strong>crece</strong> cuando le aparecen más variables. En ese proceso vas a descubrir por qué algunos términos se pueden combinar y otros <strong>no</strong>, sin importar cuánto quieras hacerlo.<br><br>
+    Al final entenderás por qué las expresiones algebraicas tienen la forma que tienen, y eso va a ser la base de todo lo que viene en el semestre.</p>
+  </div>
+
+  <button class="btn btn-mo" onclick="avanzar(0,1)">Comenzar → Un solo gasto</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!--  STEP 1 · UN SOLO GASTO → MONOMIO                     -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="sec" id="s1">
+  <div class="plabel">
+    <div class="pnum">2</div>
+    <div><div class="pinfo-tag">Situación simple · Un solo gasto</div><div class="pinfo-titulo" id="p1-titulo">—</div></div>
+  </div>
+
+  <div id="s1-err" class="err-msg">⚠️ Completa todos los campos antes de continuar.</div>
+  <div class="narr" id="p1-narr"></div>
+
+  <div class="card card-mo">
+    <div class="pill pill-mo">Parte A · Completa la tabla</div>
+    <p style="font-size:.86rem;margin-bottom:10px;">Calcula el gasto según la cantidad. Escribe cómo lo calculas y el total:</p>
+    <div class="tbwrap">
+      <table>
+        <tr><th id="p1-col">Cantidad</th><th>¿Cómo calculas?</th><th>Total ($)</th></tr>
+        <tr><td class="fijo" id="p1-c1">—</td>
+            <td><input class="inp inp-sm" id="p1-op1" data-req data-minlen="1" autocomplete="off"></td>
+            <td><input class="inp inp-sm" id="p1-t1"  data-req data-minlen="1" inputmode="numeric" autocomplete="off"></td></tr>
+        <tr><td class="fijo" id="p1-c2">—</td>
+            <td><input class="inp inp-sm" id="p1-op2" data-req data-minlen="1" autocomplete="off"></td>
+            <td><input class="inp inp-sm" id="p1-t2"  data-req data-minlen="1" inputmode="numeric" autocomplete="off"></td></tr>
+        <tr><td class="fijo" id="p1-c3">—</td>
+            <td><input class="inp inp-sm" id="p1-op3" data-req data-minlen="1" autocomplete="off"></td>
+            <td><input class="inp inp-sm" id="p1-t3"  data-req data-minlen="1" inputmode="numeric" autocomplete="off"></td></tr>
+        <tr><td class="fijo" id="p1-c4">—</td>
+            <td><input class="inp inp-sm" id="p1-op4" data-req data-minlen="1" autocomplete="off"></td>
+            <td><input class="inp inp-sm" id="p1-t4"  data-req data-minlen="1" inputmode="numeric" autocomplete="off"></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card card-a">
+    <div class="pill pill-a">Parte B · Tu expresión</div>
+    <div class="preg-box">
+      <p>Usando <em id="p1-var">n</em> para representar la cantidad, escribe una expresión que calcule el gasto total para cualquier valor:</p>
+    </div>
+    <label>Mi expresión:</label>
+    <input class="inp" id="p1-expr" data-req data-minlen="1" autocomplete="off" placeholder="Gasto = ...">
+    <label style="margin-top:11px;">Esta expresión tiene <span style="color:var(--mo2);font-weight:800;">___ término(s)</span> y se llama:</label>
+    <select class="inp" id="p1-tipo" data-req>
+      <option value="">-- elige --</option>
+      <option>Monomio (1 término)</option>
+      <option>Binomio (2 términos)</option>
+      <option>Trinomio (3 términos)</option>
+      <option>Polinomio de 4 términos</option>
+    </select>
+  </div>
+
+  <button class="btn btn-mo" onclick="avanzar(1,2)">Siguiente → Aparece un segundo gasto</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!--  STEP 2 · SEGUNDO GASTO → ¿SE PUEDEN SUMAR?           -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="sec" id="s2">
+  <div class="plabel">
+    <div class="pnum">3</div>
+    <div><div class="pinfo-tag">Conflicto · ¿Se pueden combinar?</div><div class="pinfo-titulo" id="p2-titulo">—</div></div>
+  </div>
+
+  <div id="s2-err" class="err-msg">⚠️ Completa todos los campos antes de continuar.</div>
+  <div class="narr" id="p2-narr"></div>
+
+  <div class="card card-mo">
+    <div class="pill pill-mo">Parte A · Dos gastos, una tabla</div>
+    <p style="font-size:.86rem;margin-bottom:10px;">Ahora hay <strong>dos gastos distintos</strong>. Calcula cada uno por separado y el total:</p>
+    <div class="tbwrap">
+      <table>
+        <tr><th id="p2-col1">Cant. 1</th><th id="p2-col2">Cant. 2</th><th id="p2-col3">Gasto 1 ($)</th><th id="p2-col4">Gasto 2 ($)</th><th>Total ($)</th></tr>
+        <tr>
+          <td class="fijo" id="p2-c1a">—</td><td class="fijo" id="p2-c1b">—</td>
+          <td><input class="inp inp-sm" id="p2-g1a" data-req data-minlen="1" inputmode="numeric" autocomplete="off"></td>
+          <td><input class="inp inp-sm" id="p2-g1b" data-req data-minlen="1" inputmode="numeric" autocomplete="off"></td>
+          <td><input class="inp inp-sm" id="p2-tot1" data-req data-minlen="1" inputmode="numeric" autocomplete="off"></td>
+        </tr>
+        <tr>
+          <td class="fijo" id="p2-c2a">—</td><td class="fijo" id="p2-c2b">—</td>
+          <td><input class="inp inp-sm" id="p2-g2a" data-req data-minlen="1" inputmode="numeric" autocomplete="off"></td>
+          <td><input class="inp inp-sm" id="p2-g2b" data-req data-minlen="1" inputmode="numeric" autocomplete="off"></td>
+          <td><input class="inp inp-sm" id="p2-tot2" data-req data-minlen="1" inputmode="numeric" autocomplete="off"></td>
+        </tr>
+        <tr>
+          <td class="fijo" id="p2-c3a">—</td><td class="fijo" id="p2-c3b">—</td>
+          <td><input class="inp inp-sm" id="p2-g3a" data-req data-minlen="1" inputmode="numeric" autocomplete="off"></td>
+          <td><input class="inp inp-sm" id="p2-g3b" data-req data-minlen="1" inputmode="numeric" autocomplete="off"></td>
+          <td><input class="inp inp-sm" id="p2-tot3" data-req data-minlen="1" inputmode="numeric" autocomplete="off"></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card card-a">
+    <div class="pill pill-a">Parte B · La expresión con dos términos</div>
+    <div class="preg-box">
+      <p>Usando <em id="p2-var1">n</em> para la primera cantidad y <em id="p2-var2">m</em> para la segunda, escribe una expresión para el gasto total:</p>
+    </div>
+    <label>Mi expresión (binomio):</label>
+    <input class="inp" id="p2-expr" data-req data-minlen="2" autocomplete="off" placeholder="Gasto total = ...">
+  </div>
+
+  <!-- EL EXPERIMENTO CENTRAL -->
+  <div class="card card-r">
+    <div class="pill pill-r">Parte C · El experimento: intenta sumarlos</div>
+    <div class="preg-box">
+      <p>Alguien te dice: <em>"¿Para qué escribir dos términos separados? ¡Súmalos y listo!"</em> Intenta hacer eso. Suma los dos términos de tu expresión como si fueran números normales.</p>
+    </div>
+    <div class="suma-wrap" id="suma-wrap-1">
+      <!-- se llena con JS -->
+    </div>
+    <label>¿Pudiste simplificar la suma en un solo término? ¿Qué pasó?</label>
+    <textarea class="inp ta" id="p2-intento" data-req data-minlen="8" placeholder="Cuando intenté sumarlos... porque..."></textarea>
+  </div>
+
+  <div class="card card-v">
+    <div class="pill pill-v">Parte D · La razón</div>
+    <div class="preg-box">
+      <p>Mira los dos términos de tu expresión. El primero representa <em id="p2-rep1">—</em> y el segundo representa <em id="p2-rep2">—</em>. ¿Son la misma cosa o cosas distintas?</p>
+    </div>
+    <label>¿Por qué no se pueden sumar en un solo término?</label>
+    <textarea class="inp ta" id="p2-razon" data-req data-minlen="8" placeholder="No se pueden sumar porque representan... es como intentar sumar..."></textarea>
+  </div>
+
+  <button class="btn btn-mo" onclick="avanzar(2,'p1')">Siguiente → Copia esto ✏️</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!--  PAUSA 1 · TÉRMINOS SEMEJANTES Y NO SEMEJANTES         -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="sec" id="s-pausa1">
+  <div class="pausa-wrap">
+    <div class="pausa-hdr">
+      <div class="pausa-ico">✏️</div>
+      <div><div class="pausa-tit">Pausa · Copia esto</div><div class="pausa-sub">Términos semejantes y no semejantes</div></div>
+    </div>
+    <div class="pausa-inst">
+      Lo que acabas de descubrir ya tiene nombre formal. Copia el siguiente diagrama y la tabla completa en tu cuaderno. Esto es fundamental para todo lo que sigue en el semestre.
+    </div>
+
+    <div class="pausa-contenido">
+      <h4>📐 ¿Cuándo se pueden combinar dos términos?</h4>
+
+      <div class="regla-box">
+        <h4>Regla de términos semejantes</h4>
+        <div class="regla-row"><span class="regla-ico">✅</span><span>Dos términos son <strong>semejantes</strong> si tienen la <strong>misma variable con el mismo exponente</strong>. Se pueden sumar o restar.</span></div>
+        <div class="regla-row"><span class="regla-ico">❌</span><span>Dos términos son <strong>no semejantes</strong> si tienen <strong>variables distintas o exponentes distintos</strong>. No se pueden combinar.</span></div>
+      </div>
+
+      <div class="sem-grid">
+        <div class="sem-item sem-si">
+          <div class="sem-titulo">✅ Semejantes</div>
+          <div class="sem-ejemplo"><span class="term-chip chip-mo">3x</span> y <span class="term-chip chip-mo">5x</span></div>
+          <div class="sem-razon">Misma variable x, mismo exponente 1<br>→ 3x + 5x = <strong>8x</strong> ✓</div>
+        </div>
+        <div class="sem-item sem-no">
+          <div class="sem-titulo">❌ No semejantes</div>
+          <div class="sem-ejemplo"><span class="term-chip chip-az">3x</span> y <span class="term-chip chip-ve">5y</span></div>
+          <div class="sem-razon">Variables distintas: x ≠ y<br>→ 3x + 5y <strong>no se simplifica</strong></div>
+        </div>
+        <div class="sem-item sem-si">
+          <div class="sem-titulo">✅ Semejantes</div>
+          <div class="sem-ejemplo"><span class="term-chip chip-mo">7a²</span> y <span class="term-chip chip-mo">−2a²</span></div>
+          <div class="sem-razon">Misma variable a, mismo exponente 2<br>→ 7a² − 2a² = <strong>5a²</strong> ✓</div>
+        </div>
+        <div class="sem-item sem-no">
+          <div class="sem-titulo">❌ No semejantes</div>
+          <div class="sem-ejemplo"><span class="term-chip chip-na">4x²</span> y <span class="term-chip chip-ve">4x</span></div>
+          <div class="sem-razon">Misma variable pero exponentes distintos: 2 ≠ 1<br>→ 4x² + 4x <strong>no se simplifica</strong></div>
+        </div>
+      </div>
+
+      <div style="background:#fff8f0;border:1.5px solid #f9c894;border-radius:8px;padding:10px 13px;font-size:.82rem;color:#7a3800;line-height:1.7;margin-top:10px;">
+        <strong style="display:block;margin-bottom:4px;">⚠️ Copia también este ejemplo:</strong>
+        Gasto semanal de un estudiante de bachillerato:<br>
+        <span class="term-chip chip-mo" style="margin:4px 2px;">5t</span> = viajes en metro (t = viajes)<br>
+        <span class="term-chip chip-az" style="margin:4px 2px;">30c</span> = comidas en cooperativa (c = comidas)<br>
+        <strong>5t + 30c</strong> → NO se simplifica porque t y c son cosas distintas.<br>
+        Si intentaras sumarlos obtendrías "35tc" que no tiene sentido real.
+      </div>
+    </div>
+
+    <div id="s-pausa1-err" class="err-msg" style="background:rgba(193,18,31,.15);border-color:rgba(255,255,255,.4);color:white;">⚠️ Confirma que ya copiaste en tu cuaderno.</div>
+    <div class="check-pausa" id="chk-p1-wrap">
+      <input type="checkbox" id="chk-p1" data-req data-tipo="check">
+      <label for="chk-p1">Ya copié la regla y los ejemplos en mi cuaderno ✅</label>
+    </div>
+    <button class="btn btn-v" onclick="avanzar('p1',3)" style="margin-top:14px;">Continuar → El tercer gasto</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!--  STEP 3 · TERCER GASTO → TRINOMIO Y POLINOMIO          -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="sec" id="s3">
+  <div class="plabel">
+    <div class="pnum">4</div>
+    <div><div class="pinfo-tag">La expresión crece · Trinomio y polinomio</div><div class="pinfo-titulo" id="p3-titulo">—</div></div>
+  </div>
+
+  <div id="s3-err" class="err-msg">⚠️ Completa todos los campos antes de continuar.</div>
+  <div class="narr" id="p3-narr"></div>
+
+  <!-- CÓMO CRECE LA EXPRESIÓN -->
+  <div class="card card-mo">
+    <div class="pill pill-mo">Parte A · La expresión que crece</div>
+    <p style="font-size:.86rem;margin-bottom:12px;">Observa cómo la situación va creciendo al agregar más gastos. Completa la expresión de cada paso:</p>
+
+    <div class="crece-wrap">
+      <div class="crece-paso">
+        <div class="crece-num">1</div>
+        <div class="crece-expr c1" id="crece-1">—</div>
+        <div class="crece-tipo ct1">Monomio</div>
+      </div>
+      <div class="crece-flecha">↓ aparece el 2do gasto</div>
+      <div class="crece-paso">
+        <div class="crece-num">2</div>
+        <div class="crece-expr c2" id="crece-2">—</div>
+        <div class="crece-tipo ct2">Binomio</div>
+      </div>
+      <div class="crece-flecha">↓ aparece el 3er gasto</div>
+      <div class="crece-paso">
+        <div class="crece-num">3</div>
+        <input class="inp" id="crece-3-inp" data-req data-minlen="2" autocomplete="off" placeholder="Escribe aquí la expresión con 3 términos...">
+        <div class="crece-tipo ct3">Trinomio</div>
+      </div>
+    </div>
+    <div class="hint">El tercer término representa: <span id="p3-tercer-desc">—</span></div>
+  </div>
+
+  <div class="card card-a">
+    <div class="pill pill-a">Parte B · ¿Por qué tres términos?</div>
+    <div class="preg-box">
+      <p>Intenta combinar los tres términos de tu trinomio en uno solo. Usando la regla que copiaste, <em>explica por qué ningún par de términos se puede simplificar.</em></p>
+    </div>
+    <label>Mi explicación:</label>
+    <textarea class="inp ta" id="p3-justif" data-req data-minlen="12" placeholder="El primer término no se puede sumar con el segundo porque... El segundo no se puede sumar con el tercero porque..."></textarea>
+  </div>
+
+  <div class="card card-v">
+    <div class="pill pill-v">Parte C · Ahora con 4 términos</div>
+    <div class="preg-box">
+      <p>Imagina que aparece <em>un cuarto gasto</em> en la misma situación: <em id="p3-cuarto-desc">—</em>. Agrega ese término a tu trinomio y escribe el polinomio completo:</p>
+    </div>
+    <label>Mi polinomio (4 términos):</label>
+    <input class="inp" id="p3-poli" data-req data-minlen="4" autocomplete="off" placeholder="Gasto total = ...">
+    <label style="margin-top:11px;">¿Cuántos términos tiene ahora? ¿Cómo se llama?</label>
+    <select class="inp" id="p3-tipo" data-req>
+      <option value="">-- elige --</option>
+      <option>Monomio (1 término)</option>
+      <option>Binomio (2 términos)</option>
+      <option>Trinomio (3 términos)</option>
+      <option>Polinomio de 4 términos</option>
+    </select>
+  </div>
+
+  <div class="card card-n">
+    <div class="pill pill-n">Parte D · Los términos semejantes en acción</div>
+    <div class="preg-box">
+      <p>¿Qué pasaría si en tu polinomio de 4 términos dos de ellos sí fueran semejantes? Por ejemplo, si tuvieras <em id="p3-ejemplo-sem">—</em>. ¿Cómo quedaría la expresión simplificada?</p>
+    </div>
+    <label>La expresión simplificada sería:</label>
+    <input class="inp" id="p3-simpl" data-req data-minlen="2" autocomplete="off" placeholder="Simplificado quedaría...">
+    <label style="margin-top:11px;">¿Por qué sí se pudieron combinar esos dos términos?</label>
+    <textarea class="inp ta" id="p3-razon-sem" data-req data-minlen="8" placeholder="Se pudieron combinar porque..."></textarea>
+  </div>
+
+  <button class="btn btn-mo" onclick="avanzar(3,'p2')">Siguiente → Copia la tabla completa ✏️</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!--  PAUSA 2 · TABLA COMPLETA PF2                          -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="sec" id="s-pausa2">
+  <div class="pausa-wrap">
+    <div class="pausa-hdr">
+      <div class="pausa-ico">✏️</div>
+      <div><div class="pausa-tit">Pausa · Copia esto</div><div class="pausa-sub">Resumen completo del Propósito Formativo 2</div></div>
+    </div>
+    <div class="pausa-inst">
+      Esta es la tabla de cierre del PF2. Cópiala completa. Incluye los ejemplos con situaciones reales porque en el examen las preguntas siempre tienen contexto.
+    </div>
+
+    <div class="pausa-contenido">
+      <h4>📊 Clasificación completa + regla de términos semejantes</h4>
+
+      <table class="clasif-ext">
+        <tr><th>Tipo</th><th>Términos</th><th>Ejemplo algebraico</th><th>Situación real</th></tr>
+        <tr>
+          <td style="font-weight:800;color:#1565c0;">Monomio</td>
+          <td style="text-align:center;font-weight:700;">1</td>
+          <td style="font-family:monospace;font-weight:800;">5t</td>
+          <td style="font-size:.78rem;">$5 por viaje en metro (t viajes)</td>
+        </tr>
+        <tr>
+          <td style="font-weight:800;color:#2e7d32;">Binomio</td>
+          <td style="text-align:center;font-weight:700;">2</td>
+          <td style="font-family:monospace;font-weight:800;">5t + 30c</td>
+          <td style="font-size:.78rem;">Metro + comida en cooperativa</td>
+        </tr>
+        <tr>
+          <td style="font-weight:800;color:var(--mo);">Trinomio</td>
+          <td style="text-align:center;font-weight:700;">3</td>
+          <td style="font-family:monospace;font-weight:800;">5t + 30c + 2f</td>
+          <td style="font-size:.78rem;">Metro + comida + fotocopias</td>
+        </tr>
+        <tr>
+          <td style="font-weight:800;color:#e65100;">Polinomio</td>
+          <td style="text-align:center;font-weight:700;">2 o más</td>
+          <td style="font-family:monospace;font-weight:800;">5t + 30c + 2f + 15r</td>
+          <td style="font-size:.78rem;">Metro + comida + copias + recreo</td>
+        </tr>
+      </table>
+
+      <div class="sep"></div>
+
+      <div class="regla-box">
+        <h4>Regla clave para el examen</h4>
+        <div style="font-size:.84rem;line-height:1.9;">
+          <div style="margin-bottom:6px;"><strong>¿Cuándo SÍ se combinan?</strong> Cuando tienen la misma variable con el mismo exponente.<br>
+          Ej: <span class="term-chip chip-mo">3x²</span> + <span class="term-chip chip-mo">7x²</span> = <span class="term-chip chip-ve">10x²</span></div>
+          <div><strong>¿Cuándo NO se combinan?</strong> Variable distinta o exponente distinto.<br>
+          Ej: <span class="term-chip chip-mo">3x²</span> + <span class="term-chip chip-az">7x</span> → se quedan como <span class="term-chip chip-na">3x² + 7x</span> (binomio)</div>
+        </div>
+      </div>
+
+      <div style="background:#f0ebf7;border:1.5px solid var(--mo2);border-radius:8px;padding:10px 13px;font-size:.82rem;color:var(--mo);margin-top:10px;line-height:1.7;">
+        <strong style="display:block;margin-bottom:4px;">📌 Copia también:</strong>
+        El número de términos de una expresión determina su nombre, pero <strong>solo después de combinar todos los términos semejantes</strong>. Primero simplifica, luego clasifica.
+      </div>
+    </div>
+
+    <div id="s-pausa2-err" class="err-msg" style="background:rgba(193,18,31,.15);border-color:rgba(255,255,255,.4);color:white;">⚠️ Confirma que ya copiaste la tabla en tu cuaderno.</div>
+    <div class="check-pausa" id="chk-p2-wrap">
+      <input type="checkbox" id="chk-p2" data-req data-tipo="check">
+      <label for="chk-p2">Ya copié la tabla completa en mi cuaderno ✅</label>
+    </div>
+    <button class="btn btn-v" onclick="avanzar('p2',4)" style="margin-top:14px;">Continuar → Cierre</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!--  STEP 4 · CIERRE                                       -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="sec" id="s4">
+  <div class="plabel">
+    <div class="pnum">5</div>
+    <div><div class="pinfo-tag">Reflexión · Transferencia · Cierre</div><div class="pinfo-titulo">Lo que descubriste hoy</div></div>
+  </div>
+
+  <div id="s4-err" class="err-msg">⚠️ Completa todos los campos antes de finalizar.</div>
+
+  <div class="card card-mo">
+    <div class="pill pill-mo">01 · Corrige tu idea inicial</div>
+    <p style="font-size:.86rem;margin-bottom:8px;">Al inicio escribiste si creías que siempre se pueden sumar todos los términos. Ahora que sabes la regla, <strong>corrige o confirma</strong> lo que dijiste:</p>
+    <div style="background:var(--gris);border-radius:8px;padding:10px 12px;font-size:.83rem;color:#555;margin-bottom:10px;font-style:italic;" id="pre-resp-display">—</div>
+    <label>Mi respuesta corregida:</label>
+    <textarea class="inp ta" id="c-correccion" data-req data-minlen="15" placeholder="Ahora entiendo que... porque los términos semejantes son los que..."></textarea>
+  </div>
+
+  <div class="card card-a">
+    <div class="pill pill-a">02 · Inventa una situación con trinomio</div>
+    <div class="preg-box">
+      <p>Piensa en una situación de tu vida como estudiante de bachillerato en la CDMX que tenga <em>exactamente 3 gastos o ingresos distintos</em>. Escribe la situación y el trinomio que la representa.</p>
+    </div>
+    <label>La situación:</label>
+    <textarea class="inp ta" id="c-situacion" data-req data-minlen="15" placeholder="Describe la situación con tres conceptos distintos..."></textarea>
+    <label style="margin-top:11px;">El trinomio:</label>
+    <input class="inp" id="c-trinomio" data-req data-minlen="4" autocomplete="off" placeholder="Expresión = término1 + término2 + término3">
+    <label style="margin-top:11px;">¿Por qué no se pueden combinar los tres términos?</label>
+    <textarea class="inp ta" id="c-por-que" data-req data-minlen="8" placeholder="No se pueden combinar porque cada término representa..."></textarea>
+  </div>
+
+  <div class="card card-v">
+    <div class="pill pill-v">03 · La conexión con lo que viene</div>
+    <div class="preg-box">
+      <p>En la próxima unidad vas a <em>operar</em> con estas expresiones: sumar polinomios, multiplicar monomios, etc. ¿Para qué crees que vas a necesitar saber si dos términos son semejantes o no?</p>
+    </div>
+    <label>Mi respuesta:</label>
+    <textarea class="inp ta" id="c-conexion" data-req data-minlen="8" placeholder="Creo que necesitaré saber esto cuando..."></textarea>
+  </div>
+
+  <div class="card card-n">
+    <div class="pill pill-n">04 · Honestidad</div>
+    <label>¿Qué fue lo que más te costó entender hoy?</label>
+    <textarea class="inp ta" id="c-dificil" data-req data-minlen="8" placeholder="Lo más difícil fue..."></textarea>
+    <label style="margin-top:11px;">¿En qué momento sintiste que "hizo clic"?</label>
+    <textarea class="inp ta" id="c-click" data-req data-minlen="8" placeholder="Entendí cuando..."></textarea>
+  </div>
+
+  <button class="btn btn-v" onclick="finalizar()">✅ Terminar y ver resumen</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!--  FINAL · RESUMEN                                       -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="sec" id="s-final">
+  <div class="final-banner">
+    <h2>🎉 ACTIVIDAD COMPLETA</h2>
+    <p>Descubriste por qué los términos no semejantes no se pueden combinar, y construiste trinomios y polinomios desde situaciones reales.</p>
+  </div>
+
+  <div class="card card-v">
+    <div class="pill pill-v">Resumen de tu actividad — Clase 3</div>
+    <table class="resumen-tabla" id="tabla-resumen"></table>
+  </div>
+
+  <div class="captura-aviso">
+    <h4>📸 Para registrar tu resultado:</h4>
+    <ol>
+      <li>Toma captura de pantalla de esta página completa</li>
+      <li>Verifica que se vean tu nombre, grupo y respuestas</li>
+      <li>Sube la captura a <strong>Google Classroom</strong> en la tarea correspondiente</li>
+    </ol>
+    <div style="margin-top:8px;font-weight:800;color:#e65100;">🎯 Tu cuaderno con las dos copias también se revisa.</div>
+  </div>
+
+  <div class="card card-mo" style="margin-top:12px;">
+    <div class="pill pill-mo">¿Qué sigue?</div>
+    <p style="font-size:.87rem;line-height:1.75;">La <strong>Clase 4</strong> es el cierre del PF2: un repaso integrado donde vas a trabajar monomios, binomios, trinomios y polinomios en una sola historia. Después de eso empieza el PF3: <strong>operaciones</strong> con estas expresiones. La regla de términos semejantes que copiaste hoy la vas a usar en cada clase del resto del semestre.</p>
+  </div>
+
+  <button class="btn btn-mo" onclick="window.location.reload()" style="margin-top:12px;">🔄 Reiniciar actividad</button>
+</div>
+
+<div style="text-align:center;padding:16px 0 24px;font-size:.73rem;color:#aaa;">
+  Pensamiento Matemático II · Prof. Adrián Cruz · 2025–2026
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!--  JAVASCRIPT                                            -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<script>
+// ─── VARIANTES ───────────────────────────────────────────────
+const VD = {
+  A:{
+    label:'Estudiante de bachillerato — CDMX',
+    sit1:{
+      emoji:'🎒', titulo:'El primer gasto: el metro',
+      narr:'Eres estudiante de bachillerato en la CDMX. Tu primer gasto de la semana es el <strong>transporte en metro</strong>. Cada viaje cuesta <strong>$PRECIO</strong>.',
+      colLabel:'Viajes (t)', var:'t', unidad:'viajes',
+      precios:[5,6,7,8,9,10]
+    },
+    sit2:{
+      emoji:'🥗', titulo:'Aparece el segundo gasto: la cooperativa',
+      narr:'Además del metro, comes en la <strong>cooperativa del plantel</strong>. Cada comida cuesta <strong>$PRECIO2</strong>. Ahora tienes dos gastos distintos: viajes en metro y comidas.',
+      col1:'Viajes (t)', col2:'Comidas (c)', col3:'Metro ($)', col4:'Cooperativa ($)',
+      var1:'t', var2:'c', rep1:'viajes en metro', rep2:'comidas en cooperativa',
+      precios2:[20,25,28,30,32,35],
+      rango1:[2,15], rango2:[3,12]
+    },
+    sit3:{
+      emoji:'🖨️', titulo:'El tercer gasto: las fotocopias',
+      narr:'Resulta que también necesitas <strong>fotocopias de apuntes</strong>. Cada fotocopia cuesta <strong>$PRECIO3</strong>. Ya son tres gastos distintos: metro, cooperativa y fotocopias.',
+      var3:'f', tercerDesc:'$PRECIO3 por fotocopia (f = número de fotocopias)',
+      cuartoDesc:'recargas de celular: $PRECIO4 por recarga (r = recargas)',
+      var4:'r', precios4:[10,15,20],
+      precios3:[1,2,3,4,5]
+    }
+  },
+  B:{
+    label:'Vendedor ambulante — CDMX',
+    sit1:{
+      emoji:'🛍️', titulo:'El primer ingreso: las bolsas',
+      narr:'Eres un joven vendedor ambulante en la CDMX. Tu primer ingreso es por vender <strong>bolsas de plástico</strong> afuera del mercado. Cada bolsa la vendes en <strong>$PRECIO</strong>.',
+      colLabel:'Bolsas (b)', var:'b', unidad:'bolsas',
+      precios:[3,4,5,6,7,8]
+    },
+    sit2:{
+      emoji:'🚌', titulo:'Aparece el segundo gasto: el transporte',
+      narr:'Para llegar al mercado pagas <strong>transporte</strong>. Cada viaje de ida y vuelta cuesta <strong>$PRECIO2</strong>. Ahora tienes ingresos por bolsas y gastos por transporte.',
+      col1:'Bolsas (b)', col2:'Viajes (v)', col3:'Ingreso bolsas ($)', col4:'Gasto transporte ($)',
+      var1:'b', var2:'v', rep1:'bolsas vendidas', rep2:'viajes de transporte',
+      precios2:[12,14,16,18,20,22],
+      rango1:[10,60], rango2:[1,5]
+    },
+    sit3:{
+      emoji:'📋', titulo:'El tercer gasto: el permiso',
+      narr:'El delegado del mercado te cobra un <strong>permiso diario</strong> de <strong>$PRECIO3</strong> para poder vender. Ya son tres conceptos distintos en tu balance.',
+      var3:'d', tercerDesc:'$PRECIO3 por día de permiso (d = días)',
+      cuartoDesc:'bolsas que se rompen y no se venden: $PRECIO4 de pérdida por bolsa rota (r = bolsas rotas)',
+      var4:'r', precios4:[2,3,4,5],
+      precios3:[15,18,20,22,25,30]
+    }
+  },
+  C:{
+    label:'Familia en Iztapalapa — CDMX',
+    sit1:{
+      emoji:'💧', titulo:'El primer servicio: el agua',
+      narr:'Una familia en Iztapalapa paga servicios cada mes. El primero es el <strong>agua</strong>: <strong>$PRECIO</strong> por metro cúbico consumido.',
+      colLabel:'m³ de agua (a)', var:'a', unidad:'metros cúbicos',
+      precios:[10,11,12,13,14,15]
+    },
+    sit2:{
+      emoji:'🔥', titulo:'Aparece el segundo servicio: el gas',
+      narr:'También pagan <strong>gas</strong> para cocinar. El gas cuesta <strong>$PRECIO2</strong> por kilogramo. Ya son dos servicios distintos.',
+      col1:'m³ agua (a)', col2:'kg gas (g)', col3:'Agua ($)', col4:'Gas ($)',
+      var1:'a', var2:'g', rep1:'metros cúbicos de agua', rep2:'kilogramos de gas',
+      precios2:[20,22,24,25,26,28],
+      rango1:[4,20], rango2:[3,12]
+    },
+    sit3:{
+      emoji:'💡', titulo:'El tercer servicio: la electricidad',
+      narr:'Además, la <strong>electricidad</strong> cuesta <strong>$PRECIO3</strong> por kilowatt-hora consumido. Ya son tres servicios en el recibo mensual.',
+      var3:'e', tercerDesc:'$PRECIO3 por kilowatt-hora (e = kilowatts-hora)',
+      cuartoDesc:'renta del cuarto de azotea: $PRECIO4 fijos al mes (término independiente sin variable)',
+      var4:'', precios4:[700,750,800,850,900],
+      precios3:[2,3,4,5,6]
+    }
+  },
+  D:{
+    label:'Equipo de fútbol — Tlalpan, CDMX',
+    sit1:{
+      emoji:'⚽', titulo:'El primer gasto: la cancha',
+      narr:'Un grupo de jóvenes de Tlalpan organiza partidos de fútbol. El primer gasto es la <strong>renta de la cancha</strong>: <strong>$PRECIO</strong> por hora.',
+      colLabel:'Horas (h)', var:'h', unidad:'horas',
+      precios:[70,80,90,100,110,120]
+    },
+    sit2:{
+      emoji:'👟', titulo:'Aparece el segundo gasto: el equipo',
+      narr:'También necesitan pagar <strong>equipo deportivo</strong> (balones, petos, etc.) a razón de <strong>$PRECIO2</strong> por jugador. Son dos gastos distintos: cancha y equipo.',
+      col1:'Horas (h)', col2:'Jugadores (j)', col3:'Cancha ($)', col4:'Equipo ($)',
+      var1:'h', var2:'j', rep1:'horas de cancha', rep2:'jugadores con equipo',
+      precios2:[12,14,15,16,18,20],
+      rango1:[1,4], rango2:[8,18]
+    },
+    sit3:{
+      emoji:'🏁', titulo:'El tercer gasto: el árbitro',
+      narr:'Para los partidos formales contratan un <strong>árbitro</strong> que cobra <strong>$PRECIO3</strong> por partido arbitrado. Ya son tres gastos distintos para organizar el equipo.',
+      var3:'p', tercerDesc:'$PRECIO3 por partido arbitrado (p = partidos)',
+      cuartoDesc:'inscripción al torneo: $PRECIO4 fijos por temporada (término independiente)',
+      var4:'', precios4:[400,450,500,550,600],
+      precios3:[100,120,130,150,160,180]
+    }
+  }
+};
+
+// ─── FUNCIONES DE ALEATORIEDAD ───────────────────────────────
+function pick(arr){return arr[Math.floor(Math.random()*arr.length)];}
+
+// Genera un entero aleatorio entre min y max inclusive
+function rInt(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
+
+// Genera 3 filas aleatorias para la tabla de Parada 2
+// rango1 = [min,max] para la primera cantidad
+// rango2 = [min,max] para la segunda cantidad
+// Se asegura que las 3 filas sean distintas
+function genRows(rango1, rango2){
+  const rows=[];
+  const used=new Set();
+  let intentos=0;
+  while(rows.length<3 && intentos<50){
+    intentos++;
+    const a=rInt(rango1[0],rango1[1]);
+    const b=rInt(rango2[0],rango2[1]);
+    const key=a+','+b;
+    if(!used.has(key)){used.add(key);rows.push([a,b]);}
+  }
+  // Ordenar por primera columna para que se vea progresivo
+  rows.sort((x,y)=>x[0]-y[0]);
+  return rows;
+}
+
+// Genera 4 cantidades aleatorias para la tabla de Parada 1
+function genCants(min, max){
+  const base=[rInt(min, Math.floor((max-min)*0.2+min)),
+              rInt(Math.floor((max-min)*0.2+min), Math.floor((max-min)*0.5+min)),
+              rInt(Math.floor((max-min)*0.5+min), Math.floor((max-min)*0.8+min)),
+              rInt(Math.floor((max-min)*0.8+min), max)];
+  return base;
+}
+
+// Rangos de cantidades para Parada 1 por variante
+const CANT_RANGOS = {A:[1,25], B:[5,60], C:[3,25], D:[1,5]};
+
+// ─── INIT ────────────────────────────────────────────────────
+const LETRAS = ['A','B','C','D'];
+const vL = LETRAS[Math.floor(Math.random()*4)];
+const V  = VD[vL];
+
+const pr1  = pick(V.sit1.precios);
+const pr2  = pick(V.sit2.precios2);
+const pr3  = pick(V.sit3.precios3);
+const pr4  = pick(V.sit3.precios4);
+
+// Cantidades aleatorias
+const cants1 = genCants(CANT_RANGOS[vL][0], CANT_RANGOS[vL][1]);
+const rows2  = genRows(V.sit2.rango1, V.sit2.rango2);
+
+// Ejemplos dinámicos de términos semejantes para Parada 3
+// Usa los precios reales del alumno para que sea coherente con lo que calculó
+function buildEjemploSem(){
+  const v1=V.sit1.var, v2=V.sit2.var2, v3=V.sit3.var3;
+  const extra=rInt(1,pr1-1); // coeficiente extra del mismo tipo que v1
+  return `${pr1}${v1} + ${extra}${v1} + ${pr2}${v2} + ${pr3}${v3}`;
+}
+function buildSimplEjem(){
+  const v1=V.sit1.var, v2=V.sit2.var2, v3=V.sit3.var3;
+  const extra=rInt(1,pr1-1);
+  return `${pr1+extra}${v1} + ${pr2}${v2} + ${pr3}${v3}`;
+}
+
+const ejemploSem = buildEjemploSem();
+const simplEjem  = buildSimplEjem();
+
+document.getElementById('v-badge').textContent = vL;
+
+// Render Sit1
+document.getElementById('p1-titulo').textContent = V.sit1.titulo;
+document.getElementById('p1-narr').innerHTML = `<span class="narr-ico">${V.sit1.emoji}</span><p>${V.sit1.narr.replace('PRECIO','$'+pr1)}</p>`;
+document.getElementById('p1-col').textContent = V.sit1.colLabel;
+document.getElementById('p1-var').textContent  = V.sit1.var;
+cants1.forEach((c,i)=>document.getElementById('p1-c'+(i+1)).textContent=c);
+
+// Render Sit2
+document.getElementById('p2-titulo').textContent = V.sit2.titulo;
+document.getElementById('p2-narr').innerHTML = `<span class="narr-ico">${V.sit2.emoji}</span><p>${V.sit2.narr.replace('PRECIO2','$'+pr2)}</p>`;
+['col1','col2','col3','col4'].forEach(k=>document.getElementById('p2-'+k).textContent=V.sit2[k]);
+document.getElementById('p2-var1').textContent = V.sit2.var1;
+document.getElementById('p2-var2').textContent = V.sit2.var2;
+document.getElementById('p2-rep1').textContent = V.sit2.rep1;
+document.getElementById('p2-rep2').textContent = V.sit2.rep2;
+rows2.forEach((r,i)=>{
+  document.getElementById('p2-c'+(i+1)+'a').textContent = r[0];
+  document.getElementById('p2-c'+(i+1)+'b').textContent = r[1];
+});
+
+// Render Sit3
+document.getElementById('p3-titulo').textContent = V.sit3.titulo;
+document.getElementById('p3-narr').innerHTML = `<span class="narr-ico">${V.sit3.emoji}</span><p>${V.sit3.narr.replace('PRECIO3','$'+pr3)}</p>`;
+document.getElementById('p3-tercer-desc').textContent = V.sit3.tercerDesc.replace('PRECIO3','$'+pr3);
+document.getElementById('p3-cuarto-desc').textContent = V.sit3.cuartoDesc.replace('PRECIO4','$'+pr4);
+document.getElementById('p3-ejemplo-sem').textContent = ejemploSem;
+
+// Suma wrap for Sit2 experiment
+function buildSumaWrap(){
+  const e1 = pr1+V.sit1.var;
+  const e2 = pr2+V.sit2.var2;
+  window._expr1 = e1; window._expr2 = e2;
+  document.getElementById('suma-wrap-1').innerHTML = `
+    <p style="font-size:.84rem;color:#666;margin-bottom:10px;">Intenta: <strong>${e1} + ${e2} = ?</strong></p>
+    <div class="suma-row">
+      <div class="suma-term">${e1}</div>
+      <div class="suma-op">+</div>
+      <div class="suma-term">${e2}</div>
+      <div class="suma-igual">=</div>
+      <input class="inp inp-sm" id="suma-resultado" autocomplete="off" placeholder="?" style="max-width:120px;">
+    </div>
+    <div class="hint">Escribe lo que obtienes al "sumar". Luego explica abajo si tiene sentido.</div>`;
+}
+buildSumaWrap();
+
+// ─── NAVEGACIÓN ──────────────────────────────────────────────
+const STEP_IDS = [0,1,2,'p1',3,'p2',4,'final'];
+let currentIdx = 0;
+let _expr1stored='', _expr2stored='', _expr3stored='';
+
+function getSecId(step){
+  if(step==='p1') return 's-pausa1';
+  if(step==='p2') return 's-pausa2';
+  if(step==='final') return 's-final';
+  return 's'+step;
+}
+
+function avanzar(from, to){
+  const fromId = getSecId(from);
+  if(!validateSec(fromId)) return;
+
+  // Capture for downstream display
+  if(from===1){
+    _expr1stored = document.getElementById('p1-expr').value.trim();
+    document.getElementById('crece-1').textContent = _expr1stored || (pr1+V.sit1.var);
+  }
+  if(from===2){
+    _expr2stored = document.getElementById('p2-expr').value.trim();
+    document.getElementById('crece-2').textContent = _expr2stored || '—';
+  }
+
+  document.getElementById(fromId).classList.remove('on');
+  const toId = getSecId(to);
+  document.getElementById(toId).classList.add('on');
+  currentIdx = STEP_IDS.indexOf(to);
+  updateProg();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function updateProg(){
+  const DOT_MAP = [0,1,2,2,3,3,4,4];
+  const doneUpTo = DOT_MAP[currentIdx];
+  for(let i=0;i<5;i++){
+    const d=document.getElementById('pd'+i);
+    const l=document.getElementById('pl'+i);
+    const ln=document.getElementById('pln'+i);
+    d.classList.remove('on','ok'); l.classList.remove('on','ok');
+    if(ln) ln.classList.remove('ok');
+    if(i<doneUpTo){d.classList.add('ok');l.classList.add('ok');if(ln)ln.classList.add('ok');}
+    else if(i===doneUpTo){d.classList.add('on');l.classList.add('on');}
+  }
+}
+
+// ─── VALIDACIÓN ──────────────────────────────────────────────
+function validateSec(secId){
+  const sec = document.getElementById(secId);
+  if(!sec) return true;
+  const errId = secId+'-err';
+  const errMsg = document.getElementById(errId);
+  let ok = true;
+
+  sec.querySelectorAll('input[data-req]:not([type=checkbox]), textarea[data-req], select[data-req]').forEach(el=>{
+    el.classList.remove('error');
+    const minLen = parseInt(el.dataset.minlen||'1');
+    const val = el.tagName==='SELECT'?el.value:el.value.trim();
+    if(!val || val.length < minLen){ el.classList.add('error'); ok=false; }
+  });
+
+  sec.querySelectorAll('input[type=checkbox][data-req]').forEach(el=>{
+    const wrap = el.closest('.check-pausa');
+    if(wrap) wrap.classList.remove('err-chk');
+    if(!el.checked){ if(wrap) wrap.classList.add('err-chk'); ok=false; }
+  });
+
+  if(errMsg) errMsg.style.display = ok?'none':'block';
+  if(!ok){
+    const first = sec.querySelector('.error, .err-chk, .err-msg');
+    if(first) first.scrollIntoView({behavior:'smooth',block:'center'});
+  }
+  return ok;
+}
+
+// ─── FINALIZAR ────────────────────────────────────────────────
+function finalizar(){
+  if(!validateSec('s4')) return;
+
+  // Show pre-resp in cierre
+  document.getElementById('pre-resp-display').textContent =
+    document.getElementById('pre-resp').value || '—';
+
+  document.getElementById('s4').classList.remove('on');
+  document.getElementById('s-final').classList.add('on');
+  currentIdx = STEP_IDS.indexOf('final');
+  updateProg();
+
+  // Build resumen
+  const nombre  = document.getElementById('nombre').value;
+  const grupo   = document.getElementById('grupo').value;
+  const preR    = document.getElementById('pre-resp').value;
+  const expr1   = document.getElementById('p1-expr').value;
+  const tipo1   = document.getElementById('p1-tipo').value;
+  const expr2   = document.getElementById('p2-expr').value;
+  const trino   = document.getElementById('crece-3-inp').value;
+  const poli    = document.getElementById('p3-poli').value;
+  const tipo3   = document.getElementById('p3-tipo').value;
+  const simpl   = document.getElementById('p3-simpl').value;
+  const cTrin   = document.getElementById('c-trinomio').value;
+  const cSit    = document.getElementById('c-situacion').value;
+  const cConex  = document.getElementById('c-conexion').value;
+
+  const rows = [
+    ['Nombre', nombre],
+    ['Grupo', grupo],
+    ['Variante asignada', vL + ' · ' + V.label],
+    ['Idea inicial sobre sumar términos', preR.substring(0,80)+(preR.length>80?'…':'')],
+    ['Expresión Parada 1 (monomio)', expr1 + ' → ' + tipo1],
+    ['Expresión Parada 2 (binomio)', expr2],
+    ['Trinomio construido', trino],
+    ['Polinomio de 4 términos', poli + ' → ' + tipo3],
+    ['Simplificación de semejantes', simpl],
+    ['Mi situación con trinomio', cSit.substring(0,70)+(cSit.length>70?'…':'')],
+    ['Mi trinomio inventado', cTrin],
+    ['Conexión con PF3', cConex.substring(0,80)+(cConex.length>80?'…':'')]
+  ];
+
+  document.getElementById('tabla-resumen').innerHTML =
+    rows.map(([k,v])=>`<tr><td>${k}</td><td>${v||'—'}</td></tr>`).join('');
+
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
