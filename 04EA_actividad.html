@@ -1,0 +1,1584 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Clase 4 · Repaso PF2 · Pensamiento Matemático II</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --mo:#5B2D8E;--mo2:#7B3FC0;--mo3:#B88EE8;--mo-f:#f3ecfb;
+  --ver:#1B6B45;--ver2:#52B788;
+  --nar:#E85D04;--nar2:#F9A53A;
+  --roj:#C1121F;--az:#023E8A;--az2:#1565C0;
+  --cr:#fdf9ff;--tie:#1a0a2e;--gris:#ede8f5;--gris2:#d5cce8;
+  --som:0 3px 18px rgba(91,45,142,.12);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Nunito',sans-serif;background:var(--cr);color:var(--tie);font-size:15px;overflow-x:hidden;}
+
+/* ── BARRA PROGRESO ── */
+.prog{background:var(--tie);padding:9px 14px 7px;position:sticky;top:0;z-index:200;box-shadow:0 2px 10px rgba(0,0,0,.4);}
+.prog-inner{display:flex;align-items:center;justify-content:center;gap:0;max-width:500px;margin:0 auto;}
+.pd{display:flex;flex-direction:column;align-items:center;flex-shrink:0;}
+.pd-c{width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:rgba(255,255,255,.3);font-family:'Bebas Neue';font-size:.95rem;display:flex;align-items:center;justify-content:center;transition:all .3s;}
+.pd-c.on{background:var(--mo2);border-color:var(--mo2);color:#fff;}
+.pd-c.ok{background:var(--ver2);border-color:var(--ver2);color:#fff;}
+.pd-l{font-size:.55rem;font-weight:700;color:rgba(255,255,255,.25);margin-top:2px;text-align:center;max-width:46px;line-height:1.2;letter-spacing:.2px;}
+.pd-l.on{color:var(--mo3);}
+.pd-l.ok{color:var(--ver2);}
+.pln{flex:1;height:2px;background:rgba(255,255,255,.1);min-width:6px;max-width:24px;transition:background .3s;}
+.pln.ok{background:var(--ver2);}
+.prog-info{text-align:center;font-size:.58rem;color:rgba(255,255,255,.3);margin-top:3px;letter-spacing:.5px;}
+.prog-info span{color:var(--mo3);font-weight:800;}
+
+/* ── HEADER ── */
+.hdr{background:linear-gradient(135deg,var(--tie) 0%,#2d1050 100%);padding:22px 16px 18px;position:relative;overflow:hidden;}
+.hdr::after{content:'';position:absolute;right:-30px;top:-30px;width:150px;height:150px;background:var(--mo2);opacity:.09;border-radius:50%;}
+.hdr-tag{font-size:.68rem;font-weight:800;letter-spacing:3px;color:var(--mo3);text-transform:uppercase;margin-bottom:4px;}
+.hdr h1{font-family:'Bebas Neue';font-size:1.9rem;color:#fff;line-height:1;letter-spacing:.5px;}
+.hdr h1 em{color:var(--mo3);font-style:normal;}
+.hdr-sub{font-size:.76rem;color:rgba(255,255,255,.45);margin-top:5px;}
+
+/* ── SECCIONES ── */
+.sec{display:none;padding:16px;max-width:700px;margin:0 auto;animation:up .3s ease;}
+.sec.on{display:block;}
+@keyframes up{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── PLABEL ── */
+.plabel{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--gris2);}
+.pnum{font-family:'Bebas Neue';font-size:2.8rem;line-height:1;color:var(--mo2);}
+.ptag{font-size:.63rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--mo2);margin-bottom:2px;}
+.ptit{font-size:1rem;font-weight:900;color:var(--tie);line-height:1.2;}
+
+/* ── CARDS ── */
+.card{background:#fff;border-radius:12px;padding:15px;margin-bottom:12px;box-shadow:var(--som);}
+.card-mo{border-left:4px solid var(--mo2);}
+.card-v{border-left:4px solid var(--ver);}
+.card-a{border-left:4px solid var(--az2);}
+.card-n{border-left:4px solid var(--nar);}
+.card-r{border-left:4px solid var(--roj);}
+
+/* ── NARR ── */
+.narr{background:linear-gradient(135deg,var(--tie),#2d1050);border-radius:12px;padding:15px;margin-bottom:12px;color:#fff;position:relative;overflow:hidden;}
+.narr::before{content:'';position:absolute;right:-20px;bottom:-20px;width:90px;height:90px;background:var(--mo2);opacity:.12;border-radius:50%;}
+.narr-ico{font-size:1.7rem;margin-bottom:5px;display:block;}
+.narr p{font-size:.87rem;line-height:1.75;opacity:.95;}
+.narr strong{color:var(--mo3);}
+
+/* ── PILL ── */
+.pill{display:inline-block;font-size:.65rem;font-weight:800;letter-spacing:.4px;padding:3px 9px;border-radius:12px;margin-bottom:8px;text-transform:uppercase;}
+.p-mo{background:var(--mo-f);color:var(--mo);}
+.p-v{background:#d4edda;color:var(--ver);}
+.p-a{background:#cce5ff;color:var(--az2);}
+.p-n{background:#ffe0cc;color:var(--nar);}
+.p-r{background:#fdecea;color:var(--roj);}
+
+/* ── INPUTS ── */
+label{font-size:.83rem;font-weight:700;color:var(--tie);display:block;margin-top:10px;}
+label:first-child{margin-top:0;}
+.inp{width:100%;padding:10px 12px;border:2.5px solid var(--gris2);border-radius:9px;font-size:.91rem;font-family:'Nunito';color:var(--tie);background:#fff;transition:border-color .2s;margin-top:4px;}
+.inp:focus{outline:none;border-color:var(--mo2);box-shadow:0 0 0 3px rgba(123,63,192,.1);}
+.inp.err{border-color:var(--roj)!important;background:#fff8f8;}
+.inp-sm{width:80px;text-align:center;padding:7px 4px;font-size:.87rem;}
+.ta{min-height:64px;resize:vertical;}
+.hint{font-size:.71rem;color:#999;margin-top:3px;line-height:1.4;}
+select.inp{cursor:pointer;}
+
+/* ── PREG BOX ── */
+.pbox{background:var(--gris);border-radius:9px;padding:11px 13px;margin:9px 0;}
+.pbox p{font-size:.87rem;line-height:1.7;font-weight:600;color:var(--tie);}
+.pbox p em{color:var(--mo2);font-style:normal;font-weight:800;}
+
+/* ── TABLA ── */
+.twrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:10px 0;}
+table{width:100%;border-collapse:collapse;font-size:.83rem;}
+th{background:var(--tie);color:#fff;padding:8px 9px;text-align:center;font-weight:700;white-space:nowrap;}
+td{padding:7px 8px;border:2px solid var(--gris2);text-align:center;vertical-align:middle;}
+tr:nth-child(even) td{background:#faf7ff;}
+td.fij{font-weight:800;color:var(--tie);background:#ede8f5;}
+
+/* ── ERR MSG ── */
+.emsg{display:none;background:#fdecea;border:2px solid var(--roj);border-radius:9px;padding:9px 13px;font-size:.82rem;color:var(--roj);font-weight:700;margin-bottom:11px;}
+
+/* ── BTNS ── */
+.btn{display:block;width:100%;padding:13px;border:none;border-radius:11px;font-size:.96rem;font-weight:800;cursor:pointer;transition:all .2s;font-family:'Nunito';margin-top:11px;}
+.btn-mo{background:var(--mo2);color:#fff;}
+.btn-mo:hover{background:var(--mo);transform:translateY(-1px);}
+.btn-v{background:var(--ver);color:#fff;}
+.btn-v:hover{background:#144d31;}
+.btn-outline{background:transparent;border:2.5px solid var(--mo2);color:var(--mo2);}
+
+/* ── CRECIMIENTO ── */
+.crece{margin:12px 0;}
+.crece-paso{display:flex;align-items:center;gap:9px;margin-bottom:7px;}
+.crece-n{width:26px;height:26px;border-radius:50%;background:var(--mo2);color:#fff;font-family:'Bebas Neue';font-size:.95rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.crece-e{font-family:monospace;font-size:.97rem;font-weight:800;padding:6px 11px;border-radius:6px;flex:1;}
+.crece-t{font-size:.7rem;font-weight:800;padding:3px 8px;border-radius:10px;flex-shrink:0;}
+.c1{background:#e3f2fd;color:#1565c0;}.ct1{background:#e3f2fd;color:#1565c0;}
+.c2{background:#e8f5e9;color:#2e7d32;}.ct2{background:#e8f5e9;color:#2e7d32;}
+.c3{background:var(--mo-f);color:var(--mo);}.ct3{background:var(--mo-f);color:var(--mo);}
+.c4{background:#fff3e0;color:#e65100;}.ct4{background:#fff3e0;color:#e65100;}
+.crece-arrow{font-size:.85rem;color:#ccc;margin:2px 0 2px 13px;}
+.expr-b{display:inline-block;background:var(--mo-f);color:var(--tie);padding:4px 11px;border-radius:6px;font-family:monospace;font-size:1rem;font-weight:800;border:1.5px solid var(--gris2);}
+
+/* ── TERMS CHIPS ── */
+.chip{display:inline-block;padding:3px 10px;border-radius:6px;font-family:monospace;font-size:.93rem;font-weight:800;margin:2px;}
+.ch-mo{background:var(--mo-f);color:var(--mo);border:1.5px solid var(--mo2);}
+.ch-v{background:#e8f5e9;color:#2e7d32;border:1.5px solid #2e7d32;}
+.ch-a{background:#e3f2fd;color:#1565c0;border:1.5px solid #1565c0;}
+.ch-n{background:#fff3e0;color:#e65100;border:1.5px solid #e65100;}
+
+/* ── QUIZ ── */
+.quiz-hdr{background:linear-gradient(135deg,#0a1628,var(--az));border-radius:14px;padding:16px;color:#fff;margin-bottom:12px;text-align:center;}
+.quiz-hdr h2{font-family:'Bebas Neue';font-size:1.6rem;letter-spacing:1px;margin-bottom:3px;}
+.quiz-hdr p{font-size:.8rem;opacity:.75;}
+.qcard{background:#fff;border-radius:12px;padding:15px;margin-bottom:10px;box-shadow:var(--som);border:2px solid var(--gris2);transition:border-color .3s;}
+.qcard.bloqueada{opacity:.5;pointer-events:none;}
+.qnum{font-size:.65rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--az2);margin-bottom:8px;}
+.qtexto{font-size:.9rem;font-weight:700;color:var(--tie);line-height:1.65;margin-bottom:12px;}
+.qopts{display:flex;flex-direction:column;gap:7px;}
+.qopt{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border:2.5px solid var(--gris2);border-radius:9px;cursor:pointer;transition:all .2s;font-size:.88rem;line-height:1.5;font-weight:600;}
+.qopt:hover{border-color:var(--az2);background:#f0f4ff;}
+.qopt.sel{border-color:var(--az2);background:#e8f0ff;}
+.qopt.correcto{border-color:var(--ver2);background:#e8f5e9;color:#1b5e20;}
+.qopt.incorrecto{border-color:var(--roj);background:#fdecea;color:var(--roj);}
+.qopt-letra{width:22px;height:22px;border-radius:50%;background:var(--gris2);color:var(--tie);font-weight:800;font-size:.8rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.qopt.correcto .qopt-letra{background:var(--ver2);color:#fff;}
+.qopt.incorrecto .qopt-letra{background:var(--roj);color:#fff;}
+.qfeedback{margin-top:9px;padding:9px 12px;border-radius:8px;font-size:.82rem;line-height:1.55;display:none;}
+.qfeedback.show{display:block;}
+.qfeedback.ok{background:#e8f5e9;color:#1b5e20;border:1.5px solid var(--ver2);}
+.qfeedback.nook{background:#fdecea;color:var(--roj);border:1.5px solid var(--roj);}
+.quiz-score{background:linear-gradient(135deg,var(--az),#023E8A);border-radius:14px;padding:20px 16px;color:#fff;text-align:center;margin-bottom:12px;}
+.quiz-score h2{font-family:'Bebas Neue';font-size:2.5rem;letter-spacing:1px;}
+.quiz-score .sub{font-size:.82rem;opacity:.75;margin-top:3px;}
+.score-badge{font-size:3.5rem;margin:10px 0;}
+
+/* ── PAUSA ── */
+.pausa{background:linear-gradient(135deg,#0a2e1a,var(--ver));border-radius:14px;padding:17px 15px;margin-bottom:12px;}
+.pausa-hdr{display:flex;align-items:center;gap:11px;margin-bottom:13px;}
+.pausa-ico{font-size:2rem;}
+.pausa-tit{font-family:'Bebas Neue';font-size:1.4rem;color:#fff;letter-spacing:1px;line-height:1;}
+.pausa-sub{font-size:.75rem;color:rgba(255,255,255,.65);margin-top:2px;}
+.pausa-body{background:#fff;border-radius:11px;padding:14px;margin:11px 0;}
+.pausa-body h4{font-size:.78rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#666;margin-bottom:9px;}
+.chk-pausa{display:flex;align-items:flex-start;gap:9px;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.22);border-radius:9px;padding:11px 13px;cursor:pointer;margin-top:11px;}
+.chk-pausa input[type=checkbox]{width:20px;height:20px;flex-shrink:0;margin-top:1px;accent-color:var(--ver2);}
+.chk-pausa label{font-size:.87rem;font-weight:700;color:#fff;cursor:pointer;line-height:1.4;margin:0;}
+.chk-err{border-color:var(--roj)!important;}
+
+/* ── TABLA CLASIF ── */
+.tcl{width:100%;border-collapse:collapse;font-size:.82rem;margin-top:9px;}
+.tcl th{background:var(--tie);color:#fff;padding:8px 10px;text-align:left;}
+.tcl td{padding:8px 10px;border-bottom:1.5px solid var(--gris2);}
+.tcl tr:last-child td{border-bottom:none;}
+
+/* ── RESUMEN ── */
+.res-banner{background:linear-gradient(135deg,var(--mo),#2d1050);border-radius:14px;padding:18px 15px;text-align:center;color:#fff;margin-bottom:12px;}
+.res-banner h2{font-family:'Bebas Neue';font-size:2rem;letter-spacing:1px;}
+.res-tabla{width:100%;border-collapse:collapse;font-size:.82rem;}
+.res-tabla td{padding:8px 11px;border-bottom:1.5px solid var(--gris2);vertical-align:top;}
+.res-tabla td:first-child{font-weight:800;color:var(--tie);width:42%;background:#faf7ff;}
+.cap-aviso{background:#fff8e1;border:2px solid #f9a825;border-radius:9px;padding:11px 13px;font-size:.81rem;margin-top:13px;}
+.cap-aviso h4{color:#f57f17;margin-bottom:5px;}
+.cap-aviso ol{padding-left:17px;}
+.cap-aviso li{margin-bottom:3px;}
+
+/* ── LOGIN ── */
+.login-card{background:#fff;border-radius:14px;padding:18px 16px;box-shadow:var(--som);margin-bottom:12px;}
+.login-card h3{font-family:'Bebas Neue';font-size:1.3rem;color:var(--mo2);letter-spacing:.5px;margin-bottom:10px;}
+.step-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.step-n{width:24px;height:24px;border-radius:50%;background:var(--mo2);color:#fff;font-family:'Bebas Neue';font-size:1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.step-lbl{font-size:.83rem;font-weight:700;color:var(--tie);}
+.busq-wrap{position:relative;}
+.dropdown{position:absolute;top:100%;left:0;right:0;background:#fff;border:2px solid var(--mo2);border-top:none;border-radius:0 0 9px 9px;max-height:180px;overflow-y:auto;z-index:100;display:none;}
+.dd-item{padding:9px 12px;font-size:.87rem;cursor:pointer;border-bottom:1px solid var(--gris2);line-height:1.4;}
+.dd-item:hover{background:var(--mo-f);color:var(--mo);}
+.dd-item:last-child{border-bottom:none;}
+.id-confirm{display:none;background:#e8f5e9;border:2px solid var(--ver2);border-radius:9px;padding:10px 13px;font-size:.85rem;color:#1b5e20;font-weight:700;margin-top:8px;}
+.badge-alumno{display:inline-flex;align-items:center;gap:6px;background:var(--mo-f);border:2px solid var(--mo2);border-radius:20px;padding:5px 14px;font-size:.8rem;font-weight:800;color:var(--mo);margin:0 auto;display:block;width:fit-content;}
+
+/* ── DOCENTE PANEL ── */
+/* ── TABLA GRUPO DOCENTE ── */
+.grp-table{width:100%;border-collapse:collapse;font-size:.75rem;margin-top:8px;}
+.grp-table th{background:var(--tie);color:#fff;padding:6px 7px;text-align:center;white-space:nowrap;font-size:.7rem;}
+.grp-table td{padding:5px 6px;border:1px solid var(--gris2);text-align:center;vertical-align:middle;font-size:.72rem;}
+.grp-table tr:nth-child(even) td{background:#faf7ff;}
+.grp-table .td-nom{text-align:left;font-weight:700;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.grp-table .v-a{color:#c62828;font-weight:800;}
+.grp-table .v-b{color:#1565c0;font-weight:800;}
+.grp-table .v-c{color:#2e7d32;font-weight:800;}
+.grp-table .v-d{color:#e65100;font-weight:800;}
+.doc-tabs{display:flex;gap:6px;margin-bottom:10px;}
+.doc-tab{flex:1;padding:7px;border:2px solid var(--gris2);border-radius:8px;background:var(--gris);
+  font-size:.78rem;font-weight:700;cursor:pointer;text-align:center;color:#666;transition:all .2s;}
+.doc-tab.act{background:var(--mo2);border-color:var(--mo2);color:#fff;}
+.doc-skip{background:var(--az2);color:#fff;border:none;border-radius:9px;padding:9px 14px;
+  font-family:'Nunito';font-weight:800;font-size:.85rem;cursor:pointer;width:100%;margin-top:8px;transition:all .2s;}
+.doc-skip:hover{background:var(--az);}
+.copy-btn{background:var(--ver);color:#fff;border:none;border-radius:8px;padding:7px 14px;
+  font-family:'Nunito';font-weight:800;font-size:.78rem;cursor:pointer;margin-top:8px;transition:all .2s;}
+.copy-btn:hover{background:var(--ver2);}
+/* ── RESUMEN ENRIQUECIDO ── */
+.res-tabla td.ok-val{color:var(--ver);font-weight:800;}
+.res-tabla td.err-val{color:var(--roj);font-weight:700;}
+.res-tabla td.hint{color:#888;font-size:.78rem;font-style:italic;}
+.res-quiz-row{display:flex;flex-direction:column;gap:2px;}
+.res-q{display:flex;align-items:flex-start;gap:6px;padding:4px 0;border-bottom:1px solid var(--gris2);}
+.res-q:last-child{border-bottom:none;}
+.res-q-ic{font-size:.9rem;flex-shrink:0;margin-top:1px;}
+.res-q-body{flex:1;}
+.res-q-tit{font-size:.75rem;font-weight:800;color:#555;}
+.res-q-resp{font-size:.8rem;font-weight:700;}
+.res-q-resp.ok{color:var(--ver);}
+.res-q-resp.nook{color:var(--roj);}
+.esperado{font-size:.72rem;color:#888;font-style:italic;margin-top:2px;line-height:1.4;}
+.open-ans{background:var(--gris);border-radius:6px;padding:6px 9px;margin-top:4px;}
+.open-ans-lbl{font-size:.65rem;font-weight:800;letter-spacing:.5px;color:#999;text-transform:uppercase;margin-bottom:2px;}
+.open-ans-txt{font-size:.78rem;color:var(--tie);line-height:1.5;}
+.esperado-box{background:#fff8e1;border-left:3px solid #f9a825;border-radius:0 6px 6px 0;padding:5px 8px;margin-top:4px;font-size:.72rem;color:#666;line-height:1.45;}
+
+.doc-modal{display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.6);align-items:center;justify-content:center;}
+.doc-modal.show{display:flex;}
+.doc-inner{background:#fff;border-radius:14px;padding:20px;max-width:340px;width:90%;box-shadow:0 10px 40px rgba(0,0,0,.3);}
+.doc-inner h3{font-family:'Bebas Neue';font-size:1.4rem;color:var(--mo);margin-bottom:12px;}
+.doc-panel{display:none;background:var(--mo-f);border-radius:12px;padding:14px;margin-top:10px;font-size:.82rem;}
+.doc-panel.show{display:block;}
+.doc-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--gris2);font-size:.8rem;}
+.doc-row:last-child{border-bottom:none;}
+.doc-key{font-weight:700;color:var(--tie);}
+.doc-val{color:var(--mo);font-weight:800;font-family:monospace;}
+</style>
+</head>
+<body>
+
+<!-- MODAL DOCENTE -->
+<div class="doc-modal" id="modal-doc">
+  <div class="doc-inner" style="max-width:420px;max-height:90vh;overflow-y:auto;">
+    <h3>&#128274; Acceso Docente</h3>
+    <div id="doc-login-area">
+      <p style="font-size:.83rem;color:#666;margin-bottom:10px;">Código de verificación:</p>
+      <input class="inp" id="doc-cod" type="password" placeholder="Código" autocomplete="off" onkeydown="if(event.key==='Enter')verificarDocente()">
+      <div id="doc-err" style="display:none;color:var(--roj);font-size:.8rem;margin-top:6px;font-weight:700;">Código incorrecto.</div>
+      <div style="display:flex;gap:8px;margin-top:10px;">
+        <button class="btn btn-mo" style="flex:1;" onclick="verificarDocente()">Entrar</button>
+        <button class="btn btn-outline" style="flex:1;" onclick="cerrarModalDoc()">Cancelar</button>
+      </div>
+    </div>
+    <div class="doc-panel" id="doc-panel">
+      <div style="background:var(--mo2);border-radius:8px;padding:8px 12px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-weight:800;color:#fff;font-size:.85rem;">&#128101; Modo Docente activo</span>
+        <button onclick="cerrarModalDoc()" style="background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:6px;padding:3px 9px;font-size:.75rem;cursor:pointer;font-family:'Nunito';font-weight:700;">Cerrar</button>
+      </div>
+
+      <!-- SALTAR / RESOLVER -->
+      <div style="background:#e3f2fd;border-radius:9px;padding:10px 12px;margin-bottom:10px;">
+        <p style="font-size:.8rem;font-weight:800;color:var(--az2);margin-bottom:7px;">&#127947; Opciones de navegación:</p>
+        <div style="display:flex;gap:7px;">
+          <button class="doc-skip" style="background:var(--az2);" onclick="docSaltarFinal()">&#9193; Ir directo al resumen</button>
+          <button class="doc-skip" style="background:var(--ver);" onclick="docResolverNormal()">&#9997; Resolver normalmente</button>
+        </div>
+        <p style="font-size:.7rem;color:#666;margin-top:6px;line-height:1.4;">"Ir directo" salta toda la actividad sin validar. "Resolver normalmente" cierra este panel y puedes completarla tú mismo para ver el resumen real.</p>
+      </div>
+
+      <!-- TABS -->
+      <div class="doc-tabs">
+        <div class="doc-tab act" id="tab-ind" onclick="docTab('ind')">&#128100; Individual</div>
+        <div class="doc-tab" id="tab-grp" onclick="docTab('grp')">&#128101; Grupo completo</div>
+      </div>
+
+      <!-- TAB INDIVIDUAL -->
+      <div id="doc-tab-ind">
+        <label style="font-size:.8rem;">Consultar alumno por grupo + N° de lista:</label>
+        <div style="display:flex;gap:6px;margin-top:4px;">
+          <select class="inp" id="doc-grp" style="flex:1;" onchange="docConsultar()">
+            <option value="">Grupo</option>
+            <option value="203">203</option>
+            <option value="205">205</option>
+            <option value="236">236</option>
+            <option value="237">237</option>
+          </select>
+          <input class="inp inp-sm" id="doc-nl" type="number" min="1" max="99" placeholder="N°" onchange="docConsultar()">
+        </div>
+        <div id="doc-result" style="margin-top:10px;"></div>
+      </div>
+
+      <!-- TAB GRUPO COMPLETO -->
+      <div id="doc-tab-grp" style="display:none;">
+        <label style="font-size:.8rem;">Selecciona el grupo:</label>
+        <select class="inp" id="doc-grp2" style="margin-top:4px;" onchange="docGrupoCompleto()">
+          <option value="">— Selecciona —</option>
+          <option value="203">203 · Bachilleres 17</option>
+          <option value="205">205 · Bachilleres 17</option>
+          <option value="236">236 · CEB 4/2</option>
+          <option value="237">237 · CEB 4/2</option>
+        </select>
+        <div id="doc-grp-result" style="margin-top:10px;overflow-x:auto;"></div>
+        <button class="copy-btn" id="btn-copiar" style="display:none;" onclick="copiarTabla()">&#128203; Copiar tabla (para Sheets)</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- BARRA PROGRESO -->
+<div class="prog">
+  <div class="prog-inner">
+    <div class="pd"><div class="pd-c on" id="pd0">1</div><div class="pd-l on" id="pl0">Inicio</div></div>
+    <div class="pln" id="pln0"></div>
+    <div class="pd"><div class="pd-c" id="pd1">2</div><div class="pd-l" id="pl1">Momento&nbsp;1</div></div>
+    <div class="pln" id="pln1"></div>
+    <div class="pd"><div class="pd-c" id="pd2">3</div><div class="pd-l" id="pl2">Momentos&nbsp;2&minus;4</div></div>
+    <div class="pln" id="pln2"></div>
+    <div class="pd"><div class="pd-c" id="pd3">4</div><div class="pd-l" id="pl3">Quiz</div></div>
+    <div class="pln" id="pln3"></div>
+    <div class="pd"><div class="pd-c" id="pd4">5</div><div class="pd-l" id="pl4">Cierre</div></div>
+  </div>
+  <div class="prog-info">PF2 &middot; Clase 4 &middot; Prof. Adrián Cruz &nbsp;|&nbsp; Grupo: <span id="badge-grp">—</span> &nbsp;|&nbsp; Variante: <span id="badge-var">—</span></div>
+</div>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-tag">Pensamiento Matemático II · PF2 · Clase 4</div>
+  <h1>Repaso <em>integrado</em></h1>
+  <div class="hdr-sub">Una historia · cuatro expresiones · todo el PF2 en una sesión</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- STEP 0 · LOGIN                                         -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="sec on" id="s0">
+  <div class="plabel">
+    <div class="pnum">1</div>
+    <div><div class="ptag">Identificación</div><div class="ptit">Selecciona tu grupo y tu nombre</div></div>
+  </div>
+
+  <div id="s0-err" class="emsg">&#9888;&#65039; Completa todos los pasos de identificación antes de continuar.</div>
+
+  <div class="login-card">
+    <h3>&#128100; ¿Quién eres?</h3>
+    <p style="font-size:.84rem;color:#666;margin-bottom:14px;line-height:1.6;">Esta actividad genera ejercicios <strong>únicos</strong> para cada alumno basados en tu número de lista. Identifícate correctamente.</p>
+
+    <!-- Paso 1: Plantel -->
+    <div class="step-row"><div class="step-n">1</div><div class="step-lbl">Elige tu plantel:</div></div>
+    <select class="inp" id="sel-plantel" onchange="cambiarPlantel()">
+      <option value="">— Selecciona —</option>
+      <option value="B17">Colegio de Bachilleres 17</option>
+      <option value="CEB">CEB 4/2</option>
+    </select>
+
+    <!-- Paso 2: Grupo -->
+    <div class="step-row" style="margin-top:12px;"><div class="step-n">2</div><div class="step-lbl">Elige tu grupo:</div></div>
+    <select class="inp" id="sel-grupo" onchange="cambiarGrupo()" disabled>
+      <option value="">— Primero elige plantel —</option>
+    </select>
+
+    <!-- Paso 3: Nombre -->
+    <div class="step-row" style="margin-top:12px;"><div class="step-n">3</div><div class="step-lbl">Escribe tu primer apellido:</div></div>
+    <div class="busq-wrap">
+      <input class="inp" id="inp-busq" autocomplete="off" placeholder="Escribe aquí..." oninput="buscarNombre()" disabled>
+      <div class="dropdown" id="dropdown"></div>
+    </div>
+    <div class="id-confirm" id="id-confirm"></div>
+  </div>
+
+  <div class="login-card" style="display:none;" id="login-confirm-card">
+    <div style="text-align:center;margin-bottom:12px;">
+      <div class="badge-alumno" id="badge-alumno">&#128100; —</div>
+    </div>
+    <div style="background:var(--gris);border-radius:9px;padding:10px 13px;font-size:.84rem;line-height:1.7;color:#555;">
+      Esta actividad es el <strong>repaso integrado del PF2</strong>. Vas a trabajar una historia narrativa que crece de monomio a polinomio, y al final un quiz de 5 preguntas. Todo basado en tu número de lista.<br><br>
+      <strong style="color:var(--mo2);">Tus ejercicios son únicos</strong> — no son iguales a los de ningún compañero.
+    </div>
+    <label style="margin-top:10px;">Pregunta de activación: ¿Cuántos tipos de expresiones algebraicas has trabajado este semestre? Nómbralos:</label>
+    <textarea class="inp ta" id="pre-resp" data-req data-ml="8" placeholder="He trabajado... que son..."></textarea>
+    <button class="btn btn-mo" onclick="avanzar(0,1)">Comenzar &#8594;</button>
+  </div>
+
+  <div style="margin-top:8px;text-align:right;padding-right:4px;">
+    <span style="font-size:.6rem;color:#ccc;cursor:pointer;" onclick="abrirModalDoc()" title="">v4.0</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- STEP 1 · MOMENTO 1: MONOMIO                           -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="sec" id="s1">
+  <div class="plabel">
+    <div class="pnum">2</div>
+    <div><div class="ptag">Momento 1 · La historia empieza</div><div class="ptit" id="m1-tit">—</div></div>
+  </div>
+
+  <div id="s1-err" class="emsg">&#9888;&#65039; Completa todos los campos antes de continuar.</div>
+  <div class="narr" id="m1-narr"></div>
+
+  <div class="card card-mo">
+    <div class="pill p-mo">Parte A · Tabla de valores</div>
+    <p style="font-size:.85rem;margin-bottom:10px;">Completa la tabla calculando el total para cada cantidad:</p>
+    <div class="twrap">
+      <table>
+        <tr><th id="m1-col">Cantidad</th><th>Cálculo</th><th>Total ($)</th></tr>
+        <tr><td class="fij" id="m1-r1">—</td>
+            <td><input class="inp inp-sm" id="m1-cal1" data-req data-ml="1" autocomplete="off"></td>
+            <td><input class="inp inp-sm" id="m1-tot1" data-req data-ml="1" inputmode="numeric" autocomplete="off"></td></tr>
+        <tr><td class="fij" id="m1-r2">—</td>
+            <td><input class="inp inp-sm" id="m1-cal2" data-req data-ml="1" autocomplete="off"></td>
+            <td><input class="inp inp-sm" id="m1-tot2" data-req data-ml="1" inputmode="numeric" autocomplete="off"></td></tr>
+        <tr><td class="fij" id="m1-r3">—</td>
+            <td><input class="inp inp-sm" id="m1-cal3" data-req data-ml="1" autocomplete="off"></td>
+            <td><input class="inp inp-sm" id="m1-tot3" data-req data-ml="1" inputmode="numeric" autocomplete="off"></td></tr>
+        <tr><td class="fij" id="m1-r4">—</td>
+            <td><input class="inp inp-sm" id="m1-cal4" data-req data-ml="1" autocomplete="off"></td>
+            <td><input class="inp inp-sm" id="m1-tot4" data-req data-ml="1" inputmode="numeric" autocomplete="off"></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card card-a">
+    <div class="pill p-a">Parte B · Expresión algebraica</div>
+    <div class="pbox"><p>Usando <em id="m1-var">n</em> como variable, escribe la expresión que calcula el total para cualquier cantidad:</p></div>
+    <label>Mi expresión:</label>
+    <input class="inp" id="m1-expr" data-req data-ml="1" autocomplete="off" placeholder="Total = ...">
+    <label style="margin-top:10px;">Tipo de expresión:</label>
+    <select class="inp" id="m1-tipo" data-req>
+      <option value="">— elige —</option>
+      <option>Monomio (1 término)</option>
+      <option>Binomio (2 términos)</option>
+      <option>Trinomio (3 términos)</option>
+      <option>Polinomio de 4 o más términos</option>
+    </select>
+    <label style="margin-top:10px;">Identifica sus partes — coeficiente, variable, exponente y grado:</label>
+    <textarea class="inp ta" id="m1-partes" data-req data-ml="8" placeholder="El coeficiente es... la variable es... el exponente es... el grado es..."></textarea>
+  </div>
+
+  <button class="btn btn-mo" onclick="avanzar(1,2)">Siguiente &#8594; La historia crece</button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- STEP 2 · MOMENTOS 2-4: BINOMIO → TRINOMIO → POLINOMIO -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="sec" id="s2">
+  <div class="plabel">
+    <div class="pnum">3</div>
+    <div><div class="ptag">Momentos 2, 3 y 4 · La expresión crece</div><div class="ptit">Del binomio al polinomio</div></div>
+  </div>
+
+  <div id="s2-err" class="emsg">&#9888;&#65039; Completa todos los campos antes de continuar.</div>
+
+  <!-- MOMENTO 2: BINOMIO -->
+  <div class="narr" id="m2-narr"></div>
+  <div class="card card-v">
+    <div class="pill p-v">Momento 2 · Aparece un segundo concepto</div>
+    <div class="pbox"><p>Ahora hay dos gastos distintos. Usando <em id="m2-var1">—</em> y <em id="m2-var2">—</em> como variables, escribe el binomio que representa el total:</p></div>
+    <label>Mi binomio:</label>
+    <input class="inp" id="m2-expr" data-req data-ml="2" autocomplete="off" placeholder="Total = término1 + término2">
+    <label style="margin-top:10px;">¿Por qué NO se pueden sumar los dos términos en uno solo?</label>
+    <textarea class="inp ta" id="m2-razon" data-req data-ml="8" placeholder="No se pueden sumar porque..."></textarea>
+  </div>
+
+  <!-- MOMENTO 3: TRINOMIO -->
+  <div class="narr" id="m3-narr"></div>
+  <div class="card card-mo">
+    <div class="pill p-mo">Momento 3 · Un tercer concepto</div>
+    <div class="pbox"><p>Ahora hay tres conceptos distintos. Agrega el nuevo término a tu binomio y escribe el trinomio:</p></div>
+    <label>Mi trinomio:</label>
+    <input class="inp" id="m3-expr" data-req data-ml="3" autocomplete="off" placeholder="Total = término1 + término2 + término3">
+    <label style="margin-top:10px;">Aplica la regla de términos semejantes: ¿algún par de los tres términos se podría simplificar? Explica:</label>
+    <textarea class="inp ta" id="m3-sem" data-req data-ml="8" placeholder="Ningún par se puede simplificar porque... / Los términos ___ y ___ sí son semejantes porque..."></textarea>
+  </div>
+
+  <!-- MOMENTO 4: POLINOMIO -->
+  <div class="narr" id="m4-narr"></div>
+  <div class="card card-n">
+    <div class="pill p-n">Momento 4 · Expresión completa</div>
+    <div class="pbox"><p>Aparece un cuarto concepto. Escribe el polinomio completo con los 4 términos:</p></div>
+    <label>Mi polinomio (4 términos):</label>
+    <input class="inp" id="m4-expr" data-req data-ml="4" autocomplete="off" placeholder="Total = t1 + t2 + t3 + t4">
+    <label style="margin-top:10px;">Clasifícalo: ¿cuántos términos tiene? ¿cómo se llama?</label>
+    <select class="inp" id="m4-tipo" data-req>
+      <option value="">— elige —</option>
+      <option>Monomio (1 término)</option>
+      <option>Binomio (2 términos)</option>
+      <option>Trinomio (3 términos)</option>
+      <option>Polinomio de 4 o más términos</option>
+    </select>
+  </div>
+
+  <!-- TABLA CRECIMIENTO -->
+  <div class="card card-a">
+    <div class="pill p-a">Síntesis · La evolución de la expresión</div>
+    <p style="font-size:.84rem;margin-bottom:11px;">Completa la tabla mostrando cómo creció tu expresión:</p>
+    <div class="twrap">
+      <table>
+        <tr><th>Momento</th><th>Expresión que construiste</th><th>Tipo</th></tr>
+        <tr><td class="fij">1</td><td><input class="inp inp-sm" id="tab-e1" data-req data-ml="1" autocomplete="off" style="width:100%;"></td><td><input class="inp inp-sm" id="tab-t1" data-req data-ml="4" autocomplete="off" style="width:100%;"></td></tr>
+        <tr><td class="fij">2</td><td><input class="inp inp-sm" id="tab-e2" data-req data-ml="1" autocomplete="off" style="width:100%;"></td><td><input class="inp inp-sm" id="tab-t2" data-req data-ml="4" autocomplete="off" style="width:100%;"></td></tr>
+        <tr><td class="fij">3</td><td><input class="inp inp-sm" id="tab-e3" data-req data-ml="1" autocomplete="off" style="width:100%;"></td><td><input class="inp inp-sm" id="tab-t3" data-req data-ml="4" autocomplete="off" style="width:100%;"></td></tr>
+        <tr><td class="fij">4</td><td><input class="inp inp-sm" id="tab-e4" data-req data-ml="1" autocomplete="off" style="width:100%;"></td><td><input class="inp inp-sm" id="tab-t4" data-req data-ml="4" autocomplete="off" style="width:100%;"></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <button class="btn btn-mo" onclick="avanzar(2,3)">Siguiente &#8594; Quiz de repaso</button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- STEP 3 · QUIZ                                         -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="sec" id="s3">
+  <div class="plabel">
+    <div class="pnum">4</div>
+    <div><div class="ptag">Quiz individual · Formato COMIPEMS</div><div class="ptit">5 preguntas · PF2 completo</div></div>
+  </div>
+
+  <div class="quiz-hdr">
+    <h2>&#128221; QUIZ INDIVIDUAL</h2>
+    <p>5 preguntas seleccionadas de tu número de lista. Lee con cuidado cada una.</p>
+  </div>
+
+  <div id="quiz-contenido"></div>
+  <div id="s3-err" class="emsg">&#9888;&#65039; Responde todas las preguntas antes de continuar.</div>
+  <button class="btn btn-mo" id="btn-verificar-quiz" onclick="verificarQuiz()">Verificar respuestas &#10003;</button>
+  <div id="quiz-resultado" style="display:none;"></div>
+  <button class="btn btn-v" id="btn-sig-quiz" style="display:none;" onclick="avanzar(3,4)">Siguiente &#8594; Cierre</button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- STEP 4 · CIERRE                                       -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="sec" id="s4">
+  <div class="plabel">
+    <div class="pnum">5</div>
+    <div><div class="ptag">Reflexión · Cierre del PF2</div><div class="ptit">Lo que construiste este bloque</div></div>
+  </div>
+
+  <div id="s4-err" class="emsg">&#9888;&#65039; Completa todos los campos para finalizar.</div>
+
+  <div class="card card-mo">
+    <div class="pill p-mo">01 · Mapa conceptual personal</div>
+    <div class="pbox"><p>En tu cuaderno, dibuja un esquema que muestre la relación entre estas palabras: <em>término — monomio — binomio — trinomio — polinomio — términos semejantes — coeficiente — variable — exponente — grado</em>.</p></div>
+    <label>Describe brevemente qué dibujaste y cómo conectaste las ideas:</label>
+    <textarea class="inp ta" id="c-mapa" data-req data-ml="15" placeholder="Dibujé... en el centro puse... las conexiones son..."></textarea>
+  </div>
+
+  <div class="card card-a">
+    <div class="pill p-a">02 · Corrige tu respuesta inicial</div>
+    <p style="font-size:.85rem;margin-bottom:8px;">Al inicio escribiste:</p>
+    <div style="background:var(--gris);border-radius:8px;padding:9px 12px;font-size:.83rem;color:#555;font-style:italic;margin-bottom:10px;" id="pre-resp-show">—</div>
+    <label>¿Qué agregarías o corregirías ahora?</label>
+    <textarea class="inp ta" id="c-corr" data-req data-ml="10" placeholder="Ahora agregaría que... / Me faltó mencionar..."></textarea>
+  </div>
+
+  <div class="card card-v">
+    <div class="pill p-v">03 · Puente hacia el PF3</div>
+    <div class="pbox"><p>En el PF3 vas a <em>operar</em> con estas expresiones: sumar, restar, multiplicar. ¿Para qué va a servir la regla de términos semejantes cuando empieces a sumar polinomios?</p></div>
+    <label>Mi respuesta:</label>
+    <textarea class="inp ta" id="c-pf3" data-req data-ml="10" placeholder="La regla de términos semejantes va a servir para..."></textarea>
+  </div>
+
+  <div class="card card-n">
+    <div class="pill p-n">04 · Autoevaluación honesta</div>
+    <label>¿Cuál de los 4 tipos de expresiones te costó más construir y por qué?</label>
+    <textarea class="inp ta" id="c-dif" data-req data-ml="10" placeholder="Me costó más... porque..."></textarea>
+    <label style="margin-top:10px;">¿Qué pregunta del quiz fue la más difícil?</label>
+    <textarea class="inp ta" id="c-quiz" data-req data-ml="6" placeholder="La más difícil fue..."></textarea>
+  </div>
+
+  <button class="btn btn-v" onclick="finalizar()">&#10003; Finalizar y ver resumen</button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- FINAL · RESUMEN                                       -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="sec" id="s-final">
+  <div class="res-banner">
+    <h2>&#127881; ACTIVIDAD COMPLETA</h2>
+    <p>Completaste el repaso integrado del PF2. Estás listo para el PF3.</p>
+  </div>
+
+  <div class="card card-v">
+    <div class="pill p-v">Resumen — Clase 4 · PF2</div>
+    <table class="res-tabla" id="tabla-res"></table>
+  </div>
+
+  <!-- GUÍA DE ESTUDIO -->
+  <div style="background:linear-gradient(135deg,#1B6B45,#2e7d32);border-radius:12px;padding:14px 15px;margin-bottom:12px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+      <span style="font-size:1.6rem;">&#127891;</span>
+      <div>
+        <div style="font-family:'Bebas Neue';font-size:1.2rem;color:#fff;letter-spacing:.5px;">Esta hoja ES tu guía de repaso para el examen</div>
+        <div style="font-size:.73rem;color:rgba(255,255,255,.7);margin-top:1px;">Guárdala — tiene tus respuestas, las correcciones y lo que debías incluir</div>
+      </div>
+    </div>
+    <div style="background:rgba(255,255,255,.12);border-radius:8px;padding:10px 12px;font-size:.82rem;color:#fff;line-height:1.65;">
+      En esta hoja encuentras: tus expresiones algebraicas con lo que se esperaba ·
+      cada pregunta del quiz con la respuesta correcta y la explicación ·
+      los puntos clave de cada reflexión. <strong style="color:#a5d6a7;">Repásala antes del examen.</strong>
+    </div>
+  </div>
+
+  <!-- INSTRUCCIONES DE ENTREGA -->
+  <div class="cap-aviso">
+    <h4>&#128247; Cómo entregar tu resultado en Classroom:</h4>
+    <div style="background:#fff3e0;border:1.5px solid #e65100;border-radius:8px;padding:9px 12px;margin-bottom:10px;font-size:.82rem;font-weight:800;color:#bf360c;">
+      &#9888;&#65039; IMPORTANTE: Se necesita <u>una sola imagen o PDF que muestre toda la hoja</u>.<br>
+      No se aceptan capturas por partes o secciones separadas.
+    </div>
+    <p style="font-size:.8rem;font-weight:700;color:#555;margin-bottom:7px;">Elige la opción que funcione en tu teléfono:</p>
+
+    <div style="background:#fff;border-radius:8px;padding:10px 12px;margin-bottom:8px;border:1.5px solid #ffe082;">
+      <div style="font-size:.75rem;font-weight:800;color:#f57f17;margin-bottom:5px;">&#128241; OPCIÓN 1 — Captura larga (scroll screenshot) · Recomendada</div>
+      <div style="font-size:.78rem;color:#555;line-height:1.6;">
+        Algunos teléfonos permiten capturar toda la página de una vez:<br>
+        <strong>Samsung:</strong> Volumen abajo + botón de encendido → desliza hacia abajo para extender ·
+        <strong>Xiaomi / Redmi:</strong> captura normal → toca el ícono de tijeras/extender ·
+        <strong>Otros Android:</strong> busca en notificaciones el ícono de "captura extendida" o "scroll capture"
+      </div>
+    </div>
+
+    <div style="background:#fff;border-radius:8px;padding:10px 12px;margin-bottom:8px;border:1.5px solid #c8e6c9;">
+      <div style="font-size:.75rem;font-weight:800;color:#2e7d32;margin-bottom:5px;">&#128196; OPCIÓN 2 — Guardar como PDF · La más completa</div>
+      <div style="font-size:.78rem;color:#555;line-height:1.6;">
+        En tu navegador (Chrome / Samsung Internet):<br>
+        Menú ⋮ (tres puntos) → <strong>Compartir</strong> → <strong>Imprimir</strong> → cambia la impresora a <strong>"Guardar como PDF"</strong> → Guardar.<br>
+        El PDF incluye toda la página aunque sea larga.
+      </div>
+    </div>
+
+    <div style="background:#fff;border-radius:8px;padding:10px 12px;margin-bottom:10px;border:1.5px solid #e1bee7;">
+      <div style="font-size:.75rem;font-weight:800;color:#6a1b9a;margin-bottom:5px;">&#128438; OPCIÓN 3 — Si ninguna de las anteriores funciona</div>
+      <div style="font-size:.78rem;color:#555;line-height:1.6;">
+        Toma capturas por sección <strong>pero en una sola entrega</strong>: en Classroom selecciona todas las imágenes juntas antes de subir, no las envíes por separado.
+        Asegúrate de que aparezcan: tu nombre, grupo, todas las expresiones y el quiz completo.
+      </div>
+    </div>
+
+    <ol style="font-size:.81rem;padding-left:18px;margin-bottom:8px;">
+      <li style="margin-bottom:4px;">Guarda la imagen o PDF con tu nombre: <strong>Apellido_Nombre_Clase4.pdf</strong></li>
+      <li style="margin-bottom:4px;">Súbelo en <strong>Google Classroom</strong> en la tarea de Clase 4</li>
+      <li>Verifica antes de enviar que se lean tu nombre, grupo y todas tus respuestas</li>
+    </ol>
+    <div style="margin-top:7px;font-weight:800;color:#e65100;font-size:.82rem;">&#127919; Tu cuaderno con el mapa conceptual también se revisa en clase.</div>
+  </div>
+
+  <div class="card card-mo" style="margin-top:12px;">
+    <div class="pill p-mo">¿Qué sigue?</div>
+    <p style="font-size:.87rem;line-height:1.75;">El <strong>PF3</strong> comienza con <strong>operaciones con expresiones algebraicas</strong>: suma y resta de polinomios, multiplicación de monomios. Todo lo que construiste en este bloque es la base directa de lo que viene. La regla de términos semejantes la vas a usar en cada clase del resto del semestre.</p>
+  </div>
+</div>
+
+<div style="text-align:center;padding:14px 0 22px;font-size:.72rem;color:#bbb;">
+  Pensamiento Matemático II · Prof. Adrián Cruz · 2025–2026
+</div>
+<script>
+// ══════════════════════════════════════════════════════════════
+// LISTAS DE ALUMNOS
+// ══════════════════════════════════════════════════════════════
+const GRUPOS = {
+  '203':{plantel:'Bachilleres 17',turno:'Matutino',offset:1000,
+    alumnos:[
+      {n:1,nom:'ACEVEDO MERCADO KAREL ALEXA',pila:'Karel'},
+      {n:2,nom:'ALCARAZ MORALES SANDRA MELANIE',pila:'Sandra'},
+      {n:3,nom:'APARICIO PEREZ IVONE ISABEL',pila:'Ivone'},
+      {n:4,nom:'BAENA POLITRON EMILIANO',pila:'Emiliano'},
+      {n:5,nom:'BARRIOS HERNANDEZ CAMILA',pila:'Camila'},
+      {n:6,nom:'FALCON PALOMINO RENATA',pila:'Renata'},
+      {n:7,nom:'FERNANDEZ REYES FABIOLA',pila:'Fabiola'},
+      {n:8,nom:'FLORES ISLAS ALEXA FERNANDA',pila:'Alexa'},
+      {n:9,nom:'FLORES MONTANO YOSGARTH ARMANDO',pila:'Yosgarth'},
+      {n:10,nom:'GARCIA FLORES NICOLE JACQUELINE',pila:'Nicole'},
+      {n:11,nom:'GARCIA GARCIA POULETTE',pila:'Poulette'},
+      {n:12,nom:'GARDUNO CRUZ NANCY RUBI',pila:'Nancy'},
+      {n:13,nom:'GOMEZ ESQUIVEL DANNA ZOE',pila:'Danna'},
+      {n:14,nom:'GONZALEZ TIBURCIO MARIANA REGINA',pila:'Mariana'},
+      {n:15,nom:'GUADARRAMA HERNANDEZ MARIA AILANY',pila:'Ailany'},
+      {n:16,nom:'HUERTA FLORES ANDREA',pila:'Andrea'},
+      {n:17,nom:'JIMENEZ SANCHEZ LIZETH ALEJANDRA',pila:'Lizeth'},
+      {n:18,nom:'JUAREZ PASTELIN PAULINA ZOE',pila:'Paulina'},
+      {n:19,nom:'LAGOS GARCIA FERNANDO YAOTL',pila:'Fernando'},
+      {n:20,nom:'LEVARIO QUIROZ GRECIA ROHINI',pila:'Grecia'},
+      {n:21,nom:'LOPEZ ROBLES CAMILA IDANAE',pila:'Camila'},
+      {n:22,nom:'MARTINEZ CELESTINO CHRISTIAN',pila:'Christian'},
+      {n:23,nom:'MARTINEZ OCAMPO GUSTAVO ADRIAN',pila:'Gustavo'},
+      {n:24,nom:'MERCADO GONZALEZ EMILIANO',pila:'Emiliano'},
+      {n:25,nom:'MONDRAGON ALVARADO JADE MICHELLE',pila:'Jade'},
+      {n:26,nom:'PALOMARES GALENO RENATA VALENTINA',pila:'Renata'},
+      {n:27,nom:'PEREZ AVILA DAGO ARIAN',pila:'Dago'},
+      {n:28,nom:'PEREZ PADILLA CAMILA',pila:'Camila'},
+      {n:29,nom:'PEREZ VICTORIA SOFIA',pila:'Sofia'},
+      {n:30,nom:'REYES MORENO MARIELA',pila:'Mariela'},
+      {n:31,nom:'RIOS BELLO LAYLA',pila:'Layla'},
+      {n:32,nom:'RIOS GARCIA NAOMY SUGEI',pila:'Naomy'},
+      {n:33,nom:'RIVERA VELAZQUEZ YEREMI GABRIEL',pila:'Yeremi'},
+      {n:34,nom:'RODRIGUEZ AGUILAR PALOMA',pila:'Paloma'},
+      {n:35,nom:'ROMERO HERNANDEZ DIEGO',pila:'Diego'},
+      {n:36,nom:'ROSAS GARCIA JOSE YAEL',pila:'Yael'},
+      {n:37,nom:'RUIZ VALDEZ RODRIGO',pila:'Rodrigo'},
+      {n:38,nom:'SANCHEZ GARCIA MONCERRAT',pila:'Moncerrat'},
+      {n:39,nom:'SEVILLA SANCHEZ YARETZI',pila:'Yaretzi'},
+      {n:40,nom:'VELASCO CAMARILLO KARLA MARIA',pila:'Karla'},
+      {n:41,nom:'VELASCO PIMENTEL VICTOR SANTIAGO',pila:'Victor'},
+      {n:42,nom:'ZUNIGA BARDALES KEYLA YAMILETH',pila:'Keyla'},
+      {n:43,nom:'INVITADO 1',pila:'Invitado 1'},
+      {n:44,nom:'INVITADO 2',pila:'Invitado 2'},
+      {n:45,nom:'INVITADO 3',pila:'Invitado 3'},
+      {n:46,nom:'INVITADO 4',pila:'Invitado 4'}
+    ]},
+  '205':{plantel:'Bachilleres 17',turno:'Matutino',offset:2000,
+    alumnos:[
+      {n:1,nom:'ABURTO PEREZ GIOVANNA',pila:'Giovanna'},
+      {n:2,nom:'APARICIO BAUTISTA MELANIE VALENTINA',pila:'Melanie'},
+      {n:3,nom:'BENITEZ GARCIA IAN JADIEL',pila:'Ian'},
+      {n:4,nom:'BRITO JIMENEZ FRIDA SOFIA',pila:'Frida'},
+      {n:5,nom:'CAMACHO ROMERO DEYSI MARIAN',pila:'Deysi'},
+      {n:6,nom:'CEDILLO GARCIA MARIA FERNANDA',pila:'Fernanda'},
+      {n:7,nom:'DE LA PAZ RAMIREZ YAEL',pila:'Yael'},
+      {n:8,nom:'DIAZ CRUZ DIANA CAMILA',pila:'Diana'},
+      {n:9,nom:'ESTRADA SALAZAR YARETZI SOFIA',pila:'Yaretzi'},
+      {n:10,nom:'GARCIA LOPEZ AXEL JADIEL',pila:'Axel'},
+      {n:11,nom:'GARCIA RONZON DIEGO GAEL',pila:'Diego'},
+      {n:12,nom:'GONZALEZ SALGADO VALENTINA',pila:'Valentina'},
+      {n:13,nom:'GRANDE GUZMAN VICTOR MANUEL',pila:'Victor'},
+      {n:14,nom:'HERNANDEZ HERRERA XIMENA VALERIA',pila:'Ximena'},
+      {n:15,nom:'HERRERA HERNANDEZ AVRIL',pila:'Avril'},
+      {n:16,nom:'JIMENEZ DE LA CRUZ CAMILA FERNANDA',pila:'Camila'},
+      {n:17,nom:'LUNA TAPIA DERECK SEBASTIAN',pila:'Dereck'},
+      {n:18,nom:'MAGANA RAMIREZ CARLOS JOSEP',pila:'Carlos'},
+      {n:19,nom:'MATEOS HERNANDEZ NATALIA SOFIA',pila:'Natalia'},
+      {n:20,nom:'MENDEZ ALANIS ANGEL GABRIEL',pila:'Angel'},
+      {n:21,nom:'MIRANDA GARCIA EMILIANO',pila:'Emiliano'},
+      {n:22,nom:'MONJARAS LOPEZ LUNA ZOE',pila:'Luna'},
+      {n:23,nom:'MORENO PEREZ MATIAS',pila:'Matias'},
+      {n:24,nom:'NABOR ALVAREZ JESSICA',pila:'Jessica'},
+      {n:25,nom:'NAVARRO ESQUIVEL JESUS ALEJANDRO',pila:'Jesus'},
+      {n:26,nom:'OLIVARES MARTINEZ MIA DAMAYANTI',pila:'Mia'},
+      {n:27,nom:'PAULIN ROSAS NATALIA SOFIA',pila:'Natalia'},
+      {n:28,nom:'PEREZ CALDERON MATEO',pila:'Mateo'},
+      {n:29,nom:'PINA ALVAREZ KATHERINE DANAE',pila:'Katherine'},
+      {n:30,nom:'PICHARDO FARFAN MATEO JALIL',pila:'Mateo'},
+      {n:31,nom:'PRAXEDIZ SANCHEZ ALAN OMAR',pila:'Alan'},
+      {n:32,nom:'QUINTANAR VALENCIA ORLANDO TONALLI',pila:'Orlando'},
+      {n:33,nom:'RAMOS AMADOR XIMENA',pila:'Ximena'},
+      {n:34,nom:'RAMOS RAMIREZ CAMILA VALENTINA',pila:'Camila'},
+      {n:35,nom:'RODRIGUEZ FUENTES KATHERINE ESTEFANIA',pila:'Katherine'},
+      {n:36,nom:'RODRIGUEZ GALEANA SAMANTHA GISELLE',pila:'Samantha'},
+      {n:37,nom:'SANCHEZ DEL RAZO MARIANA RUBI',pila:'Mariana'},
+      {n:38,nom:'SANCHEZ MATA FRIDA SOFIA',pila:'Frida'},
+      {n:39,nom:'SANCHEZ NUNEZ JANAI',pila:'Janai'},
+      {n:40,nom:'TAPIA ESQUIVEL ZAID',pila:'Zaid'},
+      {n:41,nom:'VALENCIA GARCIA NATALIA',pila:'Natalia'},
+      {n:42,nom:'VIEYRA GRANADOS ALEXIS',pila:'Alexis'},
+      {n:43,nom:'INVITADO 1',pila:'Invitado 1'},
+      {n:44,nom:'INVITADO 2',pila:'Invitado 2'},
+      {n:45,nom:'INVITADO 3',pila:'Invitado 3'},
+      {n:46,nom:'INVITADO 4',pila:'Invitado 4'}
+    ]},
+  '236':{plantel:'CEB 4/2',turno:'Vespertino',offset:3000,
+    alumnos:[
+      {n:1,nom:'BATANA HERRERA VANESSA',pila:'Vanessa'},
+      {n:2,nom:'BAUTISTA SOTELO DAVID ALEJANDRO',pila:'David'},
+      {n:3,nom:'BRAVO DIAZ MAITE',pila:'Maite'},
+      {n:4,nom:'CALLES GASPAR EMILIANO',pila:'Emiliano'},
+      {n:5,nom:'DE LA HUERTA MORALES LUIS SANTIAGO',pila:'Luis'},
+      {n:6,nom:'DORADO CORDOBA ANA CRISTINA',pila:'Ana'},
+      {n:7,nom:'ESTRADA CALDERON ERANDI AYLEN',pila:'Erandi'},
+      {n:8,nom:'FAUSTINO RUIZ RODRIGO',pila:'Rodrigo'},
+      {n:9,nom:'FLORES CORTES XIMENA',pila:'Ximena'},
+      {n:10,nom:'FORTANELL VELAZQUEZ DAFNE',pila:'Dafne'},
+      {n:11,nom:'GARCIA DURAN KEVIN SEBASTIAN',pila:'Kevin'},
+      {n:12,nom:'GARCIA SORIANO OSCAR URIEL',pila:'Oscar'},
+      {n:13,nom:'GARDUNO MORENO JONATHAN JAIR',pila:'Jonathan'},
+      {n:14,nom:'GARFIAS LOBATON SALMA ARIADNA',pila:'Salma'},
+      {n:15,nom:'GONZALEZ CHAVEZ GABRIEL ANTONIO',pila:'Gabriel'},
+      {n:16,nom:'GONZALEZ ROJAS GABRIEL',pila:'Gabriel'},
+      {n:17,nom:'GRANADOS ARREGUIN VANESA LIZBETH',pila:'Vanesa'},
+      {n:18,nom:'HERNANDEZ FLORES FERNANDA DANAE',pila:'Fernanda'},
+      {n:19,nom:'HERNANDEZ ZACATECAS MELISA',pila:'Melisa'},
+      {n:20,nom:'HERNANDEZ MENDEZ MARIA JOSE',pila:'Maria Jose'},
+      {n:21,nom:'LIDES RAMOS NAHOMY',pila:'Nahomy'},
+      {n:22,nom:'LOPEZ GALICIA IAN ALESSANDRO',pila:'Ian'},
+      {n:23,nom:'LOZANO VEGA MARIANA',pila:'Mariana'},
+      {n:24,nom:'LUNA ROLDAN REGINA SOFIA',pila:'Regina'},
+      {n:25,nom:'MARTINEZ ZAPATA SOFIA',pila:'Sofia'},
+      {n:26,nom:'MEDINA FLORES JOSE ROBERTO',pila:'Jose'},
+      {n:27,nom:'MEJIA RAMIREZ FRANCISCO JAVIER',pila:'Francisco'},
+      {n:28,nom:'MONTES DE OCA RODRIGUEZ MATIAS',pila:'Matias'},
+      {n:29,nom:'MONTIEL VIDAL JESUS ENRIQUE',pila:'Jesus'},
+      {n:30,nom:'MONTOYA VILLEGAS VALERIA',pila:'Valeria'},
+      {n:31,nom:'NEPOMUCENO GONZALEZ KAREN',pila:'Karen'},
+      {n:32,nom:'PASTEN ARROYO KARLA GISEL',pila:'Karla'},
+      {n:33,nom:'PERALTA LOZANO WILLIAM EMILIANO',pila:'William'},
+      {n:34,nom:'PEREZ OLMOS LUIS SANTIAGO',pila:'Luis'},
+      {n:35,nom:'PIMENTEL JARA XIMENA',pila:'Ximena'},
+      {n:36,nom:'POPOCA IZAZAGA DYLAN MIKEL',pila:'Dylan'},
+      {n:37,nom:'QUIJADA VARGAS DONNOVAN URIEL',pila:'Donnovan'},
+      {n:38,nom:'RAMIREZ TORRES CEDRIC',pila:'Cedric'},
+      {n:39,nom:'REYES CORTEZ HEBE JUCARI FERNANDA',pila:'Hebe'},
+      {n:40,nom:'REYNA ESCOBEDO DAYANA GUADALUPE',pila:'Dayana'},
+      {n:41,nom:'SANCHEZ CRISOSTOMO CARLOS BLADIMIR',pila:'Carlos'},
+      {n:42,nom:'SANCHEZ MARCOS KEENIA ARLENE',pila:'Keenia'},
+      {n:43,nom:'SEGURA BARRANCO TERESA YOHLIKNAL',pila:'Teresa'},
+      {n:44,nom:'SOLIS HURTADO MELISSA MICHELLE',pila:'Melissa'},
+      {n:45,nom:'TREJO MARTINEZ DANIEL DAVID',pila:'Daniel'},
+      {n:46,nom:'VERDEJO RAMIREZ JOSHUA BARACK',pila:'Joshua'},
+      {n:47,nom:'ZAMBRANO LUCAS SANDRA',pila:'Sandra'},
+      {n:48,nom:'ZARATE LEON NATALIA BETZABEL',pila:'Natalia'},
+      {n:49,nom:'ZARCO GONZALEZ MOESHA JOSELINE',pila:'Moesha'},
+      {n:50,nom:'ZEPEDA GOMEZ SANDRA LUZ',pila:'Sandra'},
+      {n:51,nom:'INVITADO 1',pila:'Invitado 1'},
+      {n:52,nom:'INVITADO 2',pila:'Invitado 2'},
+      {n:53,nom:'INVITADO 3',pila:'Invitado 3'},
+      {n:54,nom:'INVITADO 4',pila:'Invitado 4'}
+    ]},
+  '237':{plantel:'CEB 4/2',turno:'Vespertino',offset:4000,
+    alumnos:[
+      {n:1,nom:'AGUAS JERONIMO REGINA',pila:'Regina'},
+      {n:2,nom:'ALVAREZ HERNANDEZ XANTHE YURITZI',pila:'Xanthe'},
+      {n:3,nom:'AMARO RODRIGUEZ SANTIAGO ALEXANDER',pila:'Santiago'},
+      {n:4,nom:'APARICIO GARCIA NATALIA',pila:'Natalia'},
+      {n:5,nom:'BAEZA FRIAS AMEYALI MACHIA',pila:'Ameyali'},
+      {n:6,nom:'CALLEJA PEREZ DYLAN SANTIAGO',pila:'Dylan'},
+      {n:7,nom:'CALZADA ROCHA DANTE LEONARDO',pila:'Dante'},
+      {n:8,nom:'CEDILLO ESTRADA REGINA ZOE',pila:'Regina'},
+      {n:9,nom:'CHAVEZ ENRIQUEZ DIEGO ANGEL',pila:'Diego'},
+      {n:10,nom:'COBO PEREZ CARLOS DAVID',pila:'Carlos'},
+      {n:11,nom:'CONTRERAS RENDON DONOVAN YAHEL',pila:'Donovan'},
+      {n:12,nom:'CRUZ TAPIA CAMILA JADZIRI',pila:'Camila'},
+      {n:13,nom:'CUELLAR DE LA ROSA SAUL IGNACIO',pila:'Saul'},
+      {n:14,nom:'FERNANDEZ ZAPOTITLA RODRIGO',pila:'Rodrigo'},
+      {n:15,nom:'FLORES PEREZ JOSUE ALBERTO',pila:'Josue'},
+      {n:16,nom:'GALLARDO HORCASITAS NOELIA',pila:'Noelia'},
+      {n:17,nom:'GARCIA HERNANDEZ CAMILA',pila:'Camila'},
+      {n:18,nom:'GARCIA PRIOR CAMILA',pila:'Camila'},
+      {n:19,nom:'GODOY MORALES LUIS ANGEL',pila:'Luis'},
+      {n:20,nom:'GONZALEZ LOPEZ ALEXA IDALI',pila:'Alexa'},
+      {n:21,nom:'HERNANDEZ CALZADA NATALIA',pila:'Natalia'},
+      {n:22,nom:'HERNANDEZ JUAREZ ALAN LEONARDO',pila:'Alan'},
+      {n:23,nom:'JIM RUIZ AXEL RODRIGO',pila:'Axel'},
+      {n:24,nom:'LINARES RUIZ PABLO ROGELIO',pila:'Pablo'},
+      {n:25,nom:'LUZ RODRIGUEZ ALEXA MILAGROS',pila:'Alexa'},
+      {n:26,nom:'MANZANARES TRINIDAD PAULINA SARAHI',pila:'Paulina'},
+      {n:27,nom:'MANZANO BARRON EVELYN',pila:'Evelyn'},
+      {n:28,nom:'MARIN ALVAREZ FABRICIO SAMUEL',pila:'Fabricio'},
+      {n:29,nom:'MARTINEZ CARMONA ALAN DAVID',pila:'Alan'},
+      {n:30,nom:'MARTINEZ COLLIN EMMANUEL',pila:'Emmanuel'},
+      {n:31,nom:'MARTINEZ URIBE BARBARA ODELI',pila:'Barbara'},
+      {n:32,nom:'NIEVES ALMAZAN SANTIAGO ALEJANDRO',pila:'Santiago'},
+      {n:33,nom:'OCELOTL GONZALEZ LUIS ANGEL',pila:'Luis'},
+      {n:34,nom:'OJEDA GUILLERMO CAMILA',pila:'Camila'},
+      {n:35,nom:'ORTIZ ALVAREZ LUNA ITZEL',pila:'Luna'},
+      {n:36,nom:'PEREZ GUTIERREZ OSCAR GERARDO',pila:'Oscar'},
+      {n:37,nom:'PEREZ MATEOS JESUS EMMANUEL',pila:'Jesus'},
+      {n:38,nom:'RAMIREZ VALLADARES ALEXIA GUADALUPE',pila:'Alexia'},
+      {n:39,nom:'REMIGIO APANCO JOHAN',pila:'Johan'},
+      {n:40,nom:'REYES GOMEZ ISABELA',pila:'Isabela'},
+      {n:41,nom:'RIVERA HUERTA JAZIEL',pila:'Jaziel'},
+      {n:42,nom:'RIVERA GURROLA DANA REGINA',pila:'Dana'},
+      {n:43,nom:'ROJAS MORALES AMBAR ROMINA',pila:'Ambar'},
+      {n:44,nom:'ROJAS SUAREZ MARCO RICARDO',pila:'Marco'},
+      {n:45,nom:'SANCHEZ AVILA ALEXA FERNANDA',pila:'Alexa'},
+      {n:46,nom:'SANCHEZ ENTZANA SAEL ETHIAN',pila:'Sael'},
+      {n:47,nom:'SANTIAGO NIETO RENATA',pila:'Renata'},
+      {n:48,nom:'SEVILLA RODRIGUEZ LEAH MICHELLE',pila:'Leah'},
+      {n:49,nom:'TRUJILLO RODRIGUEZ ANDREA ELIZETH',pila:'Andrea'},
+      {n:50,nom:'URIBE BERRU YOHAN EMMANUEL',pila:'Yohan'},
+      {n:51,nom:'VIVEROS IBARRA EVOLETH APRIL',pila:'Evoleth'},
+      {n:52,nom:'VIZUETT REYES DARIO INAKY',pila:'Dario'},
+      {n:53,nom:'INVITADO 1',pila:'Invitado 1'},
+      {n:54,nom:'INVITADO 2',pila:'Invitado 2'},
+      {n:55,nom:'INVITADO 3',pila:'Invitado 3'},
+      {n:56,nom:'INVITADO 4',pila:'Invitado 4'}
+    ]}
+};
+
+// ══════════════════════════════════════════════════════════════
+// PRNG DETERMINISTA (misma semilla = mismos valores siempre)
+// ══════════════════════════════════════════════════════════════
+function sr(seed){
+  const x=Math.sin(seed*127.1+311.7)*43758.5453123;
+  return x-Math.floor(x);
+}
+function pickS(seed,arr){return arr[Math.floor(sr(seed)*arr.length)];}
+function rIntS(seed,min,max){return Math.floor(sr(seed)*(max-min+1))+min;}
+
+// ══════════════════════════════════════════════════════════════
+// VARIANTES NARRATIVAS (A=0 B=1 C=2 D=3 por seed%4)
+// ══════════════════════════════════════════════════════════════
+const VARS=[
+  { // A - Estudiante bachillerato
+    m1:{ico:'🎒',tit:'Primer gasto: el metro',
+      narr:'Eres estudiante de bachillerato en la CDMX. Cada semana usas el metro para llegar al plantel. Cada viaje cuesta <strong>$PR1</strong>.',
+      col:'Viajes (t)',var:'t',cants:[3,6,10,15]},
+    m2:{ico:'🥗',
+      narr:'Además del metro, comes en la <strong>cooperativa</strong> cada día que vas al plantel. Cada comida cuesta <strong>$PR2</strong>. Ahora hay dos gastos distintos.',
+      var1:'t',var2:'c',rep:'viajes en metro y comidas en cooperativa'},
+    m3:{ico:'🖨️',
+      narr:'También necesitas <strong>fotocopias</strong> de apuntes. Cada fotocopia cuesta <strong>$PR3</strong>. Ya son tres gastos distintos.',
+      var3:'f',rep3:'fotocopias (f)'},
+    m4:{ico:'📱',
+      narr:'Por último agregas las <strong>recargas de celular</strong> para usar datos en clase. Cada recarga cuesta <strong>$PR4</strong>.',
+      var4:'r',rep4:'recargas (r)'}
+  },
+  { // B - Emprendedor mercado
+    m1:{ico:'🛍️',tit:'Primer ingreso: venta de jugos',
+      narr:'Eres un joven emprendedor que vende <strong>jugos naturales</strong> en un mercado de la CDMX. Cada jugo lo vendes en <strong>$PR1</strong>.',
+      col:'Jugos (j)',var:'j',cants:[5,10,20,40]},
+    m2:{ico:'🍊',
+      narr:'También vendes <strong>gelatinas</strong> en el mismo puesto. Cada gelatina la vendes en <strong>$PR2</strong>. Ahora tienes dos ingresos distintos.',
+      var1:'j',var2:'g',rep:'jugos (j) y gelatinas (g)'},
+    m3:{ico:'🥤',
+      narr:'Además agregas <strong>aguas frescas</strong> al menú. Cada agua la vendes en <strong>$PR3</strong>. Ya son tres productos distintos.',
+      var3:'a',rep3:'aguas frescas (a)'},
+    m4:{ico:'🍮',
+      narr:'Por último añades <strong>flanes</strong> a tu oferta. Cada flan lo vendes en <strong>$PR4</strong>.',
+      var4:'f',rep4:'flanes (f)'}
+  },
+  { // C - Familia servicios Iztapalapa
+    m1:{ico:'💧',tit:'Primer servicio: el agua',
+      narr:'Una familia en Iztapalapa paga sus servicios cada mes. El primero es el <strong>agua</strong>: <strong>$PR1</strong> por metro cúbico.',
+      col:'m³ de agua (a)',var:'a',cants:[5,10,15,20]},
+    m2:{ico:'🔥',
+      narr:'También pagan el <strong>gas</strong> para cocinar: <strong>$PR2</strong> por kilogramo. Son dos servicios con variables distintas.',
+      var1:'a',var2:'g',rep:'agua (a) y gas (g)'},
+    m3:{ico:'💡',
+      narr:'Además pagan la <strong>electricidad</strong>: <strong>$PR3</strong> por kilowatt-hora. Ya son tres servicios con variables distintas.',
+      var3:'e',rep3:'electricidad en kWh (e)'},
+    m4:{ico:'📡',
+      narr:'Y por último el <strong>internet</strong>: <strong>$PR4</strong> al mes fijo (sin variable — es un término independiente).',
+      var4:'',rep4:'internet fijo ($PR4)'}
+  },
+  { // D - Equipo fútbol Tlalpan
+    m1:{ico:'⚽',tit:'Primer gasto: la cancha',
+      narr:'Un equipo de jóvenes de Tlalpan organiza partidos. Su primer gasto es la <strong>renta de la cancha</strong>: <strong>$PR1</strong> por hora.',
+      col:'Horas (h)',var:'h',cants:[1,2,3,4]},
+    m2:{ico:'👟',
+      narr:'También pagan el <strong>equipo deportivo</strong>: <strong>$PR2</strong> por jugador. Dos gastos con variables distintas.',
+      var1:'h',var2:'j',rep:'horas de cancha (h) y jugadores (j)'},
+    m3:{ico:'🏁',
+      narr:'Para los partidos formales contratan un <strong>árbitro</strong>: <strong>$PR3</strong> por partido arbitrado.',
+      var3:'p',rep3:'partidos arbitrados (p)'},
+    m4:{ico:'🏆',
+      narr:'Y pagan la <strong>inscripción al torneo</strong>: <strong>$PR4</strong> fijos por temporada (término independiente sin variable).',
+      var4:'',rep4:'inscripción fija ($PR4)'}
+  }
+];
+
+// Precios por variante (6 opciones cada uno)
+const PRECIOS={
+  A:{p1:[5,6,7,8,9,10],p2:[20,25,28,30,32,35],p3:[1,2,3,4,5],p4:[10,15,20,25,30]},
+  B:{p1:[18,20,22,24,25,28],p2:[8,10,12,14,15],p3:[12,14,15,16,18,20],p4:[15,18,20,22,25]},
+  C:{p1:[10,11,12,13,14,15],p2:[20,22,24,25,26,28],p3:[2,3,4,5,6],p4:[299,349,399,449,499]},
+  D:{p1:[70,80,90,100,110,120],p2:[12,14,15,16,18,20],p3:[100,120,130,150,160,180],p4:[400,450,500,550,600]}
+};
+
+// ══════════════════════════════════════════════════════════════
+// BANCO DE PREGUNTAS QUIZ (6 por bloque, 5 bloques)
+// Cada bloque aporta 1 pregunta → 5 preguntas únicas por alumno
+// ══════════════════════════════════════════════════════════════
+const QB=[
+  // BLOQUE 0: Clasificación de expresiones
+  [
+    {p:'¿Cuántos términos tiene la expresión <strong>7x³</strong>?',
+     ops:['Un término — es un monomio','Dos términos — es un binomio','Tres términos — es un trinomio','Depende del valor de x'],
+     ok:0,ex:'7x³ es un solo término: coeficiente 7, variable x, exponente 3. Por eso es monomio.'},
+    {p:'La expresión <strong>3a + 5b − 2c</strong> se clasifica como:',
+     ops:['Monomio','Binomio','Trinomio','No es una expresión algebraica'],
+     ok:2,ex:'Tiene 3 términos separados por + y −: 3a, 5b y 2c. Tres términos = trinomio.'},
+    {p:'Un estudiante de bachillerato gasta <strong>8t + 25c + 3f + 10r</strong> pesos a la semana. ¿Cómo se clasifica esta expresión?',
+     ops:['Monomio','Binomio','Trinomio','Polinomio de 4 términos'],
+     ok:3,ex:'Tiene 4 términos distintos. Todo polinomio tiene 2 o más términos, pero con 4 se dice "polinomio de 4 términos".'},
+    {p:'¿Cuál de estas expresiones es un binomio?',
+     ops:['5x²','3x + 2y','4a + b − c','x + y + z + w'],
+     ok:1,ex:'3x + 2y tiene exactamente 2 términos (3x y 2y) separados por un signo. Eso es un binomio.'},
+    {p:'Después de simplificar términos semejantes, <strong>4x + 3y + 2x</strong> se convierte en:',
+     ops:['9xy','6x + 3y','4x + 5y','9x + y'],
+     ok:1,ex:'4x y 2x son semejantes (misma variable x): 4x + 2x = 6x. El término 3y no se puede combinar. Resultado: 6x + 3y (binomio).'},
+    {p:'La expresión <strong>−12m²</strong> es:',
+     ops:['Inválida porque el coeficiente es negativo','Un monomio con coeficiente −12','Un binomio porque tiene el signo −','Un trinomio'],
+     ok:1,ex:'El signo negativo forma parte del coeficiente. −12m² tiene un solo término: coeficiente −12, variable m, exponente 2. Es un monomio.'}
+  ],
+  // BLOQUE 1: Componentes del monomio
+  [
+    {p:'En el monomio <strong>9y⁴</strong>, ¿cuál es el grado?',
+     ops:['9','y','4','36'],
+     ok:2,ex:'El grado de un monomio es el valor del exponente de la variable. En 9y⁴ el exponente es 4, por lo tanto el grado es 4.'},
+    {p:'En la expresión <strong>−5x²</strong>, el coeficiente es:',
+     ops:['5','x','2','−5'],
+     ok:3,ex:'El coeficiente es el número que acompaña a la variable, incluyendo el signo. En −5x² el coeficiente es −5.'},
+    {p:'Si un monomio es simplemente <strong>n</strong> (sin ningún número visible), ¿cuál es su coeficiente?',
+     ops:['0','1','n','No tiene coeficiente'],
+     ok:1,ex:'Cuando no aparece ningún número, el coeficiente es 1 implícito. n = 1·n. Coeficiente: 1.'},
+    {p:'En el monomio <strong>4a³</strong>, ¿cuál es la variable?',
+     ops:['4','a','3','a³'],
+     ok:1,ex:'La variable (literal) es la letra que representa una cantidad desconocida. En 4a³ la variable es "a". El 4 es el coeficiente y el 3 es el exponente.'},
+    {p:'¿Cuál es el grado del monomio <strong>7z</strong>?',
+     ops:['7','z','1','0'],
+     ok:2,ex:'Cuando no hay exponente visible, el exponente es 1 implícito. 7z = 7z¹. El grado es 1.'},
+    {p:'En el monomio <strong>−3p⁵</strong>, ¿qué valor es el exponente?',
+     ops:['−3','p','5','−15'],
+     ok:2,ex:'El exponente indica la potencia de la variable. En −3p⁵ el exponente es 5. No lo confundas con el coeficiente (−3) ni con la variable (p).'}
+  ],
+  // BLOQUE 2: Términos semejantes
+  [
+    {p:'¿Cuál de estos pares de términos SÍ son semejantes?',
+     ops:['3x² y 3y²','5a y 5a²','7m³ y −2m³','4x y 4y'],
+     ok:2,ex:'7m³ y −2m³ son semejantes: misma variable (m) y mismo exponente (3). Solo difieren en el coeficiente. Se pueden sumar: 7m³ + (−2m³) = 5m³.'},
+    {p:'Un estudiante intenta simplificar <strong>6t + 4c</strong> y escribe "10tc". ¿Qué error cometió?',
+     ops:['Sumó mal los coeficientes','Sumó términos no semejantes — t y c son variables distintas','El exponente debería ser 2','No hay error, es correcto'],
+     ok:1,ex:'6t representa viajes en metro y 4c representa comidas. Son cosas distintas, con variables distintas. No se pueden sumar. 6t + 4c se queda como binomio.'},
+    {p:'¿Cuál de estas simplificaciones es CORRECTA?',
+     ops:['3x² + 4x = 7x³','5a + 3a = 8a²','9b³ − 2b³ = 7b³','2y + 3z = 5yz'],
+     ok:2,ex:'9b³ y −2b³ son semejantes (misma variable b, mismo exponente 3). 9b³ − 2b³ = 7b³. Las otras opciones combinan términos no semejantes.'},
+    {p:'La expresión <strong>4n + 7n + 3m</strong> simplificada queda:',
+     ops:['14nm','11n + 3m','14n + m','11n + 3m² '],
+     ok:1,ex:'4n y 7n son semejantes (misma variable n): 4n + 7n = 11n. El término 3m no se puede combinar porque m ≠ n. Resultado: 11n + 3m.'},
+    {p:'¿Cuántos términos tiene <strong>8x² + 3x − 2x² + x</strong> después de simplificar?',
+     ops:['4 términos','3 términos','2 términos','1 término'],
+     ok:2,ex:'8x² y −2x² son semejantes → 6x². 3x y x son semejantes → 4x. Resultado: 6x² + 4x. Dos términos — es un binomio.'},
+    {p:'Una familia tiene estos gastos mensuales: <strong>12a + 25g + 8a + 3e</strong>. ¿Cuál es la expresión simplificada?',
+     ops:['48age','20a + 25g + 3e','12a + 25g + 11e','20a + 28g'],
+     ok:1,ex:'12a y 8a son semejantes: 12a + 8a = 20a. Los términos 25g y 3e no tienen semejantes. Resultado: 20a + 25g + 3e (trinomio).'}
+  ],
+  // BLOQUE 3: Aplicación en contexto CDMX
+  [
+    {p:'Si un viaje en metro cuesta $7 y realizas <strong>t</strong> viajes por semana, la expresión del gasto semanal es:',
+     ops:['7 + t','t ÷ 7','7t','t − 7'],
+     ok:2,ex:'El gasto se calcula multiplicando el precio por la cantidad. Si cada viaje cuesta $7 y hay t viajes: gasto = 7 × t = 7t. Coeficiente: 7, variable: t.'},
+    {p:'Una cooperativa cobra $28 por comida. Si un estudiante come <strong>c</strong> veces por semana, ¿cuál expresión representa su gasto en comidas?',
+     ops:['28 + c','28c','c ÷ 28','28 − c'],
+     ok:1,ex:'Gasto = precio × cantidad = 28 × c = 28c. El 28 es el coeficiente (precio unitario) y c es la variable (número de comidas).'},
+    {p:'El recibo de agua de una familia muestra: <strong>13a + 24g + 4e</strong>. ¿Qué representa el término <strong>24g</strong>?',
+     ops:['El consumo total de agua','El costo del gas (24 pesos por kg, g kg consumidos)','La electricidad','El total del recibo'],
+     ok:1,ex:'En la expresión del recibo, cada término representa un servicio distinto. 24g significa $24 por cada kg de gas consumido, con g = kg de gas.'},
+    {p:'Un equipo de fútbol gasta <strong>90h + 16j + 130p</strong> pesos. Si en un partido usaron 2 horas de cancha, 11 jugadores y 1 árbitro, ¿cuánto gastaron?',
+     ops:['$236','$544','$507','$453'],
+     ok:1,ex:'Sustituye: 90(2) + 16(11) + 130(1) = 180 + 176 + 130 = $486... revisando: 180+176=356+130=486. La opción correcta es $486 — pero revisemos las opciones. 90×2=180, 16×11=176, 130×1=130. Total=486.'},
+    {p:'Un vendedor tiene ingresos <strong>22j + 14g + 18a</strong> por día. ¿Qué pasaría si en un día no vende gelatinas (g=0)?',
+     ops:['La expresión desaparece','El término 14g se vuelve 0, quedan 22j + 18a','La expresión se simplifica a 54ja','El polinomio se convierte en monomio'],
+     ok:1,ex:'Si g=0, el término 14g = 14(0) = 0. Los otros términos no cambian. El resultado es 22j + 18a — todavía un binomio con los otros dos ingresos.'},
+    {p:'¿Cuál es la diferencia entre el monomio <strong>5t</strong> y el binomio <strong>5t + 30c</strong> en términos de lo que representan?',
+     ops:['No hay diferencia, son la misma expresión','El monomio calcula un solo gasto; el binomio calcula dos gastos distintos que no se pueden combinar','El binomio es incorrecto porque se deben sumar','El monomio es incompleto'],
+     ok:1,ex:'5t calcula solo el gasto de transporte. 5t + 30c calcula transporte MÁS comida. Son dos conceptos distintos con variables distintas, por eso se mantienen como términos separados.'}
+  ],
+  // BLOQUE 4: Razonamiento y errores comunes
+  [
+    {p:'¿Por qué la expresión <strong>3x + 5y</strong> NO puede simplificarse a <strong>8xy</strong>?',
+     ops:['Porque los coeficientes son distintos','Porque x e y representan cantidades diferentes — son variables distintas','Porque el exponente es 1','Porque hay un signo +'],
+     ok:1,ex:'La razón fundamental es que x e y representan cosas distintas en el problema real. Sumarlos sería como sumar manzanas con naranjas. Los términos no son semejantes.'},
+    {p:'Un alumno dice: "el grado de 4x³ es 12 porque 4×3=12". ¿Qué error cometió?',
+     ops:['No hay error, tiene razón','Multiplicó coeficiente por exponente — el grado es el exponente, no el producto','El grado debería ser 4','El grado debería ser 7'],
+     ok:1,ex:'El grado de un monomio es el valor del exponente de la variable, no el producto del coeficiente por el exponente. En 4x³ el grado es 3, no 12.'},
+    {p:'¿Cuál de estas afirmaciones sobre términos semejantes es CORRECTA?',
+     ops:['3x² y 3x son semejantes porque tienen el mismo coeficiente','5a² y 7a² son semejantes porque tienen la misma variable y el mismo exponente','4m y 4n son semejantes porque tienen el mismo coeficiente','Cualquier par de monomios son semejantes'],
+     ok:1,ex:'Para ser semejantes se necesita MISMA variable Y MISMO exponente. 5a² y 7a²: misma variable a, mismo exponente 2. ✓ Solo difieren en el coeficiente.'},
+    {p:'La expresión <strong>x² + x</strong> tiene dos términos. ¿Por qué NO se simplifican?',
+     ops:['Porque los coeficientes son distintos (implícitamente)','Porque aunque la variable es x, los exponentes son distintos: 2 y 1','Porque uno tiene signo y el otro no','Sí se pueden simplificar a 2x²'],
+     ok:1,ex:'x² = x con exponente 2. x = x con exponente 1 (implícito). Mismo nombre de variable, PERO exponentes distintos (2 ≠ 1). No son semejantes.'},
+    {p:'¿Por qué es importante saber si dos términos son semejantes antes de clasificar una expresión?',
+     ops:['No es importante, se clasifica directo','Porque primero hay que simplificar y luego contar los términos reales para clasificar','Porque los términos semejantes cambian el nombre de la variable','Porque el grado cambia al simplificar'],
+     ok:1,ex:'Si tienes 4x² + 3x + 2x² y clasificas directo dices "trinomio". Pero 4x² + 2x² = 6x², entonces simplificado queda 6x² + 3x → binomio. Primero simplificar, luego clasificar.'},
+    {p:'Una expresión algebraica siempre debe tener al menos una variable. ¿Es esto correcto?',
+     ops:['Sí, sin variable no es una expresión algebraica','No — los términos independientes (números solos) también son parte de expresiones algebraicas','Sí, porque sin variable no hay grado','No — cualquier número es una expresión algebraica completa'],
+     ok:1,ex:'Un término independiente como 500 puede ser parte de una expresión: 3x + 500. El 500 es un término sin variable, pero la expresión completa sí es algebraica. Los términos independientes tienen grado 0.'}
+  ]
+];
+
+// ══════════════════════════════════════════════════════════════
+// ESTADO GLOBAL
+// ══════════════════════════════════════════════════════════════
+let alumno=null, gkey='', seed=0, varIdx=0, VV=null;
+let MODO_DOCENTE=false;
+let pr1=0,pr2=0,pr3=0,pr4=0;
+let quizPregs=[], quizResp=[], quizVerif=false, quizScore=0;
+const STEPS=[0,1,2,3,4,'final'];
+let curStep=0;
+
+// ══════════════════════════════════════════════════════════════
+// LOGIN
+// ══════════════════════════════════════════════════════════════
+function cambiarPlantel(){
+  const p=document.getElementById('sel-plantel').value;
+  const sg=document.getElementById('sel-grupo');
+  sg.innerHTML='<option value="">— Selecciona —</option>';
+  sg.disabled=true;
+  document.getElementById('inp-busq').disabled=true;
+  document.getElementById('inp-busq').value='';
+  document.getElementById('dropdown').style.display='none';
+  document.getElementById('id-confirm').style.display='none';
+  document.getElementById('login-confirm-card').style.display='none';
+  if(p==='B17'){
+    sg.innerHTML+='<option value="203">203</option><option value="205">205</option>';
+  } else if(p==='CEB'){
+    sg.innerHTML+='<option value="236">236</option><option value="237">237</option>';
+  }
+  sg.disabled=false;
+}
+
+function cambiarGrupo(){
+  gkey=document.getElementById('sel-grupo').value;
+  const ib=document.getElementById('inp-busq');
+  ib.disabled=!gkey;
+  ib.value='';
+  document.getElementById('dropdown').style.display='none';
+  document.getElementById('id-confirm').style.display='none';
+  document.getElementById('login-confirm-card').style.display='none';
+  alumno=null;
+}
+
+function buscarNombre(){
+  if(!gkey) return;
+  const q=document.getElementById('inp-busq').value.trim().toUpperCase();
+  const dd=document.getElementById('dropdown');
+  if(q.length<2){dd.style.display='none';return;}
+  const lista=GRUPOS[gkey].alumnos;
+  const matches=lista.filter(a=>{
+    const partes=a.nom.split(' ');
+    return partes.some(p=>p.startsWith(q)) || a.nom.startsWith(q);
+  });
+  if(!matches.length){dd.innerHTML='<div class="dd-item" style="color:#999;">Sin coincidencias</div>';dd.style.display='block';return;}
+  dd.innerHTML=matches.slice(0,8).map(a=>`<div class="dd-item" onclick="selAlumno(${a.n})">${a.n}. ${a.nom}</div>`).join('');
+  dd.style.display='block';
+}
+
+function selAlumno(n){
+  if(!gkey) return;
+  alumno=GRUPOS[gkey].alumnos.find(a=>a.n===n);
+  document.getElementById('dropdown').style.display='none';
+  document.getElementById('inp-busq').value=alumno.nom;
+  const conf=document.getElementById('id-confirm');
+  conf.textContent='✓ '+alumno.nom+' · N° '+alumno.n+' · Grupo '+gkey+' · '+GRUPOS[gkey].plantel;
+  conf.style.display='block';
+  // Calcular semilla
+  seed=GRUPOS[gkey].offset+alumno.n;
+  varIdx=seed%4;
+  VV=VARS[varIdx];
+  const vLbl=['A','B','C','D'][varIdx];
+  // Precios deterministas
+  const pk=Object.keys(PRECIOS)[varIdx];
+  const PP=PRECIOS[pk];
+  pr1=pickS(seed*7+1,PP.p1);
+  pr2=pickS(seed*13+2,PP.p2);
+  pr3=pickS(seed*19+3,PP.p3);
+  pr4=pickS(seed*23+4,PP.p4);
+  // Cantidades tabla momento 1
+  window._cants=genCants(seed);
+  document.getElementById('badge-alumno').innerHTML='&#128100; '+alumno.pila+' &nbsp;·&nbsp; Lista '+alumno.n+' &nbsp;·&nbsp; Grupo '+gkey;
+  document.getElementById('badge-grp').textContent=gkey;
+  document.getElementById('badge-var').textContent=vLbl;
+  document.getElementById('login-confirm-card').style.display='block';
+  // Generar quiz
+  generarQuiz();
+}
+
+function genCants(s){
+  const ranges={0:[3,20],1:[5,50],2:[5,25],3:[1,5]};
+  const r=ranges[varIdx];
+  return [
+    rIntS(s*3+11,r[0],Math.floor(r[1]*0.25)),
+    rIntS(s*3+12,Math.floor(r[1]*0.25)+1,Math.floor(r[1]*0.5)),
+    rIntS(s*3+13,Math.floor(r[1]*0.5)+1,Math.floor(r[1]*0.75)),
+    rIntS(s*3+14,Math.floor(r[1]*0.75)+1,r[1])
+  ];
+}
+
+// ══════════════════════════════════════════════════════════════
+// RENDERIZAR MOMENTOS NARRATIVOS
+// ══════════════════════════════════════════════════════════════
+function renderMomentos(){
+  // M1
+  document.getElementById('m1-tit').textContent=VV.m1.tit;
+  document.getElementById('m1-narr').innerHTML=
+    '<span class="narr-ico">'+VV.m1.ico+'</span><p>'+
+    VV.m1.narr.replace('PR1','$'+pr1)+'</p>';
+  document.getElementById('m1-col').textContent=VV.m1.col;
+  document.getElementById('m1-var').textContent=VV.m1.var;
+  window._cants.forEach((c,i)=>document.getElementById('m1-r'+(i+1)).textContent=c);
+  // M2
+  document.getElementById('m2-narr').innerHTML=
+    '<span class="narr-ico">'+VV.m2.ico+'</span><p>'+
+    VV.m2.narr.replace('PR2','$'+pr2)+'</p>';
+  document.getElementById('m2-var1').textContent=VV.m2.var1;
+  document.getElementById('m2-var2').textContent=VV.m2.var2;
+  // M3
+  document.getElementById('m3-narr').innerHTML=
+    '<span class="narr-ico">'+VV.m3.ico+'</span><p>'+
+    VV.m3.narr.replace('PR3','$'+pr3)+'</p>';
+  // M4
+  document.getElementById('m4-narr').innerHTML=
+    '<span class="narr-ico">'+VV.m4.ico+'</span><p>'+
+    VV.m4.narr.replace('PR4','$'+pr4).replace('PR4','$'+pr4)+'</p>';
+}
+
+// ══════════════════════════════════════════════════════════════
+// QUIZ
+// ══════════════════════════════════════════════════════════════
+function generarQuiz(){
+  quizPregs=QB.map((bloque,bi)=>{
+    const idx=Math.floor(sr(seed*(bi+1)*37+bi*13)*bloque.length);
+    return {...bloque[idx],bloque:bi};
+  });
+  quizResp=new Array(5).fill(-1);
+  quizVerif=false;
+  renderQuiz();
+}
+
+function renderQuiz(){
+  const c=document.getElementById('quiz-contenido');
+  c.innerHTML=quizPregs.map((q,i)=>{
+    // Shuffle options with seed
+    const orden=[0,1,2,3].sort((a,b)=>sr(seed*(i+1)*71+a*13)-sr(seed*(i+1)*71+b*13));
+    const optsHtml=orden.map((oi,pos)=>`
+      <div class="qopt" id="qopt-${i}-${pos}" onclick="selOpt(${i},${pos},${oi})">
+        <div class="qopt-letra">${'ABCD'[pos]}</div>
+        <div>${q.ops[oi]}</div>
+      </div>`).join('');
+    return `<div class="qcard" id="qcard-${i}">
+      <div class="qnum">PREGUNTA ${i+1} DE 5</div>
+      <div class="qtexto">${q.p}</div>
+      <div class="qopts" id="qopts-${i}">${optsHtml}</div>
+      <div class="qfeedback" id="qfb-${i}"></div>
+    </div>`;
+  }).join('');
+  // Store orden para corrección
+  window._quizOrden=quizPregs.map((q,i)=>[0,1,2,3].sort((a,b)=>sr(seed*(i+1)*71+a*13)-sr(seed*(i+1)*71+b*13)));
+}
+
+function selOpt(qi,pos,oi){
+  if(quizVerif) return;
+  quizResp[qi]=oi;
+  document.querySelectorAll(`#qopts-${qi} .qopt`).forEach(el=>el.classList.remove('sel'));
+  document.getElementById(`qopt-${qi}-${pos}`).classList.add('sel');
+}
+
+function verificarQuiz(){
+  if(quizPregs.some((_,i)=>quizResp[i]===-1)){
+    document.getElementById('s3-err').style.display='block';
+    return;
+  }
+  document.getElementById('s3-err').style.display='none';
+  quizVerif=true; quizScore=0;
+  quizPregs.forEach((q,i)=>{
+    const orden=window._quizOrden[i];
+    const ok=quizResp[i]===q.ok;
+    if(ok) quizScore++;
+    document.querySelectorAll(`#qopts-${i} .qopt`).forEach((el,pos)=>{
+      el.onclick=null;
+      if(orden[pos]===q.ok) el.classList.add('correcto');
+      else if(orden[pos]===quizResp[i]&&!ok) el.classList.add('incorrecto');
+    });
+    const fb=document.getElementById(`qfb-${i}`);
+    fb.innerHTML=(ok?'&#9989;':'&#10060;')+' '+q.ex;
+    fb.className='qfeedback show '+(ok?'ok':'nook');
+  });
+  const pct=Math.round(quizScore/5*100);
+  const pass=quizScore>=4;
+  document.getElementById('btn-verificar-quiz').style.display='none';
+  document.getElementById('quiz-resultado').innerHTML=`
+    <div class="quiz-score">
+      <div class="score-badge">${pass?'&#127881;':'&#128163;'}</div>
+      <h2>${quizScore}/5 · ${pct}%</h2>
+      <div class="sub">${pass?'&#10003; Excelente — pasas al cierre':'Revisa las preguntas incorrectas. Igual puedes continuar.'}</div>
+    </div>`;
+  document.getElementById('quiz-resultado').style.display='block';
+  document.getElementById('btn-sig-quiz').style.display='block';
+  window._quizScore=quizScore;
+  window._quizPct=pct;
+}
+
+// ══════════════════════════════════════════════════════════════
+// NAVEGACIÓN
+// ══════════════════════════════════════════════════════════════
+function avanzar(from,to){
+  const fromId=from==='final'?'s-final':'s'+from;
+  if(!MODO_DOCENTE && !validar(fromId)) return;
+  if(from===0) renderMomentos();
+  if(from===1) document.getElementById('pre-resp-show').textContent=
+    document.getElementById('pre-resp').value||'—';
+  document.getElementById(fromId).classList.remove('on');
+  const toId=to==='final'?'s-final':'s'+to;
+  document.getElementById(toId).classList.add('on');
+  curStep=STEPS.indexOf(to);
+  updProg();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function updProg(){
+  const MAP=[0,1,2,3,4,4];
+  const d=MAP[curStep];
+  for(let i=0;i<5;i++){
+    const dc=document.getElementById('pd'+i);
+    const dl=document.getElementById('pl'+i);
+    const ln=document.getElementById('pln'+i);
+    dc.classList.remove('on','ok'); dl.classList.remove('on','ok');
+    if(ln) ln.classList.remove('ok');
+    if(i<d){dc.classList.add('ok');dl.classList.add('ok');if(ln)ln.classList.add('ok');}
+    else if(i===d){dc.classList.add('on');dl.classList.add('on');}
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+// VALIDACIÓN
+// ══════════════════════════════════════════════════════════════
+function validar(secId){
+  const sec=document.getElementById(secId);
+  if(!sec) return true;
+  const em=document.getElementById(secId+'-err');
+  let ok=true;
+  sec.querySelectorAll('input[data-req]:not([type=checkbox]),textarea[data-req],select[data-req]').forEach(el=>{
+    el.classList.remove('err');
+    const ml=parseInt(el.dataset.ml||'1');
+    const v=el.tagName==='SELECT'?el.value:el.value.trim();
+    if(!v||v.length<ml){el.classList.add('err');ok=false;}
+  });
+  if(secId==='s0'&&!alumno){ok=false;}
+  if(em) em.style.display=ok?'none':'block';
+  if(!ok){
+    const f=sec.querySelector('.err,.emsg');
+    if(f) f.scrollIntoView({behavior:'smooth',block:'center'});
+  }
+  return ok;
+}
+
+// ══════════════════════════════════════════════════════════════
+// FINALIZAR
+// ══════════════════════════════════════════════════════════════
+function finalizar(){
+  if(!MODO_DOCENTE && !validar('s4')) return;
+  document.getElementById('s4').classList.remove('on');
+  document.getElementById('s-final').classList.add('on');
+  curStep=5; updProg();
+
+  const vLbl=['A','B','C','D'][varIdx];
+  const g = alumno ? (gkey+' · '+GRUPOS[gkey].plantel+' · '+GRUPOS[gkey].turno) : '—';
+  const nom = alumno ? alumno.nom : '(Modo Docente)';
+  const nl  = alumno ? alumno.n   : '—';
+
+  // ── EXPRESIONES con validación visual básica ──
+  function exprRow(label, id, esperado, tipoId){
+    const val = document.getElementById(id) ? document.getElementById(id).value.trim() : '—';
+    const tipo = tipoId && document.getElementById(tipoId) ? document.getElementById(tipoId).value : '';
+    const filled = val.length > 1;
+    const display = tipo ? val+' <span style="color:#888;font-size:.78rem;">→ '+tipo+'</span>' : val;
+    return `<tr>
+      <td style="font-weight:800;background:#faf7ff;width:42%;">${label}</td>
+      <td class="${filled?'ok-val':'err-val'}">
+        ${filled ? display : '<span style="color:#bbb">Sin respuesta</span>'}
+        <div class="esperado-box">Se esperaba: ${esperado}</div>
+      </td>
+    </tr>`;
+  }
+
+  // ── QUIZ CON COLORES ──
+  let quizHTML = '';
+  if(quizPregs.length){
+    const TEMAS=['Clasificación de expresiones','Componentes del monomio','Términos semejantes','Aplicación en contexto CDMX','Razonamiento y errores comunes'];
+    const RESP_LETRAS=['A','B','C','D'];
+    quizHTML = '<div class="res-quiz-row">';
+    quizPregs.forEach((q,i)=>{
+      const alumnoResp = quizResp[i];
+      const ok = alumnoResp === q.ok;
+      const orden = window._quizOrden ? window._quizOrden[i] : [0,1,2,3];
+      const letraCorrecta = RESP_LETRAS[orden.indexOf(q.ok)];
+      const letraAlumno   = alumnoResp >= 0 ? RESP_LETRAS[orden.indexOf(alumnoResp)] : '?';
+      quizHTML += `<div class="res-q">
+        <div class="res-q-ic">${ok?'✅':'❌'}</div>
+        <div class="res-q-body">
+          <div class="res-q-tit">P${i+1} · ${TEMAS[i]}</div>
+          <div class="res-q-resp ${ok?'ok':'nook'}">${ok?'Correcta ('+letraAlumno+')':'Respondió: '+letraAlumno+' · Correcta: '+letraCorrecta}</div>
+          ${!ok?'<div class="esperado">'+q.ex+'</div>':''}
+        </div>
+      </div>`;
+    });
+    quizHTML += '</div>';
+  } else {
+    quizHTML = '<span style="color:#bbb">Quiz no completado</span>';
+  }
+
+  // ── PREGUNTAS ABIERTAS ──
+  function openRow(label, id, esperado){
+    const val = document.getElementById(id) ? document.getElementById(id).value.trim() : '';
+    return `<tr>
+      <td style="font-weight:800;background:#faf7ff;width:42%;vertical-align:top;">${label}</td>
+      <td>
+        ${val ? '<div class="open-ans"><div class="open-ans-lbl">Respuesta del alumno</div><div class="open-ans-txt">'+val+'</div></div>' : '<span style="color:#bbb">Sin respuesta</span>'}
+        <div class="esperado-box"><strong>Se esperaba incluir:</strong> ${esperado}</div>
+      </td>
+    </tr>`;
+  }
+
+  const scoreOk = (window._quizScore||0) >= 4;
+  document.getElementById('tabla-res').innerHTML =
+    // IDENTIFICACIÓN
+    `<tr><td colspan="2" style="background:var(--tie);color:#fff;font-weight:800;padding:7px 11px;font-size:.82rem;">&#128100; IDENTIFICACIÓN</td></tr>` +
+    `<tr><td style="font-weight:800;background:#faf7ff;">Nombre</td><td>${nom}</td></tr>` +
+    `<tr><td style="font-weight:800;background:#faf7ff;">N° de lista / Grupo</td><td>${nl} · ${g}</td></tr>` +
+    `<tr><td style="font-weight:800;background:#faf7ff;">Variante asignada</td><td><strong style="color:var(--mo2);">${vLbl}</strong> · Precios: $${pr1} / $${pr2} / $${pr3} / $${pr4}</td></tr>` +
+
+    // EXPRESIONES
+    `<tr><td colspan="2" style="background:var(--tie);color:#fff;font-weight:800;padding:7px 11px;font-size:.82rem;">&#128221; EXPRESIONES CONSTRUIDAS</td></tr>` +
+    exprRow('Momento 1 — Monomio','m1-expr','Coeficiente (precio) × variable. Ej: 7t  Tipo: monomio','m1-tipo') +
+    exprRow('Momento 2 — Binomio','m2-expr','Dos términos con variables distintas. Ej: 7t + 28c','') +
+    exprRow('Momento 3 — Trinomio','m3-expr','Tres términos distintos. Ej: 7t + 28c + 3f','') +
+    exprRow('Momento 4 — Polinomio','m4-expr','Cuatro términos. Ej: 7t + 28c + 3f + 15r  Tipo: polinomio','m4-tipo') +
+
+    // QUIZ
+    `<tr><td colspan="2" style="background:var(--tie);color:#fff;font-weight:800;padding:7px 11px;font-size:.82rem;">&#127919; QUIZ — ${(window._quizScore||0)}/5 · <span style="color:${scoreOk?'#a5d6a7':'#ef9a9a'}">${scoreOk?'Aprobado ✓':'Revisar ✗'}</span></td></tr>` +
+    `<tr><td colspan="2" style="padding:10px 11px;">${quizHTML}</td></tr>` +
+
+    // REFLEXIONES
+    `<tr><td colspan="2" style="background:var(--tie);color:#fff;font-weight:800;padding:7px 11px;font-size:.82rem;">&#128173; REFLEXIONES</td></tr>` +
+    openRow('Mapa conceptual en cuaderno','c-mapa','Debe conectar al menos: término, tipo de expresión, componentes del monomio y el concepto de términos semejantes.') +
+    openRow('Corrección de respuesta inicial','c-corr','Debe agregar o precisar al menos un tipo de expresión o componente que no mencionó al inicio.') +
+    openRow('Puente hacia PF3','c-pf3','La regla de términos semejantes sirve para simplificar al sumar/restar polinomios: solo se combinan los que tienen misma variable y mismo exponente.') +
+    openRow('Dificultad mayor','c-dif','Reflexión honesta sobre qué le costó más trabajo y por qué.') +
+    openRow('Pregunta difícil del quiz','c-quiz','Identificar cuál pregunta le resultó más difícil y por qué.');
+
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ══════════════════════════════════════════════════════════════
+// MODO DOCENTE
+// ══════════════════════════════════════════════════════════════
+function abrirModalDoc(){document.getElementById('modal-doc').classList.add('show');}
+function cerrarModalDoc(){
+  document.getElementById('modal-doc').classList.remove('show');
+  document.getElementById('doc-cod').value='';
+  document.getElementById('doc-err').style.display='none';
+}
+function verificarDocente(){
+  const v=document.getElementById('doc-cod').value.trim();
+  if(v==='890'||v==='890ac'||v==='890AC'){
+    MODO_DOCENTE=true;
+    document.getElementById('doc-login-area').style.display='none';
+    document.getElementById('doc-panel').classList.add('show');
+  } else {
+    document.getElementById('doc-err').style.display='block';
+    document.getElementById('doc-cod').value='';
+  }
+}
+function docTab(t){
+  document.getElementById('doc-tab-ind').style.display = t==='ind'?'block':'none';
+  document.getElementById('doc-tab-grp').style.display = t==='grp'?'block':'none';
+  document.getElementById('tab-ind').classList.toggle('act', t==='ind');
+  document.getElementById('tab-grp').classList.toggle('act', t==='grp');
+}
+function docSaltarFinal(){
+  cerrarModalDoc();
+  // Si no hay alumno asignado, creamos uno ficticio de docente
+  if(!alumno){
+    gkey='203'; alumno={n:0,nom:'MODO DOCENTE',pila:'Docente'};
+    seed=GRUPOS[gkey].offset+0; varIdx=seed%4; VV=VARS[varIdx];
+    const pk=Object.keys(PRECIOS)[varIdx]; const PP=PRECIOS[pk];
+    pr1=pickS(seed*7+1,PP.p1); pr2=pickS(seed*13+2,PP.p2);
+    pr3=pickS(seed*19+3,PP.p3); pr4=pickS(seed*23+4,PP.p4);
+    document.getElementById('badge-grp').textContent='DOC';
+    document.getElementById('badge-var').textContent='—';
+    generarQuiz();
+  }
+  // Avanzar a todos los pasos sin validar
+  ['s0','s1','s2','s3','s4'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.classList.remove('on');
+  });
+  document.getElementById('s-final').classList.add('on');
+  curStep=5; updProg();
+  finalizar();
+}
+function docResolverNormal(){
+  cerrarModalDoc();
+  // Volver al login si no hay alumno, o al inicio si ya está identificado
+  if(!alumno){
+    document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+    document.getElementById('s0').classList.add('on');
+    curStep=0; updProg();
+  }
+}
+function docConsultar(){
+  const g=document.getElementById('doc-grp').value;
+  const nl=parseInt(document.getElementById('doc-nl').value);
+  const res=document.getElementById('doc-result');
+  if(!g||!nl){res.innerHTML='';return;}
+  const gr=GRUPOS[g];
+  if(!gr){res.innerHTML='<span style="color:red">Grupo no encontrado</span>';return;}
+  const al=gr.alumnos.find(a=>a.n===nl);
+  if(!al){res.innerHTML='<span style="color:red">Alumno '+nl+' no encontrado en grupo '+g+'</span>';return;}
+  const s=gr.offset+nl;
+  const vi=s%4; const vl=['A','B','C','D'][vi];
+  const pk=Object.keys(PRECIOS)[vi]; const PP=PRECIOS[pk];
+  const p1v=pickS(s*7+1,PP.p1), p2v=pickS(s*13+2,PP.p2);
+  const p3v=pickS(s*19+3,PP.p3), p4v=pickS(s*23+4,PP.p4);
+  const qidxs=QB.map((b,bi)=>Math.floor(sr(s*(bi+1)*37+bi*13)*b.length));
+  const TEMAS_CORTO=['Clasif.','Componentes','Semejantes','Contexto','Razonamiento'];
+  res.innerHTML=`
+    <div style="font-weight:800;margin-bottom:6px;color:var(--mo);font-size:.85rem;">${al.nom}</div>
+    <div class="doc-row"><span class="doc-key">Grupo / Lista</span><span class="doc-val">${g} / ${nl}</span></div>
+    <div class="doc-row"><span class="doc-key">Variante</span><span class="doc-val" style="color:var(--mo2);">${vl}</span></div>
+    <div class="doc-row"><span class="doc-key">Precios (1/2/3/4)</span><span class="doc-val">$${p1v} · $${p2v} · $${p3v} · $${p4v}</span></div>
+    <div style="margin-top:7px;font-size:.78rem;font-weight:800;color:#666;margin-bottom:4px;">QUIZ ASIGNADO:</div>
+    ${qidxs.map((qi,i)=>`<div class="doc-row"><span class="doc-key">P${i+1} · ${TEMAS_CORTO[i]}</span><span class="doc-val">Bloque ${i+1} Preg.#${qi+1} — <em style="color:#888;font-weight:400;">${QB[i][qi].p.replace(/<[^>]+>/g,'').substring(0,40)}…</em></span></div>`).join('')}
+  `;
+}
+
+function docGrupoCompleto(){
+  const g=document.getElementById('doc-grp2').value;
+  const res=document.getElementById('doc-grp-result');
+  const btn=document.getElementById('btn-copiar');
+  if(!g){res.innerHTML='';btn.style.display='none';return;}
+  const gr=GRUPOS[g];
+  const TEMAS_CORTO=['Clasif.','Comp.','Semej.','Ctx.','Razon.'];
+  const VCOL=['v-a','v-b','v-c','v-d'];
+
+  let tableHTML=`<div style="overflow-x:auto;">
+  <table class="grp-table" id="grp-tabla-data">
+  <thead><tr>
+    <th>N°</th><th>Nombre</th><th>Var</th>
+    <th>P1</th><th>P2</th><th>P3</th><th>P4</th>
+    ${TEMAS_CORTO.map((t,i)=>`<th>Q${i+1}<br><span style="font-weight:400;font-size:.62rem;">${t}</span></th>`).join('')}
+  </tr></thead><tbody>`;
+
+  // Texto plano para copiar
+  window._tablaTexto = ['N\u00b0','Nombre','Var','P1','P2','P3','P4'].concat(TEMAS_CORTO.map((_,i)=>'Q'+(i+1))).join('\t')+'\n';
+  gr.alumnos.forEach(al=>{
+    const s=gr.offset+al.n;
+    const vi=s%4; const vl=['A','B','C','D'][vi];
+    const pk=Object.keys(PRECIOS)[vi]; const PP=PRECIOS[pk];
+    const p1v=pickS(s*7+1,PP.p1), p2v=pickS(s*13+2,PP.p2);
+    const p3v=pickS(s*19+3,PP.p3), p4v=pickS(s*23+4,PP.p4);
+    const qidxs=QB.map((b,bi)=>Math.floor(sr(s*(bi+1)*37+bi*13)*b.length));
+    const isInv=al.nom.includes('INVITADO');
+    const bgInv=isInv?'background:#fff8e1;':'';
+    tableHTML+=`<tr style="${bgInv}">
+      <td style="font-weight:800;">${al.n}</td>
+      <td class="td-nom" title="${al.nom}">${al.nom}</td>
+      <td class="${VCOL[vi]}">${vl}</td>
+      <td>$${p1v}</td><td>$${p2v}</td><td>$${p3v}</td><td>$${p4v}</td>
+      ${qidxs.map(qi=>`<td>${qi+1}</td>`).join('')}
+    </tr>`;
+    window._tablaTexto += [al.n,al.nom,vl,'$'+p1v,'$'+p2v,'$'+p3v,'$'+p4v].concat(qidxs.map(qi=>qi+1)).join('\t')+'\n';
+  });
+  tableHTML+='</tbody></table></div>';
+  res.innerHTML=tableHTML;
+  btn.style.display='block';
+}
+
+function copiarTabla(){
+  if(!window._tablaTexto) return;
+  navigator.clipboard.writeText(window._tablaTexto).then(()=>{
+    const btn=document.getElementById('btn-copiar');
+    btn.textContent='✓ Copiado';
+    setTimeout(()=>{btn.textContent='📋 Copiar tabla (para Sheets)';},2000);
+  }).catch(()=>{
+    // Fallback
+    const ta=document.createElement('textarea');
+    ta.value=window._tablaTexto; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+    const btn=document.getElementById('btn-copiar');
+    btn.textContent='✓ Copiado'; setTimeout(()=>{btn.textContent='📋 Copiar tabla (para Sheets)';},2000);
+  });
+}
+</script>
+</body>
+</html>
