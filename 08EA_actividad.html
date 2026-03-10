@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>S8 · Suma y Resta de Monomios · PM II</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --mo:#5B2D8E;--mo2:#7B3FC0;--mo3:#B88EE8;--mo-f:#f3ecfb;
+  --ver:#1B6B45;--ver2:#52B788;
+  --nar:#E85D04;--nar2:#F9A53A;
+  --roj:#C1121F;--az:#023E8A;--az2:#1565C0;
+  --cr:#fdf9ff;--tie:#1a0a2e;--gris:#ede8f5;--gris2:#d5cce8;
+  --som:0 3px 18px rgba(91,45,142,.12);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Nunito',sans-serif;background:var(--cr);color:var(--tie);font-size:15px;overflow-x:hidden;}
+.prog{background:var(--tie);padding:9px 14px 7px;position:sticky;top:0;z-index:200;box-shadow:0 2px 10px rgba(0,0,0,.4);}
+.prog-inner{display:flex;align-items:center;justify-content:center;gap:0;max-width:500px;margin:0 auto;}
+.pd{display:flex;flex-direction:column;align-items:center;flex-shrink:0;}
+.pd-c{width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:rgba(255,255,255,.3);font-family:'Bebas Neue';font-size:.95rem;display:flex;align-items:center;justify-content:center;transition:all .3s;}
+.pd-c.on{background:var(--mo2);border-color:var(--mo2);color:#fff;}
+.pd-c.ok{background:var(--ver2);border-color:var(--ver2);color:#fff;}
+.pd-l{font-size:.55rem;font-weight:700;color:rgba(255,255,255,.25);margin-top:2px;text-align:center;max-width:52px;line-height:1.2;}
+.pd-l.on{color:var(--mo3);}
+.pd-l.ok{color:var(--ver2);}
+.pln{flex:1;height:2px;background:rgba(255,255,255,.1);min-width:6px;max-width:24px;transition:background .3s;}
+.pln.ok{background:var(--ver2);}
+.prog-info{text-align:center;font-size:.58rem;color:rgba(255,255,255,.3);margin-top:3px;letter-spacing:.5px;}
+.prog-info span{color:var(--mo3);font-weight:800;}
+.hdr{background:linear-gradient(135deg,var(--tie) 0%,#2d1050 100%);padding:22px 16px 18px;position:relative;overflow:hidden;}
+.hdr::after{content:'';position:absolute;right:-30px;top:-30px;width:150px;height:150px;background:var(--mo2);opacity:.09;border-radius:50%;}
+.hdr-tag{font-size:.68rem;font-weight:800;letter-spacing:3px;color:var(--mo3);text-transform:uppercase;margin-bottom:4px;}
+.hdr h1{font-family:'Bebas Neue';font-size:1.9rem;color:#fff;line-height:1;}
+.hdr h1 em{color:var(--nar2);font-style:normal;}
+.hdr-sub{font-size:.76rem;color:rgba(255,255,255,.45);margin-top:5px;}
+.sec{display:none;padding:16px;max-width:700px;margin:0 auto;animation:up .3s ease;}
+.sec.on{display:block;}
+@keyframes up{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.plabel{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--gris2);}
+.pnum{font-family:'Bebas Neue';font-size:2.8rem;line-height:1;color:var(--mo2);}
+.ptag{font-size:.63rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--mo2);margin-bottom:2px;}
+.ptit{font-size:1rem;font-weight:900;color:var(--tie);line-height:1.2;}
+.card{background:#fff;border-radius:12px;padding:15px;margin-bottom:12px;box-shadow:var(--som);}
+.card-mo{border-left:4px solid var(--mo2);}
+.card-v{border-left:4px solid var(--ver);}
+.card-a{border-left:4px solid var(--az2);}
+.card-n{border-left:4px solid var(--nar);}
+.card-r{border-left:4px solid var(--roj);}
+.narr{background:linear-gradient(135deg,var(--tie),#2d1050);border-radius:12px;padding:15px;margin-bottom:12px;color:#fff;position:relative;overflow:hidden;}
+.narr::before{content:'';position:absolute;right:-20px;bottom:-20px;width:90px;height:90px;background:var(--mo2);opacity:.12;border-radius:50%;}
+.narr-ico{font-size:1.7rem;margin-bottom:5px;display:block;}
+.narr p{font-size:.87rem;line-height:1.75;opacity:.95;}
+.narr strong{color:var(--nar2);}
+.pill{display:inline-block;font-size:.65rem;font-weight:800;letter-spacing:.4px;padding:3px 9px;border-radius:12px;margin-bottom:8px;text-transform:uppercase;}
+.p-mo{background:var(--mo-f);color:var(--mo);}
+.p-v{background:#d4edda;color:var(--ver);}
+.p-a{background:#cce5ff;color:var(--az2);}
+.p-n{background:#ffe0cc;color:var(--nar);}
+.p-r{background:#fdecea;color:var(--roj);}
+label{font-size:.83rem;font-weight:700;color:var(--tie);display:block;margin-top:10px;}
+label:first-child{margin-top:0;}
+.inp{width:100%;padding:10px 12px;border:2.5px solid var(--gris2);border-radius:9px;font-size:.91rem;font-family:'Nunito';color:var(--tie);background:#fff;transition:border-color .2s;margin-top:4px;}
+.inp:focus{outline:none;border-color:var(--mo2);box-shadow:0 0 0 3px rgba(123,63,192,.1);}
+.inp.err{border-color:var(--roj)!important;background:#fff8f8;}
+.inp-sm{width:90px;text-align:center;padding:7px 4px;font-size:.9rem;}
+.ta{min-height:64px;resize:vertical;}
+.hint{font-size:.71rem;color:#999;margin-top:3px;line-height:1.4;}
+.emsg{display:none;background:#fdecea;border:2px solid var(--roj);border-radius:9px;padding:9px 13px;font-size:.82rem;color:var(--roj);font-weight:700;margin-bottom:11px;}
+.btn{display:block;width:100%;padding:13px;border:none;border-radius:11px;font-size:.96rem;font-weight:800;cursor:pointer;transition:all .2s;font-family:'Nunito';margin-top:11px;}
+.btn-mo{background:var(--mo2);color:#fff;}
+.btn-mo:hover{background:var(--mo);transform:translateY(-1px);}
+.btn-v{background:var(--ver);color:#fff;}
+.btn-outline{background:transparent;border:2.5px solid var(--mo2);color:var(--mo2);}
+/* LOGIN */
+.login-card{background:#fff;border-radius:14px;padding:18px 16px;box-shadow:var(--som);margin-bottom:12px;}
+.login-card h3{font-family:'Bebas Neue';font-size:1.3rem;color:var(--mo2);letter-spacing:.5px;margin-bottom:10px;}
+.step-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.step-n{width:24px;height:24px;border-radius:50%;background:var(--mo2);color:#fff;font-family:'Bebas Neue';font-size:1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.step-lbl{font-size:.83rem;font-weight:700;color:var(--tie);}
+.busq-wrap{position:relative;}
+.dropdown{position:absolute;top:100%;left:0;right:0;background:#fff;border:2px solid var(--mo2);border-top:none;border-radius:0 0 9px 9px;max-height:180px;overflow-y:auto;z-index:100;display:none;}
+.dd-item{padding:9px 12px;font-size:.87rem;cursor:pointer;border-bottom:1px solid var(--gris2);}
+.dd-item:hover{background:var(--mo-f);color:var(--mo);}
+.id-confirm{display:none;background:#e8f5e9;border:2px solid var(--ver2);border-radius:9px;padding:10px 13px;font-size:.85rem;color:#1b5e20;font-weight:700;margin-top:8px;}
+.badge-alumno{display:block;width:fit-content;background:var(--mo-f);border:2px solid var(--mo2);border-radius:20px;padding:5px 14px;font-size:.8rem;font-weight:800;color:var(--mo);margin:0 auto;}
+/* TABLA MOVIMIENTOS */
+.twrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:10px 0;}
+table{width:100%;border-collapse:collapse;font-size:.83rem;}
+th{background:var(--tie);color:#fff;padding:8px 9px;text-align:center;font-weight:700;white-space:nowrap;}
+td{padding:7px 8px;border:2px solid var(--gris2);text-align:center;vertical-align:middle;}
+tr:nth-child(even) td{background:#faf7ff;}
+td.fij{font-weight:800;color:var(--tie);background:#ede8f5;}
+td.pos{color:var(--ver);font-weight:800;}
+td.neg{color:var(--roj);font-weight:800;}
+td.res{background:var(--tie);color:#fff;font-weight:800;}
+/* OPERACION VISUAL */
+.op-line{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin:10px 0;padding:11px 13px;background:var(--gris);border-radius:9px;}
+.op-term{font-family:monospace;font-size:1rem;font-weight:800;padding:4px 9px;border-radius:6px;}
+.op-pos{background:#e8f5e9;color:#1b5e20;border:1.5px solid var(--ver2);}
+.op-neg{background:#fdecea;color:var(--roj);border:1.5px solid var(--roj);}
+.op-sig{font-size:1.1rem;font-weight:800;color:#888;}
+.op-eq{font-size:1.1rem;font-weight:800;color:var(--mo2);}
+.op-res{background:var(--mo-f);color:var(--mo);border:2px solid var(--mo2);font-family:monospace;font-size:1rem;font-weight:800;padding:4px 9px;border-radius:6px;}
+/* QUIZ */
+.quiz-hdr{background:linear-gradient(135deg,#0a1628,var(--az));border-radius:14px;padding:16px;color:#fff;margin-bottom:12px;text-align:center;}
+.quiz-hdr h2{font-family:'Bebas Neue';font-size:1.6rem;letter-spacing:1px;margin-bottom:3px;}
+.qcard{background:#fff;border-radius:12px;padding:15px;margin-bottom:10px;box-shadow:var(--som);border:2px solid var(--gris2);}
+.qnum{font-size:.65rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--az2);margin-bottom:8px;}
+.qtexto{font-size:.9rem;font-weight:700;color:var(--tie);line-height:1.65;margin-bottom:12px;}
+.qopts{display:flex;flex-direction:column;gap:7px;}
+.qopt{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border:2.5px solid var(--gris2);border-radius:9px;cursor:pointer;transition:all .2s;font-size:.88rem;line-height:1.5;font-weight:600;}
+.qopt:hover{border-color:var(--az2);background:#f0f4ff;}
+.qopt.sel{border-color:var(--az2);background:#e8f0ff;}
+.qopt.correcto{border-color:var(--ver2);background:#e8f5e9;color:#1b5e20;}
+.qopt.incorrecto{border-color:var(--roj);background:#fdecea;color:var(--roj);}
+.qopt-letra{width:22px;height:22px;border-radius:50%;background:var(--gris2);color:var(--tie);font-weight:800;font-size:.8rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.qopt.correcto .qopt-letra{background:var(--ver2);color:#fff;}
+.qopt.incorrecto .qopt-letra{background:var(--roj);color:#fff;}
+.qfeedback{margin-top:9px;padding:9px 12px;border-radius:8px;font-size:.82rem;line-height:1.55;display:none;}
+.qfeedback.show{display:block;}
+.qfeedback.ok{background:#e8f5e9;color:#1b5e20;border:1.5px solid var(--ver2);}
+.qfeedback.nook{background:#fdecea;color:var(--roj);border:1.5px solid var(--roj);}
+.quiz-score{background:linear-gradient(135deg,var(--az),#023E8A);border-radius:14px;padding:20px 16px;color:#fff;text-align:center;margin-bottom:12px;}
+.quiz-score h2{font-family:'Bebas Neue';font-size:2.5rem;}
+.score-badge{font-size:3rem;margin:8px 0;}
+/* RESUMEN */
+.res-banner{background:linear-gradient(135deg,var(--mo),#2d1050);border-radius:14px;padding:18px 15px;text-align:center;color:#fff;margin-bottom:12px;}
+.res-banner h2{font-family:'Bebas Neue';font-size:2rem;letter-spacing:1px;}
+.res-tabla{width:100%;border-collapse:collapse;font-size:.82rem;}
+.res-tabla td{padding:8px 11px;border-bottom:1.5px solid var(--gris2);vertical-align:top;}
+.res-tabla td:first-child{font-weight:800;color:var(--tie);width:40%;background:#faf7ff;}
+.esperado-box{background:#fff8e1;border-left:3px solid #f9a825;border-radius:0 6px 6px 0;padding:5px 8px;margin-top:4px;font-size:.72rem;color:#666;line-height:1.45;}
+.open-ans{background:var(--gris);border-radius:6px;padding:6px 9px;margin-top:4px;}
+.open-ans-lbl{font-size:.65rem;font-weight:800;letter-spacing:.5px;color:#999;text-transform:uppercase;margin-bottom:2px;}
+.open-ans-txt{font-size:.78rem;color:var(--tie);line-height:1.5;}
+.res-q{display:flex;align-items:flex-start;gap:6px;padding:4px 0;border-bottom:1px solid var(--gris2);}
+.res-q:last-child{border-bottom:none;}
+.res-q-ic{font-size:.9rem;flex-shrink:0;margin-top:1px;}
+.res-q-body{flex:1;}
+.res-q-tit{font-size:.75rem;font-weight:800;color:#555;}
+.res-q-resp{font-size:.8rem;font-weight:700;}
+.res-q-resp.ok{color:var(--ver);}
+.res-q-resp.nook{color:var(--roj);}
+.esperado{font-size:.72rem;color:#888;font-style:italic;margin-top:2px;line-height:1.4;}
+/* DOCENTE */
+.doc-modal{display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.6);align-items:center;justify-content:center;}
+.doc-modal.show{display:flex;}
+.doc-inner{background:#fff;border-radius:14px;padding:20px;max-width:380px;width:92%;box-shadow:0 10px 40px rgba(0,0,0,.3);max-height:90vh;overflow-y:auto;}
+.doc-inner h3{font-family:'Bebas Neue';font-size:1.4rem;color:var(--mo);margin-bottom:12px;}
+.doc-panel{display:none;background:var(--mo-f);border-radius:12px;padding:14px;margin-top:10px;font-size:.82rem;}
+.doc-panel.show{display:block;}
+.doc-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--gris2);font-size:.8rem;}
+.doc-row:last-child{border-bottom:none;}
+.doc-key{font-weight:700;color:var(--tie);}
+.doc-val{color:var(--mo);font-weight:800;font-family:monospace;}
+.doc-tabs{display:flex;gap:6px;margin-bottom:10px;}
+.doc-tab{flex:1;padding:7px;border:2px solid var(--gris2);border-radius:8px;background:var(--gris);font-size:.78rem;font-weight:700;cursor:pointer;text-align:center;color:#666;transition:all .2s;}
+.doc-tab.act{background:var(--mo2);border-color:var(--mo2);color:#fff;}
+.doc-skip{background:var(--az2);color:#fff;border:none;border-radius:9px;padding:9px 14px;font-family:'Nunito';font-weight:800;font-size:.85rem;cursor:pointer;width:100%;margin-top:8px;transition:all .2s;}
+.grp-table{width:100%;border-collapse:collapse;font-size:.72rem;margin-top:8px;}
+.grp-table th{background:var(--tie);color:#fff;padding:6px 7px;text-align:center;white-space:nowrap;font-size:.68rem;}
+.grp-table td{padding:5px 6px;border:1px solid var(--gris2);text-align:center;vertical-align:middle;}
+.grp-table tr:nth-child(even) td{background:#faf7ff;}
+.grp-table .td-nom{text-align:left;font-weight:700;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.grp-table .v-a{color:#c62828;font-weight:800;}
+.grp-table .v-b{color:#1565c0;font-weight:800;}
+.grp-table .v-c{color:#2e7d32;font-weight:800;}
+.grp-table .v-d{color:#e65100;font-weight:800;}
+.copy-btn{background:var(--ver);color:#fff;border:none;border-radius:8px;padding:7px 14px;font-family:'Nunito';font-weight:800;font-size:.78rem;cursor:pointer;margin-top:8px;}
+/* ENTREGA */
+.cap-aviso{background:#fff8e1;border:2px solid #f9a825;border-radius:9px;padding:11px 13px;font-size:.81rem;margin-top:13px;}
+.cap-aviso h4{color:#f57f17;margin-bottom:5px;}
+</style>
+</head>
+<body>
+
+<!-- MODAL DOCENTE -->
+<div class="doc-modal" id="modal-doc">
+  <div class="doc-inner">
+    <h3>&#128274; Acceso Docente</h3>
+    <div id="doc-login-area">
+      <p style="font-size:.83rem;color:#666;margin-bottom:10px;">Código:</p>
+      <input class="inp" id="doc-cod" type="password" placeholder="••••" autocomplete="off" onkeydown="if(event.key==='Enter')verificarDocente()">
+      <div id="doc-err" style="display:none;color:var(--roj);font-size:.8rem;margin-top:6px;font-weight:700;">Código incorrecto.</div>
+      <div style="display:flex;gap:8px;margin-top:10px;">
+        <button class="btn btn-mo" style="flex:1;" onclick="verificarDocente()">Entrar</button>
+        <button class="btn btn-outline" style="flex:1;" onclick="cerrarModalDoc()">Cancelar</button>
+      </div>
+    </div>
+    <div class="doc-panel" id="doc-panel">
+      <div style="background:var(--mo2);border-radius:8px;padding:8px 12px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-weight:800;color:#fff;font-size:.85rem;">&#128101; Modo Docente</span>
+        <button onclick="cerrarModalDoc()" style="background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:6px;padding:3px 9px;font-size:.75rem;cursor:pointer;font-family:'Nunito';font-weight:700;">Cerrar</button>
+      </div>
+      <div style="background:#e3f2fd;border-radius:9px;padding:10px 12px;margin-bottom:10px;">
+        <p style="font-size:.8rem;font-weight:800;color:var(--az2);margin-bottom:7px;">Navegación:</p>
+        <div style="display:flex;gap:7px;">
+          <button class="doc-skip" style="background:var(--az2);" onclick="docSaltarFinal()">&#9193; Ir al resumen</button>
+          <button class="doc-skip" style="background:var(--ver);" onclick="docResolverNormal()">&#9997; Resolver</button>
+        </div>
+      </div>
+      <div class="doc-tabs">
+        <div class="doc-tab act" id="tab-ind" onclick="docTab('ind')">&#128100; Individual</div>
+        <div class="doc-tab" id="tab-grp" onclick="docTab('grp')">&#128101; Grupo</div>
+      </div>
+      <div id="doc-tab-ind">
+        <div style="display:flex;gap:6px;margin-top:4px;">
+          <select class="inp" id="doc-grp" style="flex:1;" onchange="docConsultar()">
+            <option value="">Grupo</option>
+            <option value="203">203</option><option value="205">205</option>
+            <option value="236">236</option><option value="237">237</option>
+          </select>
+          <input class="inp inp-sm" id="doc-nl" type="number" min="1" max="99" placeholder="N°" onchange="docConsultar()">
+        </div>
+        <div id="doc-result" style="margin-top:10px;"></div>
+      </div>
+      <div id="doc-tab-grp" style="display:none;">
+        <select class="inp" id="doc-grp2" style="margin-top:4px;" onchange="docGrupoCompleto()">
+          <option value="">— Selecciona —</option>
+          <option value="203">203 · Bachilleres 17</option>
+          <option value="205">205 · Bachilleres 17</option>
+          <option value="236">236 · CEB 4/2</option>
+          <option value="237">237 · CEB 4/2</option>
+        </select>
+        <div id="doc-grp-result" style="margin-top:10px;overflow-x:auto;"></div>
+        <button class="copy-btn" id="btn-copiar" style="display:none;" onclick="copiarTabla()">&#128203; Copiar tabla</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BARRA PROGRESO -->
+<div class="prog">
+  <div class="prog-inner">
+    <div class="pd"><div class="pd-c on" id="pd0">1</div><div class="pd-l on" id="pl0">Inicio</div></div>
+    <div class="pln" id="pln0"></div>
+    <div class="pd"><div class="pd-c" id="pd1">2</div><div class="pd-l" id="pl1">Momento&nbsp;1</div></div>
+    <div class="pln" id="pln1"></div>
+    <div class="pd"><div class="pd-c" id="pd2">3</div><div class="pd-l" id="pl2">Momentos&nbsp;2&minus;4</div></div>
+    <div class="pln" id="pln2"></div>
+    <div class="pd"><div class="pd-c" id="pd3">4</div><div class="pd-l" id="pl3">Quiz</div></div>
+    <div class="pln" id="pln3"></div>
+    <div class="pd"><div class="pd-c" id="pd4">5</div><div class="pd-l" id="pl4">Cierre</div></div>
+  </div>
+  <div class="prog-info">PM II · S8 · PF3 · Prof. Adrián Cruz &nbsp;|&nbsp; Grupo: <span id="badge-grp">—</span> &nbsp;|&nbsp; Variante: <span id="badge-var">—</span></div>
+</div>
+
+<div class="hdr">
+  <div class="hdr-tag">Pensamiento Matemático II · PF3 · Sesión 8</div>
+  <h1>Suma y resta de <em>monomios</em></h1>
+  <div class="hdr-sub">Del saldo de tu cuenta a la regla de signos — sin memorizar nada</div>
+</div>
+
+<div class="sec on" id="s0">
+  <div class="plabel">
+    <div class="pnum">1</div>
+    <div><div class="ptag">Identificación</div><div class="ptit">Selecciona tu grupo y nombre</div></div>
+  </div>
+  <div id="s0-err" class="emsg">&#9888;&#65039; Completa todos los pasos.</div>
+  <div class="login-card">
+    <h3>&#128100; ¿Quién eres?</h3>
+    <div class="step-row"><div class="step-n">1</div><div class="step-lbl">Plantel:</div></div>
+    <select class="inp" id="sel-plantel" onchange="cambiarPlantel()">
+      <option value="">— Selecciona —</option>
+      <option value="B17">Colegio de Bachilleres 17</option>
+      <option value="CEB">CEB 4/2</option>
+    </select>
+    <div class="step-row" style="margin-top:12px;"><div class="step-n">2</div><div class="step-lbl">Grupo:</div></div>
+    <select class="inp" id="sel-grupo" onchange="cambiarGrupo()" disabled>
+      <option value="">— Primero elige plantel —</option>
+    </select>
+    <div class="step-row" style="margin-top:12px;"><div class="step-n">3</div><div class="step-lbl">Primer apellido:</div></div>
+    <div class="busq-wrap">
+      <input class="inp" id="inp-busq" autocomplete="off" placeholder="Escribe aquí..." oninput="buscarNombre()" disabled>
+      <div class="dropdown" id="dropdown"></div>
+    </div>
+    <div class="id-confirm" id="id-confirm"></div>
+  </div>
+
+  <div class="login-card" style="display:none;" id="login-confirm-card">
+    <div style="text-align:center;margin-bottom:12px;">
+      <div class="badge-alumno" id="badge-alumno">&#128100; —</div>
+    </div>
+    <div style="background:var(--gris);border-radius:9px;padding:11px 13px;font-size:.84rem;line-height:1.7;color:#555;">
+      Hoy vamos a <strong>operar monomios</strong> — sumarlos y restarlos — a partir de una situación real. El concepto va a nacer del problema, no al revés.<br><br>
+      <strong style="color:var(--mo2);">Pregunta de activación:</strong>
+    </div>
+    <label style="margin-top:10px;">¿Qué crees que pasa cuando sumas <strong>3x + 5x</strong>? ¿Y cuando intentas sumar <strong>3x + 5y</strong>? Escribe tu hipótesis antes de ver la actividad:</label>
+    <textarea class="inp ta" id="pre-hip" data-req data-ml="8" placeholder="Escribe lo que crees que va a pasar en cada caso y por qué..."></textarea>
+    <button class="btn btn-mo" onclick="avanzar(0,1)">Comenzar &#8594;</button>
+  </div>
+  <div style="text-align:right;padding:4px;"><span style="font-size:.6rem;color:#ccc;cursor:pointer;" onclick="abrirModalDoc()">v1.0</span></div>
+</div>
+
+<div class="sec" id="s1">
+  <div class="plabel">
+    <div class="pnum">2</div>
+    <div><div class="ptag">Momento 1 · Solo entradas</div><div class="ptit" id="m1-tit">—</div></div>
+  </div>
+  <div id="s1-err" class="emsg">&#9888;&#65039; Completa todos los campos.</div>
+  <div class="narr" id="m1-narr"></div>
+
+  <div class="card card-mo">
+    <div class="pill p-mo">Parte A · ¿Cuánto entra en total?</div>
+    <p style="font-size:.85rem;margin-bottom:10px;" id="m1-pregA">—</p>
+    <div class="twrap">
+      <table id="m1-tabla">
+        <tr><th id="m1-th1">Día</th><th>Movimiento</th><th>Expresión</th></tr>
+      </table>
+    </div>
+    <label style="margin-top:12px;">Escribe la expresión que suma todos los movimientos:</label>
+    <input class="inp" id="m1-suma" data-req data-ml="2" autocomplete="off" placeholder="Ej: 5n + 3n + ...">
+    <div class="hint">Usa la misma variable que ves en la tabla. Un movimiento por término.</div>
+  </div>
+
+  <div class="card card-a">
+    <div class="pill p-a">Parte B · Simplifica</div>
+    <div style="background:var(--gris);border-radius:8px;padding:10px 12px;margin-bottom:10px;font-size:.85rem;" id="m1-b-texto">—</div>
+    <label>Resultado simplificado (un solo monomio):</label>
+    <input class="inp" id="m1-simple" data-req data-ml="1" autocomplete="off" placeholder="Ej: 11n">
+    <label style="margin-top:10px;">¿Qué operación hiciste con los coeficientes? ¿Por qué crees que funcionó así?</label>
+    <textarea class="inp ta" id="m1-como" data-req data-ml="10" placeholder="Con los números que están antes de la variable hice... porque los tres movimientos son del mismo tipo y..."></textarea>
+    <div style="background:#e8f5e9;border-left:3px solid var(--ver2);border-radius:0 8px 8px 0;padding:9px 12px;margin-top:10px;font-size:.8rem;color:#1b5e20;">
+      <strong>📓 Anota en tu cuaderno:</strong> la tabla de entradas y la expresión simplificada que obtuviste.
+    </div>
+  </div>
+
+  <button class="btn btn-mo" onclick="avanzar(1,2)">Siguiente &#8594;</button>
+</div>
+
+<div class="sec" id="s2">
+  <div class="plabel">
+    <div class="pnum">3</div>
+    <div><div class="ptag">Momentos 2, 3 y 4 · Entradas y salidas</div><div class="ptit">La ley de signos nace sola</div></div>
+  </div>
+  <div id="s2-err" class="emsg">&#9888;&#65039; Completa todos los campos.</div>
+
+  <!-- MOMENTO 2: positivos y negativos, 1 variable -->
+  <div class="narr" id="m2-narr"></div>
+  <div class="card card-v">
+    <div class="pill p-v">Momento 2 · Entradas y salidas</div>
+    <p style="font-size:.85rem;margin-bottom:10px;" id="m2-texto">—</p>
+    <div class="twrap"><table id="m2-tabla"><tr><th>Día</th><th>Tipo</th><th>Expresión</th></tr></table></div>
+    <label style="margin-top:11px;">Escribe todos los movimientos en una sola expresión (sin simplificar):</label>
+    <input class="inp" id="m2-expr" data-req data-ml="3" autocomplete="off" placeholder="Ej: 8d − 3d + 5d − 2d">
+    <label style="margin-top:10px;">Resultado simplificado:</label>
+    <input class="inp" id="m2-simple" data-req data-ml="1" autocomplete="off" placeholder="Ej: 8d">
+    <label style="margin-top:10px;">Explica con tus palabras qué le pasa al saldo cuando hay entradas y salidas:</label>
+    <textarea class="inp ta" id="m2-explica" data-req data-ml="12" placeholder="El saldo cambia porque... Cuando hay una salida el resultado..."></textarea>
+    <div style="background:#e8f5e9;border-left:3px solid var(--ver2);border-radius:0 8px 8px 0;padding:9px 12px;margin-top:10px;font-size:.8rem;color:#1b5e20;">
+      <strong>📓 Anota en tu cuaderno:</strong> copia la tabla de movimientos y la expresión que escribiste — con signos y todo.
+    </div>
+  </div>
+
+  <!-- MOMENTO 3: verificación numérica -->
+  <div class="narr" id="m3-narr"></div>
+  <div class="card card-mo">
+    <div class="pill p-mo">Momento 3 · La prueba del nueve</div>
+    <p style="font-size:.85rem;margin-bottom:10px;" id="m3-texto">—</p>
+    <label>Sustituye el valor numérico en tu expresión simplificada y calcula:</label>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:8px 0;">
+      <span id="m3-expr-lbl" style="font-family:monospace;font-size:1rem;font-weight:800;background:var(--mo-f);padding:5px 11px;border-radius:6px;">—</span>
+      <span style="color:#888;">con</span>
+      <span id="m3-val-lbl" style="font-family:monospace;font-size:1rem;font-weight:800;background:#e3f2fd;padding:5px 11px;border-radius:6px;">—</span>
+      <span style="color:#888;">=</span>
+      <input class="inp inp-sm" id="m3-sust" data-req data-ml="1" inputmode="numeric" autocomplete="off" placeholder="?">
+    </div>
+    <div style="background:#fff8e1;border-left:3px solid #f9a825;border-radius:0 8px 8px 0;padding:9px 12px;margin-bottom:10px;font-size:.8rem;color:#555;">
+      Ahora vuelve a la tabla del Momento 2. Toma solo los <strong>números</strong> de cada movimiento (con su signo + o −, sin escribir la variable) y súmalos uno a uno. ¿A cuánto te da?
+    </div>
+    <input class="inp" id="m3-directo" data-req data-ml="1" inputmode="numeric" autocomplete="off" placeholder="Suma de los coeficientes con sus signos = ?">
+    <label style="margin-top:10px;">¿Coinciden los dos resultados? ¿Qué te dice eso sobre tu expresión algebraica?</label>
+    <textarea class="inp ta" id="m3-concl" data-req data-ml="12" placeholder="Los dos resultados... esto me dice que..."></textarea>
+    <div style="background:#e8f5e9;border-left:3px solid var(--ver2);border-radius:0 8px 8px 0;padding:9px 12px;margin-top:10px;font-size:.8rem;color:#1b5e20;">
+      <strong>📓 Anota en tu cuaderno:</strong> la sustitución paso a paso — primero el método algebraico, luego la suma directa de números. Muestra los dos resultados.
+    </div>
+  </div>
+
+  <!-- MOMENTO 4: dos variables + error a detectar -->
+  <div class="narr" id="m4-narr"></div>
+  <div class="card card-n">
+    <div class="pill p-n">Momento 4 · Aparece una segunda variable</div>
+    <p style="font-size:.85rem;margin-bottom:10px;" id="m4-texto">—</p>
+    <div class="twrap"><table id="m4-tabla"><tr><th>Concepto</th><th>Variable</th><th>Expresión</th></tr></table></div>
+    <label style="margin-top:11px;">Simplifica lo que se pueda y escribe la expresión final:</label>
+    <input class="inp" id="m4-expr" data-req data-ml="2" autocomplete="off" placeholder="Ej: 8d + 12r">
+    <label style="margin-top:10px;">¿Por qué no pudiste combinar todos los términos en uno solo?</label>
+    <textarea class="inp ta" id="m4-por-que" data-req data-ml="12" placeholder="No pude combinar todos porque..."></textarea>
+    <div style="background:#e8f5e9;border-left:3px solid var(--ver2);border-radius:0 8px 8px 0;padding:9px 12px;margin-top:10px;font-size:.8rem;color:#1b5e20;">
+      <strong>📓 Anota en tu cuaderno:</strong> la tabla con las dos variables y la expresión final que no se puede simplificar más.
+    </div>
+  </div>
+
+  <!-- ERROR A DETECTAR -->
+  <div class="card card-r">
+    <div class="pill p-r">Momento 4B · Detecta el error</div>
+    <p style="font-size:.85rem;font-weight:700;margin-bottom:10px;">Un compañero resolvió el siguiente problema y cometió un error. Identifícalo y corrígelo:</p>
+    <div style="background:#fdecea;border:2px solid var(--roj);border-radius:9px;padding:12px;margin:8px 0;" id="error-enunciado">—</div>
+    <div style="background:#fff3e0;border:2px solid var(--nar);border-radius:9px;padding:12px;margin:8px 0;">
+      <div style="font-size:.72rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--nar);margin-bottom:6px;">Trabajo del compañero (con error):</div>
+      <div id="error-trabajo" style="font-family:monospace;font-size:.95rem;font-weight:700;line-height:1.8;">—</div>
+    </div>
+    <label>¿Cuál es el error? Explícalo con detalle:</label>
+    <textarea class="inp ta" id="m4-error" data-req data-ml="15" placeholder="El error está en... porque... Lo correcto sería..."></textarea>
+    <label style="margin-top:10px;">Escribe el resultado correcto:</label>
+    <input class="inp" id="m4-correcto" data-req data-ml="1" autocomplete="off" placeholder="La respuesta correcta es...">
+    <div style="background:#e8f5e9;border-left:3px solid var(--ver2);border-radius:0 8px 8px 0;padding:9px 12px;margin-top:10px;font-size:.8rem;color:#1b5e20;">
+      <strong>📓 Anota en tu cuaderno:</strong> el problema del compañero tal como aparece, el error identificado y la corrección con tu explicación.
+    </div>
+  </div>
+
+  <button class="btn btn-mo" onclick="avanzar(2,3)">Siguiente &#8594; Quiz</button>
+</div>
+
+<div class="sec" id="s3">
+  <div class="plabel">
+    <div class="pnum">4</div>
+    <div><div class="ptag">Quiz individual · Tipo D</div><div class="ptit">5 preguntas · operaciones con monomios</div></div>
+  </div>
+  <div class="quiz-hdr">
+    <h2>&#128221; QUIZ — OPERACIONES CON MONOMIOS</h2>
+    <p>5 preguntas. Selecciona la respuesta correcta. Tu calificación aparece al final.</p>
+  </div>
+  <div id="quiz-contenido"></div>
+  <div id="s3-err" class="emsg">&#9888;&#65039; Responde todas las preguntas antes de continuar.</div>
+  <button class="btn btn-mo" id="btn-verificar-quiz" onclick="verificarQuiz()">Verificar respuestas &#10003;</button>
+  <div id="quiz-resultado" style="display:none;"></div>
+  <button class="btn btn-v" id="btn-sig-quiz" style="display:none;" onclick="avanzar(3,4)">Siguiente &#8594; Cierre</button>
+</div>
+
+<div class="sec" id="s4">
+  <div class="plabel">
+    <div class="pnum">5</div>
+    <div><div class="ptag">Reflexión · Cierre</div><div class="ptit">Lo que aprendiste hoy</div></div>
+  </div>
+  <div id="s4-err" class="emsg">&#9888;&#65039; Completa todos los campos para finalizar.</div>
+
+  <div class="card card-mo">
+    <div class="pill p-mo">01 · Formula la regla con tus palabras</div>
+    <div style="background:var(--gris);border-radius:8px;padding:10px 12px;margin-bottom:10px;font-size:.85rem;line-height:1.65;">
+      Hoy descubriste algo importante. Sin usar el libro ni buscar en internet, explica con tus propias palabras:
+    </div>
+    <label>¿Cuándo SÍ se pueden sumar o restar dos monomios? ¿Cuándo NO se pueden?</label>
+    <textarea class="inp ta" id="c-regla" data-req data-ml="15" placeholder="Sí se pueden sumar cuando... / No se pueden sumar cuando..."></textarea>
+    <label style="margin-top:10px;">¿Qué pasa con los signos cuando restas un monomio positivo menos uno negativo? Pon un ejemplo propio:</label>
+    <textarea class="inp ta" id="c-signos" data-req data-ml="10" placeholder="Cuando resto positivo menos negativo... Por ejemplo: ..."></textarea>
+  </div>
+
+  <div class="card card-a">
+    <div class="pill p-a">02 · Corrige tu hipótesis inicial</div>
+    <p style="font-size:.85rem;margin-bottom:8px;">Al inicio escribiste:</p>
+    <div style="background:var(--gris);border-radius:8px;padding:9px 12px;font-size:.83rem;color:#555;font-style:italic;margin-bottom:10px;" id="hip-show">—</div>
+    <label>¿Tenías razón? ¿Qué cambiarías o agregarías ahora?</label>
+    <textarea class="inp ta" id="c-corr" data-req data-ml="10" placeholder="Tenía razón en... / Me equivoqué en... / Ahora entiendo que..."></textarea>
+  </div>
+
+  <div class="card card-v">
+    <div class="pill p-v">03 · Conexión con la siguiente sesión</div>
+    <div style="background:var(--gris);border-radius:8px;padding:10px 12px;margin-bottom:10px;font-size:.85rem;line-height:1.65;">
+      En la siguiente sesión vamos a <strong>multiplicar</strong> monomios. La multiplicación tiene reglas distintas a la suma.
+    </div>
+    <label>¿Qué crees que va a pasar cuando multipliques <strong>3x · 5x</strong>? ¿El resultado seguirá siendo un monomio con x? ¿El exponente cambiará? Escribe tu hipótesis:</label>
+    <textarea class="inp ta" id="c-sig" data-req data-ml="10" placeholder="Creo que 3x · 5x = ... porque..."></textarea>
+  </div>
+
+  <div class="card card-n">
+    <div class="pill p-n">04 · Cuaderno</div>
+    <p style="font-size:.85rem;line-height:1.65;">En tu cuaderno debes tener: la tabla de movimientos de cada momento, las expresiones que construiste, la verificación numérica del Momento 3 y la corrección del error del Momento 4B.</p>
+    <label>Confirma que tienes todo en tu cuaderno y describe brevemente qué anotaste:</label>
+    <textarea class="inp ta" id="c-cuad" data-req data-ml="10" placeholder="En mi cuaderno anoté..."></textarea>
+  </div>
+
+  <button class="btn btn-v" onclick="finalizar()">&#10003; Finalizar y ver resumen</button>
+</div>
+
+<div class="sec" id="s-final">
+  <div class="res-banner">
+    <h2>&#127881; S8 COMPLETADA</h2>
+    <p>Suma y resta de monomios · PF3</p>
+  </div>
+  <div style="background:linear-gradient(135deg,#1B6B45,#2e7d32);border-radius:12px;padding:14px 15px;margin-bottom:12px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:7px;">
+      <span style="font-size:1.5rem;">&#127891;</span>
+      <div style="font-family:'Bebas Neue';font-size:1.1rem;color:#fff;letter-spacing:.5px;">Esta hoja es tu guía de repaso · Guárdala</div>
+    </div>
+    <div style="background:rgba(255,255,255,.12);border-radius:8px;padding:9px 12px;font-size:.81rem;color:#fff;line-height:1.6;">
+      Contiene: tus expresiones construidas · la verificación numérica · el error detectado · el quiz con correcciones · tus reflexiones con lo que se esperaba. <strong style="color:#a5d6a7;">Repásala antes del examen.</strong>
+    </div>
+  </div>
+  <div class="card card-v">
+    <div class="pill p-v">Resumen — S8 · PF3 · Suma y resta de monomios</div>
+    <table class="res-tabla" id="tabla-res"></table>
+  </div>
+  <div class="cap-aviso">
+    <h4>&#128247; Cómo entregar en Classroom:</h4>
+    <div style="background:#fff3e0;border:1.5px solid #e65100;border-radius:8px;padding:9px 12px;margin-bottom:9px;font-size:.82rem;font-weight:800;color:#bf360c;">
+      &#9888;&#65039; Una sola imagen o PDF con toda la hoja. No se aceptan capturas por partes.
+    </div>
+    <div style="font-size:.79rem;color:#555;line-height:1.65;margin-bottom:8px;">
+      <strong>Opción 1 — Captura larga:</strong> Samsung: Vol abajo + encendido → extender. Xiaomi/Redmi: captura normal → ícono de extender.<br>
+      <strong>Opción 2 — PDF:</strong> Menú ⋮ → Compartir → Imprimir → "Guardar como PDF".<br>
+      <strong>Opción 3:</strong> varias capturas subidas juntas en un solo envío.
+    </div>
+    <ol style="font-size:.81rem;padding-left:18px;">
+      <li style="margin-bottom:3px;">Guarda el archivo como <strong>Apellido_Nombre_S8.pdf</strong></li>
+      <li style="margin-bottom:3px;">Sube en <strong>Google Classroom</strong> en la tarea de S8</li>
+      <li>Verifica que se vean nombre, grupo y todas tus respuestas</li>
+    </ol>
+    <div style="margin-top:7px;font-weight:800;color:#e65100;font-size:.82rem;">&#127919; Tu cuaderno también se revisa en clase.</div>
+  </div>
+  <div class="card card-mo" style="margin-top:12px;">
+    <div class="pill p-mo">¿Qué sigue? — S9</div>
+    <p style="font-size:.87rem;line-height:1.75;">La siguiente sesión: <strong>multiplicación de monomios y ley de exponentes</strong>. Verás que multiplicar es completamente distinto a sumar — el exponente cambia. Trae tu hipótesis del cierre de hoy.</p>
+  </div>
+</div>
+<div style="text-align:center;padding:14px 0 22px;font-size:.72rem;color:#bbb;">
+  Pensamiento Matemático II · Prof. Adrián Cruz · 2025–2026
+</div>
+
+<script>
+// ==============================================================
+// LISTAS Y PRNG - igual que Clase 4
+// ==============================================================
+const GRUPOS = {
+  '203':{plantel:'Bachilleres 17',turno:'Matutino',offset:1000,
+    alumnos:[
+      {n:1,nom:'ACEVEDO MERCADO KAREL ALEXA',pila:'Karel'},
+      {n:2,nom:'ALCARAZ MORALES SANDRA MELANIE',pila:'Sandra'},
+      {n:3,nom:'APARICIO PEREZ IVONE ISABEL',pila:'Ivone'},
+      {n:4,nom:'BAENA POLITRON EMILIANO',pila:'Emiliano'},
+      {n:5,nom:'BARRIOS HERNANDEZ CAMILA',pila:'Camila'},
+      {n:6,nom:'FALCON PALOMINO RENATA',pila:'Renata'},
+      {n:7,nom:'FERNANDEZ REYES FABIOLA',pila:'Fabiola'},
+      {n:8,nom:'FLORES ISLAS ALEXA FERNANDA',pila:'Alexa'},
+      {n:9,nom:'FLORES MONTANO YOSGARTH ARMANDO',pila:'Yosgarth'},
+      {n:10,nom:'GARCIA FLORES NICOLE JACQUELINE',pila:'Nicole'},
+      {n:11,nom:'GARCIA GARCIA POULETTE',pila:'Poulette'},
+      {n:12,nom:'GARDUNO CRUZ NANCY RUBI',pila:'Nancy'},
+      {n:13,nom:'GOMEZ ESQUIVEL DANNA ZOE',pila:'Danna'},
+      {n:14,nom:'GONZALEZ TIBURCIO MARIANA REGINA',pila:'Mariana'},
+      {n:15,nom:'GUADARRAMA HERNANDEZ MARIA AILANY',pila:'Ailany'},
+      {n:16,nom:'HUERTA FLORES ANDREA',pila:'Andrea'},
+      {n:17,nom:'JIMENEZ SANCHEZ LIZETH ALEJANDRA',pila:'Lizeth'},
+      {n:18,nom:'JUAREZ PASTELIN PAULINA ZOE',pila:'Paulina'},
+      {n:19,nom:'LAGOS GARCIA FERNANDO YAOTL',pila:'Fernando'},
+      {n:20,nom:'LEVARIO QUIROZ GRECIA ROHINI',pila:'Grecia'},
+      {n:21,nom:'LOPEZ ROBLES CAMILA IDANAE',pila:'Camila'},
+      {n:22,nom:'MARTINEZ CELESTINO CHRISTIAN',pila:'Christian'},
+      {n:23,nom:'MARTINEZ OCAMPO GUSTAVO ADRIAN',pila:'Gustavo'},
+      {n:24,nom:'MERCADO GONZALEZ EMILIANO',pila:'Emiliano'},
+      {n:25,nom:'MONDRAGON ALVARADO JADE MICHELLE',pila:'Jade'},
+      {n:26,nom:'PALOMARES GALENO RENATA VALENTINA',pila:'Renata'},
+      {n:27,nom:'PEREZ AVILA DAGO ARIAN',pila:'Dago'},
+      {n:28,nom:'PEREZ PADILLA CAMILA',pila:'Camila'},
+      {n:29,nom:'PEREZ VICTORIA SOFIA',pila:'Sofia'},
+      {n:30,nom:'REYES MORENO MARIELA',pila:'Mariela'},
+      {n:31,nom:'RIOS BELLO LAYLA',pila:'Layla'},
+      {n:32,nom:'RIOS GARCIA NAOMY SUGEI',pila:'Naomy'},
+      {n:33,nom:'RIVERA VELAZQUEZ YEREMI GABRIEL',pila:'Yeremi'},
+      {n:34,nom:'RODRIGUEZ AGUILAR PALOMA',pila:'Paloma'},
+      {n:35,nom:'ROMERO HERNANDEZ DIEGO',pila:'Diego'},
+      {n:36,nom:'ROSAS GARCIA JOSE YAEL',pila:'Yael'},
+      {n:37,nom:'RUIZ VALDEZ RODRIGO',pila:'Rodrigo'},
+      {n:38,nom:'SANCHEZ GARCIA MONCERRAT',pila:'Moncerrat'},
+      {n:39,nom:'SEVILLA SANCHEZ YARETZI',pila:'Yaretzi'},
+      {n:40,nom:'VELASCO CAMARILLO KARLA MARIA',pila:'Karla'},
+      {n:41,nom:'VELASCO PIMENTEL VICTOR SANTIAGO',pila:'Victor'},
+      {n:42,nom:'ZUNIGA BARDALES KEYLA YAMILETH',pila:'Keyla'},
+      {n:43,nom:'INVITADO 1',pila:'Invitado 1'},
+      {n:44,nom:'INVITADO 2',pila:'Invitado 2'},
+      {n:45,nom:'INVITADO 3',pila:'Invitado 3'},
+      {n:46,nom:'INVITADO 4',pila:'Invitado 4'}
+    ]},
+  '205':{plantel:'Bachilleres 17',turno:'Matutino',offset:2000,
+    alumnos:[
+      {n:1,nom:'ABURTO PEREZ GIOVANNA',pila:'Giovanna'},
+      {n:2,nom:'APARICIO BAUTISTA MELANIE VALENTINA',pila:'Melanie'},
+      {n:3,nom:'BENITEZ GARCIA IAN JADIEL',pila:'Ian'},
+      {n:4,nom:'BRITO JIMENEZ FRIDA SOFIA',pila:'Frida'},
+      {n:5,nom:'CAMACHO ROMERO DEYSI MARIAN',pila:'Deysi'},
+      {n:6,nom:'CEDILLO GARCIA MARIA FERNANDA',pila:'Fernanda'},
+      {n:7,nom:'DE LA PAZ RAMIREZ YAEL',pila:'Yael'},
+      {n:8,nom:'DIAZ CRUZ DIANA CAMILA',pila:'Diana'},
+      {n:9,nom:'ESTRADA SALAZAR YARETZI SOFIA',pila:'Yaretzi'},
+      {n:10,nom:'GARCIA LOPEZ AXEL JADIEL',pila:'Axel'},
+      {n:11,nom:'GARCIA RONZON DIEGO GAEL',pila:'Diego'},
+      {n:12,nom:'GONZALEZ SALGADO VALENTINA',pila:'Valentina'},
+      {n:13,nom:'GRANDE GUZMAN VICTOR MANUEL',pila:'Victor'},
+      {n:14,nom:'HERNANDEZ HERRERA XIMENA VALERIA',pila:'Ximena'},
+      {n:15,nom:'HERRERA HERNANDEZ AVRIL',pila:'Avril'},
+      {n:16,nom:'JIMENEZ DE LA CRUZ CAMILA FERNANDA',pila:'Camila'},
+      {n:17,nom:'LUNA TAPIA DERECK SEBASTIAN',pila:'Dereck'},
+      {n:18,nom:'MAGANA RAMIREZ CARLOS JOSEP',pila:'Carlos'},
+      {n:19,nom:'MATEOS HERNANDEZ NATALIA SOFIA',pila:'Natalia'},
+      {n:20,nom:'MENDEZ ALANIS ANGEL GABRIEL',pila:'Angel'},
+      {n:21,nom:'MIRANDA GARCIA EMILIANO',pila:'Emiliano'},
+      {n:22,nom:'MONJARAS LOPEZ LUNA ZOE',pila:'Luna'},
+      {n:23,nom:'MORENO PEREZ MATIAS',pila:'Matias'},
+      {n:24,nom:'NABOR ALVAREZ JESSICA',pila:'Jessica'},
+      {n:25,nom:'NAVARRO ESQUIVEL JESUS ALEJANDRO',pila:'Jesus'},
+      {n:26,nom:'OLIVARES MARTINEZ MIA DAMAYANTI',pila:'Mia'},
+      {n:27,nom:'PAULIN ROSAS NATALIA SOFIA',pila:'Natalia'},
+      {n:28,nom:'PEREZ CALDERON MATEO',pila:'Mateo'},
+      {n:29,nom:'PINA ALVAREZ KATHERINE DANAE',pila:'Katherine'},
+      {n:30,nom:'PICHARDO FARFAN MATEO JALIL',pila:'Mateo'},
+      {n:31,nom:'PRAXEDIZ SANCHEZ ALAN OMAR',pila:'Alan'},
+      {n:32,nom:'QUINTANAR VALENCIA ORLANDO TONALLI',pila:'Orlando'},
+      {n:33,nom:'RAMOS AMADOR XIMENA',pila:'Ximena'},
+      {n:34,nom:'RAMOS RAMIREZ CAMILA VALENTINA',pila:'Camila'},
+      {n:35,nom:'RODRIGUEZ FUENTES KATHERINE ESTEFANIA',pila:'Katherine'},
+      {n:36,nom:'RODRIGUEZ GALEANA SAMANTHA GISELLE',pila:'Samantha'},
+      {n:37,nom:'SANCHEZ DEL RAZO MARIANA RUBI',pila:'Mariana'},
+      {n:38,nom:'SANCHEZ MATA FRIDA SOFIA',pila:'Frida'},
+      {n:39,nom:'SANCHEZ NUNEZ JANAI',pila:'Janai'},
+      {n:40,nom:'TAPIA ESQUIVEL ZAID',pila:'Zaid'},
+      {n:41,nom:'VALENCIA GARCIA NATALIA',pila:'Natalia'},
+      {n:42,nom:'VIEYRA GRANADOS ALEXIS',pila:'Alexis'},
+      {n:43,nom:'INVITADO 1',pila:'Invitado 1'},
+      {n:44,nom:'INVITADO 2',pila:'Invitado 2'},
+      {n:45,nom:'INVITADO 3',pila:'Invitado 3'},
+      {n:46,nom:'INVITADO 4',pila:'Invitado 4'}
+    ]},
+  '236':{plantel:'CEB 4/2',turno:'Vespertino',offset:3000,
+    alumnos:[
+      {n:1,nom:'BATANA HERRERA VANESSA',pila:'Vanessa'},
+      {n:2,nom:'BAUTISTA SOTELO DAVID ALEJANDRO',pila:'David'},
+      {n:3,nom:'BRAVO DIAZ MAITE',pila:'Maite'},
+      {n:4,nom:'CALLES GASPAR EMILIANO',pila:'Emiliano'},
+      {n:5,nom:'DE LA HUERTA MORALES LUIS SANTIAGO',pila:'Luis'},
+      {n:6,nom:'DORADO CORDOBA ANA CRISTINA',pila:'Ana'},
+      {n:7,nom:'ESTRADA CALDERON ERANDI AYLEN',pila:'Erandi'},
+      {n:8,nom:'FAUSTINO RUIZ RODRIGO',pila:'Rodrigo'},
+      {n:9,nom:'FLORES CORTES XIMENA',pila:'Ximena'},
+      {n:10,nom:'FORTANELL VELAZQUEZ DAFNE',pila:'Dafne'},
+      {n:11,nom:'GARCIA DURAN KEVIN SEBASTIAN',pila:'Kevin'},
+      {n:12,nom:'GARCIA SORIANO OSCAR URIEL',pila:'Oscar'},
+      {n:13,nom:'GARDUNO MORENO JONATHAN JAIR',pila:'Jonathan'},
+      {n:14,nom:'GARFIAS LOBATON SALMA ARIADNA',pila:'Salma'},
+      {n:15,nom:'GONZALEZ CHAVEZ GABRIEL ANTONIO',pila:'Gabriel'},
+      {n:16,nom:'GONZALEZ ROJAS GABRIEL',pila:'Gabriel'},
+      {n:17,nom:'GRANADOS ARREGUIN VANESA LIZBETH',pila:'Vanesa'},
+      {n:18,nom:'HERNANDEZ FLORES FERNANDA DANAE',pila:'Fernanda'},
+      {n:19,nom:'HERNANDEZ ZACATECAS MELISA',pila:'Melisa'},
+      {n:20,nom:'HERNANDEZ MENDEZ MARIA JOSE',pila:'Maria Jose'},
+      {n:21,nom:'LIDES RAMOS NAHOMY',pila:'Nahomy'},
+      {n:22,nom:'LOPEZ GALICIA IAN ALESSANDRO',pila:'Ian'},
+      {n:23,nom:'LOZANO VEGA MARIANA',pila:'Mariana'},
+      {n:24,nom:'LUNA ROLDAN REGINA SOFIA',pila:'Regina'},
+      {n:25,nom:'MARTINEZ ZAPATA SOFIA',pila:'Sofia'},
+      {n:26,nom:'MEDINA FLORES JOSE ROBERTO',pila:'Jose'},
+      {n:27,nom:'MEJIA RAMIREZ FRANCISCO JAVIER',pila:'Francisco'},
+      {n:28,nom:'MONTES DE OCA RODRIGUEZ MATIAS',pila:'Matias'},
+      {n:29,nom:'MONTIEL VIDAL JESUS ENRIQUE',pila:'Jesus'},
+      {n:30,nom:'MONTOYA VILLEGAS VALERIA',pila:'Valeria'},
+      {n:31,nom:'NEPOMUCENO GONZALEZ KAREN',pila:'Karen'},
+      {n:32,nom:'PASTEN ARROYO KARLA GISEL',pila:'Karla'},
+      {n:33,nom:'PERALTA LOZANO WILLIAM EMILIANO',pila:'William'},
+      {n:34,nom:'PEREZ OLMOS LUIS SANTIAGO',pila:'Luis'},
+      {n:35,nom:'PIMENTEL JARA XIMENA',pila:'Ximena'},
+      {n:36,nom:'POPOCA IZAZAGA DYLAN MIKEL',pila:'Dylan'},
+      {n:37,nom:'QUIJADA VARGAS DONNOVAN URIEL',pila:'Donnovan'},
+      {n:38,nom:'RAMIREZ TORRES CEDRIC',pila:'Cedric'},
+      {n:39,nom:'REYES CORTEZ HEBE JUCARI FERNANDA',pila:'Hebe'},
+      {n:40,nom:'REYNA ESCOBEDO DAYANA GUADALUPE',pila:'Dayana'},
+      {n:41,nom:'SANCHEZ CRISOSTOMO CARLOS BLADIMIR',pila:'Carlos'},
+      {n:42,nom:'SANCHEZ MARCOS KEENIA ARLENE',pila:'Keenia'},
+      {n:43,nom:'SEGURA BARRANCO TERESA YOHLIKNAL',pila:'Teresa'},
+      {n:44,nom:'SOLIS HURTADO MELISSA MICHELLE',pila:'Melissa'},
+      {n:45,nom:'TREJO MARTINEZ DANIEL DAVID',pila:'Daniel'},
+      {n:46,nom:'VERDEJO RAMIREZ JOSHUA BARACK',pila:'Joshua'},
+      {n:47,nom:'ZAMBRANO LUCAS SANDRA',pila:'Sandra'},
+      {n:48,nom:'ZARATE LEON NATALIA BETZABEL',pila:'Natalia'},
+      {n:49,nom:'ZARCO GONZALEZ MOESHA JOSELINE',pila:'Moesha'},
+      {n:50,nom:'ZEPEDA GOMEZ SANDRA LUZ',pila:'Sandra'},
+      {n:51,nom:'INVITADO 1',pila:'Invitado 1'},
+      {n:52,nom:'INVITADO 2',pila:'Invitado 2'},
+      {n:53,nom:'INVITADO 3',pila:'Invitado 3'},
+      {n:54,nom:'INVITADO 4',pila:'Invitado 4'}
+    ]},
+  '237':{plantel:'CEB 4/2',turno:'Vespertino',offset:4000,
+    alumnos:[
+      {n:1,nom:'AGUAS JERONIMO REGINA',pila:'Regina'},
+      {n:2,nom:'ALVAREZ HERNANDEZ XANTHE YURITZI',pila:'Xanthe'},
+      {n:3,nom:'AMARO RODRIGUEZ SANTIAGO ALEXANDER',pila:'Santiago'},
+      {n:4,nom:'APARICIO GARCIA NATALIA',pila:'Natalia'},
+      {n:5,nom:'BAEZA FRIAS AMEYALI MACHIA',pila:'Ameyali'},
+      {n:6,nom:'CALLEJA PEREZ DYLAN SANTIAGO',pila:'Dylan'},
+      {n:7,nom:'CALZADA ROCHA DANTE LEONARDO',pila:'Dante'},
+      {n:8,nom:'CEDILLO ESTRADA REGINA ZOE',pila:'Regina'},
+      {n:9,nom:'CHAVEZ ENRIQUEZ DIEGO ANGEL',pila:'Diego'},
+      {n:10,nom:'COBO PEREZ CARLOS DAVID',pila:'Carlos'},
+      {n:11,nom:'CONTRERAS RENDON DONOVAN YAHEL',pila:'Donovan'},
+      {n:12,nom:'CRUZ TAPIA CAMILA JADZIRI',pila:'Camila'},
+      {n:13,nom:'CUELLAR DE LA ROSA SAUL IGNACIO',pila:'Saul'},
+      {n:14,nom:'FERNANDEZ ZAPOTITLA RODRIGO',pila:'Rodrigo'},
+      {n:15,nom:'FLORES PEREZ JOSUE ALBERTO',pila:'Josue'},
+      {n:16,nom:'GALLARDO HORCASITAS NOELIA',pila:'Noelia'},
+      {n:17,nom:'GARCIA HERNANDEZ CAMILA',pila:'Camila'},
+      {n:18,nom:'GARCIA PRIOR CAMILA',pila:'Camila'},
+      {n:19,nom:'GODOY MORALES LUIS ANGEL',pila:'Luis'},
+      {n:20,nom:'GONZALEZ LOPEZ ALEXA IDALI',pila:'Alexa'},
+      {n:21,nom:'HERNANDEZ CALZADA NATALIA',pila:'Natalia'},
+      {n:22,nom:'HERNANDEZ JUAREZ ALAN LEONARDO',pila:'Alan'},
+      {n:23,nom:'JIM RUIZ AXEL RODRIGO',pila:'Axel'},
+      {n:24,nom:'LINARES RUIZ PABLO ROGELIO',pila:'Pablo'},
+      {n:25,nom:'LUZ RODRIGUEZ ALEXA MILAGROS',pila:'Alexa'},
+      {n:26,nom:'MANZANARES TRINIDAD PAULINA SARAHI',pila:'Paulina'},
+      {n:27,nom:'MANZANO BARRON EVELYN',pila:'Evelyn'},
+      {n:28,nom:'MARIN ALVAREZ FABRICIO SAMUEL',pila:'Fabricio'},
+      {n:29,nom:'MARTINEZ CARMONA ALAN DAVID',pila:'Alan'},
+      {n:30,nom:'MARTINEZ COLLIN EMMANUEL',pila:'Emmanuel'},
+      {n:31,nom:'MARTINEZ URIBE BARBARA ODELI',pila:'Barbara'},
+      {n:32,nom:'NIEVES ALMAZAN SANTIAGO ALEJANDRO',pila:'Santiago'},
+      {n:33,nom:'OCELOTL GONZALEZ LUIS ANGEL',pila:'Luis'},
+      {n:34,nom:'OJEDA GUILLERMO CAMILA',pila:'Camila'},
+      {n:35,nom:'ORTIZ ALVAREZ LUNA ITZEL',pila:'Luna'},
+      {n:36,nom:'PEREZ GUTIERREZ OSCAR GERARDO',pila:'Oscar'},
+      {n:37,nom:'PEREZ MATEOS JESUS EMMANUEL',pila:'Jesus'},
+      {n:38,nom:'RAMIREZ VALLADARES ALEXIA GUADALUPE',pila:'Alexia'},
+      {n:39,nom:'REMIGIO APANCO JOHAN',pila:'Johan'},
+      {n:40,nom:'REYES GOMEZ ISABELA',pila:'Isabela'},
+      {n:41,nom:'RIVERA HUERTA JAZIEL',pila:'Jaziel'},
+      {n:42,nom:'RIVERA GURROLA DANA REGINA',pila:'Dana'},
+      {n:43,nom:'ROJAS MORALES AMBAR ROMINA',pila:'Ambar'},
+      {n:44,nom:'ROJAS SUAREZ MARCO RICARDO',pila:'Marco'},
+      {n:45,nom:'SANCHEZ AVILA ALEXA FERNANDA',pila:'Alexa'},
+      {n:46,nom:'SANCHEZ ENTZANA SAEL ETHIAN',pila:'Sael'},
+      {n:47,nom:'SANTIAGO NIETO RENATA',pila:'Renata'},
+      {n:48,nom:'SEVILLA RODRIGUEZ LEAH MICHELLE',pila:'Leah'},
+      {n:49,nom:'TRUJILLO RODRIGUEZ ANDREA ELIZETH',pila:'Andrea'},
+      {n:50,nom:'URIBE BERRU YOHAN EMMANUEL',pila:'Yohan'},
+      {n:51,nom:'VIVEROS IBARRA EVOLETH APRIL',pila:'Evoleth'},
+      {n:52,nom:'VIZUETT REYES DARIO INAKY',pila:'Dario'},
+      {n:53,nom:'INVITADO 1',pila:'Invitado 1'},
+      {n:54,nom:'INVITADO 2',pila:'Invitado 2'},
+      {n:55,nom:'INVITADO 3',pila:'Invitado 3'},
+      {n:56,nom:'INVITADO 4',pila:'Invitado 4'}
+    ]}
+};
+
+// ==============================================================
+// PRNG DETERMINISTA (misma semilla = mismos valores siempre)
+// ==============================================================
+function sr(seed){
+  const x=Math.sin(seed*127.1+311.7)*43758.5453123;
+  return x-Math.floor(x);
+}
+function pickS(seed,arr){return arr[Math.floor(sr(seed)*arr.length)];}
+function rIntS(seed,min,max){return Math.floor(sr(seed)*(max-min+1))+min;}
+
+// ==============================================================
+// VARIANTES NARRATIVAS (A=0 B=1 C=2 D=3 por seed%4)
+// ==============================================================
+
+
+// ==============================================================
+// VARIANTES NARRATIVAS S8 - Cuenta d-bito CDMX
+// A=Estudiante metro  B=Vendedor tianguis  C=Familia Iztapalapa  D=Repartidor
+// ==============================================================
+const VARS_S8 = [
+  { // A - Estudiante bachillerato, variable = d (domingo)
+    var:'d', uni:'pesos de domingo',
+    ctx:'Tu mamá te da una parte del domingo cada vez que hace mandado durante la semana.',
+    ctx2:'Ahora aparecen gastos: días en que gastaste de lo que te habían dado.',
+    ctx3:'Verificación: si cada "d" vale $25, ¿coinciden los dos métodos?',
+    ctx4:'Aparece un segundo tipo de movimiento.',
+    v2:'r', v2nom:'recargas de datos',
+    dia:['Lunes','Martes','Miércoles','Jueves','Viernes'],
+    error_tipo:'sumó términos no semejantes'
+  },
+  { // B - Vendedor de jugos en tianguis, variable = v (vasos)
+    var:'v', uni:'pesos por vaso vendido',
+    ctx:'Vendiste jugos en el tianguis. Cada registro es lo que ganaste en una vuelta.',
+    ctx2:'Algunos días tuviste que devolver dinero por mal servicio o faltó ingrediente.',
+    ctx3:'Verificación: si cada "v" vale $18, ¿coinciden los dos métodos?',
+    ctx4:'Además de los jugos, vendiste gelatinas con otra ganancia.',
+    v2:'g', v2nom:'pesos por gelatina',
+    dia:['Vuelta 1','Vuelta 2','Vuelta 3','Vuelta 4','Vuelta 5'],
+    error_tipo:'no respetó la ley de signos'
+  },
+  { // C - Familia Iztapalapa, variable = t (tandas)
+    var:'t', uni:'pesos de tanda',
+    ctx:'Participas en una tanda familiar. Cada semana anotas lo que entra y lo que ya se usó.',
+    ctx2:'Algunas semanas se prestó dinero de la tanda y hay que descontarlo.',
+    ctx3:'Verificación: si cada "t" vale $50, ¿coinciden los dos métodos?',
+    ctx4:'También hay un fondo separado para el gas.',
+    v2:'g', v2nom:'pesos del fondo de gas',
+    dia:['Semana 1','Semana 2','Semana 3','Semana 4','Semana 5'],
+    error_tipo:'combinó términos con distintas variables'
+  },
+  { // D - Repartidor en bici, variable = e (entregas)
+    var:'e', uni:'pesos por entrega',
+    ctx:'Trabajas repartiendo comida en bici. Cada turno registras lo que ganaste.',
+    ctx2:'Algunos turnos tuviste penalizaciones o cancelaciones que se descuentan.',
+    ctx3:'Verificación: si cada "e" vale $15, ¿coinciden los dos métodos?',
+    ctx4:'También tienes propinas que se contabilizan aparte.',
+    v2:'p', v2nom:'pesos de propina',
+    dia:['Turno 1','Turno 2','Turno 3','Turno 4','Turno 5'],
+    error_tipo:'sumó los exponentes al sumar'
+  }
+];
+
+// ==============================================================
+// BANCO DE PREGUNTAS QUIZ - 5 bloques - 6 preguntas
+// ==============================================================
+const QB = [
+  // BLOQUE 0 - Identificar si se pueden sumar
+  [
+    {p:'¿Cuál de estas operaciones SÍ es posible simplificar en un solo monomio?',
+     ops:['7x + 3x','5x + 3y','4x² + 2x','6a − 2b'],ok:0,
+     ex:'Solo 7x + 3x porque tienen la misma variable con el mismo exponente (términos semejantes). Las demás tienen variables o exponentes distintos.'},
+    {p:'¿Cuáles son términos semejantes?',
+     ops:['3x² y 5x²','4x y 4y','2x y 3x²','7a y 7b'],ok:0,
+     ex:'3x² y 5x² tienen la misma variable (x) con el mismo exponente (2). Variable igual + exponente igual = términos semejantes.'},
+    {p:'Un alumno escribe: 8n − 5m = 3nm. ¿Qué error cometió?',
+     ops:['Sumó términos no semejantes','Multiplicó en vez de restar','Cambió el signo incorrectamente','Olvidó el exponente'],ok:0,
+     ex:'8n y 5m tienen variables distintas (n ≠ m), no son semejantes y no se pueden combinar. El resultado correcto sería dejar 8n − 5m como está.'},
+    {p:'¿Qué expresión NO se puede simplificar?',
+     ops:['9t − 4t + 2t','6x + 3y − 2x','12k − 5k','8m + 3m − m'],ok:1,
+     ex:'6x + 3y − 2x tiene dos tipos de variables: los dos términos con x sí se pueden combinar (6x − 2x = 4x), pero el 3y no. Resultado: 4x + 3y, un binomio.'},
+    {p:'¿Cuál es el resultado correcto de 10e − 3e + e?',
+     ops:['8e','7e','8','7e²'],ok:0,
+     ex:'10e − 3e + e: los tres términos tienen la misma variable e. Operamos coeficientes: 10 − 3 + 1 = 8. Resultado: 8e.'},
+    {p:'¿Qué condición deben cumplir dos monomios para poder sumarse?',
+     ops:['Misma variable Y mismo exponente','Solo misma variable','Solo mismo coeficiente','Mismo número de letras'],ok:0,
+     ex:'Para que dos monomios sean semejantes (y se puedan sumar) necesitan las DOS condiciones: misma variable y mismo exponente. Si falla una, no se pueden combinar.'},
+  ],
+  // BLOQUE 1 - Operar con signos
+  [
+    {p:'¿Cuánto es 6d − 9d?',
+     ops:['−3d','3d','−3','15d'],ok:0,
+     ex:'6d − 9d: misma variable, operamos coeficientes: 6 − 9 = −3. Resultado: −3d. El signo negativo indica que el saldo disminuyó.'},
+    {p:'¿Cuánto es −4t + 7t − 2t?',
+     ops:['t','−t','3t','−3t'],ok:0,
+     ex:'−4 + 7 − 2 = 1. Resultado: 1t = t. Un coeficiente de 1 se escribe solo como la variable.'},
+    {p:'Un alumno dice que 5x − (−3x) = 2x. ¿Está bien?',
+     ops:['No, es 8x','Sí, está correcto','No, es −8x','No, es 5x − 3x = 2x'],ok:0,
+     ex:'Restar un negativo equivale a sumar: 5x − (−3x) = 5x + 3x = 8x. Menos por menos da más.'},
+    {p:'¿Cuál es el resultado de 12v − 5v + 2v − 8v?',
+     ops:['v','−v','9v','3v'],ok:0,
+     ex:'12 − 5 + 2 − 8 = 1. Resultado: 1v = v. Se operan los coeficientes como números normales respetando los signos.'},
+    {p:'¿Qué significa un coeficiente negativo en el contexto de dinero?',
+     ops:['Una salida o gasto','Una entrada o ingreso','Un error de cálculo','No tiene significado real'],ok:0,
+     ex:'En un contexto de cuenta o saldo, un monomio con coeficiente negativo representa una salida de dinero, un gasto o una deuda. −3d = perdiste 3 domingos de valor.'},
+    {p:'¿Cuánto es −8e − 2e?',
+     ops:['−10e','10e','−6e','6e'],ok:0,
+     ex:'Dos términos negativos se suman (en valor) y el resultado es negativo: −8 − 2 = −10. Resultado: −10e.'},
+  ],
+  // BLOQUE 2 - Verificaci-n num-rica
+  [
+    {p:'Simplificaste 5n − 2n y obtuviste 3n. Si ahora le das el valor n = 10, ¿cuánto vale ese resultado?',
+     ops:['30','3','300','13'],ok:0,
+     ex:'Reemplaza n por 10 directamente en el resultado: 3(10) = 30. Puedes verificar en la expresión original: 5(10) − 2(10) = 50 − 20 = 30. Los dos coinciden. ✓'},
+    {p:'¿Para qué sirve sustituir un valor numérico en una expresión algebraica?',
+     ops:['Para comprobar que la simplificación es correcta','Para calcular el grado del monomio','Para encontrar la variable','Para cambiar los signos'],ok:0,
+     ex:'La verificación numérica es una herramienta de comprobación: si la expresión original y la simplificada dan el mismo número al sustituir, la simplificación es correcta.'},
+    {p:'Un alumno simplificó 4e + 3e = 7e. Sustituyó e = 5 y obtuvo 35. En la expresión original obtuvo 20 + 15 = 35. ¿La simplificación es correcta?',
+     ops:['Sí, los dos dan 35','No, debería dar 7','No, debería dar 12','Sí, pero solo si e = 5'],ok:0,
+     ex:'Los dos métodos dan 35. Eso confirma que 4e + 3e = 7e es correcto. La verificación funciona para cualquier valor de e.'},
+    {p:'Si 6t − 4t = 2t, y t = 8, ¿cuánto vale la expresión original 6t − 4t?',
+     ops:['16','2','48','12'],ok:0,
+     ex:'6t − 4t con t = 8: 6(8) − 4(8) = 48 − 32 = 16. También: 2t = 2(8) = 16. ✓'},
+    {p:'¿Qué pasa si la verificación numérica NO coincide?',
+     ops:['Hay un error en la simplificación','El valor sustituido estaba mal','La variable no existe','El monomio es incorrecto'],ok:0,
+     ex:'Si los resultados no coinciden, hay un error en algún paso de la simplificación. La verificación es precisamente para detectar esos errores antes de continuar.'},
+    {p:'¿Cuál es la expresión simplificada de 9d − 5d + d, y cuánto vale si d = 4?',
+     ops:['5d → 20','4d → 16','5d → 16','4d → 20'],ok:0,
+     ex:'9 − 5 + 1 = 5. Resultado: 5d. Si d = 4: 5(4) = 20. Verificación: 9(4) − 5(4) + 4 = 36 − 20 + 4 = 20. ✓'},
+  ],
+  // BLOQUE 3 - Dos variables / expresi-n final
+  [
+    {p:'¿Cuál es el resultado de simplificar 6x + 3y − 2x + y?',
+     ops:['4x + 4y','4x + 3y + y','8xy','4x + 2y'],ok:0,
+     ex:'Agrupamos semejantes: (6x − 2x) + (3y + y) = 4x + 4y. Los términos con x entre sí, los de y entre sí.'},
+    {p:'¿Por qué 5a + 3b no se puede simplificar más?',
+     ops:['Porque a y b son variables distintas','Porque 5 y 3 son diferentes','Porque es un binomio','Porque los coeficientes son positivos'],ok:0,
+     ex:'a y b son variables distintas → no son términos semejantes → no se pueden combinar. El binomio 5a + 3b es su forma más simplificada.'},
+    {p:'¿Cuántos términos tiene la expresión simplificada de 8m + 4n − 3m + 2n?',
+     ops:['2 (es un binomio)','1 (es un monomio)','4 (no se simplifica)','3 (es un trinomio)'],ok:0,
+     ex:'(8m − 3m) + (4n + 2n) = 5m + 6n. Dos términos → binomio.'},
+    {p:'¿Cuál es la diferencia entre 3x + 5x y 3x + 5y?',
+     ops:['El primero se puede simplificar, el segundo no','Los dos se simplifican igual','Ninguno se puede simplificar','Solo el segundo se puede simplificar'],ok:0,
+     ex:'3x + 5x = 8x (términos semejantes, misma variable). 3x + 5y no se puede simplificar (variables distintas). La diferencia es la variable.'},
+    {p:'Una cuenta tiene: +7d, −2d, +5r, −3r. ¿Cuál es la expresión simplificada?',
+     ops:['5d + 2r','5d − 2r','9d + 8r','5dr'],ok:0,
+     ex:'Agrupamos: (7d − 2d) + (5r − 3r) = 5d + 2r. Dos tipos de términos, cada uno simplificado por separado.'},
+    {p:'¿Qué tipo de expresión es el resultado de simplificar monomios con dos variables distintas?',
+     ops:['Binomio o polinomio','Siempre un monomio','Siempre un trinomio','Depende del coeficiente'],ok:0,
+     ex:'Cuando quedan términos con dos variables distintas que no se pueden combinar, el resultado tiene al menos dos términos → binomio. Con más variables distintas → polinomio.'},
+  ],
+  // BLOQUE 4 - Razonamiento y errores comunes
+  [
+    {p:'¿Por qué no se puede hacer 4x² + 3x = 7x³?',
+     ops:['Porque los exponentes son distintos (x² ≠ x)','Porque 4 + 3 no es 7','Porque x³ no existe','Porque se multiplican, no suman'],ok:0,
+     ex:'x² y x¹ tienen el mismo símbolo pero diferente exponente → no son semejantes. Al sumar monomios los exponentes NO se suman ni se multiplican. Se queda como 4x² + 3x.'},
+    {p:'Un alumno calcula: 5n + 3n = 8n². ¿Qué error cometió?',
+     ops:['Sumó los exponentes en vez de solo los coeficientes','Multiplicó los coeficientes','Cambió la variable','Calculó bien'],ok:0,
+     ex:'Al SUMAR monomios semejantes, solo se operan los coeficientes: 5 + 3 = 8. La variable y su exponente no cambian: 5n + 3n = 8n, no 8n².'},
+    {p:'¿Cuándo el resultado de sumar dos monomios es cero?',
+     ops:['Cuando los coeficientes son opuestos (ej: 5x − 5x)','Cuando las variables son iguales','Cuando uno es positivo y el otro negativo','Nunca puede ser cero'],ok:0,
+     ex:'5x − 5x = (5 − 5)x = 0x = 0. Si los coeficientes son opuestos (igual valor, signo contrario), se cancelan. Esto se llama monomios opuestos.'},
+    {p:'¿Qué operación representan los signos + y − entre monomios semejantes?',
+     ops:['Suma o resta de los coeficientes','Multiplicación de las variables','Cambio de la variable','División de los exponentes'],ok:0,
+     ex:'Entre monomios semejantes, + y − indican que debes sumar o restar sus coeficientes. La variable y el exponente se mantienen igual. Es como operar con "grupos" del mismo tipo.'},
+    {p:'¿Cuál de estas afirmaciones es FALSA?',
+     ops:['Al sumar x² + x² el resultado es x⁴','Al sumar x² + x² el resultado es 2x²','Los términos semejantes tienen misma variable y exponente','6m − 2m = 4m'],ok:0,
+     ex:'x² + x² = 2x², NO x⁴. El exponente solo cambia en la multiplicación, nunca en la suma. Afirmación falsa: "el resultado es x⁴".'},
+    {p:'¿Qué significa que el coeficiente de una expresión simplificada sea 1, como en simplificar 3t − 2t?',
+     ops:['Que hay exactamente una unidad de t, se escribe solo como t','Que la expresión vale cero','Que la variable desaparece','Que hay un error'],ok:0,
+     ex:'3t − 2t = (3−2)t = 1t. Un coeficiente de 1 significa "una unidad", y por convención matemática se escribe solo la variable: 1t = t.'},
+  ]
+];
+
+// ==============================================================
+// ESTADO GLOBAL
+// ==============================================================
+let alumno=null, gkey='', seed=0, varIdx=0, VV=null;
+let MODO_DOCENTE=false;
+let curStep=0;
+let pr1=0,pr2=0,pr3=0,pr4=0,pr5=0,pr6=0;
+let quizPregs=[], quizResp=[], quizOrden=[];
+
+// ==============================================================
+// PROGRESO
+// ==============================================================
+function updProg(){
+  for(let i=0;i<5;i++){
+    const c=document.getElementById('pd'+i);
+    const l=document.getElementById('pl'+i);
+    if(c){
+      c.className='pd-c'+(i===curStep?' on':i<curStep?' ok':'');
+      l.className='pd-l'+(i===curStep?' on':i<curStep?' ok':'');
+    }
+    const ln=document.getElementById('pln'+i);
+    if(ln) ln.className='pln'+(i<curStep?' ok':'');
+  }
+}
+
+// ==============================================================
+// LOGIN
+// ==============================================================
+function cambiarPlantel(){
+  const p=document.getElementById('sel-plantel').value;
+  const gs=document.getElementById('sel-grupo');
+  gs.innerHTML='<option value="">- Selecciona grupo -</option>';
+  gs.disabled=true;
+  document.getElementById('inp-busq').disabled=true;
+  document.getElementById('id-confirm').style.display='none';
+  document.getElementById('login-confirm-card').style.display='none';
+  if(p==='B17'){
+    ['203','205'].forEach(g=>gs.add(new Option('Grupo '+g,g)));
+    gs.disabled=false;
+  } else if(p==='CEB'){
+    ['236','237'].forEach(g=>gs.add(new Option('Grupo '+g,g)));
+    gs.disabled=false;
+  }
+}
+function cambiarGrupo(){
+  gkey=document.getElementById('sel-grupo').value;
+  const ib=document.getElementById('inp-busq');
+  ib.disabled=!gkey; ib.value='';
+  document.getElementById('dropdown').style.display='none';
+  document.getElementById('id-confirm').style.display='none';
+  document.getElementById('login-confirm-card').style.display='none';
+  alumno=null;
+}
+function buscarNombre(){
+  if(!gkey) return;
+  const q=document.getElementById('inp-busq').value.toUpperCase().trim();
+  const dd=document.getElementById('dropdown');
+  if(q.length<1){dd.style.display='none';return;}
+  const matches=GRUPOS[gkey].alumnos.filter(a=>a.nom.includes(q)).slice(0,8);
+  if(!matches.length){dd.style.display='none';return;}
+  dd.innerHTML=matches.map(a=>`<div class="dd-item" onclick="selAlumno(${a.n})">${a.nom} <span style="color:#aaa;font-size:.75rem;">(N°${a.n})</span></div>`).join('');
+  dd.style.display='block';
+}
+function selAlumno(n){
+  const gr=GRUPOS[gkey];
+  alumno=gr.alumnos.find(a=>a.n===n);
+  document.getElementById('dropdown').style.display='none';
+  document.getElementById('inp-busq').value=alumno.nom;
+  const cf=document.getElementById('id-confirm');
+  cf.style.display='block';
+  cf.textContent='✓ '+alumno.nom+' · N°'+alumno.n+' · Grupo '+gkey+' · '+gr.plantel;
+  // seed y variante
+  seed=gr.offset+alumno.n; varIdx=seed%4; VV=VARS_S8[varIdx];
+  document.getElementById('badge-grp').textContent=gkey;
+  document.getElementById('badge-var').textContent=['A','B','C','D'][varIdx];
+  document.getElementById('badge-alumno').textContent='👤 '+alumno.nom+' · '+gkey;
+  // generar precios (6 valores para distintos momentos)
+  const COEFS=[
+    [3,4,5,6,7,8,9,10],[2,3,4,5,6,7,8,9],
+    [4,5,6,7,8,9,10,12],[2,3,4,5,6,7],[3,4,5,6,7,8],[2,3,4,5]
+  ];
+  pr1=pickS(seed*7+1,COEFS[0]);
+  pr2=pickS(seed*13+2,COEFS[1]);
+  pr3=pickS(seed*19+3,COEFS[2]);
+  pr4=pickS(seed*23+4,COEFS[3]);
+  pr5=pickS(seed*31+5,COEFS[4]);
+  pr6=pickS(seed*37+6,COEFS[5]);
+  construirActividad();
+  document.getElementById('login-confirm-card').style.display='block';
+}
+
+// ==============================================================
+// CONSTRUIR CONTENIDO DIN-MICO
+// ==============================================================
+function construirActividad(){
+  const v=VV.var, dias=VV.dia, v2=VV.v2;
+
+  // -- MOMENTO 1 - solo positivos --
+  document.getElementById('m1-tit').textContent='Solo entradas - '+VV.uni;
+  document.getElementById('m1-narr').innerHTML=`
+    <span class="narr-ico">📋</span>
+    <p>${VV.ctx}<br><br>Esta semana registraste las siguientes <strong>entradas</strong>:</p>`;
+  const coefs1=[pr1, pr2, pr3];
+  let t1='';
+  coefs1.forEach((c,i)=>{
+    t1+=`<tr><td class="fij">${dias[i]}</td><td>Entrada</td><td class="pos">+${c}${v}</td></tr>`;
+  });
+  document.getElementById('m1-tabla').innerHTML=
+    `<tr><th>${dias[0].includes('Semana')?'Semana':'Día'}</th><th>Tipo</th><th>Expresión</th></tr>`+t1;
+  document.getElementById('m1-pregA').textContent=
+    `Tienes ${coefs1.length} entradas: ${coefs1.map(c=>'+'+c+v).join(', ')}. ¿Cuánto recibes en total?`;
+  document.getElementById('m1-b-texto').innerHTML=
+    `Suma: ${coefs1.map(c=>c+v).join(' + ')} = <strong>¿?</strong><br>Los tres términos tienen la misma variable <strong>${v}</strong>. ¿Qué pasa con los coeficientes ${coefs1.join(', ')}?`;
+
+  // -- MOMENTO 2 - positivos y negativos --
+  document.getElementById('m2-narr').innerHTML=`
+    <span class="narr-ico">📉</span>
+    <p>${VV.ctx2}<br><br>La semana completa con entradas <strong style="color:#a5d6a7;">(+)</strong> y salidas <strong style="color:#ff8a80;">(−)</strong>:</p>`;
+  const coefs2pos=[pr1, pr3, pr5];
+  const coefs2neg=[pr2, pr4];
+  let t2='', movs2=[];
+  [[pr1,true],[pr2,false],[pr3,true],[pr4,false],[pr5,true]].forEach(([c,pos],i)=>{
+    t2+=`<tr><td class="fij">${dias[i]}</td><td>${pos?'Entrada ✅':'Salida ❌'}</td><td class="${pos?'pos':'neg'}">${pos?'+':'−'}${c}${v}</td></tr>`;
+    movs2.push((pos?'+':'-')+c+v);
+  });
+  document.getElementById('m2-tabla').innerHTML=
+    `<tr><th>${dias[0].includes('Semana')?'Semana':'Día'}</th><th>Tipo</th><th>Expresión</th></tr>`+t2;
+  document.getElementById('m2-texto').textContent=
+    'Registra todos los movimientos: '+movs2.map((m,i)=>i===0?m:(m.startsWith('-')?m.replace('-',' − '):(i===0?m:' + '+m.replace('+','')))).join('');
+
+  // -- MOMENTO 3 - verificaci-n --
+  const sumaNet=(pr1-pr2+pr3-pr4+pr5);
+  const valNum=rIntS(seed*41+7, 5, 15);
+  document.getElementById('m3-narr').innerHTML=`
+    <span class="narr-ico">🔢</span>
+    <p><strong>${VV.ctx3}</strong><br>Toma tu resultado simplificado del Momento 2 y sustitúyelo con ${v} = ${valNum}.</p>`;
+  document.getElementById('m3-expr-lbl').textContent=sumaNet+''+v;
+  document.getElementById('m3-val-lbl').textContent=v+' = '+valNum;
+
+  // -- MOMENTO 4 - dos variables --
+  document.getElementById('m4-narr').innerHTML=`
+    <span class="narr-ico">📊</span>
+    <p>${VV.ctx4}<br>Ahora tienes dos tipos de movimientos con <strong>variables distintas</strong>.</p>`;
+  let t4=`<tr><th>Concepto</th><th>Variable</th><th>Expresión</th></tr>`;
+  [[pr1,v,true],[pr3,v,false],[pr5,v,true],[pr2,v2,true],[pr4,v2,false]].forEach(([c,va,pos])=>{
+    t4+=`<tr><td class="fij">${va===v?VV.uni:VV.v2nom}</td><td>${va}</td><td class="${pos?'pos':'neg'}">${pos?'+':'−'}${c}${va}</td></tr>`;
+  });
+  document.getElementById('m4-tabla').innerHTML=t4;
+  document.getElementById('m4-texto').textContent=
+    `Tienes movimientos de tipo "${v}" y de tipo "${v2}". Intenta simplificar al máximo.`;
+
+  // -- ERROR A DETECTAR --
+  const e_coef1=pr1, e_coef2=pr2, e_var=v;
+  // error: sum- exponentes en vez de coeficientes (escribe resultado con exponente 2)
+  const errores_posibles = [
+    { // Error tipo A: sumó exponentes
+      enunc: `El compañero tenía que simplificar: ${e_coef1}${e_var} + ${e_coef2}${e_var}`,
+      trabajo: `${e_coef1}${e_var} + ${e_coef2}${e_var} = ${e_coef1+e_coef2}${e_var}²`,
+      tipo: 'sumó los exponentes'
+    },
+    { // Error tipo B: sumó términos no semejantes
+      enunc: `El compañero tenía que simplificar: ${e_coef1}${e_var} + ${e_coef2}${v2}`,
+      trabajo: `${e_coef1}${e_var} + ${e_coef2}${v2} = ${e_coef1+e_coef2}${e_var}${v2}`,
+      tipo: 'combinó variables distintas en un solo término'
+    },
+    { // Error tipo C: signo incorrecto
+      enunc: `El compañero tenía que simplificar: ${e_coef1}${e_var} − (−${e_coef2}${e_var})`,
+      trabajo: `${e_coef1}${e_var} − (−${e_coef2}${e_var}) = ${e_coef1-e_coef2}${e_var}`,
+      tipo: 'no aplicó que menos por menos es más'
+    }
+  ];
+  const errIdx = seed%3;
+  const err = errores_posibles[errIdx];
+  document.getElementById('error-enunciado').textContent = err.enunc;
+  document.getElementById('error-trabajo').innerHTML =
+    err.trabajo.replace(/([0-9]+)([a-z])(²)?/g, (m,n,v,exp)=>n+'<em>'+v+'</em>'+(exp||''));
+
+  // -- QUIZ --
+  generarQuiz();
+}
+
+// ==============================================================
+// QUIZ
+// ==============================================================
+function generarQuiz(){
+  quizPregs=QB.map((bloque,bi)=>bloque[Math.floor(sr(seed*(bi+1)*37+bi*13)*bloque.length)]);
+  quizResp=new Array(5).fill(-1);
+  quizOrden=quizPregs.map((q,i)=>[0,1,2,3].sort((a,b)=>sr(seed*(i+1)*71+a*13)-sr(seed*(i+1)*71+b*13)));
+  const LETRAS=['A','B','C','D'];
+  const TEMAS=['Identificar semejantes','Operaciones con signos','Verificación numérica','Dos variables','Razonamiento'];
+  document.getElementById('quiz-contenido').innerHTML=quizPregs.map((q,i)=>`
+    <div class="qcard" id="qcard-${i}">
+      <div class="qnum">Pregunta ${i+1} · ${TEMAS[i]}</div>
+      <div class="qtexto">${q.p}</div>
+      <div class="qopts" id="qopts-${i}">
+        ${quizOrden[i].map((oi,li)=>`
+          <div class="qopt" id="qopt-${i}-${li}" onclick="selOpt(${i},${li},${oi})">
+            <div class="qopt-letra">${LETRAS[li]}</div>
+            <div>${q.ops[oi]}</div>
+          </div>`).join('')}
+      </div>
+      <div class="qfeedback" id="qfb-${i}"></div>
+    </div>`).join('');
+}
+
+function selOpt(qi,li,oi){
+  if(quizResp[qi]!==-1) return;
+  quizResp[qi]=oi;
+  document.querySelectorAll('#qopts-'+qi+' .qopt').forEach(el=>el.classList.remove('sel'));
+  document.getElementById('qopt-'+qi+'-'+li).classList.add('sel');
+}
+
+function verificarQuiz(){
+  if(quizResp.includes(-1)){
+    document.getElementById('s3-err').style.display='block';
+    setTimeout(()=>document.getElementById('s3-err').style.display='none',2500);
+    return;
+  }
+  let score=0;
+  quizPregs.forEach((q,i)=>{
+    const ok=quizResp[i]===q.ok;
+    if(ok) score++;
+    const opts=document.querySelectorAll('#qopts-'+i+' .qopt');
+    quizOrden[i].forEach((oi,li)=>{
+      if(oi===q.ok) opts[li].classList.add('correcto');
+      else if(oi===quizResp[i] && !ok) opts[li].classList.add('incorrecto');
+    });
+    const fb=document.getElementById('qfb-'+i);
+    fb.className='qfeedback show '+(ok?'ok':'nook');
+    fb.textContent=(ok?'✓ Correcto. ':'✗ Incorrecto. ')+q.ex;
+  });
+  window._quizScore=score;
+  window._quizPct=Math.round(score/5*100);
+  const pct=window._quizPct;
+  document.getElementById('quiz-resultado').innerHTML=`
+    <div class="quiz-score">
+      <h2>${score}/5 · ${pct}%</h2>
+      <div class="score-badge">${pct>=80?'🏆':pct>=60?'📈':'📚'}</div>
+      <p style="font-size:.9rem;">${pct>=80?'Excelente dominio de operaciones con monomios.':pct>=60?'Buen avance. Repasa los errores arriba.':'Revisa los conceptos. Las explicaciones te guían.'}</p>
+    </div>`;
+  document.getElementById('quiz-resultado').style.display='block';
+  document.getElementById('btn-verificar-quiz').style.display='none';
+  document.getElementById('btn-sig-quiz').style.display='block';
+  window.scrollTo({top:document.getElementById('quiz-resultado').offsetTop-60,behavior:'smooth'});
+}
+
+// ==============================================================
+// NAVEGACI-N Y VALIDACI-N
+// ==============================================================
+function validar(sId){
+  let ok=true;
+  const sec=document.getElementById(sId);
+  if(!sec) return true;
+  sec.querySelectorAll('[data-req]').forEach(el=>{
+    const ml=parseInt(el.getAttribute('data-ml')||'1');
+    const val=el.value.trim();
+    if(val.length<ml){el.classList.add('err');ok=false;}
+    else el.classList.remove('err');
+  });
+  return ok;
+}
+
+function avanzar(from,to){
+  const fromId=from===0?'s0':from===1?'s1':from===2?'s2':from===3?'s3':'s4';
+  if(!MODO_DOCENTE && !validar(fromId)) {
+    const errEl=document.getElementById(fromId+'-err');
+    if(errEl){errEl.style.display='block';setTimeout(()=>errEl.style.display='none',2500);}
+    return;
+  }
+  if(from===0 && !alumno && !MODO_DOCENTE){
+    document.getElementById('s0-err').style.display='block';
+    setTimeout(()=>document.getElementById('s0-err').style.display='none',2500);
+    return;
+  }
+  const toId=to===5?'s-final':'s'+to;
+  document.getElementById(fromId).classList.remove('on');
+  document.getElementById(toId).classList.add('on');
+  curStep=to>4?4:to; updProg();
+  // mostrar hip-tesis en cierre
+  if(to===4){
+    const hp=document.getElementById('pre-hip');
+    if(hp) document.getElementById('hip-show').textContent=hp.value||'(no registrada)';
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ==============================================================
+// FINALIZAR - RESUMEN ENRIQUECIDO
+// ==============================================================
+function finalizar(){
+  if(!MODO_DOCENTE && !validar('s4')) {
+    document.getElementById('s4-err').style.display='block';
+    setTimeout(()=>document.getElementById('s4-err').style.display='none',2500);
+    return;
+  }
+  document.getElementById('s4').classList.remove('on');
+  document.getElementById('s-final').classList.add('on');
+  curStep=4; updProg();
+
+  const vLbl=['A','B','C','D'][varIdx];
+  const nom=alumno?alumno.nom:'(Modo Docente)';
+  const nl=alumno?alumno.n:'-';
+  const g=alumno?(gkey+' · '+GRUPOS[gkey].plantel+' · '+GRUPOS[gkey].turno):'-';
+  const v=VV?VV.var:'-';
+
+  function getV(id){ const el=document.getElementById(id); return el?el.value.trim():'-'; }
+  function exprRow(label,id,esp){
+    const val=getV(id); const ok=val.length>1;
+    return `<tr>
+      <td style="font-weight:800;background:#faf7ff;width:40%;vertical-align:top;">${label}</td>
+      <td class="${ok?'':'err-val'}">
+        ${ok?`<div style="font-weight:700;">${val}</div>`:'<span style="color:#bbb">Sin respuesta</span>'}
+        <div class="esperado-box"><strong>Se esperaba:</strong> ${esp}</div>
+      </td></tr>`;
+  }
+  function openRow(label,id,esp){
+    const val=getV(id);
+    return `<tr>
+      <td style="font-weight:800;background:#faf7ff;width:40%;vertical-align:top;">${label}</td>
+      <td>
+        ${val?`<div class="open-ans"><div class="open-ans-lbl">Tu respuesta</div><div class="open-ans-txt">${val}</div></div>`:'<span style="color:#bbb">Sin respuesta</span>'}
+        <div class="esperado-box"><strong>Se esperaba incluir:</strong> ${esp}</div>
+      </td></tr>`;
+  }
+
+  // Quiz enriquecido
+  const TEMAS=['Identificar semejantes','Signos','Verificación numérica','Dos variables','Razonamiento'];
+  let quizHTML='';
+  if(quizPregs.length){
+    quizHTML='<div>';
+    quizPregs.forEach((q,i)=>{
+      const ok=quizResp[i]===q.ok;
+      const orden=quizOrden[i]||[0,1,2,3];
+      const LETRAS=['A','B','C','D'];
+      const lCor=LETRAS[orden.indexOf(q.ok)];
+      const lAlu=quizResp[i]>=0?LETRAS[orden.indexOf(quizResp[i])]:'?';
+      quizHTML+=`<div class="res-q">
+        <div class="res-q-ic">${ok?'✅':'❌'}</div>
+        <div class="res-q-body">
+          <div class="res-q-tit">P${i+1} · ${TEMAS[i]}</div>
+          <div class="res-q-resp ${ok?'ok':'nook'}">${ok?'Correcta ('+lAlu+')':'Respondió: '+lAlu+' · Correcta: '+lCor}</div>
+          ${!ok?'<div class="esperado">'+q.ex+'</div>':''}
+        </div></div>`;
+    });
+    quizHTML+='</div>';
+  }
+  const sc=window._quizScore||0;
+  const pct=window._quizPct||0;
+  const scoreOk=sc>=4;
+
+  document.getElementById('tabla-res').innerHTML =
+    `<tr><td colspan="2" style="background:var(--tie);color:#fff;font-weight:800;padding:7px 11px;font-size:.82rem;">👤 IDENTIFICACIÓN</td></tr>`+
+    `<tr><td style="font-weight:800;background:#faf7ff;">Nombre</td><td>${nom}</td></tr>`+
+    `<tr><td style="font-weight:800;background:#faf7ff;">N° lista / Grupo</td><td>${nl} · ${g}</td></tr>`+
+    `<tr><td style="font-weight:800;background:#faf7ff;">Variante</td><td><strong style="color:var(--mo2);">${vLbl}</strong> · Variable principal: ${v}</td></tr>`+
+
+    `<tr><td colspan="2" style="background:var(--tie);color:#fff;font-weight:800;padding:7px 11px;font-size:.82rem;">📝 HIPÓTESIS INICIAL</td></tr>`+
+    openRow('¿Qué pasa con 3x+5x y 3x+5y?','pre-hip','Que 3x+5x=8x (términos semejantes) y que 3x+5y no se puede simplificar (variables distintas).')+
+
+    `<tr><td colspan="2" style="background:var(--tie);color:#fff;font-weight:800;padding:7px 11px;font-size:.82rem;">📊 MOMENTOS - OPERACIONES</td></tr>`+
+    exprRow('M1 · Suma sin signos',`m1-suma`,`${pr1}${v} + ${pr2}${v} + ${pr3}${v}`)+
+    exprRow('M1 · Resultado simplificado','m1-simple',`${pr1+pr2+pr3}${v}`)+
+    openRow('M1 · ¿Cómo operaste los coeficientes?','m1-como',`Sumé los coeficientes (${pr1}+${pr2}+${pr3}=${pr1+pr2+pr3}) porque los tres términos tienen la misma variable ${v}.`)+
+    exprRow('M2 · Expresión completa','m2-expr',`${pr1}${v} − ${pr2}${v} + ${pr3}${v} − ${pr4}${v} + ${pr5}${v}`)+
+    exprRow('M2 · Resultado simplificado','m2-simple',`${pr1-pr2+pr3-pr4+pr5}${v}`)+
+    openRow('M2 · Entradas y salidas','m2-explica',`Las entradas suman (coeficiente positivo) y las salidas restan (coeficiente negativo). Se operan igual que números: ${pr1}−${pr2}+${pr3}−${pr4}+${pr5}=${pr1-pr2+pr3-pr4+pr5}.`)+
+    openRow('M3 · Coincidencia numérica','m3-concl',`Los dos métodos dan el mismo resultado porque la expresión simplificada es equivalente a la original. El álgebra captura la misma información que los números.`)+
+    exprRow('M4 · Expresión final (2 variables)','m4-expr',`Quedan monomios con ${v} y con ${VV?VV.v2:'?'} porque son variables distintas que no se pueden combinar.`)+
+    openRow('M4 · ¿Por qué no pudiste combinar todo?','m4-por-que',`Porque los términos con ${v} y los términos con ${VV?VV.v2:'?'} tienen variables distintas: no son semejantes y no se pueden sumar.`)+
+    openRow('M4B · Error detectado','m4-error',`Identificar exactamente qué regla violó el compañero (términos semejantes, ley de signos, o exponentes) y escribir la solución correcta.`)+
+
+    `<tr><td colspan="2" style="background:var(--tie);color:#fff;font-weight:800;padding:7px 11px;font-size:.82rem;">🎯 QUIZ - ${sc}/5 · <span style="color:${scoreOk?'#a5d6a7':'#ef9a9a'}">${scoreOk?'Aprobado ✓':'Revisar ✗'}</span></td></tr>`+
+    `<tr><td colspan="2" style="padding:10px 11px;">${quizHTML||'<span style="color:#bbb">No completado</span>'}</td></tr>`+
+
+    `<tr><td colspan="2" style="background:var(--tie);color:#fff;font-weight:800;padding:7px 11px;font-size:.82rem;">💬 REFLEXIÓN FINAL</td></tr>`+
+    openRow('Regla con tus palabras','c-regla',`Sí se pueden sumar cuando tienen la misma variable con el mismo exponente (términos semejantes). No se pueden cuando la variable o el exponente son distintos.`)+
+    openRow('Ley de signos - ejemplo propio','c-signos',`Positivo menos negativo = sumar: 5x−(−3x)=8x. Incluir un ejemplo numérico propio.`)+
+    openRow('Corrección de hipótesis','c-corr',`Contrastar lo que creía al inicio con lo que descubrió en la actividad. Mencionar al menos un concepto que cambió o precisó.`)+
+    openRow('Conexión con S9 (multiplicación)','c-sig',`Hipótesis sobre qué pasará con los exponentes al multiplicar monomios. Ej: 3x·5x=15x² - el exponente sí cambia.`);
+
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ==============================================================
+// MODO DOCENTE
+// ==============================================================
+function abrirModalDoc(){document.getElementById('modal-doc').classList.add('show');}
+function cerrarModalDoc(){
+  document.getElementById('modal-doc').classList.remove('show');
+  document.getElementById('doc-cod').value='';
+  document.getElementById('doc-err').style.display='none';
+}
+function verificarDocente(){
+  const v=document.getElementById('doc-cod').value.trim();
+  if(v==='890'||v==='890ac'||v==='890AC'){
+    MODO_DOCENTE=true;
+    document.getElementById('doc-login-area').style.display='none';
+    document.getElementById('doc-panel').classList.add('show');
+  } else {
+    document.getElementById('doc-err').style.display='block';
+    document.getElementById('doc-cod').value='';
+  }
+}
+function docTab(t){
+  document.getElementById('doc-tab-ind').style.display=t==='ind'?'block':'none';
+  document.getElementById('doc-tab-grp').style.display=t==='grp'?'block':'none';
+  document.getElementById('tab-ind').classList.toggle('act',t==='ind');
+  document.getElementById('tab-grp').classList.toggle('act',t==='grp');
+}
+function docSaltarFinal(){
+  cerrarModalDoc();
+  if(!alumno){
+    gkey='203'; alumno={n:0,nom:'MODO DOCENTE',pila:'Docente'};
+    seed=GRUPOS[gkey].offset; varIdx=seed%4; VV=VARS_S8[varIdx];
+    pr1=5;pr2=3;pr3=7;pr4=2;pr5=6;pr6=4;
+    document.getElementById('badge-grp').textContent='DOC';
+    document.getElementById('badge-var').textContent='-';
+    generarQuiz();
+  }
+  ['s0','s1','s2','s3','s4'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.classList.remove('on');
+  });
+  document.getElementById('s-final').classList.add('on');
+  curStep=4; updProg(); finalizar();
+}
+function docResolverNormal(){ cerrarModalDoc(); }
+function docConsultar(){
+  const g=document.getElementById('doc-grp').value;
+  const nl=parseInt(document.getElementById('doc-nl').value);
+  const res=document.getElementById('doc-result');
+  if(!g||!nl){res.innerHTML='';return;}
+  const gr=GRUPOS[g];
+  const al=gr?gr.alumnos.find(a=>a.n===nl):null;
+  if(!al){res.innerHTML='<span style="color:red">No encontrado</span>';return;}
+  const s=gr.offset+nl; const vi=s%4; const vl=['A','B','C','D'][vi];
+  const qidxs=QB.map((b,bi)=>Math.floor(sr(s*(bi+1)*37+bi*13)*b.length));
+  res.innerHTML=`<div style="font-weight:800;color:var(--mo);margin-bottom:6px;">${al.nom}</div>`+
+    `<div class="doc-row"><span class="doc-key">Grupo / Lista</span><span class="doc-val">${g} / ${nl}</span></div>`+
+    `<div class="doc-row"><span class="doc-key">Variante</span><span class="doc-val">${vl} · var: ${VARS_S8[vi].var}</span></div>`+
+    `<div class="doc-row"><span class="doc-key">Semilla</span><span class="doc-val">${s}</span></div>`+
+    qidxs.map((qi,i)=>`<div class="doc-row"><span class="doc-key">Quiz P${i+1}</span><span class="doc-val">Preg.#${qi+1}</span></div>`).join('');
+}
+function docGrupoCompleto(){
+  const g=document.getElementById('doc-grp2').value;
+  const res=document.getElementById('doc-grp-result');
+  const btn=document.getElementById('btn-copiar');
+  if(!g){res.innerHTML='';btn.style.display='none';return;}
+  const gr=GRUPOS[g];
+  const VCOL=['v-a','v-b','v-c','v-d'];
+  let html=`<div style="overflow-x:auto;"><table class="grp-table" id="grp-tabla-data">
+    <thead><tr><th>N°</th><th>Nombre</th><th>Var</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><th>Q5</th></tr></thead><tbody>`;
+  window._tablaTexto=['N°','Nombre','Var','Q1','Q2','Q3','Q4','Q5'].join('\t')+'\n';
+  gr.alumnos.forEach(al=>{
+    const s=gr.offset+al.n; const vi=s%4; const vl=['A','B','C','D'][vi];
+    const qidxs=QB.map((b,bi)=>Math.floor(sr(s*(bi+1)*37+bi*13)*b.length));
+    html+=`<tr ${al.nom.includes('INVITADO')?'style="background:#fff8e1;"':''}>`+
+      `<td style="font-weight:800;">${al.n}</td>`+
+      `<td class="td-nom" title="${al.nom}">${al.nom}</td>`+
+      `<td class="${VCOL[vi]}">${vl}</td>`+
+      qidxs.map(qi=>`<td>${qi+1}</td>`).join('')+'</tr>';
+    window._tablaTexto+=[al.n,al.nom,vl].concat(qidxs.map(qi=>qi+1)).join('\t')+'\n';
+  });
+  html+='</tbody></table></div>';
+  res.innerHTML=html; btn.style.display='block';
+}
+function copiarTabla(){
+  if(!window._tablaTexto) return;
+  const btn=document.getElementById('btn-copiar');
+  navigator.clipboard.writeText(window._tablaTexto).then(()=>{
+    btn.textContent='✓ Copiado'; setTimeout(()=>{btn.textContent='📋 Copiar tabla';},2000);
+  }).catch(()=>{
+    const ta=document.createElement('textarea');
+    ta.value=window._tablaTexto; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+    btn.textContent='✓ Copiado'; setTimeout(()=>{btn.textContent='📋 Copiar tabla';},2000);
+  });
+}
+</script>
+</body></html>
