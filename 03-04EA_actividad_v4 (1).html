@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Términos semejantes · Pensamiento Matemático II</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --mo:#5B2D8E;--mo2:#7B3FC0;--mo3:#B88EE8;--mo-f:#f3ecfb;
+  --ver:#1B6B45;--ver2:#52B788;--nar:#E85D04;--nar2:#F9A53A;
+  --roj:#C1121F;--az:#023E8A;--az2:#1565C0;--am:#F5A623;
+  --cr:#fdf9ff;--tie:#1a0a2e;--gris:#ede8f5;--gris2:#d5cce8;
+  --som:0 3px 18px rgba(91,45,142,.12);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--cr);color:var(--tie);font-size:15px;overflow-x:hidden;}
+.hdr{background:linear-gradient(135deg,var(--tie),#2d1050);padding:18px 16px 14px;text-align:center;}
+.hdr-tag{font-size:.65rem;font-weight:800;letter-spacing:3px;color:var(--mo3);text-transform:uppercase;margin-bottom:3px;}
+.hdr h1{font-family:'Bebas Neue';font-size:1.9rem;color:#fff;line-height:1;}
+.hdr h1 em{color:var(--nar2);font-style:normal;}
+.hdr-sub{font-size:.74rem;color:rgba(255,255,255,.45);margin-top:4px;}
+.hdr-autor{margin-top:8px;font-size:.73rem;color:rgba(255,255,255,.55);font-weight:700;}
+.prog-wrap{background:#fff;padding:10px 14px;border-bottom:2px solid var(--gris2);position:sticky;top:0;z-index:90;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.prog-bar-bg{background:var(--gris2);border-radius:4px;height:5px;margin-bottom:5px;}
+.prog-bar{background:linear-gradient(90deg,var(--mo2),var(--nar2));height:5px;border-radius:4px;transition:width .4s;}
+.prog-steps{display:flex;justify-content:space-between;font-size:.6rem;font-weight:800;color:#bbb;letter-spacing:.3px;}
+.prog-steps span.done{color:var(--mo2);}
+.sec{display:none;padding:14px;max-width:700px;margin:0 auto;}
+.sec.on{display:block;}
+.card{background:#fff;border-radius:12px;padding:15px;margin-bottom:12px;box-shadow:var(--som);}
+.card-mo{border-left:4px solid var(--mo2);}
+.card-v{border-left:4px solid var(--ver2);}
+.card-a{border-left:4px solid var(--az2);}
+.card-am{border-left:4px solid var(--am);}
+.pill{display:inline-block;font-size:.63rem;font-weight:800;letter-spacing:.4px;padding:3px 9px;border-radius:12px;margin-bottom:8px;text-transform:uppercase;}
+.p-mo{background:var(--mo-f);color:var(--mo);}
+.p-v{background:#d4edda;color:var(--ver);}
+.p-a{background:#cce5ff;color:var(--az2);}
+.p-am{background:#fff3cd;color:#856404;}
+.p-r{background:#fdecea;color:var(--roj);}
+/* ALERTA */
+.alerta{background:linear-gradient(135deg,#ff6b35,#f7b731);border-radius:12px;padding:14px 15px;margin-bottom:14px;display:flex;gap:12px;align-items:flex-start;color:#fff;}
+.alerta-ico{font-size:1.5rem;flex-shrink:0;margin-top:1px;}
+.alerta-txt{font-size:.82rem;line-height:1.65;}
+.alerta-txt strong{font-size:.88rem;display:block;margin-bottom:3px;}
+/* INPUTS */
+.lbl{font-size:.78rem;font-weight:800;color:var(--mo);display:block;margin-bottom:4px;margin-top:10px;}
+.inp{width:100%;padding:9px 12px;border:2px solid var(--gris2);border-radius:8px;font-size:.88rem;font-family:'Nunito';color:var(--tie);background:#fff;transition:border-color .2s;}
+.inp:focus{outline:none;border-color:var(--mo2);}
+.inp.err{border-color:var(--roj)!important;}
+textarea.inp{resize:vertical;min-height:70px;}
+.sel{width:100%;padding:9px 12px;border:2px solid var(--gris2);border-radius:8px;font-size:.88rem;font-family:'Nunito';color:var(--tie);background:#fff;appearance:none;}
+.sel.err{border-color:var(--roj)!important;}
+.hint{font-size:.73rem;color:#888;font-style:italic;margin-top:3px;line-height:1.5;}
+.emsg{display:none;background:#fdecea;border:1.5px solid var(--roj);border-radius:8px;padding:8px 12px;font-size:.8rem;color:var(--roj);font-weight:700;margin:8px 0;}
+.emsg.show{display:block;}
+/* TABLES */
+.t-wrap{overflow-x:auto;margin:10px 0;}
+table{width:100%;border-collapse:collapse;font-size:.82rem;}
+th{background:var(--tie);color:#fff;padding:8px 9px;text-align:center;font-weight:700;font-size:.75rem;white-space:nowrap;}
+td{padding:7px 9px;border:1.5px solid var(--gris2);vertical-align:middle;}
+td input{border:none;background:transparent;width:100%;font-family:'Nunito';font-size:.82rem;text-align:center;padding:2px;}
+td input:focus{outline:none;border-bottom:1.5px solid var(--mo2);}
+.td-fix{background:var(--gris);font-weight:800;text-align:center;font-family:monospace;}
+.td-expr{font-family:monospace;font-weight:700;text-align:center;font-size:.85rem;}
+/* CUADERNO */
+.cuaderno{background:linear-gradient(135deg,#fffde7,#fff8e1);border:2.5px solid #f9a825;border-radius:14px;padding:16px;margin:12px 0;}
+.cuaderno-hdr{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.cuaderno-hdr .ico{font-size:1.6rem;}
+.cuaderno-hdr h3{font-family:'Bebas Neue';font-size:1.25rem;color:#4a3200;letter-spacing:.5px;}
+.cuaderno-hdr p{font-size:.75rem;color:#6d4c00;margin-top:1px;}
+.cuaderno-regla{background:#fff;border-radius:9px;padding:11px 13px;margin-bottom:10px;border-left:4px solid #f9a825;}
+.cuaderno-ej-wrap{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0;}
+.cuaderno-ej{border-radius:8px;padding:9px 11px;font-size:.78rem;line-height:1.6;}
+.ej-ok{background:#e8f5e9;border:1.5px solid var(--ver2);}
+.ej-nok{background:#fdecea;border:1.5px solid var(--roj);}
+.cuaderno-ej .titulo{font-weight:800;font-size:.7rem;letter-spacing:.5px;text-transform:uppercase;margin-bottom:4px;}
+.cuaderno-ej .titulo.ok{color:var(--ver);}
+.cuaderno-ej .titulo.nok{color:var(--roj);}
+.cuaderno-ej .expr{font-family:monospace;font-weight:800;font-size:.85rem;}
+.cuaderno-confirm{display:flex;align-items:center;gap:10px;margin-top:12px;padding:10px 13px;background:#fff;border-radius:9px;border:1.5px solid #f9a825;}
+.cuaderno-confirm input[type=checkbox]{width:20px;height:20px;cursor:pointer;}
+.cuaderno-confirm label{font-size:.83rem;font-weight:700;cursor:pointer;}
+/* QUIZ */
+.quiz-hdr{background:linear-gradient(135deg,#0a1628,var(--az));border-radius:14px;padding:16px;color:#fff;margin-bottom:12px;text-align:center;}
+.quiz-hdr h2{font-family:'Bebas Neue';font-size:1.5rem;}
+.qcard{background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:var(--som);border:2px solid var(--gris2);}
+.qcard-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.qnum{font-size:.65rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--az2);}
+.qniv{font-size:.6rem;font-weight:800;padding:2px 7px;border-radius:8px;background:var(--gris);color:#666;}
+.qtext{font-size:.9rem;font-weight:700;margin-bottom:10px;line-height:1.55;}
+.qopts{display:flex;flex-direction:column;gap:7px;}
+.qopt{display:flex;align-items:center;gap:10px;padding:10px 12px;border:2.5px solid var(--gris2);border-radius:9px;cursor:pointer;transition:all .2s;font-size:.86rem;font-weight:700;}
+.qopt:hover{border-color:var(--az2);background:#f0f4ff;}
+.qopt.sel{border-color:var(--az2);background:#e8f0ff;}
+.qopt.correcto{border-color:var(--ver2);background:#e8f5e9;color:#1b5e20;}
+.qopt.incorrecto{border-color:var(--roj);background:#fdecea;color:var(--roj);}
+.qopt-letra{width:22px;height:22px;border-radius:50%;background:var(--gris2);font-weight:800;font-size:.8rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Nunito';}
+.qopt.correcto .qopt-letra{background:var(--ver2);color:#fff;}
+.qopt.incorrecto .qopt-letra{background:var(--roj);color:#fff;}
+.qfb{margin-top:8px;padding:8px 11px;border-radius:8px;font-size:.8rem;line-height:1.5;display:none;}
+.qfb.show{display:block;}
+.qfb.ok{background:#e8f5e9;color:#1b5e20;border:1.5px solid var(--ver2);}
+.qfb.nook{background:#fdecea;color:var(--roj);border:1.5px solid var(--roj);}
+/* BTNS */
+.btn-sig{display:block;width:100%;padding:13px;background:var(--mo2);color:#fff;border:none;border-radius:11px;font-size:.96rem;font-weight:800;cursor:pointer;font-family:'Nunito';margin-top:14px;transition:all .2s;}
+.btn-sig:hover{background:var(--mo);transform:translateY(-1px);}
+.btn-ver{display:block;width:100%;padding:13px;background:var(--az2);color:#fff;border:none;border-radius:11px;font-size:.96rem;font-weight:800;cursor:pointer;font-family:'Nunito';margin-top:10px;transition:all .2s;}
+.btn-ver:hover{background:var(--az);}
+.btn-fin{display:block;width:100%;padding:13px;background:linear-gradient(135deg,var(--ver),#1b5e20);color:#fff;border:none;border-radius:11px;font-size:.96rem;font-weight:800;cursor:pointer;font-family:'Nunito';margin-top:14px;}
+/* RESULTADOS */
+.res-hdr{background:linear-gradient(135deg,var(--tie),#1a2a50);border-radius:14px;padding:20px;text-align:center;color:#fff;margin-bottom:14px;position:relative;overflow:hidden;}
+.res-wm{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-around;opacity:.04;pointer-events:none;overflow:hidden;font-weight:900;font-size:.8rem;text-transform:uppercase;letter-spacing:1px;color:#fff;}
+.res-wm-row{white-space:nowrap;}
+.res-alumno-box{background:rgba(255,255,255,.18);border-radius:10px;padding:10px 18px;display:inline-block;min-width:200px;margin-bottom:8px;}
+.res-alumno-label{font-size:.62rem;font-weight:800;letter-spacing:1.5px;opacity:.75;display:block;margin-bottom:2px;text-transform:uppercase;}
+.res-alumno-nom{font-size:1.1rem;font-weight:900;letter-spacing:.3px;}
+.res-nota{font-family:'Bebas Neue';font-size:3rem;line-height:1;margin:6px 0;}
+.res-nota-sub{font-size:.8rem;opacity:.8;}
+.res-tabla{width:100%;border-collapse:collapse;font-size:.8rem;margin-bottom:10px;}
+.res-tabla th{background:var(--tie);color:#fff;padding:7px 8px;text-align:left;font-size:.72rem;font-weight:700;}
+.res-tabla td{padding:6px 9px;border:1.5px solid var(--gris2);vertical-align:top;font-size:.79rem;line-height:1.45;}
+.res-tabla tr.ok-row td{background:#f0fff4;}
+.res-tabla tr.nook-row td{background:#fff5f5;}
+.res-tabla tr.par-row td{background:#f8f4ff;font-size:.74rem;color:#666;border-top:none;padding-bottom:9px;}
+.res-ic{text-align:center;font-size:1rem;width:24px;}
+.res-esperado{font-size:.72rem;color:var(--ver);font-style:italic;display:block;margin-top:2px;}
+.res-tuResp{font-weight:700;}
+.nota-badge{display:inline-block;padding:3px 10px;border-radius:10px;font-weight:800;font-size:.78rem;}
+.nota-verde{background:#d4edda;color:var(--ver);}
+.nota-am{background:#fff3cd;color:#856404;}
+.nota-roj{background:#fdecea;color:var(--roj);}
+.btn-rei{background:#fff;color:var(--tie);border:2px solid var(--gris2);border-radius:10px;padding:11px 22px;font-family:'Nunito';font-weight:800;font-size:.9rem;cursor:pointer;margin-top:12px;transition:all .2s;display:inline-block;}
+.btn-rei:hover{transform:translateY(-1px);border-color:var(--mo2);color:var(--mo2);}
+/* DOCENTE MODAL */
+.doc-modal{display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.6);align-items:center;justify-content:center;}
+.doc-modal.show{display:flex;}
+.doc-inner{background:#fff;border-radius:14px;padding:18px;max-width:380px;width:92%;box-shadow:0 10px 40px rgba(0,0,0,.3);max-height:90vh;overflow-y:auto;}
+.doc-inner h3{font-family:'Bebas Neue';font-size:1.4rem;color:var(--mo);margin-bottom:8px;}
+.doc-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--gris2);font-size:.79rem;}
+.doc-row:last-child{border-bottom:none;}
+.doc-key{font-weight:700;}
+.doc-val{color:var(--mo);font-weight:800;font-family:monospace;}
+.dbtn{width:100%;padding:10px;border:none;border-radius:9px;font-family:'Nunito';font-weight:800;font-size:.88rem;cursor:pointer;margin-top:7px;}
+.dbtn-mo{background:var(--mo2);color:#fff;}
+.dbtn-v{background:var(--ver);color:#fff;}
+.dbtn-a{background:var(--az2);color:#fff;}
+.dbtn-out{background:transparent;border:2px solid var(--mo2);color:var(--mo2);}
+/* MISC */
+.sec-num{font-family:'Bebas Neue';font-size:2.2rem;color:var(--mo2);line-height:1;margin-right:8px;}
+.sec-hdr{display:flex;align-items:center;margin-bottom:4px;}
+.sec-tit{font-size:1.05rem;font-weight:900;}
+.sec-sub{font-size:.74rem;color:#888;margin-top:1px;}
+.instr{font-size:.82rem;line-height:1.7;color:#444;}
+.separador{border:none;border-top:2px dashed var(--gris2);margin:14px 0;}
+.highlight{background:var(--mo-f);border-radius:8px;padding:8px 12px;font-family:monospace;font-size:.92rem;font-weight:800;display:inline-block;margin:4px 0;}
+.btn-sig-quiz{display:none;width:100%;padding:12px;background:var(--ver);color:#fff;border:none;border-radius:11px;font-size:.92rem;font-weight:800;cursor:pointer;font-family:'Nunito';margin-top:10px;}
+@media print{.no-print{display:none!important;}.print-hdr{display:block!important;}}
+.print-hdr{display:none;}
+sup{font-size:.65em;vertical-align:super;line-height:0;}
+.var-tag{font-weight:800;color:var(--mo2);font-family:monospace;}
+.ctx-card{background:linear-gradient(135deg,#f3ecfb,#fff);border:2px solid var(--mo3);border-radius:12px;padding:13px;margin-bottom:12px;}
+.ctx-card .ctx-sit{font-size:.88rem;line-height:1.7;margin-bottom:8px;}
+.ctx-item{display:flex;align-items:center;gap:8px;padding:6px 10px;background:#fff;border-radius:8px;margin-bottom:5px;border:1.5px solid var(--gris2);}
+.ctx-item .ico{font-size:1.1rem;}
+.ctx-item .desc{font-size:.82rem;font-weight:700;}
+.ctx-item .precio{font-family:monospace;font-size:.85rem;color:var(--ver);font-weight:800;margin-left:auto;}
+.ctx-item .var{font-family:monospace;font-size:.9rem;font-weight:900;color:var(--mo2);min-width:20px;text-align:center;}
+.entr-hdr{background:var(--gris);border-radius:8px;padding:6px 10px;font-size:.72rem;font-weight:800;color:#666;text-transform:uppercase;letter-spacing:.5px;margin:8px 0 4px;}
+</style>
+</head>
+<body>
+
+<div class="doc-modal" id="modal-doc">
+  <div class="doc-inner">
+    <h3>&#128274; Acceso Docente</h3>
+    <div id="doc-login">
+      <label class="lbl">Código:</label>
+      <input class="inp" id="doc-cod" type="password" placeholder="••••" autocomplete="off"
+        onkeydown="if(event.key==='Enter')chkDoc()">
+      <div id="doc-err" style="display:none;color:var(--roj);font-size:.79rem;margin-top:4px;font-weight:700;">Código incorrecto.</div>
+      <div style="display:flex;gap:8px;margin-top:9px;">
+        <button class="dbtn dbtn-mo" style="flex:1;" onclick="chkDoc()">Entrar</button>
+        <button class="dbtn dbtn-out" style="flex:1;" onclick="cerrarDoc()">Cancelar</button>
+      </div>
+    </div>
+    <div id="doc-panel" style="display:none;">
+      <div style="background:var(--mo2);border-radius:8px;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <span style="font-weight:800;color:#fff;font-size:.85rem;">&#128101; Panel Docente</span>
+        <button onclick="cerrarDoc()" style="background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:6px;padding:3px 9px;font-size:.73rem;cursor:pointer;font-family:'Nunito';font-weight:700;">Cerrar</button>
+      </div>
+      <div style="background:var(--mo-f);border-radius:9px;padding:11px 13px;margin-bottom:10px;">
+        <div class="doc-row"><span class="doc-key">Actividad</span><span class="doc-val">03-04EA Fusión</span></div>
+        <div class="doc-row"><span class="doc-key">Secciones</span><span class="doc-val">S0-S5 + Resultados</span></div>
+        <div class="doc-row"><span class="doc-key">Quiz</span><span class="doc-val">5 Niv × 6 pregs (banco 30)</span></div>
+        <div class="doc-row"><span class="doc-key">Contextos</span><span class="doc-val">8 situaciones CDMX</span></div>
+        <div class="doc-row"><span class="doc-key">Calificación</span><span class="doc-val">Global /10</span></div>
+      </div>
+      <button class="dbtn dbtn-a" onclick="docSaltar()">&#9193; Ir directo a resultados</button>
+      <button class="dbtn dbtn-v" style="margin-top:6px;" onclick="docRecorrer()">&#9654; Recorrer sin validar</button>
+      <button class="dbtn dbtn-out" style="margin-top:6px;" onclick="cerrarDoc()">Cerrar panel</button>
+      <div style="font-size:.72rem;color:#888;margin-top:9px;line-height:1.5;">
+        "Saltar" muestra resultados de ejemplo. "Recorrer" desbloquea todos los botones para revisar la actividad completa.
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="hdr">
+  <div class="hdr-tag">Pensamiento Matemático II</div>
+  <h1>De <em>Monomio</em> a Polinomio</h1>
+  <div class="hdr-sub">Términos semejantes · Clasificación de expresiones algebraicas</div>
+  <div class="hdr-autor">Prof. Adrián Cruz &nbsp;·&nbsp; 2025–2026</div>
+</div>
+<div class="prog-wrap no-print">
+  <div class="prog-bar-bg"><div class="prog-bar" id="prog-bar" style="width:0%"></div></div>
+  <div class="prog-steps">
+    <span id="ps0">Inicio</span><span id="ps1">Monomio</span><span id="ps2">Conflicto</span>
+    <span id="ps2b">Cuaderno</span><span id="ps3">Crece</span><span id="ps4">Quiz</span>
+    <span id="ps5">Cierre</span><span id="ps-fin">Resultados</span>
+  </div>
+</div>
+
+<div class="sec on" id="s0">
+  <div class="alerta" style="margin-top:4px;">
+    <div class="alerta-ico">&#9888;&#65039;</div>
+    <div class="alerta-txt">
+      <strong>IMPORTANTE — Lee antes de empezar</strong>
+      En algunos teléfonos, tener muchas apps abiertas o minimizar constantemente esta página puede hacer que el navegador la reinicie y <strong>pierdas todo tu avance</strong>. Te recomendamos cerrar otras apps y no cambiar de app mientras trabajas. Si tienes que salir, hazlo solo en los momentos de pausa (cuaderno).
+    </div>
+  </div>
+  <div class="card card-mo">
+    <div class="pill p-mo">Sobre esta actividad</div>
+    <p class="instr">Vas a construir expresiones algebraicas a partir de una situación real de la CDMX, descubrir por qué no siempre se pueden simplificar, hacer un dibujo, describir una situación real y resolver un quiz de 10 preguntas. Al final verás tu calificación con retroalimentación detallada.</p>
+    <p class="instr" style="margin-top:7px;">Tus ejercicios son únicos — si reinicias, todo cambia.</p>
+  </div>
+  <div class="alerta" style="margin-top:0;">
+    <div class="alerta-ico">&#128221;</div>
+    <div class="alerta-txt">
+      <strong>&#9989; TODAS las actividades serán calificadas</strong>
+      Aunque no aparezca un botón de "Verificar" en cada sección, <strong>todas tus respuestas escritas, dibujos, descripciones y respuestas del quiz forman parte de tu calificación final</strong>. Responde con cuidado y con tus propias palabras.
+    </div>
+  </div>
+  <div class="card">
+    <label class="lbl">&#128100; Tu nombre completo (comienza por apellidos):</label>
+    <input class="inp" id="inp-nombre" type="text" autocomplete="off"
+      placeholder="Apellidos · Nombre — Grupo"
+      style="font-size:.95rem;font-weight:700;">
+    <div class="hint">Ejemplo: Martínez López Andrea — 203. Verifica que esté correcto antes de continuar.</div>
+  </div>
+  <div class="card card-mo" id="act-wrap">
+    <div class="pill p-mo">Pregunta de activación</div>
+    <p class="instr" id="act-pregunta">Cargando...</p>
+    <label class="lbl">Mi respuesta inicial:</label>
+    <textarea class="inp" id="act-resp" rows="4" data-req="1" data-ml="50"
+      placeholder="Escribe al menos 50 caracteres. Desarrolla tu idea con detalle..."
+      oncopy="return false" onpaste="return false" oncut="return false" oncontextmenu="return false"></textarea>
+    <div class="hint">No hay respuesta incorrecta — es tu punto de partida. M&iacute;nimo 50 caracteres.</div>
+  </div>
+  <div class="emsg" id="s0-err">&#9888;&#65039; Completa todos los campos antes de continuar.</div>
+  <button class="btn-sig" onclick="avanzar('s0','s1')">Comenzar &#8594;</button>
+</div>
+
+<div class="sec" id="s1">
+  <div class="sec-hdr"><div class="sec-num">1</div>
+    <div><div class="sec-tit">Un solo concepto · El monomio</div>
+    <div class="sec-sub">Parte A y B · Tabla y expresión</div></div>
+  </div>
+  <div class="ctx-card" id="ctx-s1">Cargando situación...</div>
+  <div class="card">
+    <div class="pill p-mo">Parte A &middot; Tabla de valores</div>
+    <p class="instr">Calcula el total para cada cantidad. Escribe cómo lo calculas:</p>
+    <div class="alerta" style="background:linear-gradient(135deg,#1565C0,#0d47a1);margin:8px 0;">
+      <div class="alerta-ico">&#128161;</div>
+      <div class="alerta-txt" style="font-size:.79rem;"><strong>¿Por qué usamos números aquí si después se dice que no se pueden sumar?</strong><br>
+      Aquí trabajamos con <em>un solo tipo de gasto</em> y una sola variable, por eso el cálculo es numérico y sí se puede hacer. La regla de &ldquo;no se puede sumar&rdquo; aparecerá más adelante, cuando tengamos <em>dos gastos de naturaleza diferente</em>: cada uno tendrá su propia variable y ya no representarán la misma cosa, por eso no se combinarán en un solo término algebraico.</div>
+    </div>
+    <div class="t-wrap"><div id="tabla-mono"></div></div>
+  </div>
+  <div class="card">
+    <div class="pill p-mo">Parte B · Tu expresión algebraica</div>
+    <p class="instr">Usando <span class="var-tag" id="var1-lbl">?</span> como variable, escribe la expresión que calcula el costo para <em>cualquier cantidad</em>:</p>
+    <label class="lbl">Mi expresión (monomio):</label>
+    <input class="inp" id="expr-mono" type="text" data-req="1" data-ml="2" data-tipo="monomio"
+      placeholder="Ej: 12p"
+      oncopy="return false" onpaste="return false" oncut="return false" oncontextmenu="return false">
+    <div id="expr-mono-fb" class="hint" style="color:var(--roj);display:none;"></div>
+    <label class="lbl">Esta expresión es un:</label>
+    <select class="sel" id="sel-tipo-m" data-req="1">
+      <option value="">-- elige --</option>
+      <option value="monomio">Monomio (1 término)</option>
+      <option value="binomio">Binomio (2 términos)</option>
+      <option value="trinomio">Trinomio (3 términos)</option>
+      <option value="polinomio">Polinomio (4+ términos)</option>
+    </select>
+    <label class="lbl">Identifica sus partes — coeficiente, variable, exponente y grado:</label>
+    <textarea class="inp" id="partes-mono" rows="2" data-req="1" data-ml="15"
+      placeholder="El coeficiente es..., la variable es..., el grado es..."
+      oncopy="return false" onpaste="return false" oncut="return false" oncontextmenu="return false"></textarea>
+    <div id="partes-mono-fb" class="hint" style="color:#f57f17;display:none;"></div>
+  </div>
+  <div class="emsg" id="s1-err">&#9888;&#65039; Completa todos los campos antes de continuar.</div>
+  <button class="btn-sig" onclick="avanzar('s1','s2')">Siguiente &#8594; Aparece un segundo concepto</button>
+</div>
+
+<div class="sec" id="s2">
+  <div class="sec-hdr"><div class="sec-num">2</div>
+    <div><div class="sec-tit">El conflicto · ¿Se pueden sumar?</div>
+    <div class="sec-sub">Parte A-D · Binomio y el experimento</div></div>
+  </div>
+  <div class="ctx-card" id="ctx-s2">Cargando...</div>
+  <div class="card">
+    <div class="pill p-mo">Parte A &middot; Dos conceptos, una tabla</div>
+    <p class="instr">Ahora hay dos gastos distintos. Calcula cada uno y el total:</p>
+    <div class="alerta" style="background:linear-gradient(135deg,#1B6B45,#2e7d32);margin:8px 0;">
+      <div class="alerta-ico">&#128260;</div>
+      <div class="alerta-txt" style="font-size:.79rem;"><strong>Diferencia con la tabla anterior:</strong><br>
+      Antes calculabas un solo tipo de gasto &mdash; el resultado era un único número. Aquí hay <em>dos conceptos distintos</em> (con variables diferentes), por eso tienes dos columnas separadas. Con números concretos el total sí se puede sumar. El problema surge al escribir la <em>expresión general con variables</em>: como cada variable representa algo distinto (distinta unidad, distinta realidad), <strong>no se pueden unir en un solo término algebraico</strong>.</div>
+    </div>
+    <div class="t-wrap"><div id="tabla-binom"></div></div>
+  </div>
+  <div class="card">
+    <div class="pill p-mo">Parte B · Tu binomio</div>
+    <p class="instr">Usando <span class="var-tag" id="var1-s2">?</span> y <span class="var-tag" id="var2-s2">?</span> como variables, escribe la expresión que calcula el total:</p>
+    <label class="lbl">Mi binomio:</label>
+    <input class="inp" id="expr-binom" type="text" data-req="1" data-ml="4" data-tipo="binomio"
+      placeholder="Ej: 12p + 30c"
+      oncopy="return false" onpaste="return false" oncut="return false" oncontextmenu="return false">
+    <div id="expr-binom-fb" class="hint" style="color:var(--roj);display:none;"></div>
+    <label class="lbl">Esta expresión es un:</label>
+    <select class="sel" id="sel-tipo-b" data-req="1">
+      <option value="">-- elige --</option>
+      <option value="monomio">Monomio (1 término)</option>
+      <option value="binomio">Binomio (2 términos)</option>
+      <option value="trinomio">Trinomio (3 términos)</option>
+      <option value="polinomio">Polinomio (4+ términos)</option>
+    </select>
+  </div>
+  <div class="card card-am">
+    <div class="pill p-am">Parte C · El experimento &#128161;</div>
+    <p class="instr">Alguien te dice: <em>"¿Para qué escribir dos términos separados? ¡Súmalos y listo!"</em></p>
+    <p class="instr" style="margin-top:6px;">Intenta combinar los dos términos de tu binomio en uno solo. Escribe lo que obtienes:</p>
+    <label class="lbl">Si intento sumarlos obtengo:</label>
+    <input class="inp" id="intento-suma" type="text" data-req="1" data-ml="3"
+      placeholder="Ej: 42pc  ó  No se puede porque..."
+      oncopy="return false" onpaste="return false" oncut="return false" oncontextmenu="return false">
+    <label class="lbl" style="margin-top:10px;">¿Los dos términos representan la misma cosa?</label>
+    <select class="sel" id="sel-misma" data-req="1">
+      <option value="">-- elige --</option>
+      <option value="si">Sí, representan lo mismo</option>
+      <option value="no">No, representan cosas distintas</option>
+    </select>
+  </div>
+  <div class="card">
+    <div class="pill p-r">Parte D · La razón</div>
+    <p class="instr">Mira los dos términos de tu binomio. El primero representa <strong id="item1-nom">—</strong> y el segundo <strong id="item2-nom">—</strong>.</p>
+    <label class="lbl">¿Por qué NO se pueden combinar en un solo término?</label>
+    <textarea class="inp" id="confl-razon" rows="4" data-req="1" data-ml="50"
+      placeholder="Explica con tus palabras... (m&iacute;nimo 50 caracteres)"
+      oncopy="return false" onpaste="return false" oncut="return false" oncontextmenu="return false"></textarea>
+    <div id="confl-razon-fb" class="hint" style="color:#f57f17;display:none;"></div>
+  </div>
+  <div class="emsg" id="s2-err">&#9888;&#65039; Completa todos los campos antes de continuar.</div>
+  <button class="btn-sig" onclick="avanzar('s2','s2b')">Siguiente &#8594; Copia en tu cuaderno &#9998;</button>
+</div>
+
+<div class="sec" id="s2b">
+  <div class="cuaderno">
+    <div class="cuaderno-hdr">
+      <div class="ico">&#128218;</div>
+      <div><h3>PAUSA &#183; COPIA EN TU CUADERNO</h3>
+      <p>Copia el siguiente diagrama y tabla completa. Son la base de todo PF3.</p></div>
+    </div>
+    <div class="cuaderno-regla">
+      <p style="font-size:.83rem;font-weight:800;margin-bottom:6px;">&#9989; Regla de Términos Semejantes</p>
+      <p style="font-size:.82rem;line-height:1.7;">
+        Dos términos algebraicos son <strong>semejantes</strong> si tienen <strong>la misma variable</strong> elevada al <strong>mismo exponente</strong>. Solo los términos semejantes se pueden sumar o restar.<br>
+        Los términos <strong>no semejantes</strong> tienen variables distintas o exponentes distintos — no se combinan aunque quieras.
+      </p>
+    </div>
+    <div class="cuaderno-ej-wrap">
+      <div class="cuaderno-ej ej-ok">
+        <div class="titulo ok">&#9989; Semejantes — SÍ se combinan</div>
+        <div class="expr">3x + 5x = 8x</div>
+        <div style="font-size:.72rem;margin-top:3px;">Misma variable x, mismo exponente 1</div>
+      </div>
+      <div class="cuaderno-ej ej-nok">
+        <div class="titulo nok">&#10060; No semejantes — NO se combinan</div>
+        <div class="expr">3x + 5y &nbsp;&#8594;&nbsp; no simplifica</div>
+        <div style="font-size:.72rem;margin-top:3px;">Variables distintas: x &#8800; y</div>
+      </div>
+      <div class="cuaderno-ej ej-ok">
+        <div class="titulo ok">&#9989; Semejantes — SÍ se combinan</div>
+        <div class="expr">7a<sup>2</sup> &#8722; 2a<sup>2</sup> = 5a<sup>2</sup></div>
+        <div style="font-size:.72rem;margin-top:3px;">Misma variable a, mismo exponente 2</div>
+      </div>
+      <div class="cuaderno-ej ej-nok">
+        <div class="titulo nok">&#10060; No semejantes — NO se combinan</div>
+        <div class="expr">4x<sup>2</sup> + 4x &nbsp;&#8594;&nbsp; no simplifica</div>
+        <div style="font-size:.72rem;margin-top:3px;">Misma letra, pero 2 &#8800; 1 (exponente)</div>
+      </div>
+    </div>
+    <div class="cuaderno-regla" style="margin-top:8px;">
+      <p style="font-size:.78rem;font-weight:800;margin-bottom:5px;">&#9888;&#65039; Ejemplo CDMX:</p>
+      <p style="font-size:.8rem;line-height:1.7;font-family:monospace;">
+        Gasto semanal: &nbsp;<strong>5t</strong> (viajes metro, t=viajes) &nbsp;+&nbsp; <strong>30c</strong> (comidas, c=comidas)<br>
+        5t + 30c &nbsp;&#8594;&nbsp; NO simplifica: t y c son cosas distintas.<br>
+        "35tc" no tiene ningún sentido.
+      </p>
+    </div>
+    <!-- NUEVO: Bloque negativos -->
+    <div class="cuaderno-regla" style="border-left-color:var(--roj);margin-top:8px;">
+      <p style="font-size:.78rem;font-weight:800;margin-bottom:6px;color:var(--roj);">&#9940; &#191;Qu&eacute; pasa con cantidades <em>negativas</em>?</p>
+      <p style="font-size:.8rem;line-height:1.7;">La regla de t&eacute;rminos semejantes no cambia por el signo. Los coeficientes pueden ser positivos o negativos; lo que importa es que la <strong>variable y el exponente sean iguales</strong>.</p>
+      <div class="cuaderno-ej-wrap" style="margin-top:8px;">
+        <div class="cuaderno-ej ej-ok">
+          <div class="titulo ok">&#9989; Con un negativo</div>
+          <div class="expr">8x + (&minus;3x) = 5x</div>
+          <div style="font-size:.72rem;margin-top:3px;">Misma variable x. Se <em>restan</em> los coeficientes: 8&minus;3 = 5.</div>
+        </div>
+        <div class="cuaderno-ej ej-ok">
+          <div class="titulo ok">&#9989; Todos negativos</div>
+          <div class="expr">&minus;4x + (&minus;2x) = &minus;6x</div>
+          <div style="font-size:.72rem;margin-top:3px;">Negativos del mismo tipo. Suman sus valores: &minus;(4+2) = &minus;6.</div>
+        </div>
+        <div class="cuaderno-ej ej-ok">
+          <div class="titulo ok">&#9989; Resultado negativo</div>
+          <div class="expr">3x + (&minus;7x) = &minus;4x</div>
+          <div style="font-size:.72rem;margin-top:3px;">El negativo &ldquo;gana&rdquo;: 3&minus;7 = &minus;4. El resultado es negativo.</div>
+        </div>
+        <div class="cuaderno-ej ej-nok">
+          <div class="titulo nok">&#10060; Distintas variables</div>
+          <div class="expr">&minus;5x + (&minus;3y) &rarr; no simplifica</div>
+          <div style="font-size:.72rem;margin-top:3px;">Aunque ambos sean negativos, x &ne; y. No son semejantes.</div>
+        </div>
+      </div>
+      <p style="font-size:.79rem;margin-top:8px;font-weight:700;color:#555;">&#128161; Regla pr&aacute;ctica: s&oacute;lo sumas o restas los <em>coeficientes</em>; la variable con su exponente queda igual. El signo forma parte del coeficiente.</p>
+    </div>
+    <div class="cuaderno-confirm">
+      <input type="checkbox" id="chk-cuaderno">
+      <label for="chk-cuaderno">&#10003;&nbsp; Ya copié la regla, la tabla de ejemplos y el ejemplo CDMX en mi cuaderno.</label>
+    </div>
+  </div>
+  <div class="emsg" id="s2b-err">&#9888;&#65039; Confirma que copiaste en tu cuaderno antes de continuar.</div>
+  <button class="btn-sig" onclick="avanzar('s2b','s3')">Continuar &#8594; La expresión crece</button>
+</div>
+
+<div class="sec" id="s3">
+  <div class="sec-hdr"><div class="sec-num">3</div>
+    <div><div class="sec-tit">La expresión crece</div>
+    <div class="sec-sub">Del trinomio al polinomio · La evolución</div></div>
+  </div>
+  <div class="ctx-card" id="ctx-s3">Cargando...</div>
+  <div class="card">
+    <div class="pill p-mo">Momento 3 · Aparece un tercer concepto</div>
+    <p class="instr">Agrega el tercer concepto a tu binomio y escribe el trinomio que resulta:</p>
+    <label class="lbl">Mi trinomio:</label>
+    <input class="inp" id="expr-trinom" type="text" data-req="1" data-ml="6" data-tipo="trinomio"
+      placeholder="Ej: 12p + 30c + 45r"
+      oncopy="return false" onpaste="return false" oncut="return false" oncontextmenu="return false">
+    <div id="expr-trinom-fb" class="hint" style="color:var(--roj);display:none;"></div>
+    <label class="lbl">Esta expresión es un:</label>
+    <select class="sel" id="sel-tipo-t" data-req="1">
+      <option value="">-- elige --</option>
+      <option value="monomio">Monomio (1 término)</option>
+      <option value="binomio">Binomio (2 términos)</option>
+      <option value="trinomio">Trinomio (3 términos)</option>
+      <option value="polinomio">Polinomio (4+ términos)</option>
+    </select>
+    <label class="lbl">Aplica la regla de términos semejantes: ¿algún par de los tres términos se podría simplificar? Explica por qué sí o por qué no:</label>
+    <textarea class="inp" id="trinomio-semejantes" rows="2" data-req="1" data-ml="20"
+      placeholder="Mínimo 20 caracteres..."
+      oncopy="return false" onpaste="return false" oncut="return false" oncontextmenu="return false"></textarea>
+  </div>
+  <div class="card">
+    <div class="pill p-mo">Momento 4 · Aparece un cuarto concepto</div>
+    <div class="ctx-card" id="ctx-s3-m4" style="margin-bottom:10px;">Cargando item 4...</div>
+    <label class="lbl">Agrega este cuarto término a tu trinomio. Escribe el polinomio completo:</label>
+    <input class="inp" id="expr-polin" type="text" data-req="1" data-ml="8" data-tipo="polinomio"
+      placeholder="Ej: 12p + 30c + 45r + 6i"
+      oncopy="return false" onpaste="return false" oncut="return false" oncontextmenu="return false">
+    <div id="expr-polin-fb" class="hint" style="color:var(--roj);display:none;"></div>
+    <label class="lbl">Clasifícalo:</label>
+    <select class="sel" id="sel-tipo-p" data-req="1">
+      <option value="">-- elige --</option>
+      <option value="monomio">Monomio (1 término)</option>
+      <option value="binomio">Binomio (2 términos)</option>
+      <option value="trinomio">Trinomio (3 términos)</option>
+      <option value="polinomio">Polinomio de 4 o más términos</option>
+    </select>
+  </div>
+  <div class="card card-v">
+    <div class="pill p-v">Síntesis · Cómo creció tu expresión</div>
+    <p class="instr" style="margin-bottom:8px;">Completa la tabla mostrando la evolución:</p>
+    <div class="t-wrap">
+      <table>
+        <thead><tr><th>Momento</th><th>Expresión que construiste</th><th>Nombre</th></tr></thead>
+        <tbody>
+          <tr><td class="td-fix">M1</td><td><input type="text" id="sint-m1" class="td-expr" data-req="1" data-ml="2" oncopy="return false" onpaste="return false" oncontextmenu="return false" placeholder="..."></td><td><select style="width:100%;border:none;font-family:'Nunito';font-size:.8rem;" id="sint-s1" data-req="1"><option value="">--</option><option value="monomio">Monomio</option><option value="binomio">Binomio</option><option value="trinomio">Trinomio</option><option value="polinomio">Polinomio</option></select></td></tr>
+          <tr><td class="td-fix">M2</td><td><input type="text" id="sint-m2" class="td-expr" data-req="1" data-ml="3" oncopy="return false" onpaste="return false" oncontextmenu="return false" placeholder="..."></td><td><select style="width:100%;border:none;font-family:'Nunito';font-size:.8rem;" id="sint-s2" data-req="1"><option value="">--</option><option value="monomio">Monomio</option><option value="binomio">Binomio</option><option value="trinomio">Trinomio</option><option value="polinomio">Polinomio</option></select></td></tr>
+          <tr><td class="td-fix">M3</td><td><input type="text" id="sint-m3" class="td-expr" data-req="1" data-ml="4" oncopy="return false" onpaste="return false" oncontextmenu="return false" placeholder="..."></td><td><select style="width:100%;border:none;font-family:'Nunito';font-size:.8rem;" id="sint-s3" data-req="1"><option value="">--</option><option value="monomio">Monomio</option><option value="binomio">Binomio</option><option value="trinomio">Trinomio</option><option value="polinomio">Polinomio</option></select></td></tr>
+          <tr><td class="td-fix">M4</td><td><input type="text" id="sint-m4" class="td-expr" data-req="1" data-ml="5" oncopy="return false" onpaste="return false" oncontextmenu="return false" placeholder="..."></td><td><select style="width:100%;border:none;font-family:'Nunito';font-size:.8rem;" id="sint-s4" data-req="1"><option value="">--</option><option value="monomio">Monomio</option><option value="binomio">Binomio</option><option value="trinomio">Trinomio</option><option value="polinomio">Polinomio</option></select></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!-- NUEVO: Comprensión con negativos -->
+  <div class="card card-am">
+    <div class="pill p-am">&#128161; Practica &middot; T&eacute;rminos semejantes con negativos</div>
+    <p class="instr">Ahora que ya conoces la regla con cantidades negativas, responde:</p>
+    <label class="lbl">Observa esta expresi&oacute;n: <span style="font-family:monospace;font-weight:800;">&minus;5x + 3y + 2x &minus; 7y</span><br>¿Cu&aacute;les son los pares de t&eacute;rminos semejantes? ¿Cu&aacute;l es el resultado simplificado? Explica paso a paso c&oacute;mo llegaste.</label>
+    <textarea class="inp" id="neg-practica" rows="4" data-req="1" data-ml="80"
+      placeholder="Primero identifico los semejantes... luego opero los coeficientes... el resultado es... (m&iacute;nimo 80 caracteres)"
+      oncopy="return false" onpaste="return false" oncut="return false" oncontextmenu="return false"></textarea>
+    <div id="neg-practica-fb" class="hint" style="color:#f57f17;display:none;"></div>
+  </div>
+  <!-- NUEVO: Dibujo representativo (canvas) -->
+  <div class="card card-v">
+    <div class="pill p-v">&#9998; Ilustra &middot; Dibuja tu polinomio</div>
+    <p class="instr">Dibuja una <strong>representaci&oacute;n visual</strong> del polinomio que construiste, o ilustra lo que significa que dos t&eacute;rminos sean semejantes vs no semejantes. Puedes usar cajas, flechas, colores o cualquier esquema que tenga sentido para ti.</p>
+    <p class="hint">Idea: dibuja rect&aacute;ngulos de distintos colores o tama&ntilde;os para cada t&eacute;rmino. Los semejantes los puedes agrupar; los no semejantes los mantienes separados.</p>
+    <canvas id="dibujo-canvas" style="width:100%;height:220px;border:2.5px solid var(--gris2);border-radius:10px;background:#fff;touch-action:none;cursor:crosshair;" width="600" height="220"></canvas>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+      <button class="dib-btn" onclick="dibColor('#5B2D8E',this)" style="background:#5B2D8E;color:#fff;border:2px solid transparent;border-radius:6px;padding:6px 12px;font-family:'Nunito';font-size:.78rem;font-weight:700;cursor:pointer;">&#9679; Morado</button>
+      <button class="dib-btn" onclick="dibColor('#1B6B45',this)" style="background:#1B6B45;color:#fff;border:2px solid transparent;border-radius:6px;padding:6px 12px;font-family:'Nunito';font-size:.78rem;font-weight:700;cursor:pointer;">&#9679; Verde</button>
+      <button class="dib-btn" onclick="dibColor('#E85D04',this)" style="background:#E85D04;color:#fff;border:2px solid transparent;border-radius:6px;padding:6px 12px;font-family:'Nunito';font-size:.78rem;font-weight:700;cursor:pointer;">&#9679; Naranja</button>
+      <button class="dib-btn" onclick="dibColor('#023E8A',this)" style="background:#023E8A;color:#fff;border:2px solid transparent;border-radius:6px;padding:6px 12px;font-family:'Nunito';font-size:.78rem;font-weight:700;cursor:pointer;">&#9679; Azul</button>
+      <button class="dib-btn" onclick="dibColor('#C1121F',this)" style="background:#C1121F;color:#fff;border:2px solid transparent;border-radius:6px;padding:6px 12px;font-family:'Nunito';font-size:.78rem;font-weight:700;cursor:pointer;">&#9679; Rojo</button>
+      <button onclick="dibBorrar()" style="background:var(--gris2);color:var(--tie);border:2px solid transparent;border-radius:6px;padding:6px 12px;font-family:'Nunito';font-size:.78rem;font-weight:700;cursor:pointer;">&#8617; Borrar todo</button>
+    </div>
+    <p class="hint" style="margin-top:6px;">El dibujo se guarda autom&aacute;ticamente en tus resultados. Marca cuando termines:</p>
+    <div style="display:flex;align-items:center;gap:10px;margin-top:6px;background:var(--gris);padding:9px 12px;border-radius:8px;">
+      <input type="checkbox" id="chk-dibujo" style="width:20px;height:20px;cursor:pointer;">
+      <label for="chk-dibujo" style="font-size:.83rem;font-weight:700;cursor:pointer;">&#10003; Ya hice mi dibujo representativo</label>
+    </div>
+  </div>
+  <!-- NUEVO: Situacion cotidiana -->
+  <div class="card card-a">
+    <div class="pill p-a">&#127968; Situaci&oacute;n real &middot; Tu propio trinomio o polinomio</div>
+    <p class="instr">Piensa en una situaci&oacute;n de tu vida cotidiana (tu colonia, tu semana, tu familia, tu trabajo, tu escuela) que pueda representarse con un trinomio o polinomio. Desc&iacute;bela con tus palabras.</p>
+    <label class="lbl">Describe la situaci&oacute;n (m&iacute;nimo 80 caracteres):</label>
+    <textarea class="inp" id="sit-cotidiana" rows="4" data-req="1" data-ml="80"
+      placeholder="Ejemplo: Cada semana yo gasto en pasaje, comida, recargas y... (m&iacute;nimo 80 caracteres)"
+      oncopy="return false" onpaste="return false" oncut="return false" oncontextmenu="return false"></textarea>
+    <label class="lbl" style="margin-top:10px;">Ahora escribe su representaci&oacute;n algebraica (el polinomio o trinomio que la modela):</label>
+    <input class="inp" type="text" id="sit-algebraica" data-req="1" data-ml="5"
+      placeholder="Ej: 12p + 30c + 45r  (donde p=pasajes, c=comidas, r=recargas)"
+      oncopy="return false" onpaste="return false" oncut="return false" oncontextmenu="return false">
+    <div class="hint">Aseg&uacute;rate de que cada t&eacute;rmino tenga su variable y que tenga al menos 3 t&eacute;rminos (trinomio o m&aacute;s).</div>
+  </div>
+  <div class="emsg" id="s3-err">&#9888;&#65039; Completa todos los campos antes de continuar.</div>
+  <button class="btn-sig" onclick="avanzar('s3','s4')">Siguiente &#8594; Quiz de repaso</button>
+</div>
+
+<div class="sec" id="s4">
+  <div class="quiz-hdr">
+    <h2>&#127919; QUIZ &middot; 10 PREGUNTAS</h2>
+    <div style="font-size:.8rem;margin-top:4px;opacity:.75;">Dificultad creciente &middot; Responde todas antes de verificar &middot; <strong style="color:var(--nar2);">Todas las actividades son calificadas</strong></div>
+  </div>
+  <div id="quiz-wrap"></div>
+  <div class="emsg" id="s4-err">&#9888;&#65039; Responde todas las preguntas antes de verificar.</div>
+  <button class="btn-ver" id="btn-ver-quiz" onclick="verificarQuiz()">Verificar respuestas &#10003;</button>
+  <button class="btn-sig-quiz" id="btn-sig-quiz" onclick="avanzar('s4','s5')">Siguiente &#8594; Cierre</button>
+</div>
+
+<div class="sec" id="s5">
+  <div class="sec-hdr"><div class="sec-num">5</div>
+    <div><div class="sec-tit">Cierre · Reflexión final</div>
+    <div class="sec-sub">Lo que construiste hoy</div></div>
+  </div>
+  <div class="card card-mo">
+    <div class="pill p-mo">01 &middot; Mapa conceptual</div>
+    <p class="instr">En tu cuaderno (en papel) dibuja un esquema o mapa que muestre c&oacute;mo se relacionan estas 10 palabras. Usa flechas, cajas, jerarqu&iacute;as o la estructura que t&uacute; prefieras. <strong>Despu&eacute;s desc&iacute;belo aqu&iacute; con tus propias palabras.</strong></p>
+    <p style="font-family:monospace;font-size:.82rem;font-weight:700;background:var(--gris);padding:8px 10px;border-radius:8px;line-height:1.9;margin:8px 0;user-select:none;" oncopy="return false">t&eacute;rmino &nbsp;&middot;&nbsp; monomio &nbsp;&middot;&nbsp; binomio &nbsp;&middot;&nbsp; trinomio &nbsp;&middot;&nbsp; polinomio &nbsp;&middot;&nbsp; t&eacute;rminos semejantes &nbsp;&middot;&nbsp; coeficiente &nbsp;&middot;&nbsp; variable &nbsp;&middot;&nbsp; exponente &nbsp;&middot;&nbsp; grado</p>
+    <div class="alerta" style="background:linear-gradient(135deg,#4a148c,#7B3FC0);margin-bottom:10px;">
+      <div class="alerta-ico">&#9997;&#65039;</div>
+      <div class="alerta-txt" style="font-size:.79rem;">
+        <strong>Instrucciones para la descripci&oacute;n &mdash; Incluye los 5 puntos:</strong><br>
+        1) &iquest;Qu&eacute; figura o estructura usaste (jerarqu&iacute;a, red, &aacute;rbol, mapa radial)?<br>
+        2) &iquest;Cu&aacute;l concepto pusiste en el centro o en la cima y por qu&eacute;?<br>
+        3) Menciona c&oacute;mo conectaste al menos 3 pares de conceptos con flechas o l&iacute;neas y qu&eacute; dices en esas conexiones.<br>
+        4) &iquest;Qu&eacute; relaci&oacute;n escribiste entre <em>t&eacute;rmino</em> y <em>polinomio</em>?<br>
+        5) &iquest;Qu&eacute; fue lo m&aacute;s dif&iacute;cil de colocar? La descripci&oacute;n debe ser tuya &mdash; nadie m&aacute;s tiene el mismo mapa.
+      </div>
+    </div>
+    <label class="lbl">Describe tu mapa conceptual con detalle (m&iacute;nimo 200 caracteres):</label>
+    <textarea class="inp" id="mapa-desc" rows="6" data-req="1" data-ml="200"
+      placeholder="Puse 'polinomio' en el centro porque es el concepto más amplio. Lo conecté con 'trinomio', 'binomio' y 'monomio' con flechas que dicen 'es un tipo de'... (sigue describiendo todos los puntos)"
+      oncopy="return false" onpaste="return false" oncut="return false" oncontextmenu="return false"></textarea>
+    <div id="mapa-desc-cnt" class="emsg">Escribe al menos 200 caracteres describiendo los 5 puntos.</div>
+  </div>
+  <div class="card">
+    <div class="pill p-mo">02 · Corrección de tu respuesta inicial</div>
+    <p class="instr">Al inicio de la actividad escribiste:</p>
+    <div id="act-inicial-display" style="background:var(--gris);border-radius:8px;padding:8px 11px;font-size:.83rem;font-style:italic;margin:8px 0;min-height:36px;">—</div>
+    <label class="lbl">Ahora, ¿qué agregarías, corregirías o cambiarías de esa respuesta?</label>
+    <textarea class="inp" id="autocorr" rows="4" data-req="1" data-ml="50"
+      placeholder="M&iacute;nimo 50 caracteres. S&eacute; espec&iacute;fico: qu&eacute; cre&iacute;as antes, qu&eacute; cambi&oacute; en tu comprensi&oacute;n y qu&eacute; corriges o agregas..."
+      oncopy="return false" onpaste="return false" oncut="return false" oncontextmenu="return false"></textarea>
+  </div>
+  <div class="card card-v">
+    <div class="pill p-v">03 · Puente hacia el PF3</div>
+    <p class="instr">En el PF3 vas a sumar, restar y multiplicar estas expresiones. ¿Para qué va a servir la regla de términos semejantes?</p>
+    <textarea class="inp" id="pf3-resp" rows="4" data-req="1" data-ml="50"
+      placeholder="M&iacute;nimo 50 caracteres. Explica c&oacute;mo usar&aacute;s la regla de t&eacute;rminos semejantes al operar expresiones en el siguiente proyecto..."
+      oncopy="return false" onpaste="return false" oncut="return false" oncontextmenu="return false"></textarea>
+    <div id="pf3-resp-fb" class="hint" style="color:#f57f17;display:none;"></div>
+  </div>
+  <div class="card card-a">
+    <div class="pill p-a">04 · Autoevaluación honesta</div>
+    <label class="lbl">¿Cuál de los 4 tipos de expresiones te costó más construir y por qué? ¿Qué pregunta del quiz fue la más difícil?</label>
+    <textarea class="inp" id="autov" rows="4" data-req="1" data-ml="40"
+      placeholder="M&iacute;nimo 40 caracteres. S&eacute; honesto sobre lo que te cost&oacute; m&aacute;s y por qu&eacute;..."
+      oncopy="return false" onpaste="return false" oncut="return false" oncontextmenu="return false"></textarea>
+  </div>
+  <div class="card card-am">
+    <div class="pill p-am">05 &middot; Comprensi&oacute;n general</div>
+    <p class="instr">Escribe con tus propias palabras una explicaci&oacute;n completa de lo que aprendiste hoy. Imagina que se la explicas a alguien de tu familia que no sabe &aacute;lgebra. Incluye qu&eacute; es cada tipo de expresi&oacute;n, qu&eacute; son t&eacute;rminos semejantes y por qu&eacute; la regla es importante.</p>
+    <label class="lbl">Mi explicaci&oacute;n (m&iacute;nimo 100 caracteres):</label>
+    <textarea class="inp" id="comprension-gral" rows="5" data-req="1" data-ml="100"
+      placeholder="Un monomio es... un binomio tiene... los t&eacute;rminos semejantes son... la regla es importante porque... (m&iacute;nimo 100 caracteres)"
+      oncopy="return false" onpaste="return false" oncut="return false" oncontextmenu="return false"></textarea>
+    <div id="comprension-gral-fb" class="hint" style="color:#f57f17;display:none;"></div>
+  </div>
+  <div class="emsg" id="s5-err">&#9888;&#65039; Completa todos los campos para finalizar.</div>
+  <button class="btn-fin" onclick="finalizar()">&#10003; Finalizar y ver mi calificaci&oacute;n</button>
+</div>
+
+<div class="sec" id="final">
+  <div id="res-contenido"></div>
+</div>
+
+<div style="text-align:center;padding:12px 0 20px;font-size:.7rem;color:#ccc;background:var(--cr);">
+  Pensamiento Matemático II &nbsp;·&nbsp; Prof. Adrián Cruz &nbsp;·&nbsp; 2025–2026
+  <span style="margin-left:8px;cursor:pointer;opacity:.4;" onclick="abrirDoc()">v4.0</span>
+</div>
+
+<script>
+// ====================================================
+// BANCOS
+// ====================================================
+var CONTEXTOS=[
+  {nom:'Rodrigo',
+   sit:'Rodrigo es estudiante de bachillerato en la CDMX. Cada semana registra sus gastos.',
+   items:[
+     {desc:'pasajes en metro',var:'p',rMin:8,rMax:12,uni:'pasajes'},
+     {desc:'comidas en la cooperativa',var:'c',rMin:25,rMax:40,uni:'comidas'},
+     {desc:'recargas de internet',var:'r',rMin:30,rMax:50,uni:'recargas'},
+     {desc:'juegos de copias',var:'i',rMin:3,rMax:8,uni:'juegos'}
+   ],cants:[3,5,8]},
+  {nom:'Daniela',
+   sit:'Daniela vende jugos los domingos en el tianguis de Iztapalapa y lleva su contabilidad.',
+   items:[
+     {desc:'kilogramos de naranja',var:'n',rMin:15,rMax:25,uni:'kg'},
+     {desc:'paquetes de vasos desechables',var:'v',rMin:20,rMax:35,uni:'paquetes'},
+     {desc:'bolsas de hielo',var:'h',rMin:12,rMax:20,uni:'bolsas'},
+     {desc:'kilogramos de limón',var:'l',rMin:18,rMax:30,uni:'kg'}
+   ],cants:[4,7,10]},
+  {nom:'La familia Reyes',
+   sit:'La familia Reyes vive en Tlalpan y lleva un registro de sus gastos mensuales.',
+   items:[
+     {desc:'boletos de microbús',var:'b',rMin:7,rMax:12,uni:'boletos'},
+     {desc:'litros de agua purificada',var:'a',rMin:12,rMax:18,uni:'litros'},
+     {desc:'kilos de tortilla',var:'t',rMin:18,rMax:25,uni:'kilos'},
+     {desc:'tanques de gas',var:'g',rMin:120,rMax:180,uni:'tanques'}
+   ],cants:[5,10,15]},
+  {nom:'Carlos',
+   sit:'Carlos es repartidor en bicicleta en Coyoacán y registra sus gastos de trabajo semanalmente.',
+   items:[
+     {desc:'servicios de reparación',var:'s',rMin:50,rMax:80,uni:'servicios'},
+     {desc:'comidas en el camino',var:'c',rMin:35,rMax:55,uni:'comidas'},
+     {desc:'parches para llanta',var:'l',rMin:15,rMax:25,uni:'parches'},
+     {desc:'botellas de agua',var:'a',rMin:10,rMax:18,uni:'botellas'}
+   ],cants:[2,4,6]},
+  {nom:'Mariana',
+   sit:'Mariana vende tamales frente a la escuela en Xochimilco y controla sus costos de producción.',
+   items:[
+     {desc:'kilos de masa',var:'m',rMin:20,rMax:35,uni:'kilos'},
+     {desc:'porciones de carne',var:'p',rMin:45,rMax:70,uni:'porciones'},
+     {desc:'bolsas de hojas de maíz',var:'h',rMin:30,rMax:50,uni:'bolsas'},
+     {desc:'litros de salsa',var:'s',rMin:25,rMax:40,uni:'litros'}
+   ],cants:[3,6,9]},
+  {nom:'Don Ernesto',
+   sit:'Don Ernesto tiene un puesto de papas y elotes en el metro Portales y lleva sus cuentas.',
+   items:[
+     {desc:'kilos de papa',var:'p',rMin:18,rMax:28,uni:'kilos'},
+     {desc:'elotes',var:'e',rMin:5,rMax:10,uni:'elotes'},
+     {desc:'cremas individuales',var:'c',rMin:8,rMax:15,uni:'cremas'},
+     {desc:'limones por bulto',var:'l',rMin:12,rMax:20,uni:'bultos'}
+   ],cants:[4,8,12]},
+  {nom:'Sophia',
+   sit:'Sophia estudia y trabaja. Registra cuánto gasta cada semana en transporte y alimentación.',
+   items:[
+     {desc:'viajes en Metrobús',var:'v',rMin:6,rMax:10,uni:'viajes'},
+     {desc:'desayunos en la semana',var:'d',rMin:30,rMax:50,uni:'desayunos'},
+     {desc:'snacks para el camino',var:'s',rMin:15,rMax:25,uni:'snacks'},
+     {desc:'recargas de celular',var:'r',rMin:20,rMax:40,uni:'recargas'}
+   ],cants:[3,5,7]},
+  {nom:'El taller de doña Carmen',
+   sit:'Doña Carmen tiene un taller de costura en Tepito y lleva la cuenta de sus insumos semanales.',
+   items:[
+     {desc:'metros de tela',var:'t',rMin:35,rMax:60,uni:'metros'},
+     {desc:'carretes de hilo',var:'h',rMin:15,rMax:25,uni:'carretes'},
+     {desc:'paquetes de botones',var:'b',rMin:10,rMax:18,uni:'paquetes'},
+     {desc:'cierres',var:'c',rMin:8,rMax:15,uni:'cierres'}
+   ],cants:[2,5,8]}
+];
+
+var ACTIVACION=[
+  {q:'En clases anteriores construiste expresiones algebraicas. ¿Crees que siempre se pueden sumar todos los términos de una expresión? ¿Por qué sí o por qué no?',kw:['sum','término','siempre','nunca','depend','porque'],min:20},
+  {q:'¿Cuántos tipos de expresiones algebraicas recuerdas? Nómbralos y da un ejemplo de cada uno.',kw:['monomio','binomio','trinomio','polinomio','ejemplo','término'],min:20},
+  {q:'Si tienes la expresión 3x + 2y, ¿podrías simplificarla en un solo término? Explica tu razonamiento.',kw:['no','porque','variable','distint','diferent','x','y'],min:20},
+  {q:'En tu vida diaria, ¿qué situación podrías representar con una expresión que tenga dos términos con variables distintas?',kw:['gasto','pago','compra','costo','variable','distint'],min:20},
+  {q:'¿Qué es un término algebraico? Explica con tus palabras e incluye un ejemplo.',kw:['número','variable','letra','coeficiente','ejemplo','como'],min:20},
+  {q:'Si alguien dice que 5x + 3y = 8xy, ¿estás de acuerdo? ¿Por qué sí o por qué no?',kw:['no','porque','distint','diferent','variable','wrong','incorr','mal'],min:20}
+];
+
+var QB=[
+  [{p:'¿Cuántos términos tiene la expresión <strong>7x<sup>3</sup></strong>?',ops:['1 &mdash; monomio','2 &mdash; binomio','3 &mdash; trinomio','Depende de x'],ok:0,ex:'7x<sup>3</sup> es un solo término. Coeficiente: 7, variable: x, exponente: 3. Por eso es monomio.'},
+   {p:'¿Cuántos términos tiene <strong>4a + 9b</strong>?',ops:['1 &mdash; monomio','2 &mdash; binomio','3 &mdash; trinomio','4 &mdash; polinomio'],ok:1,ex:'Dos términos separados por +: 4a y 9b. Binomio.'},
+   {p:'¿Cuántos términos tiene <strong>3m<sup>2</sup> &minus; 5m + 2</strong>?',ops:['1','2','3','4'],ok:2,ex:'Tres términos: 3m<sup>2</sup>, &minus;5m y 2. Trinomio.'},
+   {p:'¿Cuántos términos tiene <strong>6k</strong>?',ops:['0 términos','1 &mdash; monomio','2 &mdash; binomio','3 &mdash; trinomio'],ok:1,ex:'6k es un monomio: un solo término. Coeficiente 6, variable k, exponente 1.'},
+   {p:'¿Cuántos términos tiene <strong>2p + 5q &minus; 3r + p</strong>?',ops:['2','3','4','5'],ok:2,ex:'Cuatro términos: 2p, 5q, &minus;3r y p. Polinomio de 4 términos.'},
+   {p:'¿Cuántos términos tiene <strong>8xy &minus; 3z</strong>?',ops:['1','2','3','4'],ok:1,ex:'Dos términos: 8xy y &minus;3z. Binomio.'}],
+  [{p:'La expresión <strong>5n<sup>2</sup> &minus; 3n + 7</strong> se llama:',ops:['Monomio','Binomio','Trinomio','Polinomio de 4 términos'],ok:2,ex:'Tiene 3 términos (5n<sup>2</sup>, &minus;3n y 7) &rarr; trinomio.'},
+   {p:'La expresión <strong>12ab</strong> se llama:',ops:['Monomio','Binomio','Trinomio','Polinomio'],ok:0,ex:'12ab es un solo término &rarr; monomio. Coeficiente: 12, variables: a y b.'},
+   {p:'La expresión <strong>4x + 3y &minus; 2z + 1</strong> se llama:',ops:['Binomio','Trinomio','Polinomio de 4 términos','Monomio'],ok:2,ex:'Tiene 4 términos &rarr; polinomio de 4 términos.'},
+   {p:'¿Cuál de las siguientes es un <strong>binomio</strong>?',ops:['7m','2a + 5b','x<sup>2</sup> &minus; 3x + 1','4p &minus; 2q + r &minus; 1'],ok:1,ex:'2a + 5b tiene exactamente 2 términos &rarr; binomio.'},
+   {p:'¿Cuál de las siguientes es un <strong>monomio</strong>?',ops:['3x &minus; 2','5a + b &minus; c','9y<sup>2</sup>','2m + 3n + p + 1'],ok:2,ex:'9y<sup>2</sup> es un solo término &rarr; monomio.'},
+   {p:'La expresión <strong>7c &minus; 4d</strong> se llama:',ops:['Monomio','Binomio','Trinomio','Expresión vacía'],ok:1,ex:'Dos términos (7c y &minus;4d) &rarr; binomio.'}],
+  [{p:'¿Cuál par de términos SÍ son semejantes?',ops:['3x y 5y','4a<sup>2</sup> y 4a','7m y &minus;2m','6xy y 3x'],ok:2,ex:'7m y &minus;2m tienen la misma variable m con el mismo exponente 1 &rarr; semejantes.'},
+   {p:'¿Cuál par de términos NO son semejantes?',ops:['5n y 3n','2x<sup>2</sup> y 7x<sup>2</sup>','4ab y &minus;ab','3p<sup>2</sup> y 5p'],ok:3,ex:'3p<sup>2</sup> (exponente 2) y 5p (exponente 1) son distintos &rarr; NO semejantes.'},
+   {p:'En <strong>3x + 2y + 5x &minus; y</strong>, ¿qué términos son semejantes entre sí?',ops:['3x y 2y','2y y 5x','3x y 5x','3x y &minus;y'],ok:2,ex:'3x y 5x tienen la misma variable x con exponente 1 &rarr; semejantes.'},
+   {p:'¿Cuál par SÍ se puede simplificar (combinar)?',ops:['4m y 3n','2a<sup>2</sup> y 5a','7bc y &minus;3bc','6x y 4y'],ok:2,ex:'7bc y &minus;3bc son semejantes (misma variable bc) &rarr; se combinan: 4bc.'},
+   {p:'En <strong>4p<sup>2</sup> + 3p &minus; 2p<sup>2</sup> + p</strong>, ¿cuántos pares semejantes hay?',ops:['0 pares','1 par','2 pares','4 pares'],ok:2,ex:'Par 1: 4p<sup>2</sup> y &minus;2p<sup>2</sup>. Par 2: 3p y p. Son 2 pares semejantes.'},
+   {p:'¿Por qué <strong>5x<sup>2</sup></strong> y <strong>5x</strong> NO son semejantes?',ops:['Coeficiente distinto','El exponente de x es diferente (2 vs 1)','Uno es positivo y otro negativo','Variable distinta'],ok:1,ex:'Mismo coeficiente, misma letra x, pero x<sup>2</sup> (exp 2) y x (exp 1) son distintos &rarr; no semejantes.'}],
+  [{p:'Simplifica: <strong>5x + 3x</strong>',ops:['8x','8x<sup>2</sup>','15x','2x'],ok:0,ex:'(5+3)x = 8x. Solo suman los coeficientes; la variable no cambia.'},
+   {p:'Simplifica: <strong>7m &minus; 4m + m</strong>',ops:['4m','3m','12m','&minus;4m'],ok:0,ex:'(7&minus;4+1)m = 4m. El coeficiente implícito de m es 1.'},
+   {p:'Simplifica: <strong>3a + 2b + 5a &minus; b</strong>',ops:['8a + b','8ab','8a &minus; b','8a + 3b'],ok:0,ex:'(3+5)a = 8a y (2&minus;1)b = b &rarr; 8a + b.'},
+   {p:'Simplifica: <strong>4x<sup>2</sup> &minus; x<sup>2</sup> + 3x</strong>',ops:['3x<sup>2</sup> + 3x','7x<sup>2</sup>','3x<sup>3</sup> + 3x','4x<sup>2</sup> + 3x'],ok:0,ex:'(4&minus;1)x<sup>2</sup> = 3x<sup>2</sup> y 3x queda solo &rarr; 3x<sup>2</sup> + 3x.'},
+   {p:'Simplifica: <strong>6n + 5m &minus; 2n + 3m</strong>',ops:['4n + 8m','11mn','4n &minus; 8m','8n + 4m'],ok:0,ex:'(6&minus;2)n = 4n y (5+3)m = 8m &rarr; 4n + 8m.'},
+   {p:'Simplifica: <strong>8y &minus; 3y + 2x &minus; x</strong>',ops:['5y + x','11xy','5y &minus; x','5y + 3x'],ok:0,ex:'(8&minus;3)y = 5y y (2&minus;1)x = x &rarr; 5y + x.'}],
+  [{p:'¿Cuál operación es CORRECTA?',ops:['3x + 5y = 8xy','4a &minus; 4a = 8a','2m + 3n = 5mn','7b &minus; 3b = 4b'],ok:3,ex:'7b &minus; 3b = 4b es correcto. Las demás mezclan variables distintas incorrectamente.'},
+   {p:'Un alumno dice: "5x + 3x<sup>2</sup> = 8x<sup>3</sup>". ¿Qué error cometió?',ops:['Sumó mal los coeficientes','Sumó los exponentes y son variables distintas (x y x<sup>2</sup>)','No simplificó','No hay error'],ok:1,ex:'5x y 3x<sup>2</sup> NO son semejantes. No se combinan. El resultado correcto es 5x + 3x<sup>2</sup> (binomio).'},
+   {p:'¿Para qué sirve la regla de términos semejantes?',ops:['Para multiplicar expresiones','Para saber qué términos se pueden combinar al sumar/restar','Para hallar el valor de una expresión','Para dividir polinomios'],ok:1,ex:'La regla define cuándo dos términos se pueden combinar. Sin ella no podríamos simplificar expresiones.'},
+   {p:'Si simplificas <strong>4ab + 3a &minus; 2ab + a</strong>, ¿cuántos términos tiene el resultado?',ops:['1 término','2 términos','3 términos','4 términos'],ok:1,ex:'(4&minus;2)ab = 2ab y (3+1)a = 4a &rarr; 2ab + 4a. Binomio (2 términos).'},
+   {p:'La expresión <strong>3x + 5y + 2x</strong> simplificada es:',ops:['10xy','5x + 5y','8xy + 5y','5x + 5y (o 5y + 5x)'],ok:3,ex:'(3+2)x = 5x y 5y queda solo &rarr; 5x + 5y.'},
+   {p:'¿Cuál expresión NO puede simplificarse más?',ops:['3n + 5n','2a<sup>2</sup> + 3a<sup>2</sup>','4xy &minus; 2xy','7m + 3n'],ok:3,ex:'7m y 3n tienen variables distintas (m &ne; n) &rarr; no son semejantes &rarr; no se combinan.'}],
+  [
+   {p:'Simplifica: <strong>-5x + 3x</strong>',ops:['-8x','-2x','2x','8x'],ok:1,ex:'(-5+3)x = -2x. El signo es parte del coeficiente; solo operamos los coeficientes.'},
+   {p:'Simplifica: <strong>-4a - 3a</strong>',ops:['-7a','7a','-a','12a'],ok:0,ex:'Ambos negativos, misma variable: -4-3 = -7 &rarr; -7a.'},
+   {p:'Simplifica: <strong>6m + (-9m)</strong>',ops:['15m','-3m','3m','-15m'],ok:1,ex:'6-9 = -3 &rarr; -3m. El negativo tiene mayor valor absoluto.'},
+   {p:'Simplifica: <strong>-2x + 5y - 3x</strong>',ops:['-5x + 5y','5xy','0x + 5y','-5x - 5y'],ok:0,ex:'-2x y -3x son semejantes: -2-3 = -5 &rarr; -5x. El 5y queda solo sin semejante.'},
+   {p:'&iquest;Cu&aacute;l es el resultado de <strong>8n - 8n</strong>?',ops:['16n','-16n','0','n'],ok:2,ex:'8-8=0. Cuando los t&eacute;rminos se cancelan completamente el resultado es 0 (desaparece la variable).'},
+   {p:'Simplifica: <strong>-3p + 4q - 7p + q</strong>',ops:['-10p + 5q','10p - 5q','-10pq','-4p + 5q'],ok:0,ex:'(-3-7)p = -10p y (4+1)q = 5q &rarr; -10p + 5q.'}
+  ]
+];
+
+// ====================================================
+// ESTADO GLOBAL
+// ====================================================
+var CTX, PRECIOS, CANTS, CANTS2, actQ;
+var QUIZ_SEL=[], estadoQuiz=[];
+var modoDocente=false, modoRecorrer=false;
+var SECS=['s0','s1','s2','s2b','s3','s4','s5','final'];
+var PESOS=[0,12.5,25,37.5,50,62.5,75,87.5,100];
+var NV_LABEL=['','Nivel 1','Nivel 2','Nivel 3','Nivel 4','Nivel 5'];
+var NV_COL=['','#43a047','#039be5','#8e24aa','#e65100','#c62828'];
+var LETRAS=['A','B','C','D'];
+
+function rInt(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
+function pick(arr){return arr[Math.floor(Math.random()*arr.length)];}
+
+function init(){
+  CTX=pick(CONTEXTOS);
+  PRECIOS=[rInt(CTX.items[0].rMin,CTX.items[0].rMax),
+           rInt(CTX.items[1].rMin,CTX.items[1].rMax),
+           rInt(CTX.items[2].rMin,CTX.items[2].rMax),
+           rInt(CTX.items[3].rMin,CTX.items[3].rMax)];
+  CANTS=CTX.cants;
+  CANTS2=[rInt(2,5),rInt(6,9),rInt(10,14)];
+  actQ=pick(ACTIVACION);
+  // Pick 1 from each of the 6 levels, then pick 4 more randomly for 10 total
+  QUIZ_SEL=QB.map(function(nivel){return pick(nivel);});
+  // Add 4 more from random levels (avoid exact duplicates)
+  var extraLevels=[0,1,2,3,4,5];
+  for(var _i=0;_i<4;_i++){
+    var lv=extraLevels[Math.floor(Math.random()*extraLevels.length)];
+    var candidates=QB[lv].filter(function(q){return QUIZ_SEL.indexOf(q)===-1;});
+    if(candidates.length>0) QUIZ_SEL.push(pick(candidates));
+    else QUIZ_SEL.push(pick(QB[lv]));
+  }
+  estadoQuiz=[];
+  for(var _j=0;_j<QUIZ_SEL.length;_j++) estadoQuiz.push(-1);
+  document.getElementById('act-pregunta').textContent=actQ.q;
+  renderCtxS1();
+  renderCtxS2();
+  renderCtxS3();
+  renderTablaM1();
+  renderTablaB();
+  renderQuiz();
+  // Set item names in s2
+  document.getElementById('item1-nom').textContent=CTX.items[0].desc;
+  document.getElementById('item2-nom').textContent=CTX.items[1].desc;
+  document.getElementById('var1-lbl').textContent=CTX.items[0].var;
+  document.getElementById('var1-s2').textContent=CTX.items[0].var;
+  document.getElementById('var2-s2').textContent=CTX.items[1].var;
+  // Anti-paste on remaining inputs after render
+  aplicarAntiPaste();
+}
+
+function aplicarAntiPaste(){
+  var els=document.querySelectorAll('textarea,input[type=text]');
+  for(var i=0;i<els.length;i++){
+    var el=els[i];
+    if(el.id==='inp-nombre')continue;
+    el.addEventListener('paste',function(e){e.preventDefault();});
+    el.addEventListener('copy',function(e){e.preventDefault();});
+    el.addEventListener('cut',function(e){e.preventDefault();});
+    el.addEventListener('contextmenu',function(e){e.preventDefault();});
+  }
+  var tds=document.querySelectorAll('td input');
+  for(var i=0;i<tds.length;i++){
+    tds[i].addEventListener('paste',function(e){e.preventDefault();});
+    tds[i].addEventListener('contextmenu',function(e){e.preventDefault();});
+  }
+}
+
+function renderCtxS1(){
+  var it=CTX.items[0];
+  var html='<div class="ctx-card">';
+  html+='<div class="ctx-sit">'+CTX.sit+'</div>';
+  html+='<div class="ctx-item"><div class="ico">&#128722;</div>';
+  html+='<div class="desc">'+it.desc+'</div>';
+  html+='<div class="precio">$'+PRECIOS[0]+'/'+it.uni+'</div>';
+  html+='<div class="var">'+it.var+'</div></div></div>';
+  document.getElementById('ctx-s1').outerHTML=html;
+}
+
+function renderCtxS2(){
+  var it0=CTX.items[0], it1=CTX.items[1];
+  var html='<div class="ctx-card" id="ctx-s2">';
+  html+='<div class="ctx-sit">Ahora, adem&aacute;s de lo anterior, aparece un segundo concepto:</div>';
+  html+='<div class="ctx-item"><div class="ico">&#128722;</div><div class="desc">'+it0.desc+'</div><div class="precio">$'+PRECIOS[0]+'/'+it0.uni+'</div><div class="var">'+it0.var+'</div></div>';
+  html+='<div class="ctx-item" style="border-color:var(--az2);"><div class="ico">&#10133;</div><div class="desc">'+it1.desc+'</div><div class="precio">$'+PRECIOS[1]+'/'+it1.uni+'</div><div class="var">'+it1.var+'</div></div></div>';
+  document.getElementById('ctx-s2').outerHTML=html;
+}
+
+function renderCtxS3(){
+  var it2=CTX.items[2], it3=CTX.items[3];
+  var html='<div class="ctx-card" id="ctx-s3">';
+  html+='<div class="ctx-sit">Ya tienes el binomio. Ahora aparecen m&aacute;s conceptos:</div>';
+  html+='<div class="ctx-item" style="border-color:var(--nar);"><div class="ico">&#10133;</div><div class="desc">'+it2.desc+'</div><div class="precio">$'+PRECIOS[2]+'/'+it2.uni+'</div><div class="var">'+it2.var+'</div></div></div>';
+  document.getElementById('ctx-s3').outerHTML=html;
+  var html4='<div class="ctx-card" id="ctx-s3-m4"><div class="ctx-item" style="border-color:var(--ver2);"><div class="ico">&#10133;</div><div class="desc">'+it3.desc+'</div><div class="precio">$'+PRECIOS[3]+'/'+it3.uni+'</div><div class="var">'+it3.var+'</div></div></div>';
+  document.getElementById('ctx-s3-m4').outerHTML=html4;
+}
+
+function renderTablaM1(){
+  var html='<table><thead><tr><th>Cantidad</th><th>¿Cómo calculas?</th><th>Total ($)</th></tr></thead><tbody>';
+  for(var i=0;i<CANTS.length;i++){
+    var c=CANTS[i];
+    html+='<tr><td class="td-fix">'+c+'</td>';
+    html+='<td><input type="text" class="inp-tab" id="mono-calc-'+i+'" data-req="1" data-ml="4" placeholder="'+c+' × ?..."></td>';
+    html+='<td><input type="text" inputmode="decimal" class="inp-tab" id="mono-tot-'+i+'" data-req="1" data-ml="1" data-expected="'+(c*PRECIOS[0])+'" placeholder="$"></td></tr>';
+  }
+  html+='</tbody></table>';
+  document.getElementById('tabla-mono').innerHTML=html;
+}
+
+function renderTablaB(){
+  var it0=CTX.items[0], it1=CTX.items[1];
+  var html='<table><thead><tr><th>Cant. '+it0.var+'</th><th>Cant. '+it1.var+'</th><th>Gasto '+it0.var+' ($)</th><th>Gasto '+it1.var+' ($)</th><th>Total ($)</th></tr></thead><tbody>';
+  for(var i=0;i<CANTS.length;i++){
+    var c1=CANTS[i], c2=CANTS2[i];
+    var g1=c1*PRECIOS[0], g2=c2*PRECIOS[1], tot=g1+g2;
+    html+='<tr>';
+    html+='<td class="td-fix">'+c1+'</td>';
+    html+='<td class="td-fix">'+c2+'</td>';
+    html+='<td><input type="text" inputmode="decimal" id="b-g1-'+i+'" data-req="1" data-ml="1" data-expected="'+g1+'" placeholder="$"></td>';
+    html+='<td><input type="text" inputmode="decimal" id="b-g2-'+i+'" data-req="1" data-ml="1" data-expected="'+g2+'" placeholder="$"></td>';
+    html+='<td><input type="text" inputmode="decimal" id="b-tot-'+i+'" data-req="1" data-ml="1" data-expected="'+tot+'" placeholder="$"></td>';
+    html+='</tr>';
+  }
+  html+='</tbody></table>';
+  document.getElementById('tabla-binom').innerHTML=html;
+}
+
+function renderQuiz(){
+  var html='';
+  for(var i=0;i<QUIZ_SEL.length;i++){
+    var q=QUIZ_SEL[i];
+    var nv=QB.indexOf(QB.filter(function(nivel){return nivel.indexOf(q)!==-1;})[0])+1;
+    var orden=[0,1,2,3].sort(function(){return Math.random()-.5;});
+    html+='<div class="qcard" id="qcard-'+i+'">';
+    html+='<div class="qcard-hdr"><div class="qnum">Pregunta '+(i+1)+' de '+QUIZ_SEL.length+'</div>';
+    html+='<div class="qnivel" style="background:'+NV_COL[nv]+'22;color:'+NV_COL[nv]+';">'+NV_LABEL[nv]+'</div></div>';
+    html+='<div class="qtext">'+q.p+'</div>';
+    html+='<div class="qopts" id="qopts-'+i+'">';
+    for(var j=0;j<orden.length;j++){
+      var oi=orden[j];
+      html+='<div class="qopt" id="qopt-'+i+'-'+j+'" onclick="selQ('+i+','+j+','+oi+','+JSON.stringify(orden).replace(/"/g,'&quot;')+')">';
+      html+='<div class="qopt-letra">'+LETRAS[j]+'</div>';
+      html+='<div>'+q.ops[oi]+'</div></div>';
+    }
+    html+='</div>';
+    html+='<div class="qfb" id="qfb-'+i+'"></div>';
+    html+='</div>';
+  }
+  document.getElementById('quiz-wrap').innerHTML=html;
+  // Store orden per question
+  if(!window._quizOrdenes) window._quizOrdenes=[];
+  window._quizOrdenes=QUIZ_SEL.map(function(){
+    return [0,1,2,3].sort(function(){return Math.random()-.5;});
+  });
+  // Re-render with stored ordenes for consistency
+  document.getElementById('quiz-wrap').innerHTML='';
+  var html2='';
+  for(var i=0;i<QUIZ_SEL.length;i++){
+    var q=QUIZ_SEL[i];
+    var nv=0;
+    for(var ni=0;ni<QB.length;ni++){if(QB[ni].indexOf(q)!==-1){nv=ni+1;break;}}
+    var ord=window._quizOrdenes[i];
+    html2+='<div class="qcard" id="qcard-'+i+'">';
+    html2+='<div class="qcard-hdr"><div class="qnum">Pregunta '+(i+1)+' de '+QUIZ_SEL.length+'</div>';
+    html2+='<div class="qnivel" style="background:'+NV_COL[nv]+'22;color:'+NV_COL[nv]+';">'+NV_LABEL[nv]+'</div></div>';
+    html2+='<div class="qtext">'+q.p+'</div>';
+    html2+='<div class="qopts" id="qopts-'+i+'">';
+    for(var j=0;j<ord.length;j++){
+      var oi=ord[j];
+      html2+='<div class="qopt" id="qopt-'+i+'-'+j+'" data-oi="'+oi+'" onclick="selQ('+i+','+j+')"><div class="qopt-letra">'+LETRAS[j]+'</div><div>'+q.ops[oi]+'</div></div>';
+    }
+    html2+='</div><div class="qfb" id="qfb-'+i+'"></div></div>';
+  }
+  document.getElementById('quiz-wrap').innerHTML=html2;
+}
+
+function selQ(qi,li){
+  if(estadoQuiz[qi]!==-1)return;
+  var oi=parseInt(document.getElementById('qopt-'+qi+'-'+li).getAttribute('data-oi'));
+  estadoQuiz[qi]=oi;
+  var opts=document.querySelectorAll('#qopts-'+qi+' .qopt');
+  for(var i=0;i<opts.length;i++) opts[i].classList.remove('sel');
+  document.getElementById('qopt-'+qi+'-'+li).classList.add('sel');
+}
+
+// ====================================================
+// NAVEGACIÓN
+// ====================================================
+function updProg(idx){
+  var pct=PESOS[idx]||0;
+  document.getElementById('prog-bar').style.width=pct+'%';
+  var ids=['ps0','ps1','ps2','ps2b','ps3','ps4','ps5','ps-fin'];
+  for(var i=0;i<ids.length;i++){
+    var el=document.getElementById(ids[i]);
+    if(el) el.classList.toggle('done',i<=idx);
+  }
+}
+
+function showSec(id){
+  for(var i=0;i<SECS.length;i++){
+    var s=document.getElementById(SECS[i]);
+    if(s) s.classList.toggle('on',SECS[i]===id);
+  }
+  var idx=SECS.indexOf(id);
+  updProg(idx);
+  window.scrollTo({top:0,behavior:'smooth'});
+  // Init canvas when s3 becomes visible (canvas is in s3)
+  if(id==='s3'){
+    setTimeout(function(){initCanvas();},80);
+  }
+}
+
+// ====================================================
+// VALIDACIÓN
+// ====================================================
+function contarTerminos(expr){
+  var v=expr.replace(/\s+/g,'');
+  if(!v)return 0;
+  var mid=v.replace(/^-/,'');
+  var ops=(mid.match(/[+\-]/g)||[]).length;
+  return ops+1;
+}
+
+function validarEstructura(expr,tipo){
+  var t=contarTerminos(expr);
+  var tienLetra=/[a-zA-Z]/.test(expr);
+  if(!expr.trim())return {ok:false,msg:'Escribe tu expresión.'};
+  if(!tienLetra)return {ok:false,msg:'Una expresión algebraica debe tener al menos una variable (letra).'};
+  if(tipo==='monomio'&&t!==1)return {ok:false,msg:'Un monomio tiene 1 solo término, sin + ni &minus; en medio. La tuya parece tener '+t+' términos.'};
+  if(tipo==='binomio'&&t!==2)return {ok:false,msg:'Un binomio tiene exactamente 2 términos (1 signo + ó &minus; entre ellos). La tuya parece tener '+t+' términos.'};
+  if(tipo==='trinomio'&&t!==3)return {ok:false,msg:'Un trinomio tiene exactamente 3 términos. La tuya parece tener '+t+' términos.'};
+  if(tipo==='polinomio'&&t<4)return {ok:false,msg:'Un polinomio de 4 términos necesita al menos 3 signos + ó &minus;. La tuya parece tener '+t+' términos.'};
+  return {ok:true};
+}
+
+function validarContenido(texto,kws){
+  var tl=texto.toLowerCase();
+  return kws.some(function(k){return tl.indexOf(k)!==-1;});
+}
+
+function validarSec(id){
+  var sec=document.getElementById(id);
+  if(!sec)return true;
+  var ok=true;
+  var els=sec.querySelectorAll('[data-req]');
+  for(var i=0;i<els.length;i++){
+    var el=els[i];
+    el.classList.remove('err');
+    var ml=parseInt(el.getAttribute('data-ml')||'1');
+    var v=el.tagName==='SELECT'?el.value:el.value.trim();
+    if(!v||v.length<ml){el.classList.add('err');ok=false;}
+  }
+  // Checkbox cuaderno
+  if(id==='s2b'){
+    var chk=document.getElementById('chk-cuaderno');
+    if(!chk.checked)ok=false;
+  }
+  // Nombre
+  if(id==='s0'){
+    var nom=document.getElementById('inp-nombre').value.trim();
+    if(nom.length<5)ok=false;
+    // Content soft check for activacion
+    var arv=document.getElementById('act-resp').value;
+    var arkws=['sum','t\u00e9rmino','siempre','nunca','depend','porque','variable','expres','s\u00ed','no'];
+    var arfb=document.getElementById('act-resp-fb');
+    if(!arfb){
+      var arinp=document.getElementById('act-resp');
+      if(arinp&&!validarContenido(arv,arkws)&&arv.length>10){
+        // create hint below
+        var hint=document.createElement('div');
+        hint.id='act-resp-fb';
+        hint.className='hint';
+        hint.style.color='#f57f17';
+        hint.textContent='Pista: intenta mencionar si crees que siempre se pueden sumar los t\u00e9rminos y por qu\u00e9.';
+        arinp.parentNode.insertBefore(hint,arinp.nextSibling);
+      }
+    }
+  }
+  // Structural validation for expressions
+  if(id==='s1'){
+    var em=validarEstructura(document.getElementById('expr-mono').value,'monomio');
+    if(!em.ok){
+      document.getElementById('expr-mono').classList.add('err');
+      document.getElementById('expr-mono-fb').innerHTML=em.msg;
+      document.getElementById('expr-mono-fb').style.display='block';
+      ok=false;
+    } else {
+      document.getElementById('expr-mono-fb').style.display='none';
+    }
+    // Content soft check for partes
+    var pv=document.getElementById('partes-mono').value;
+    var pkws=['coeficiente','variable','exponente','grado'];
+    if(!validarContenido(pv,pkws)){
+      document.getElementById('partes-mono-fb').textContent='Recuerda mencionar: coeficiente, variable, exponente y grado.';
+      document.getElementById('partes-mono-fb').style.display='block';
+    } else {
+      document.getElementById('partes-mono-fb').style.display='none';
+    }
+    // Numeric table
+    for(var r=0;r<CANTS.length;r++){
+      var totEl=document.getElementById('mono-tot-'+r);
+      if(totEl){
+        var exp=parseFloat(totEl.getAttribute('data-expected'));
+        var got=parseFloat(totEl.value.replace(',','.'));
+        if(isNaN(got)||Math.abs(got-exp)>1){totEl.classList.add('err');ok=false;}
+        else totEl.classList.remove('err');
+      }
+    }
+  }
+  if(id==='s2'){
+    var eb=validarEstructura(document.getElementById('expr-binom').value,'binomio');
+    if(!eb.ok){
+      document.getElementById('expr-binom').classList.add('err');
+      document.getElementById('expr-binom-fb').innerHTML=eb.msg;
+      document.getElementById('expr-binom-fb').style.display='block';
+      ok=false;
+    } else {
+      document.getElementById('expr-binom-fb').style.display='none';
+    }
+    // Content check razon
+    var rv=document.getElementById('confl-razon').value;
+    var rkws=['variable','distint','diferent','no son','no se','tipo','letra','represent'];
+    if(!validarContenido(rv,rkws)){
+      document.getElementById('confl-razon-fb').textContent='Hint: menciona por qué las variables son distintas o representan cosas diferentes.';
+      document.getElementById('confl-razon-fb').style.display='block';
+    } else {
+      document.getElementById('confl-razon-fb').style.display='none';
+    }
+    // Numeric table B
+    for(var r=0;r<CANTS.length;r++){
+      var bpfxs=['b-g1-','b-g2-','b-tot-'];
+    for(var bi=0;bi<bpfxs.length;bi++){
+      var el2=document.getElementById(bpfxs[bi]+r);
+      if(el2){
+        var bexp=parseFloat(el2.getAttribute('data-expected'));
+        var bgot=parseFloat(el2.value.replace(',','.'));
+        if(isNaN(bgot)||Math.abs(bgot-bexp)>1){el2.classList.add('err');ok=false;}
+        else el2.classList.remove('err');
+      }
+    }
+    }
+  }
+  if(id==='s3'){
+    var et=validarEstructura(document.getElementById('expr-trinom').value,'trinomio');
+    var ep=validarEstructura(document.getElementById('expr-polin').value,'polinomio');
+    if(!et.ok){
+      document.getElementById('expr-trinom').classList.add('err');
+      document.getElementById('expr-trinom-fb').innerHTML=et.msg;
+      document.getElementById('expr-trinom-fb').style.display='block';
+      ok=false;
+    } else document.getElementById('expr-trinom-fb').style.display='none';
+    if(!ep.ok){
+      document.getElementById('expr-polin').classList.add('err');
+      document.getElementById('expr-polin-fb').innerHTML=ep.msg;
+      document.getElementById('expr-polin-fb').style.display='block';
+      ok=false;
+    } else document.getElementById('expr-polin-fb').style.display='none';
+    // neg-practica content check
+    var npv=document.getElementById('neg-practica')?document.getElementById('neg-practica').value.trim():'';
+    var npkws=['semejante','negativ','coeficiente','-','menos','result','simplif','combin'];
+    if(npv.length>=10&&!validarContenido(npv,npkws)){
+      document.getElementById('neg-practica-fb').textContent='Pista: menciona cu\u00e1les son los t\u00e9rminos semejantes y c\u00f3mo operas sus coeficientes negativos.';
+      document.getElementById('neg-practica-fb').style.display='block';
+    } else {
+      var nfb=document.getElementById('neg-practica-fb');
+      if(nfb)nfb.style.display='none';
+    }
+    // dibujo checkbox
+    var chkd=document.getElementById('chk-dibujo');
+    if(chkd&&!chkd.checked){ok=false;}
+    // sit-algebraica structure check (must have a letter)
+    var sa=document.getElementById('sit-algebraica');
+    if(sa&&sa.value.trim()&&!/[a-zA-Z]/.test(sa.value)){
+      sa.classList.add('err');ok=false;
+    }
+  }
+  if(id==='s5'){
+    var p3v=document.getElementById('pf3-resp').value;
+    var p3kws=['semejante','simplific','combin','suma','rest','operar','identific'];
+    if(!validarContenido(p3v,p3kws)){
+      document.getElementById('pf3-resp-fb').textContent='Pista: menciona para qué sirve identificar términos semejantes al operar expresiones.';
+      document.getElementById('pf3-resp-fb').style.display='block';
+    } else document.getElementById('pf3-resp-fb').style.display='none';
+    // comprension-gral content check
+    var cgv=document.getElementById('comprension-gral')?document.getElementById('comprension-gral').value.trim():'';
+    var cgkws=['monomio','binomio','trinomio','polinomio','semejante','variable','coeficiente'];
+    if(cgv.length>=50){
+      var cgok=cgkws.filter(function(k){return cgv.toLowerCase().indexOf(k)!==-1;}).length>=2;
+      var cgfb=document.getElementById('comprension-gral-fb');
+      if(!cgok&&cgfb){cgfb.textContent='Tu explicación parece incompleta. Incluye términos como: monomio, binomio, trinomio, polinomio, semejantes.';cgfb.style.display='block';}
+      else if(cgfb){cgfb.style.display='none';}
+    }
+    // autocorr content check
+    var acv=document.getElementById('autocorr')?document.getElementById('autocorr').value.trim():'';
+    var ackws=['agreg','correg','cambi','mejor','ahora','antes','aprend','entend','era','falt'];
+    var acfb=document.getElementById('autocorr-fb');
+    if(!acfb&&document.getElementById('autocorr')){
+      acfb=document.createElement('div');acfb.id='autocorr-fb';acfb.className='hint';acfb.style.color='#f57f17';
+      document.getElementById('autocorr').parentNode.appendChild(acfb);
+    }
+    if(acfb){
+      if(acv.length>=20&&!validarContenido(acv,ackws)){
+        acfb.textContent='Pista: menciona qué tenías antes, qué corriges o qué aprendiste.';acfb.style.display='block';
+      } else {acfb.style.display='none';}
+    }
+    // autov content check
+    var avval=document.getElementById('autov')?document.getElementById('autov').value.trim():'';
+    var avkws=['cost','difícil','fácil','pregunta','porque','entend','confund','trinom','polinomio','monomio','binomio','exponent'];
+    var avfb=document.getElementById('autov-fb');
+    if(!avfb&&document.getElementById('autov')){
+      avfb=document.createElement('div');avfb.id='autov-fb';avfb.className='hint';avfb.style.color='#f57f17';
+      document.getElementById('autov').parentNode.appendChild(avfb);
+    }
+    if(avfb){
+      if(avval.length>=15&&!validarContenido(avval,avkws)){
+        avfb.textContent='Pista: menciona cuál tipo de expresión te costó más y por qué.';avfb.style.display='block';
+      } else {avfb.style.display='none';}
+    }
+    // mapa-desc min 200
+    var mdEl=document.getElementById('mapa-desc');
+    if(mdEl&&mdEl.value.trim().length<200){
+      mdEl.classList.add('err');
+      var mdCnt=document.getElementById('mapa-desc-cnt');
+      if(mdCnt)mdCnt.style.display='block';
+      ok=false;
+    } else {
+      var mdCnt2=document.getElementById('mapa-desc-cnt');
+      if(mdCnt2)mdCnt2.style.display='none';
+    }
+  }
+  var em=document.getElementById(id+'-err');
+  if(em)em.classList.toggle('show',!ok);
+  if(!ok){
+    var f=sec.querySelector('.err');
+    if(f)f.scrollIntoView({behavior:'smooth',block:'center'});
+  }
+  return ok;
+}
+
+function avanzar(from,to){
+  if(modoRecorrer){showSec(to);return;}
+  if(!validarSec(from))return;
+  // Pre-fill display for s5
+  if(to==='s5'){
+    var ai=document.getElementById('act-inicial-display');
+    if(ai)ai.textContent=document.getElementById('act-resp').value||'—';
+  }
+  showSec(to);
+}
+
+// ====================================================
+// QUIZ
+// ====================================================
+function verificarQuiz(){
+  if(estadoQuiz.indexOf(-1)!==-1){
+    document.getElementById('s4-err').innerHTML='&#9888;&#65039; Responde todas las '+QUIZ_SEL.length+' preguntas antes de verificar.';
+    document.getElementById('s4-err').classList.add('show');
+    setTimeout(function(){document.getElementById('s4-err').classList.remove('show');},2500);
+    return;
+  }
+  for(var i=0;i<QUIZ_SEL.length;i++){
+    var q=QUIZ_SEL[i];
+    var okIdx=q.ok;
+    var corr=estadoQuiz[i]===okIdx;
+    var opts=document.querySelectorAll('#qopts-'+i+' .qopt');
+    for(var j=0;j<opts.length;j++){
+      var oi=parseInt(opts[j].getAttribute('data-oi'));
+      if(oi===okIdx) opts[j].classList.add('correcto');
+      else if(oi===estadoQuiz[i]&&!corr) opts[j].classList.add('incorrecto');
+    }
+    var fb=document.getElementById('qfb-'+i);
+    fb.className='qfb show '+(corr?'ok':'nook');
+    fb.innerHTML=(corr?'<strong>&#10003; Correcto.</strong> ':'<strong>&#10007; Incorrecto.</strong> ')+q.ex;
+  }
+  document.getElementById('btn-ver-quiz').style.display='none';
+  document.getElementById('btn-sig-quiz').style.display='block';
+}
+
+// ====================================================
+// CALIFICACIÓN
+// ====================================================
+function calcNota(){
+  var pts=0, det=[];
+  // ─── Quiz: proporcional a 5 pts ───────────────────────────
+  var qc=0;
+  for(var i=0;i<QUIZ_SEL.length;i++) if(estadoQuiz[i]===QUIZ_SEL[i].ok) qc++;
+  var qpts=Math.round(qc/QUIZ_SEL.length*5*10)/10;
+  pts+=qpts;
+  det.push({cat:'Quiz ('+QUIZ_SEL.length+' pregs)',pts:qpts,max:5});
+
+  // ─── Clasificación de expresiones: 1.5 pts ────────────────
+  var sp=0;
+  if(document.getElementById('sel-tipo-m').value==='monomio')  sp+=0.375;
+  if(document.getElementById('sel-tipo-b').value==='binomio')  sp+=0.375;
+  if(document.getElementById('sel-tipo-t').value==='trinomio') sp+=0.375;
+  if(document.getElementById('sel-tipo-p').value==='polinomio')sp+=0.375;
+  sp=Math.round(sp*10)/10;
+  pts+=sp;
+  det.push({cat:'Clasificación',pts:sp,max:1.5});
+
+  // ─── Reflexión escrita: 2 pts ─────────────────────────────
+  // Scoring: 0.6 por longitud + 0.4 por contenido (kws match)
+  function scoreRef(id,minLen,kws){
+    var el=document.getElementById(id);
+    var v=el?el.value.trim():'';
+    var s=0;
+    if(v.length>=minLen)s+=0.6;
+    else if(v.length>0)s+=0.6*(v.length/minLen);
+    if(kws&&validarContenido(v,kws))s+=0.4;
+    return s;
+  }
+  var r1=scoreRef('act-resp',50,['suma','término','siempre','nunca','depend','porque','variable','expres']);
+  var r2=scoreRef('confl-razon',50,['variable','distint','diferent','no son','no se','tipo','letra','represent']);
+  var r3=scoreRef('pf3-resp',50,['semejante','simplific','combin','suma','rest','operar','identific']);
+  var rp=Math.round((r1+r2+r3)/3*2*10)/10;
+  pts+=rp;
+  det.push({cat:'Reflexión escrita',pts:rp,max:2});
+
+  // ─── Análisis y comprensión: 1.5 pts ─────────────────────
+  var n1=scoreRef('neg-practica',80,['semejante','negativ','-','menos','result','simplif','combin','coeficiente']);
+  var n2=scoreRef('sit-cotidiana',80,['gast','pag','compr','semana','cost','variable','represent','peso','cada']);
+  var n3=scoreRef('comprension-gral',100,['monomio','binomio','trinomio','polinomio','semejante','variable','coeficiente','exponente']);
+  var n4=scoreRef('mapa-desc',200,['monomio','binomio','trinomio','polinomio','término','coeficiente','variable','flecha','conect','centro']);
+  var np=Math.round((n1+n2+n3+n4)/4*1.5*10)/10;
+  pts+=np;
+  det.push({cat:'Análisis y comprensión',pts:np,max:1.5});
+
+  return {total:Math.min(10,Math.round(pts*10)/10),max:10,det:det};
+}
+
+// ====================================================
+// FINALIZAR — RESULTADOS
+// ====================================================
+function finalizar(){
+  if(!modoRecorrer&&!validarSec('s5'))return;
+  var nom=document.getElementById('inp-nombre').value.trim()||'Sin nombre';
+  var nota=calcNota();
+  var color=nota.total>=8?'var(--ver)':nota.total>=6?'var(--az2)':'var(--roj)';
+  var emoji=nota.total>=8?'&#127881;':nota.total>=6?'&#128218;':'&#128218;';
+  var msg=nota.total>=8?'Excelente. Dominas los conceptos de este bloque.':
+          nota.total>=6?'Buen trabajo. Revisa los puntos marcados para reforzar.':
+          'Repasa los ejemplos de cada sección antes del examen.';
+  // Watermark rows
+  var wmRow='';
+  for(var i=0;i<8;i++) wmRow+='<div class="res-wm-row">'+nom+' &nbsp;&nbsp;·&nbsp;&nbsp; '+nom+' &nbsp;&nbsp;·&nbsp;&nbsp; '+nom+'</div>';
+  // Quiz detail
+  var quizFilas='';
+  for(var i=0;i<QUIZ_SEL.length;i++){
+    var q=QUIZ_SEL[i];
+    var nv=0;
+    for(var ni=0;ni<QB.length;ni++){if(QB[ni].indexOf(q)!==-1){nv=ni+1;break;}}
+    var corr=estadoQuiz[i]===q.ok;
+    var tuOpts=document.querySelectorAll('#qopts-'+i+' .qopt');
+    var tuResp='—';
+    for(var j=0;j<tuOpts.length;j++){
+      if(parseInt(tuOpts[j].getAttribute('data-oi'))===estadoQuiz[i])
+        tuResp=tuOpts[j].lastElementChild?tuOpts[j].lastElementChild.innerHTML:'?';
+    }
+    var corrResp=q.ops[q.ok];
+    quizFilas+='<tr class="'+(corr?'ok-row':'nook-row')+'">';
+    quizFilas+='<td class="res-ic">'+(corr?'&#9989;':'&#10060;')+'</td>';
+    quizFilas+='<td style="font-size:.72rem;font-weight:700;color:'+NV_COL[nv]+';">'+NV_LABEL[nv]+'</td>';
+    quizFilas+='<td>'+q.p+'</td>';
+    quizFilas+='<td class="res-tuResp">'+tuResp+'</td>';
+    quizFilas+='<td style="color:var(--ver);font-weight:700;">'+corrResp+'</td>';
+    quizFilas+='</tr>';
+    quizFilas+='<tr class="par-row"><td colspan="5">'+q.ex+'</td></tr>';
+  }
+  // Selects detail
+  function selRow(id,lbl,esperado){
+    var el=document.getElementById(id);
+    var val=el?el.options[el.selectedIndex].text:'—';
+    var corr=el&&el.value===esperado;
+    return '<tr class="'+(corr?'ok-row':'nook-row')+'">'
+      +'<td class="res-ic">'+(corr?'&#9989;':'&#10060;')+'</td>'
+      +'<td colspan="3">'+lbl+': <strong>'+val+'</strong></td>'
+      +'<td style="color:var(--ver);font-weight:700;">Se esperaba: <em>'+esperado+'</em></td></tr>';
+  }
+  // Expressions
+  function exprRow(id,lbl,tipo){
+    var val=document.getElementById(id)?document.getElementById(id).value.trim():'—';
+    var r=validarEstructura(val,tipo);
+    var corr=r.ok;
+    return '<tr class="'+(corr?'ok-row':'nook-row')+'">'
+      +'<td class="res-ic">'+(corr?'&#9989;':'&#10060;')+'</td>'
+      +'<td colspan="2">'+lbl+': <strong style="font-family:monospace;">'+val+'</strong></td>'
+      +'<td colspan="2" style="font-size:.75rem;color:'+(corr?'var(--ver)':'var(--roj)')+';">'+(corr?'Estructura correcta ('+tipo+')':r.msg)+'</td></tr>';
+  }
+  // Reflection rows
+  function refRow(id,lbl,kws,minLen){
+    var val=document.getElementById(id)?document.getElementById(id).value.trim():'—';
+    var longOk=val.length>=minLen;
+    var contOk=kws?validarContenido(val,kws):true;
+    var ok=longOk&&contOk;
+    var fb='';
+    if(!longOk){
+      fb='<span style="color:var(--roj);font-weight:700;">&#10007; Corto: '+val.length+'/'+minLen+' caracteres m&iacute;nimos</span>';
+    } else {
+      fb='<span style="color:var(--ver);font-weight:700;">&#10003; Longitud OK ('+val.length+' caracteres)</span>';
+    }
+    if(kws){
+      if(!contOk){
+        fb+=' &nbsp;<span style="color:var(--am);font-weight:700;">&#9888; Contenido: falta mencionar conceptos clave del tema</span>';
+      } else {
+        fb+=' &nbsp;<span style="color:var(--ver);font-weight:700;">&#10003; Contenido relacionado con el tema</span>';
+      }
+    }
+    return '<tr class="'+(ok?'ok-row':'nook-row')+'">'
+      +'<td class="res-ic">'+(ok?'&#9989;':'&#128221;')+'</td>'
+      +'<td colspan="4"><strong style="font-size:.77rem;">'+lbl+'</strong><br>'
+      +'<span style="font-size:.75rem;color:#444;line-height:1.4;display:block;margin:3px 0;">'+val.substring(0,140)+(val.length>140?'...':'')+'</span>'
+      +'<span style="font-size:.7rem;">'+fb+'</span></td></tr>';
+  }
+  // Nota badge
+  var bclass=nota.total>=8?'nota-verde':nota.total>=6?'nota-am':'nota-roj';
+  var html='';
+  html+='<div class="res-hdr">';
+  html+='<div class="res-wm">'+wmRow+'</div>';
+  html+='<div class="res-alumno-box">';
+  html+='<span class="res-alumno-label">&#128100; Alumno</span>';
+  html+='<span class="res-alumno-nom">'+nom+'</span></div><br>';
+  html+='<div class="score-ico">'+emoji+'</div>';
+  html+='<div class="res-nota" style="color:#fff;">'+nota.total+'<span style="font-size:1.2rem;opacity:.7;">/10</span></div>';
+  html+='<div class="res-nota-sub">'+msg+'</div>';
+  // Desglose
+  html+='<div style="display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap;">';
+  for(var i=0;i<nota.det.length;i++){
+    var d=nota.det[i];
+    html+='<div style="background:rgba(255,255,255,.15);border-radius:8px;padding:5px 12px;font-size:.78rem;font-weight:700;">';
+    html+=d.cat+': <strong>'+d.pts+'/'+d.max+'</strong></div>';
+  }
+  html+='</div></div>';
+  // Tabla resultados
+  html+='<div class="card card-v" style="margin-top:4px;">';
+  html+='<div class="pill p-v">Quiz &mdash; Detalle</div>';
+  html+='<div style="overflow-x:auto;"><table class="res-tabla">';
+  html+='<thead><tr><th></th><th>Nivel</th><th>Pregunta</th><th>Tu resp.</th><th>Correcta</th></tr></thead>';
+  html+='<tbody>'+quizFilas+'</tbody></table></div></div>';
+  html+='<div class="card" style="margin-top:4px;">';
+  html+='<div class="pill p-mo">Expresiones &mdash; Estructura y clasificación</div>';
+  html+='<div style="overflow-x:auto;"><table class="res-tabla"><tbody>';
+  html+=exprRow('expr-mono','Monomio (M1)','monomio');
+  html+=selRow('sel-tipo-m','Tipo M1','monomio');
+  html+=exprRow('expr-binom','Binomio (M2)','binomio');
+  html+=selRow('sel-tipo-b','Tipo M2','binomio');
+  html+=exprRow('expr-trinom','Trinomio (M3)','trinomio');
+  html+=selRow('sel-tipo-t','Tipo M3','trinomio');
+  html+=exprRow('expr-polin','Polinomio (M4)','polinomio');
+  html+=selRow('sel-tipo-p','Tipo M4','polinomio');
+  html+='</tbody></table></div></div>';
+  html+='<div class="card card-a" style="margin-top:4px;">';
+  html+='<div class="pill p-a">Reflexión &mdash; Respuestas escritas</div>';
+  html+='<div style="overflow-x:auto;"><table class="res-tabla"><tbody>';
+  html+=refRow('act-resp','Activación — idea inicial',actQ.kw,50);
+  html+=refRow('confl-razon','¿Por qué no se pueden combinar?',['variable','distint','diferent','no son','represent'],50);
+  html+=refRow('mapa-desc','Mapa conceptual — descripción',['monomio','binomio','trinomio','polinomio','término','coeficiente','variable','exponente','flecha','conect','centro','jerarqu','relaci'],200);
+  html+=refRow('autocorr','Corrección de respuesta inicial',['agreg','correg','cambi','mejor','ahora','antes','aprend','entend','era','me falt'],50);
+  html+=refRow('pf3-resp','Puente PF3',['semejante','simplific','combin','suma','rest'],50);
+  html+=refRow('autov','Autoevaluación',['cost','difícil','fácil','pregunta','porque','entend','confund','trinom','polinomio','monomio','binomio'],40);
+  html+=refRow('neg-practica','Práctica con negativos',['semejante','negativ','-','result'],80);
+  html+=refRow('sit-cotidiana','Situación cotidiana',['gast','pag','compr','semana','cost','variable','represent','peso','cada'],80);
+  html+=refRow('comprension-gral','Comprensión general',['monomio','binomio','trinomio','polinomio','semejante'],100);
+  html+='</tbody></table></div></div>';
+  // Dibujo del alumno
+  var dibImg=getDibujoPNG();
+  if(dibImg){
+    html+='<div class="card card-v" style="margin-top:4px;">';
+    html+='<div class="pill p-v">&#9998; Dibujo del alumno &mdash; Representaci&oacute;n visual</div>';
+    html+='<img src="'+dibImg+'" style="width:100%;border-radius:8px;border:2px solid var(--gris2);display:block;" alt="Dibujo del alumno">';
+    html+='</div>';
+  }
+  // Instrucciones entrega
+  html+='<div class="card card-am" style="margin-top:4px;">';
+  html+='<div class="pill p-am">&#128247; Cómo entregar en Classroom</div>';
+  html+='<p class="instr">Se requiere <strong>una sola imagen o PDF</strong> que muestre toda la hoja. No se aceptan capturas por partes.</p>';
+  html+='<p class="instr" style="margin-top:8px;"><strong>Opción 1 &mdash; Captura larga (scroll screenshot):</strong> Samsung: Vol&uacute;men &darr; + Encendido &rarr; desliza para extender &middot; Xiaomi: captura normal &rarr; ícono extender</p>';
+  html+='<p class="instr" style="margin-top:6px;"><strong>Opción 2 &mdash; PDF:</strong> Men&uacute; &nbsp;&#8942;&nbsp; &rarr; Compartir &rarr; Imprimir &rarr; Guardar como PDF</p>';
+  html+='</div>';
+  html+='<div style="text-align:center;margin:16px 0;">';
+  html+='<button class="btn-rei" onclick="if(confirm(\'¿Reiniciar toda la actividad? Perderás tu avance.\'))location.reload();">&#8635; Reiniciar actividad</button>';
+  html+='</div>';
+  document.getElementById('res-contenido').innerHTML=html;
+  showSec('final');
+}
+
+// ====================================================
+// DOCENTE
+// ====================================================
+function abrirDoc(){document.getElementById('modal-doc').classList.add('show');}
+function cerrarDoc(){
+  document.getElementById('modal-doc').classList.remove('show');
+  document.getElementById('doc-cod').value='';
+  document.getElementById('doc-err').style.display='none';
+}
+function chkDoc(){
+  var v=document.getElementById('doc-cod').value.trim();
+  if(v==='890'||v==='890ac'||v==='890AC'){
+    document.getElementById('doc-login').style.display='none';
+    document.getElementById('doc-panel').style.display='block';
+  } else {
+    document.getElementById('doc-err').style.display='block';
+    document.getElementById('doc-cod').value='';
+  }
+}
+function docSaltar(){
+  cerrarDoc();
+  modoDocente=true;
+  // Fill dummy data
+  document.getElementById('inp-nombre').value='Modo Docente — Vista previa';
+  // Skip to results with dummy quiz
+  estadoQuiz=[0,1,2,0,3,0,1,2,0,1];
+  finalizar();
+}
+function docRecorrer(){
+  cerrarDoc();
+  modoRecorrer=true;
+  document.body.style.outline='3px dashed var(--mo2)';
+  document.body.style.outlineOffset='-3px';
+  alert('Modo recorrido activo. Los botones de "Siguiente" no validarán. Navega libremente.');
+}
+
+// ====================================================
+// INIT
+// ====================================================
+
+// ====================================================
+// CANVAS DIBUJO
+// ====================================================
+var dibCtx=null, dibDrawing=false, dibColor_actual='#5B2D8E';
+var _canvasInited=false;
+
+function initCanvas(){
+  var c=document.getElementById('dibujo-canvas');
+  if(!c)return;
+  if(_canvasInited)return; // guard
+  // Must be visible to read offsetWidth
+  var w=c.offsetWidth||c.parentElement.offsetWidth||320;
+  var dpr=window.devicePixelRatio||1;
+  c.width=w*dpr;
+  c.height=220*dpr;
+  dibCtx=c.getContext('2d');
+  dibCtx.scale(dpr,dpr);
+  dibCtx.strokeStyle=dibColor_actual;
+  dibCtx.lineWidth=3;
+  dibCtx.lineCap='round';
+  dibCtx.lineJoin='round';
+  // fill white background
+  dibCtx.fillStyle='#ffffff';
+  dibCtx.fillRect(0,0,w,220);
+  dibCtx.strokeStyle=dibColor_actual;
+  _canvasInited=true;
+
+  function getPos(e){
+    var r=c.getBoundingClientRect();
+    var scaleX=w/r.width;
+    var scaleY=220/r.height;
+    if(e.touches){
+      return{x:(e.touches[0].clientX-r.left)*scaleX,
+             y:(e.touches[0].clientY-r.top)*scaleY};
+    }
+    return{x:(e.clientX-r.left)*scaleX,y:(e.clientY-r.top)*scaleY};
+  }
+  function startDraw(e){
+    e.preventDefault();
+    dibDrawing=true;
+    var p=getPos(e);
+    dibCtx.beginPath();
+    dibCtx.moveTo(p.x,p.y);
+  }
+  function draw(e){
+    e.preventDefault();
+    if(!dibDrawing)return;
+    var p=getPos(e);
+    dibCtx.lineTo(p.x,p.y);
+    dibCtx.stroke();
+  }
+  function stopDraw(e){dibDrawing=false;}
+  c.addEventListener('mousedown',startDraw);
+  c.addEventListener('mousemove',draw);
+  c.addEventListener('mouseup',stopDraw);
+  c.addEventListener('mouseleave',stopDraw);
+  c.addEventListener('touchstart',startDraw,{passive:false});
+  c.addEventListener('touchmove',draw,{passive:false});
+  c.addEventListener('touchend',stopDraw);
+}
+
+function dibColor(col,btn){
+  dibColor_actual=col;
+  if(!_canvasInited){initCanvas();}
+  if(dibCtx){dibCtx.strokeStyle=col;}
+  var btns=document.querySelectorAll('.dib-btn');
+  for(var i=0;i<btns.length;i++){btns[i].style.outline='none';}
+  if(btn){btn.style.outline='3px solid #fff';}
+}
+
+function dibBorrar(){
+  var c=document.getElementById('dibujo-canvas');
+  if(!dibCtx||!c)return;
+  var w=c.width/(window.devicePixelRatio||1);
+  dibCtx.fillStyle='#ffffff';
+  dibCtx.fillRect(0,0,w,220);
+  dibCtx.strokeStyle=dibColor_actual;
+}
+
+function getDibujoPNG(){
+  var c=document.getElementById('dibujo-canvas');
+  if(!c||!_canvasInited)return null;
+  try{return c.toDataURL('image/png');}catch(e){return null;}
+}
+
+window.onload=function(){init();};
+</script>
+</body></html>
