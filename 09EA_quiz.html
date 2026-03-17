@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>S9 · Quiz Multiplicación de Monomios · PM II</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --mo:#5B2D8E;--mo2:#7B3FC0;--mo3:#B88EE8;--mo-f:#f3ecfb;
+  --ver:#1B6B45;--ver2:#52B788;--nar:#E85D04;--nar2:#F9A53A;
+  --roj:#C1121F;--az:#023E8A;--az2:#1565C0;
+  --mor4:#6a1b9a;--mor4f:#f3e5f5;
+  --cr:#fdf9ff;--tie:#1a0a2e;--gris:#ede8f5;--gris2:#d5cce8;
+  --som:0 3px 18px rgba(91,45,142,.12);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--cr);color:var(--tie);font-size:15px;overflow-x:hidden;}
+.hdr{background:linear-gradient(135deg,var(--tie),#0a1628);padding:20px 16px 16px;text-align:center;}
+.hdr-tag{font-size:.65rem;font-weight:800;letter-spacing:3px;color:var(--mo3);text-transform:uppercase;margin-bottom:3px;}
+.hdr h1{font-family:'Bebas Neue';font-size:1.85rem;color:#fff;line-height:1;}
+.hdr h1 em{color:var(--nar2);font-style:normal;}
+.hdr-sub{font-size:.74rem;color:rgba(255,255,255,.45);margin-top:4px;}
+.tabs{display:flex;background:#fff;border-bottom:3px solid var(--gris2);position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+.tab{flex:1;padding:12px 4px;text-align:center;font-size:.76rem;font-weight:800;color:#999;cursor:pointer;transition:all .2s;border-bottom:3px solid transparent;margin-bottom:-3px;}
+.tab.act{color:var(--az2);border-bottom-color:var(--az2);}
+.tab span{display:block;font-size:1rem;margin-bottom:1px;}
+.sec{display:none;padding:14px;max-width:700px;margin:0 auto;}
+.sec.on{display:block;}
+.card{background:#fff;border-radius:12px;padding:15px;margin-bottom:12px;box-shadow:var(--som);}
+.card-mo{border-left:4px solid var(--mo2);}
+.card-v{border-left:4px solid var(--ver2);}
+.card-a{border-left:4px solid var(--az2);}
+.card-r{border-left:4px solid var(--roj);}
+.pill{display:inline-block;font-size:.63rem;font-weight:800;letter-spacing:.4px;padding:3px 9px;border-radius:12px;margin-bottom:8px;text-transform:uppercase;}
+.p-mo{background:var(--mo-f);color:var(--mo);}
+.p-v{background:#d4edda;color:var(--ver);}
+.p-a{background:#cce5ff;color:var(--az2);}
+.p-r{background:#fdecea;color:var(--roj);}
+/* LEY BOX */
+.ley-box{background:linear-gradient(135deg,#e3f2fd,#bbdefb);border:2.5px solid var(--az2);border-radius:14px;padding:16px;text-align:center;margin:10px 0;}
+.ley-titulo{font-size:.68rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--az2);margin-bottom:8px;}
+.ley-formula{font-family:'Nunito';font-size:1.35rem;font-weight:900;color:var(--tie);line-height:1.3;margin-bottom:6px;}
+.ley-sub{font-size:.8rem;color:#444;line-height:1.65;text-align:left;}
+/* EXPR */
+.expr{font-family:monospace;font-size:1rem;font-weight:800;line-height:2;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px;padding:12px;background:var(--gris);border-radius:9px;margin:10px 0;}
+.term{padding:3px 8px;border-radius:5px;transition:all .3s;}
+.term.t1{background:#d4edda;color:#1b5e20;border:1.5px solid var(--ver2);}
+.term.t2{background:#cce5ff;color:var(--az);border:1.5px solid var(--az2);}
+.term.t3{background:#ffe0cc;color:#bf360c;border:1.5px solid var(--nar);}
+.term.t4{background:var(--mor4f);color:var(--mor4);border:1.5px solid var(--mo2);}
+.term.igual{background:#fff8e1;color:#f57f17;border:2px solid #f9a825;}
+.signo{color:#666;font-weight:800;font-size:1.1rem;padding:0 2px;}
+.signo.neg{color:var(--roj);}
+.signo.pos{color:var(--ver);}
+.flecha{color:var(--az2);font-weight:900;font-size:1.1rem;padding:0 4px;}
+.resultado-box{background:linear-gradient(135deg,#e8f5e9,#d4edda);border:2px solid var(--ver2);border-radius:9px;padding:8px 14px;font-family:monospace;font-size:1.1rem;font-weight:900;color:#1b5e20;display:inline-block;margin-top:6px;}
+/* PASOS */
+.paso{display:none;background:#fff;border-radius:9px;padding:11px 13px;margin-top:8px;border-left:3px solid var(--az2);font-size:.85rem;line-height:1.75;animation:fadeIn .3s ease;}
+.paso.show{display:block;}
+.paso-num{font-size:.63rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--az2);margin-bottom:5px;}
+.op{font-family:monospace;font-weight:800;color:var(--tie);}
+.ok-res{font-family:monospace;font-size:1.1rem;font-weight:800;color:var(--ver);background:#e8f5e9;padding:5px 12px;border-radius:7px;display:inline-block;margin-top:4px;}
+.paso-calc{background:var(--gris);border-radius:8px;padding:9px 12px;margin-top:8px;font-family:monospace;font-size:.9rem;line-height:1.9;}
+.paso-calc .lbl{font-family:'Nunito';font-size:.7rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#999;display:block;margin-bottom:4px;}
+.dest{color:var(--roj);font-weight:900;}
+.dest2{color:var(--ver);font-weight:900;}
+.dest3{color:var(--az2);font-weight:900;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.btn-paso{display:inline-block;margin-top:8px;padding:8px 16px;background:var(--az2);color:#fff;border:none;border-radius:8px;font-family:'Nunito';font-weight:800;font-size:.83rem;cursor:pointer;transition:all .2s;}
+.btn-paso:hover{background:var(--az);transform:translateY(-1px);}
+.btn-paso:disabled{background:var(--gris2);color:#aaa;cursor:default;transform:none;}
+.btn-reset-ej{background:transparent;border:2px solid var(--az2);color:var(--az2);padding:7px 14px;border-radius:8px;font-family:'Nunito';font-weight:800;font-size:.78rem;cursor:pointer;margin-top:8px;margin-left:6px;}
+.ej-hdr{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.ej-num{font-family:'Bebas Neue';font-size:2.5rem;color:var(--az2);line-height:1;flex-shrink:0;}
+.ej-tit{font-size:.95rem;font-weight:900;}
+.ej-sub{font-size:.72rem;color:#888;margin-top:1px;}
+/* ALERTA / PISTA */
+.pista-box{background:linear-gradient(135deg,#fff8e1,#fff3cd);border:1.5px dashed #f9a825;border-radius:9px;padding:10px 13px;margin-top:9px;font-size:.82rem;line-height:1.65;}
+.pista-ico{font-size:.9rem;margin-right:4px;}
+/* QUIZ */
+.quiz-hdr{background:linear-gradient(135deg,#0a1628,var(--az));border-radius:14px;padding:16px;color:#fff;margin-bottom:12px;text-align:center;}
+.quiz-hdr h2{font-family:'Bebas Neue';font-size:1.55rem;letter-spacing:1px;}
+.quiz-info{font-size:.8rem;margin-top:4px;opacity:.75;}
+.qcard{background:#fff;border-radius:12px;padding:15px;margin-bottom:10px;box-shadow:var(--som);border:2px solid var(--gris2);}
+.qcard-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.qnum{font-size:.65rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--az2);}
+.qnivel{font-size:.58rem;font-weight:800;padding:2px 7px;border-radius:8px;background:var(--gris);color:#666;}
+.qtexto{font-size:.88rem;font-weight:700;color:#555;margin-bottom:5px;}
+.qexpr{font-family:monospace;font-size:1rem;font-weight:800;background:var(--gris);padding:8px 12px;border-radius:8px;margin-bottom:12px;line-height:1.8;}
+.qexpr sup{font-size:.65em;vertical-align:super;line-height:0;}
+.qopt sup{font-size:.65em;vertical-align:super;line-height:0;}
+.qopts{display:flex;flex-direction:column;gap:7px;}
+.qopt{display:flex;align-items:center;gap:10px;padding:10px 12px;border:2.5px solid var(--gris2);border-radius:9px;cursor:pointer;transition:all .2s;font-family:monospace;font-size:.88rem;font-weight:700;}
+.qopt:hover{border-color:var(--az2);background:#f0f4ff;}
+.qopt.sel{border-color:var(--az2);background:#e8f0ff;}
+.qopt.correcto{border-color:var(--ver2);background:#e8f5e9;color:#1b5e20;}
+.qopt.incorrecto{border-color:var(--roj);background:#fdecea;color:var(--roj);}
+.qopt-letra{width:22px;height:22px;border-radius:50%;background:var(--gris2);font-weight:800;font-size:.8rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Nunito';}
+.qopt.correcto .qopt-letra{background:var(--ver2);color:#fff;}
+.qopt.incorrecto .qopt-letra{background:var(--roj);color:#fff;}
+.qfb{margin-top:8px;padding:9px 12px;border-radius:8px;font-size:.82rem;line-height:1.55;display:none;font-family:'Nunito';}
+.qfb.show{display:block;}
+.qfb.ok{background:#e8f5e9;color:#1b5e20;border:1.5px solid var(--ver2);}
+.qfb.nook{background:#fdecea;color:var(--roj);border:1.5px solid var(--roj);}
+/* TABLA RESULTADOS */
+.res-wrap{margin-top:14px;}
+.res-tabla{width:100%;border-collapse:collapse;font-size:.81rem;margin-bottom:12px;}
+.res-tabla th{background:var(--tie);color:#fff;padding:8px 9px;text-align:center;font-weight:700;white-space:nowrap;font-size:.75rem;}
+.res-tabla td{padding:7px 9px;border:1.5px solid var(--gris2);vertical-align:top;}
+.res-tabla tr.ok-row td{background:#f0fff4;}
+.res-tabla tr.nook-row td{background:#fff5f5;}
+.res-tabla .col-ic{text-align:center;font-size:1rem;}
+.res-tabla .col-expr{font-family:monospace;font-weight:700;}
+.res-tabla .col-resp{font-family:monospace;font-size:.8rem;}
+.res-tabla .col-corr{font-family:monospace;font-size:.8rem;color:var(--ver);font-weight:800;}
+.res-tabla .col-exp{font-size:.73rem;color:#666;line-height:1.4;}
+.score-box{background:linear-gradient(135deg,var(--ver),#1b5e20);border-radius:14px;padding:20px;text-align:center;color:#fff;margin-bottom:12px;}
+.score-box.repaso{background:linear-gradient(135deg,var(--az2),#01579b);}
+.score-box h2{font-family:'Bebas Neue';font-size:2.5rem;}
+.score-ico{font-size:3rem;margin:6px 0;}
+.btn-reiniciar{background:#fff;color:var(--tie);border:none;border-radius:10px;padding:12px 24px;font-family:'Nunito';font-weight:800;font-size:.95rem;cursor:pointer;margin-top:12px;transition:all .2s;}
+.btn-reiniciar:hover{transform:translateY(-2px);box-shadow:0 4px 15px rgba(0,0,0,.2);}
+.btn-ver{display:block;width:100%;padding:13px;background:var(--az2);color:#fff;border:none;border-radius:11px;font-size:.96rem;font-weight:800;cursor:pointer;font-family:'Nunito';margin-top:10px;transition:all .2s;}
+.btn-ver:hover{background:var(--az);}
+.emsg{display:none;background:#fdecea;border:2px solid var(--roj);border-radius:9px;padding:9px 13px;font-size:.82rem;color:var(--roj);font-weight:700;margin-top:8px;}
+/* DOCENTE */
+.doc-modal{display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.6);align-items:center;justify-content:center;}
+.doc-modal.show{display:flex;}
+.doc-inner{background:#fff;border-radius:14px;padding:20px;max-width:400px;width:92%;box-shadow:0 10px 40px rgba(0,0,0,.3);max-height:90vh;overflow-y:auto;}
+.doc-inner h3{font-family:'Bebas Neue';font-size:1.4rem;color:var(--az2);margin-bottom:10px;}
+.inp{width:100%;padding:10px 12px;border:2.5px solid var(--gris2);border-radius:9px;font-size:.91rem;font-family:'Nunito';color:var(--tie);background:#fff;transition:border-color .2s;margin-top:4px;}
+.inp:focus{outline:none;border-color:var(--az2);}
+.doc-panel{display:none;margin-top:10px;}
+.doc-panel.show{display:block;}
+.doc-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--gris2);font-size:.8rem;}
+.doc-row:last-child{border-bottom:none;}
+.doc-key{font-weight:700;}
+.doc-val{color:var(--az2);font-weight:800;font-family:monospace;}
+.dbtn{width:100%;padding:10px;border:none;border-radius:9px;font-family:'Nunito';font-weight:800;font-size:.88rem;cursor:pointer;margin-top:7px;transition:all .2s;}
+.dbtn-az{background:var(--az2);color:#fff;}
+.dbtn-v{background:var(--ver);color:#fff;}
+.dbtn-out{background:transparent;border:2px solid var(--az2);color:var(--az2);}
+.preview-wrap{background:var(--gris);border-radius:10px;padding:12px;margin-top:10px;overflow-x:auto;}
+.preview-wrap h4{font-size:.8rem;font-weight:800;color:var(--az2);margin-bottom:8px;}
+/* SIGNOS TABLE */
+.signos-tabla{width:100%;border-collapse:collapse;font-size:.83rem;margin:8px 0;}
+.signos-tabla th{background:var(--tie);color:#fff;padding:6px 8px;font-size:.72rem;}
+.signos-tabla td{padding:7px 9px;border:1.5px solid var(--gris2);text-align:center;font-family:monospace;font-weight:800;}
+.sign-pos{background:#e8f5e9;color:#1b5e20;}
+.sign-neg{background:#fdecea;color:var(--roj);}
+</style>
+</head>
+<body>
+
+<!-- MODAL DOCENTE -->
+<div class="doc-modal" id="modal-doc">
+  <div class="doc-inner">
+    <h3>&#128274; Acceso Docente</h3>
+    <div id="doc-login-area">
+      <p style="font-size:.83rem;color:#666;margin-bottom:8px;">Código de acceso:</p>
+      <input class="inp" id="doc-cod" type="password" placeholder="••••" autocomplete="off"
+        onkeydown="if(event.key==='Enter')verificarDoc()">
+      <div id="doc-err" style="display:none;color:var(--roj);font-size:.8rem;margin-top:5px;font-weight:700;">Código incorrecto.</div>
+      <div style="display:flex;gap:8px;margin-top:10px;">
+        <button class="dbtn dbtn-az" style="flex:1;" onclick="verificarDoc()">Entrar</button>
+        <button class="dbtn dbtn-out" style="flex:1;" onclick="cerrarDoc()">Cancelar</button>
+      </div>
+    </div>
+    <div class="doc-panel" id="doc-panel">
+      <div style="background:var(--az2);border-radius:9px;padding:9px 13px;display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <span style="font-weight:800;color:#fff;font-size:.88rem;">&#128101; Panel Docente — S9 Quiz</span>
+        <button onclick="cerrarDoc()" style="background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:6px;padding:3px 9px;font-size:.75rem;cursor:pointer;font-family:'Nunito';font-weight:700;">Cerrar</button>
+      </div>
+      <div style="background:#e3f2fd;border-radius:9px;padding:11px 13px;margin-bottom:10px;">
+        <div class="doc-row"><span class="doc-key">Banco total</span><span class="doc-val">49 preguntas</span></div>
+        <div class="doc-row"><span class="doc-key">Niveles</span><span class="doc-val">7 (1=básico → 7=complejo)</span></div>
+        <div class="doc-row"><span class="doc-key">Por quiz</span><span class="doc-val">1 de cada nivel (7 total)</span></div>
+        <div class="doc-row"><span class="doc-key">Umbral aprobado</span><span class="doc-val">6/7 (86%)</span></div>
+        <div class="doc-row"><span class="doc-key">Reinicio</span><span class="doc-val">Nuevas preguntas c/vez</span></div>
+        <div class="doc-row"><span class="doc-key">Tema</span><span class="doc-val">Multiplicación de monomios</span></div>
+      </div>
+      <button class="dbtn dbtn-v" onclick="docPreview()">&#128065; Ver tabla de resultados (ejemplo)</button>
+      <button class="dbtn dbtn-out" style="margin-top:6px;" onclick="cerrarDoc()">Cerrar panel</button>
+      <div id="doc-preview-wrap"></div>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-tag">Pensamiento Matemático II</div>
+  <h1>Quiz · Multiplicar <em>Monomios</em></h1>
+  <div class="hdr-sub">Coeficientes × coeficientes &nbsp;·&nbsp; Exponentes + exponentes &nbsp;·&nbsp; Ley de signos</div>
+  <div style="margin-top:10px;font-size:.78rem;color:rgba(255,255,255,.65);font-weight:700;letter-spacing:.5px;">Prof. Adrián Cruz &nbsp;·&nbsp; 2025–2026</div>
+</div>
+
+<!-- NOMBRE -->
+<div style="background:#fff;padding:8px 14px;border-bottom:2px solid var(--gris2);display:flex;align-items:center;gap:10px;">
+  <span style="font-size:.72rem;font-weight:800;color:#999;white-space:nowrap;">&#128100; Nombre:</span>
+  <input id="inp-nombre" type="text" autocomplete="off" placeholder="Apellidos y nombre — Grupo"
+    style="flex:1;border:1.5px solid var(--gris2);border-radius:7px;padding:6px 10px;font-family:'Nunito';font-size:.82rem;color:var(--tie);background:#faf7ff;"
+    oninput="syncNombre()">
+  <span id="nombre-ok" style="font-size:.85rem;display:none;">✓</span>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab act" id="tab-ej" onclick="showTab('ej')"><span>📖</span>Ejemplos</div>
+  <div class="tab" id="tab-quiz" onclick="showTab('quiz')"><span>🎯</span>Quiz</div>
+</div>
+
+<!-- ===== SECCIÓN EJEMPLOS ===== -->
+<div class="sec on" id="sec-ej">
+
+  <!-- TARJETA INTRO LEY -->
+  <div class="card card-a" style="margin-top:4px;">
+    <div class="pill p-a">📐 La regla fundamental: multiplicación de monomios</div>
+    <div class="ley-box">
+      <div class="ley-titulo">Ley de multiplicación de potencias</div>
+      <div class="ley-formula">a<sup>m</sup> &middot; a<sup>n</sup> = a<sup>m+n</sup></div>
+      <div class="ley-sub">
+        <strong>Paso 1 — Coeficientes:</strong> multiplícalos normalmente (× entre sí).<br>
+        <strong>Paso 2 — Variables:</strong> para cada letra, <em>suma sus exponentes</em>.<br>
+        <strong>La base (letra) NO cambia</strong>: x sigue siendo x, y sigue siendo y.
+      </div>
+    </div>
+    <div style="background:#fdecea;border-radius:8px;padding:9px 13px;font-size:.82rem;line-height:1.65;margin-top:8px;">
+      <strong style="color:var(--roj);">⚠ Error frecuente:</strong> Los exponentes se <strong>suman</strong>, no se multiplican.<br>
+      x² · x³ = x<sup style="font-family:monospace;">2+3</sup> = x⁵ &nbsp;✓ &nbsp;&nbsp; x² · x³ ≠ x⁶ &nbsp;✗
+    </div>
+  </div>
+
+  <!-- EJ 1 -->
+  <div class="card">
+    <div class="ej-hdr"><div class="ej-num">1</div>
+      <div><div class="ej-tit">Una variable — coeficientes y exponentes</div>
+      <div class="ej-sub">El caso más directo: multiplica los números, suma los exponentes</div></div>
+    </div>
+    <div class="expr">
+      <span class="term t1">3x²</span>
+      <span class="signo">·</span>
+      <span class="term t2">4x³</span>
+    </div>
+    <div id="ej1-p1" class="paso">
+      <div class="paso-num">Paso 1 · Identifica coeficientes y exponentes</div>
+      <span class="dest">Primer monomio:</span> coeficiente <strong>3</strong>, variable x con exponente <strong>2</strong>.<br>
+      <span class="dest2">Segundo monomio:</span> coeficiente <strong>4</strong>, variable x con exponente <strong>3</strong>.<br>
+      <div class="pista-box"><span class="pista-ico">💡</span><strong>Pista:</strong> Antes de operar, anota los coeficientes separados de las variables: <em>(3)(4) · x²x³</em></div>
+    </div>
+    <div id="ej1-p2" class="paso">
+      <div class="paso-num">Paso 2 · Multiplica coeficientes</div>
+      <div class="paso-calc">
+        <span class="lbl">Coeficientes:</span>
+        <span class="op dest">3 × 4 = 12</span>
+      </div>
+    </div>
+    <div id="ej1-p3" class="paso">
+      <div class="paso-num">Paso 3 · Suma exponentes de x</div>
+      <div class="paso-calc">
+        <span class="lbl">Variable x (misma base → suma exponentes):</span>
+        <span class="op dest2">exp 2 + exp 3 = exp 5 → x⁵</span>
+      </div>
+    </div>
+    <div id="ej1-p4" class="paso">
+      <div class="paso-num">Resultado</div>
+      <span class="ok-res">12x⁵</span><br>
+      <span style="font-size:.78rem;color:#888;margin-top:4px;display:block;">Nuevo coeficiente: 12. Nueva variable: x⁵. La letra x no cambió, solo su exponente.</span>
+    </div>
+    <div style="margin-top:4px;">
+      <button class="btn-paso" id="ej1-btn" onclick="paso(1)">Ver paso 1 →</button>
+      <button class="btn-reset-ej" onclick="resetEj(1)">↺</button>
+    </div>
+  </div>
+
+  <!-- EJ 2 -->
+  <div class="card">
+    <div class="ej-hdr"><div class="ej-num">2</div>
+      <div><div class="ej-tit">Dos variables distintas</div>
+      <div class="ej-sub">Cada letra tiene su propio par de exponentes que se suman</div></div>
+    </div>
+    <div class="expr">
+      <span class="term t1">2x²y</span>
+      <span class="signo">·</span>
+      <span class="term t2">5xy³</span>
+    </div>
+    <div id="ej2-p1" class="paso">
+      <div class="paso-num">Paso 1 · Identifica por variable</div>
+      Variable <strong>x</strong>: exponentes <strong>2</strong> y <strong>1</strong> (xy = x¹y¹ — el 1 no se escribe pero está).<br>
+      Variable <strong>y</strong>: exponentes <strong>1</strong> y <strong>3</strong>.<br>
+      <div class="pista-box"><span class="pista-ico">💡</span><strong>Pista:</strong> Separa por columnas: coeficientes | variable x | variable y. Más fácil de no perder ninguna.</div>
+    </div>
+    <div id="ej2-p2" class="paso">
+      <div class="paso-num">Paso 2 · Coeficientes</div>
+      <div class="paso-calc">
+        <span class="lbl">Coeficientes:</span>
+        <span class="op dest">2 × 5 = 10</span>
+      </div>
+    </div>
+    <div id="ej2-p3" class="paso">
+      <div class="paso-num">Paso 3 · Suma exponentes variable por variable</div>
+      <div class="paso-calc">
+        <span class="lbl">Variable x:</span>
+        <span class="op dest2">exp 2 + exp 1 = exp 3 → x³</span><br>
+        <span class="lbl" style="margin-top:6px;">Variable y:</span>
+        <span class="op dest2">exp 1 + exp 3 = exp 4 → y⁴</span>
+      </div>
+    </div>
+    <div id="ej2-p4" class="paso">
+      <div class="paso-num">Resultado</div>
+      <span class="ok-res">10x³y⁴</span><br>
+      <span style="font-size:.78rem;color:#888;margin-top:4px;display:block;">Cada variable se trata por separado. Los exponentes de x y de y se suman de forma independiente.</span>
+    </div>
+    <div style="margin-top:4px;">
+      <button class="btn-paso" id="ej2-btn" onclick="paso(2)">Ver paso 1 →</button>
+      <button class="btn-reset-ej" onclick="resetEj(2)">↺</button>
+    </div>
+  </div>
+
+  <!-- EJ 3 — EXPONENTES ALTOS -->
+  <div class="card">
+    <div class="ej-hdr"><div class="ej-num">3</div>
+      <div><div class="ej-tit">Exponentes altos — como en 09EA</div>
+      <div class="ej-sub">3x²y³ · 4x³y² — no te confundas con exponentes grandes</div></div>
+    </div>
+    <div class="expr">
+      <span class="term t1">3x²y³</span>
+      <span class="signo">·</span>
+      <span class="term t2">4x³y²</span>
+    </div>
+    <div id="ej3-p1" class="paso">
+      <div class="paso-num">Paso 1 · Organiza la información</div>
+      <div class="paso-calc">
+        <span class="lbl">Primer monomio:</span>
+        <span class="op">coef = 3 &nbsp;|&nbsp; x con exp 2 &nbsp;|&nbsp; y con exp 3</span><br>
+        <span class="lbl" style="margin-top:6px;">Segundo monomio:</span>
+        <span class="op">coef = 4 &nbsp;|&nbsp; x con exp 3 &nbsp;|&nbsp; y con exp 2</span>
+      </div>
+      <div class="pista-box"><span class="pista-ico">💡</span><strong>Pista:</strong> Identifica cuáles términos tienen las <em>mismas letras</em> — solo esos suman exponentes entre sí. x con x, y con y.</div>
+    </div>
+    <div id="ej3-p2" class="paso">
+      <div class="paso-num">Paso 2 · Coeficientes</div>
+      <div class="paso-calc">
+        <span class="op dest">3 × 4 = 12</span>
+      </div>
+    </div>
+    <div id="ej3-p3" class="paso">
+      <div class="paso-num">Paso 3 · Exponentes</div>
+      <div class="paso-calc">
+        <span class="lbl">Variable x:</span>
+        <span class="op dest2">2 + 3 = 5 → x⁵</span><br>
+        <span class="lbl" style="margin-top:6px;">Variable y:</span>
+        <span class="op dest2">3 + 2 = 5 → y⁵</span>
+      </div>
+    </div>
+    <div id="ej3-p4" class="paso">
+      <div class="paso-num">Resultado</div>
+      <span class="ok-res">12x⁵y⁵</span><br>
+      <span style="font-size:.78rem;color:#888;margin-top:4px;display:block;">Coincidencia que ambos resulten 5 — cada variable sumó sus propios exponentes por separado.</span>
+    </div>
+    <div style="margin-top:4px;">
+      <button class="btn-paso" id="ej3-btn" onclick="paso(3)">Ver paso 1 →</button>
+      <button class="btn-reset-ej" onclick="resetEj(3)">↺</button>
+    </div>
+  </div>
+
+  <!-- EJ 4 — SIGNOS -->
+  <div class="card">
+    <div class="ej-hdr"><div class="ej-num">4</div>
+      <div><div class="ej-tit">Ley de signos en la multiplicación</div>
+      <div class="ej-sub">(+)(+)=+ &nbsp;·&nbsp; (−)(−)=+ &nbsp;·&nbsp; (+)(−)=−</div></div>
+    </div>
+    <!-- Tabla de signos -->
+    <table class="signos-tabla">
+      <thead><tr><th>Factor 1</th><th>Factor 2</th><th>Resultado</th><th>Ejemplo</th></tr></thead>
+      <tbody>
+        <tr><td class="sign-pos">+</td><td class="sign-pos">+</td><td class="sign-pos">+</td><td style="font-family:monospace;">(+2x)(+3x) = +6x²</td></tr>
+        <tr><td class="sign-neg">−</td><td class="sign-neg">−</td><td class="sign-pos">+</td><td style="font-family:monospace;">(−2x)(−3x) = +6x²</td></tr>
+        <tr><td class="sign-pos">+</td><td class="sign-neg">−</td><td class="sign-neg">−</td><td style="font-family:monospace;">(+2x)(−3x) = −6x²</td></tr>
+        <tr><td class="sign-neg">−</td><td class="sign-pos">+</td><td class="sign-neg">−</td><td style="font-family:monospace;">(−2x)(+3x) = −6x²</td></tr>
+      </tbody>
+    </table>
+    <div class="expr">
+      <span class="term t3" style="color:var(--roj);">−3x²y</span>
+      <span class="signo">·</span>
+      <span class="term t2">5xy²</span>
+    </div>
+    <div id="ej4-p1" class="paso">
+      <div class="paso-num">Paso 1 · Determina el signo del resultado</div>
+      <span class="dest">Signo 1:</span> − (negativo)<br>
+      <span class="dest2">Signo 2:</span> + (positivo — no tiene signo escrito, es positivo)<br>
+      <strong>Ley de signos: (−) × (+) = −</strong><br>
+      <div class="pista-box"><span class="pista-ico">💡</span><strong>Pista:</strong> Revisa el signo <em>antes</em> de operar los números. Signos iguales → resultado positivo. Signos distintos → resultado negativo.</div>
+    </div>
+    <div id="ej4-p2" class="paso">
+      <div class="paso-num">Paso 2 · Coeficientes (valores absolutos)</div>
+      <div class="paso-calc">
+        <span class="op dest">3 × 5 = 15</span><br>
+        <span class="op" style="color:var(--roj);">Signo del resultado: − → coeficiente = −15</span>
+      </div>
+    </div>
+    <div id="ej4-p3" class="paso">
+      <div class="paso-num">Paso 3 · Exponentes</div>
+      <div class="paso-calc">
+        <span class="lbl">Variable x:</span>
+        <span class="op dest2">2 + 1 = 3 → x³</span><br>
+        <span class="lbl" style="margin-top:6px;">Variable y:</span>
+        <span class="op dest2">1 + 2 = 3 → y³</span>
+      </div>
+    </div>
+    <div id="ej4-p4" class="paso">
+      <div class="paso-num">Resultado</div>
+      <span class="ok-res">−15x³y³</span><br>
+      <span style="font-size:.78rem;color:#888;margin-top:4px;display:block;">El signo negativo va pegado al coeficiente. Las variables y sus exponentes no se ven afectados por el signo.</span>
+    </div>
+    <div style="margin-top:4px;">
+      <button class="btn-paso" id="ej4-btn" onclick="paso(4)">Ver paso 1 →</button>
+      <button class="btn-reset-ej" onclick="resetEj(4)">↺</button>
+    </div>
+  </div>
+
+  <!-- EJ 5 — DOS NEGATIVOS -->
+  <div class="card">
+    <div class="ej-hdr"><div class="ej-num">5</div>
+      <div><div class="ej-tit">Dos negativos — resultado positivo</div>
+      <div class="ej-sub">Exponentes altos + ambos factores negativos</div></div>
+    </div>
+    <div class="expr">
+      <span class="term t3" style="color:var(--roj);">−4x³y²</span>
+      <span class="signo">·</span>
+      <span class="term t3" style="color:var(--roj);">−2xy⁴</span>
+    </div>
+    <div id="ej5-p1" class="paso">
+      <div class="paso-num">Paso 1 · Ley de signos</div>
+      Ambos factores son <strong>negativos</strong>.<br>
+      <span class="dest">(−) × (−) = (+)</span> → el resultado será <strong>positivo</strong>.<br>
+      <div class="pista-box"><span class="pista-ico">💡</span><strong>Pista:</strong> Dos negativos siempre dan positivo. Es como "cancelarse" mutuamente.</div>
+    </div>
+    <div id="ej5-p2" class="paso">
+      <div class="paso-num">Paso 2 · Coeficientes</div>
+      <div class="paso-calc">
+        <span class="op dest2">4 × 2 = 8</span><br>
+        <span class="op" style="color:var(--ver);">Signo: + → coeficiente = +8</span>
+      </div>
+    </div>
+    <div id="ej5-p3" class="paso">
+      <div class="paso-num">Paso 3 · Exponentes</div>
+      <div class="paso-calc">
+        <span class="lbl">Variable x:</span>
+        <span class="op dest2">3 + 1 = 4 → x⁴</span><br>
+        <span class="lbl" style="margin-top:6px;">Variable y:</span>
+        <span class="op dest2">2 + 4 = 6 → y⁶</span>
+      </div>
+    </div>
+    <div id="ej5-p4" class="paso">
+      <div class="paso-num">Resultado</div>
+      <span class="ok-res">8x⁴y⁶</span><br>
+      <span style="font-size:.78rem;color:#888;margin-top:4px;display:block;">Sin signo negativo porque (−)(−)=(+). Los exponentes solo se sumaron, nunca se multiplicaron.</span>
+    </div>
+    <div style="margin-top:4px;">
+      <button class="btn-paso" id="ej5-btn" onclick="paso(5)">Ver paso 1 →</button>
+      <button class="btn-reset-ej" onclick="resetEj(5)">↺</button>
+    </div>
+  </div>
+
+  <!-- EJ 6 — TRES VARIABLES -->
+  <div class="card">
+    <div class="ej-hdr"><div class="ej-num">6</div>
+      <div><div class="ej-tit">Tres variables y signos mezclados</div>
+      <div class="ej-sub">El más complejo — x, y, z con exponentes distintos</div></div>
+    </div>
+    <div class="expr">
+      <span class="term t1">2x²y³z</span>
+      <span class="signo">·</span>
+      <span class="term t3" style="color:var(--roj);">−3xy²z⁴</span>
+    </div>
+    <div id="ej6-p1" class="paso">
+      <div class="paso-num">Paso 1 · Signo y coeficientes</div>
+      <span class="dest">(+)(−) = −</span> → resultado <strong>negativo</strong>.<br>
+      <div class="paso-calc">
+        <span class="lbl">Coeficientes:</span>
+        <span class="op">2 × 3 = 6 → con signo: <strong>−6</strong></span>
+      </div>
+      <div class="pista-box"><span class="pista-ico">💡</span><strong>Pista para tres variables:</strong> Trabaja una letra a la vez. Primero x, luego y, luego z. No saltes entre ellas.</div>
+    </div>
+    <div id="ej6-p2" class="paso">
+      <div class="paso-num">Paso 2 · Variable x</div>
+      <div class="paso-calc">
+        <span class="lbl">x: exp 2 + exp 1 (x=x¹):</span>
+        <span class="op dest2">2 + 1 = 3 → x³</span>
+      </div>
+    </div>
+    <div id="ej6-p3" class="paso">
+      <div class="paso-num">Paso 3 · Variables y y z</div>
+      <div class="paso-calc">
+        <span class="lbl">y: exp 3 + exp 2:</span>
+        <span class="op dest2">3 + 2 = 5 → y⁵</span><br>
+        <span class="lbl" style="margin-top:6px;">z: exp 1 + exp 4 (z=z¹):</span>
+        <span class="op dest2">1 + 4 = 5 → z⁵</span>
+      </div>
+    </div>
+    <div id="ej6-p4" class="paso">
+      <div class="paso-num">Resultado</div>
+      <span class="ok-res">−6x³y⁵z⁵</span><br>
+      <span style="font-size:.78rem;color:#888;margin-top:4px;display:block;">Cada variable procesada independientemente. El signo viene de la ley de signos, no de los exponentes.</span>
+    </div>
+    <div style="margin-top:4px;">
+      <button class="btn-paso" id="ej6-btn" onclick="paso(6)">Ver paso 1 →</button>
+      <button class="btn-reset-ej" onclick="resetEj(6)">↺</button>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:8px 0 6px;">
+    <button class="btn-paso" onclick="showTab('quiz')" style="font-size:.95rem;padding:12px 28px;">
+      Ir al Quiz &#8594;
+    </button>
+  </div>
+</div><!-- fin sec-ej -->
+
+<!-- ===== SECCIÓN QUIZ ===== -->
+<div class="sec" id="sec-quiz">
+  <div class="quiz-hdr">
+    <h2>&#127919; QUIZ — MULTIPLICACIÓN DE MONOMIOS</h2>
+    <div class="quiz-info">7 preguntas · dificultad creciente · necesitas 6 correctas</div>
+  </div>
+  <div id="quiz-wrap"></div>
+  <div id="quiz-emsg" class="emsg">&#9888;&#65039; Responde todas las preguntas antes de verificar.</div>
+  <button class="btn-ver" id="btn-ver" onclick="verificarQuiz()">Verificar respuestas &#10003;</button>
+  <div id="res-wrap" class="res-wrap" style="display:none;"></div>
+</div>
+
+<div style="text-align:center;padding:14px 0 22px;font-size:.72rem;color:#bbb;">
+  <span style="margin-left:8px;cursor:pointer;opacity:.5;" onclick="abrirDoc()">v1.0</span>
+</div>
+
+<script>
+// =====================================================
+// TABS
+// =====================================================
+function showTab(t){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('act'));
+  document.getElementById('sec-'+t).classList.add('on');
+  document.getElementById('tab-'+t).classList.add('act');
+  if(t==='quiz'&&!quizListo) generarQuiz();
+}
+
+// =====================================================
+// EJEMPLOS PASO A PASO
+// =====================================================
+const EJ_CFG={
+  1:{pasos:4},2:{pasos:4},3:{pasos:4},4:{pasos:4},5:{pasos:4},6:{pasos:4}
+};
+const EJ_COLORS={
+  1:{e1t1:'t1',e1t2:'t2'},
+  2:{e2t1:'t1',e2t2:'t2'},
+  3:{e3t1:'t1',e3t2:'t2'},
+  4:{},5:{},6:{}
+};
+const ejSt={1:0,2:0,3:0,4:0,5:0,6:0};
+const ejLbls=['Ver paso 1 →','Ver paso 2 →','Ver paso 3 →','Ver resultado →'];
+
+function paso(n){
+  const cur=ejSt[n], cfg=EJ_CFG[n], next=cur+1;
+  if(next>cfg.pasos) return;
+  document.getElementById('ej'+n+'-p'+next).classList.add('show');
+  ejSt[n]=next;
+  const btn=document.getElementById('ej'+n+'-btn');
+  if(next>=cfg.pasos){btn.disabled=true;btn.textContent='Completado ✓';}
+  else{btn.textContent=ejLbls[next];}
+}
+function resetEj(n){
+  ejSt[n]=0;
+  const cfg=EJ_CFG[n];
+  for(let p=1;p<=cfg.pasos;p++){
+    const el=document.getElementById('ej'+n+'-p'+p);
+    if(el) el.classList.remove('show');
+  }
+  const btn=document.getElementById('ej'+n+'-btn');
+  btn.disabled=false; btn.textContent='Ver paso 1 →';
+}
+function syncNombre(){
+  const v=document.getElementById('inp-nombre').value.trim();
+  document.getElementById('nombre-ok').style.display=v.length>3?'inline':'none';
+}
+
+// =====================================================
+// BANCO — 7 NIVELES × 7 PREGUNTAS = 49
+// Todas las expresiones usan <sup> para máxima legibilidad
+// N1: 1 var positivos simples
+// N2: 1 var, coeficientes grandes
+// N3: 2 vars, positivos
+// N4: 2 vars, un negativo
+// N5: 2 vars, exponentes altos, signos mixtos
+// N6: 2 vars, dos negativos
+// N7: 3 vars, todo mezclado
+// =====================================================
+const BANCO=[
+  // NIVEL 1
+  {nv:1, expr:'(2x<sup>2</sup>)(3x<sup>3</sup>)',
+   ok:'6x<sup>5</sup>', ops:['6x<sup>5</sup>','6x<sup>6</sup>','5x<sup>5</sup>','6x'],
+   ex:'Coef: 2×3=6. Exp x: 2+3=5. Resultado: 6x⁵. Los exponentes se SUMAN, no se multiplican.'},
+  {nv:1, expr:'(4y<sup>3</sup>)(2y)',
+   ok:'8y<sup>4</sup>', ops:['8y<sup>4</sup>','8y<sup>3</sup>','6y<sup>4</sup>','8y<sup>2</sup>'],
+   ex:'Coef: 4×2=8. Exp y: 3+1=4 (y = y¹). Resultado: 8y⁴.'},
+  {nv:1, expr:'(5a<sup>2</sup>)(3a<sup>4</sup>)',
+   ok:'15a<sup>6</sup>', ops:['15a<sup>6</sup>','15a<sup>8</sup>','8a<sup>6</sup>','15a<sup>2</sup>'],
+   ex:'Coef: 5×3=15. Exp a: 2+4=6. Resultado: 15a⁶.'},
+  {nv:1, expr:'(3m<sup>3</sup>)(4m<sup>2</sup>)',
+   ok:'12m<sup>5</sup>', ops:['12m<sup>5</sup>','12m<sup>6</sup>','7m<sup>5</sup>','12m'],
+   ex:'Coef: 3×4=12. Exp m: 3+2=5. Resultado: 12m⁵.'},
+  {nv:1, expr:'(6n)(5n<sup>3</sup>)',
+   ok:'30n<sup>4</sup>', ops:['30n<sup>4</sup>','11n<sup>4</sup>','30n<sup>3</sup>','30n<sup>6</sup>'],
+   ex:'Coef: 6×5=30. Exp n: 1+3=4. Resultado: 30n⁴.'},
+  {nv:1, expr:'(7p<sup>2</sup>)(2p<sup>2</sup>)',
+   ok:'14p<sup>4</sup>', ops:['14p<sup>4</sup>','14p<sup>2</sup>','9p<sup>4</sup>','14p<sup>6</sup>'],
+   ex:'Coef: 7×2=14. Exp p: 2+2=4. Resultado: 14p⁴.'},
+  {nv:1, expr:'(x<sup>3</sup>)(9x<sup>2</sup>)',
+   ok:'9x<sup>5</sup>', ops:['9x<sup>5</sup>','9x<sup>6</sup>','10x<sup>5</sup>','9x<sup>3</sup>'],
+   ex:'Coef: 1×9=9 (el coeficiente 1 no se escribe). Exp x: 3+2=5. Resultado: 9x⁵.'},
+
+  // NIVEL 2
+  {nv:2, expr:'(4x<sup>3</sup>)(7x<sup>4</sup>)',
+   ok:'28x<sup>7</sup>', ops:['28x<sup>7</sup>','28x<sup>2</sup>','11x<sup>7</sup>','28x<sup>12</sup>'],
+   ex:'Coef: 4×7=28. Exp x: 3+4=7. Resultado: 28x⁷.'},
+  {nv:2, expr:'(9y<sup>2</sup>)(3y<sup>5</sup>)',
+   ok:'27y<sup>7</sup>', ops:['27y<sup>7</sup>','27y<sup>2</sup>','12y<sup>7</sup>','27y<sup>3</sup>'],
+   ex:'Coef: 9×3=27. Exp y: 2+5=7. Resultado: 27y⁷.'},
+  {nv:2, expr:'(5a<sup>4</sup>)(6a<sup>3</sup>)',
+   ok:'30a<sup>7</sup>', ops:['30a<sup>7</sup>','30a<sup>2</sup>','11a<sup>7</sup>','30a<sup>12</sup>'],
+   ex:'Coef: 5×6=30. Exp a: 4+3=7. Resultado: 30a⁷.'},
+  {nv:2, expr:'(8b<sup>2</sup>)(4b<sup>4</sup>)',
+   ok:'32b<sup>6</sup>', ops:['32b<sup>6</sup>','32b<sup>2</sup>','12b<sup>6</sup>','32b<sup>8</sup>'],
+   ex:'Coef: 8×4=32. Exp b: 2+4=6. Resultado: 32b⁶.'},
+  {nv:2, expr:'(3t<sup>5</sup>)(5t<sup>3</sup>)',
+   ok:'15t<sup>8</sup>', ops:['15t<sup>8</sup>','15t<sup>2</sup>','8t<sup>8</sup>','15t<sup>15</sup>'],
+   ex:'Coef: 3×5=15. Exp t: 5+3=8. Resultado: 15t⁸.'},
+  {nv:2, expr:'(6k<sup>3</sup>)(6k<sup>3</sup>)',
+   ok:'36k<sup>6</sup>', ops:['36k<sup>6</sup>','36k<sup>1</sup>','12k<sup>6</sup>','36k<sup>3</sup>'],
+   ex:'Coef: 6×6=36. Exp k: 3+3=6. Resultado: 36k⁶.'},
+  {nv:2, expr:'(2c<sup>6</sup>)(8c<sup>2</sup>)',
+   ok:'16c<sup>8</sup>', ops:['16c<sup>8</sup>','16c<sup>2</sup>','10c<sup>8</sup>','16c<sup>4</sup>'],
+   ex:'Coef: 2×8=16. Exp c: 6+2=8. Resultado: 16c⁸.'},
+
+  // NIVEL 3
+  {nv:3, expr:'(3x<sup>2</sup>y)(4xy<sup>2</sup>)',
+   ok:'12x<sup>3</sup>y<sup>3</sup>', ops:['12x<sup>3</sup>y<sup>3</sup>','12x<sup>2</sup>y<sup>2</sup>','7x<sup>3</sup>y<sup>3</sup>','12x<sup>2</sup>y<sup>3</sup>'],
+   ex:'Coef: 3×4=12. Exp x: 2+1=3. Exp y: 1+2=3. Resultado: 12x³y³.'},
+  {nv:3, expr:'(2a<sup>3</sup>b<sup>2</sup>)(5ab<sup>3</sup>)',
+   ok:'10a<sup>4</sup>b<sup>5</sup>', ops:['10a<sup>4</sup>b<sup>5</sup>','10a<sup>4</sup>b<sup>2</sup>','7a<sup>4</sup>b<sup>5</sup>','10a<sup>3</sup>b<sup>5</sup>'],
+   ex:'Coef: 2×5=10. Exp a: 3+1=4. Exp b: 2+3=5. Resultado: 10a⁴b⁵.'},
+  {nv:3, expr:'(4mn<sup>2</sup>)(3m<sup>2</sup>n)',
+   ok:'12m<sup>3</sup>n<sup>3</sup>', ops:['12m<sup>3</sup>n<sup>3</sup>','12mn<sup>2</sup>','7m<sup>3</sup>n<sup>3</sup>','12m<sup>2</sup>n<sup>3</sup>'],
+   ex:'Coef: 4×3=12. Exp m: 1+2=3. Exp n: 2+1=3. Resultado: 12m³n³.'},
+  {nv:3, expr:'(6x<sup>3</sup>y)(2xy<sup>2</sup>)',
+   ok:'12x<sup>4</sup>y<sup>3</sup>', ops:['12x<sup>4</sup>y<sup>3</sup>','12x<sup>4</sup>y<sup>2</sup>','8x<sup>4</sup>y<sup>3</sup>','12x<sup>3</sup>y<sup>3</sup>'],
+   ex:'Coef: 6×2=12. Exp x: 3+1=4. Exp y: 1+2=3. Resultado: 12x⁴y³.'},
+  {nv:3, expr:'(5p<sup>2</sup>q<sup>3</sup>)(2p<sup>3</sup>q)',
+   ok:'10p<sup>5</sup>q<sup>4</sup>', ops:['10p<sup>5</sup>q<sup>4</sup>','10p<sup>6</sup>q<sup>3</sup>','7p<sup>5</sup>q<sup>4</sup>','10p<sup>5</sup>q<sup>3</sup>'],
+   ex:'Coef: 5×2=10. Exp p: 2+3=5. Exp q: 3+1=4. Resultado: 10p⁵q⁴.'},
+  {nv:3, expr:'(r<sup>2</sup>s<sup>4</sup>)(7rs<sup>2</sup>)',
+   ok:'7r<sup>3</sup>s<sup>6</sup>', ops:['7r<sup>3</sup>s<sup>6</sup>','7r<sup>2</sup>s<sup>6</sup>','8r<sup>3</sup>s<sup>6</sup>','7r<sup>3</sup>s<sup>8</sup>'],
+   ex:'Coef: 1×7=7. Exp r: 2+1=3. Exp s: 4+2=6. Resultado: 7r³s⁶.'},
+  {nv:3, expr:'(3u<sup>4</sup>v<sup>2</sup>)(4u<sup>2</sup>v<sup>3</sup>)',
+   ok:'12u<sup>6</sup>v<sup>5</sup>', ops:['12u<sup>6</sup>v<sup>5</sup>','12u<sup>8</sup>v<sup>6</sup>','7u<sup>6</sup>v<sup>5</sup>','12u<sup>4</sup>v<sup>5</sup>'],
+   ex:'Coef: 3×4=12. Exp u: 4+2=6. Exp v: 2+3=5. Resultado: 12u⁶v⁵.'},
+
+  // NIVEL 4 — un negativo
+  {nv:4, expr:'(&minus;2x<sup>3</sup>y<sup>2</sup>)(4xy)',
+   ok:'&minus;8x<sup>4</sup>y<sup>3</sup>', ops:['&minus;8x<sup>4</sup>y<sup>3</sup>','8x<sup>4</sup>y<sup>3</sup>','&minus;8x<sup>3</sup>y<sup>2</sup>','&minus;8x<sup>4</sup>y'],
+   ex:'Signos: (−)(+)=−. Coef: 2×4=8. Exp x: 3+1=4. Exp y: 2+1=3. Resultado: −8x⁴y³.'},
+  {nv:4, expr:'(5a<sup>2</sup>b<sup>3</sup>)(&minus;3ab<sup>2</sup>)',
+   ok:'&minus;15a<sup>3</sup>b<sup>5</sup>', ops:['&minus;15a<sup>3</sup>b<sup>5</sup>','15a<sup>3</sup>b<sup>5</sup>','&minus;15a<sup>2</sup>b<sup>5</sup>','&minus;15a<sup>3</sup>b<sup>6</sup>'],
+   ex:'Signos: (+)(−)=−. Coef: 5×3=15. Exp a: 2+1=3. Exp b: 3+2=5. Resultado: −15a³b⁵.'},
+  {nv:4, expr:'(&minus;4m<sup>2</sup>n<sup>3</sup>)(3m<sup>4</sup>n)',
+   ok:'&minus;12m<sup>6</sup>n<sup>4</sup>', ops:['&minus;12m<sup>6</sup>n<sup>4</sup>','12m<sup>6</sup>n<sup>4</sup>','&minus;12m<sup>8</sup>n<sup>3</sup>','&minus;12m<sup>6</sup>n<sup>3</sup>'],
+   ex:'Signos: (−)(+)=−. Coef: 4×3=12. Exp m: 2+4=6. Exp n: 3+1=4. Resultado: −12m⁶n⁴.'},
+  {nv:4, expr:'(7x<sup>4</sup>y<sup>2</sup>)(&minus;2xy<sup>3</sup>)',
+   ok:'&minus;14x<sup>5</sup>y<sup>5</sup>', ops:['&minus;14x<sup>5</sup>y<sup>5</sup>','14x<sup>5</sup>y<sup>5</sup>','&minus;14x<sup>4</sup>y<sup>5</sup>','&minus;14x<sup>5</sup>y<sup>6</sup>'],
+   ex:'Signos: (+)(−)=−. Coef: 7×2=14. Exp x: 4+1=5. Exp y: 2+3=5. Resultado: −14x⁵y⁵.'},
+  {nv:4, expr:'(&minus;6p<sup>3</sup>q<sup>2</sup>)(2p<sup>2</sup>q<sup>4</sup>)',
+   ok:'&minus;12p<sup>5</sup>q<sup>6</sup>', ops:['&minus;12p<sup>5</sup>q<sup>6</sup>','12p<sup>5</sup>q<sup>6</sup>','&minus;12p<sup>6</sup>q<sup>8</sup>','&minus;12p<sup>5</sup>q<sup>4</sup>'],
+   ex:'Signos: (−)(+)=−. Coef: 6×2=12. Exp p: 3+2=5. Exp q: 2+4=6. Resultado: −12p⁵q⁶.'},
+  {nv:4, expr:'(4r<sup>5</sup>s<sup>3</sup>)(&minus;3rs<sup>2</sup>)',
+   ok:'&minus;12r<sup>6</sup>s<sup>5</sup>', ops:['&minus;12r<sup>6</sup>s<sup>5</sup>','12r<sup>6</sup>s<sup>5</sup>','&minus;12r<sup>5</sup>s<sup>5</sup>','&minus;12r<sup>6</sup>s<sup>6</sup>'],
+   ex:'Signos: (+)(−)=−. Coef: 4×3=12. Exp r: 5+1=6. Exp s: 3+2=5. Resultado: −12r⁶s⁵.'},
+  {nv:4, expr:'(&minus;5a<sup>3</sup>b<sup>4</sup>)(2a<sup>4</sup>b)',
+   ok:'&minus;10a<sup>7</sup>b<sup>5</sup>', ops:['&minus;10a<sup>7</sup>b<sup>5</sup>','10a<sup>7</sup>b<sup>5</sup>','&minus;10a<sup>3</sup>b<sup>4</sup>','&minus;10a<sup>7</sup>b<sup>4</sup>'],
+   ex:'Signos: (−)(+)=−. Coef: 5×2=10. Exp a: 3+4=7. Exp b: 4+1=5. Resultado: −10a⁷b⁵.'},
+
+  // NIVEL 5 — exponentes altos, signos mixtos
+  {nv:5, expr:'(3x<sup>2</sup>y<sup>3</sup>)(&minus;3x<sup>3</sup>y<sup>2</sup>)',
+   ok:'&minus;9x<sup>5</sup>y<sup>5</sup>', ops:['&minus;9x<sup>5</sup>y<sup>5</sup>','9x<sup>5</sup>y<sup>5</sup>','&minus;9x<sup>6</sup>y<sup>6</sup>','&minus;9x<sup>5</sup>y<sup>6</sup>'],
+   ex:'Signos: (+)(−)=−. Coef: 3×3=9. Exp x: 2+3=5. Exp y: 3+2=5. Resultado: −9x⁵y⁵.'},
+  {nv:5, expr:'(4a<sup>4</sup>b<sup>2</sup>)(&minus;2a<sup>2</sup>b<sup>3</sup>)',
+   ok:'&minus;8a<sup>6</sup>b<sup>5</sup>', ops:['&minus;8a<sup>6</sup>b<sup>5</sup>','8a<sup>6</sup>b<sup>5</sup>','&minus;8a<sup>2</sup>b<sup>6</sup>','&minus;8a<sup>6</sup>b<sup>6</sup>'],
+   ex:'Signos: (+)(−)=−. Coef: 4×2=8. Exp a: 4+2=6. Exp b: 2+3=5. Resultado: −8a⁶b⁵.'},
+  {nv:5, expr:'(&minus;5m<sup>3</sup>n<sup>4</sup>)(3m<sup>4</sup>n<sup>2</sup>)',
+   ok:'&minus;15m<sup>7</sup>n<sup>6</sup>', ops:['&minus;15m<sup>7</sup>n<sup>6</sup>','15m<sup>7</sup>n<sup>6</sup>','&minus;15m<sup>2</sup>n<sup>8</sup>','&minus;15m<sup>7</sup>n<sup>8</sup>'],
+   ex:'Signos: (−)(+)=−. Coef: 5×3=15. Exp m: 3+4=7. Exp n: 4+2=6. Resultado: −15m⁷n⁶.'},
+  {nv:5, expr:'(6p<sup>2</sup>q<sup>4</sup>)(&minus;4p<sup>3</sup>q)',
+   ok:'&minus;24p<sup>5</sup>q<sup>5</sup>', ops:['&minus;24p<sup>5</sup>q<sup>5</sup>','24p<sup>5</sup>q<sup>5</sup>','&minus;24p<sup>6</sup>q<sup>4</sup>','&minus;24p<sup>5</sup>q<sup>4</sup>'],
+   ex:'Signos: (+)(−)=−. Coef: 6×4=24. Exp p: 2+3=5. Exp q: 4+1=5. Resultado: −24p⁵q⁵.'},
+  {nv:5, expr:'(&minus;7x<sup>5</sup>y<sup>3</sup>)(2x<sup>2</sup>y<sup>4</sup>)',
+   ok:'&minus;14x<sup>7</sup>y<sup>7</sup>', ops:['&minus;14x<sup>7</sup>y<sup>7</sup>','14x<sup>7</sup>y<sup>7</sup>','&minus;14x<sup>3</sup>y<sup>2</sup>','&minus;14x<sup>7</sup>y<sup>6</sup>'],
+   ex:'Signos: (−)(+)=−. Coef: 7×2=14. Exp x: 5+2=7. Exp y: 3+4=7. Resultado: −14x⁷y⁷.'},
+  {nv:5, expr:'(5a<sup>3</sup>b<sup>5</sup>)(&minus;3a<sup>4</sup>b<sup>2</sup>)',
+   ok:'&minus;15a<sup>7</sup>b<sup>7</sup>', ops:['&minus;15a<sup>7</sup>b<sup>7</sup>','15a<sup>7</sup>b<sup>7</sup>','&minus;15a<sup>2</sup>b<sup>3</sup>','&minus;15a<sup>7</sup>b<sup>2</sup>'],
+   ex:'Signos: (+)(−)=−. Coef: 5×3=15. Exp a: 3+4=7. Exp b: 5+2=7. Resultado: −15a⁷b⁷.'},
+  {nv:5, expr:'(&minus;8u<sup>4</sup>v<sup>3</sup>)(4u<sup>3</sup>v<sup>2</sup>)',
+   ok:'&minus;32u<sup>7</sup>v<sup>5</sup>', ops:['&minus;32u<sup>7</sup>v<sup>5</sup>','32u<sup>7</sup>v<sup>5</sup>','&minus;32u<sup>2</sup>v<sup>6</sup>','&minus;32u<sup>7</sup>v<sup>6</sup>'],
+   ex:'Signos: (−)(+)=−. Coef: 8×4=32. Exp u: 4+3=7. Exp v: 3+2=5. Resultado: −32u⁷v⁵.'},
+
+  // NIVEL 6 — dos negativos (resultado positivo)
+  {nv:6, expr:'(&minus;3x<sup>2</sup>y<sup>3</sup>)(&minus;4x<sup>3</sup>y<sup>2</sup>)',
+   ok:'12x<sup>5</sup>y<sup>5</sup>', ops:['12x<sup>5</sup>y<sup>5</sup>','&minus;12x<sup>5</sup>y<sup>5</sup>','12x<sup>6</sup>y<sup>6</sup>','7x<sup>5</sup>y<sup>5</sup>'],
+   ex:'Signos: (−)(−)=+. Coef: 3×4=12. Exp x: 2+3=5. Exp y: 3+2=5. Resultado: +12x⁵y⁵.'},
+  {nv:6, expr:'(&minus;5a<sup>4</sup>b)(&minus;2ab<sup>3</sup>)',
+   ok:'10a<sup>5</sup>b<sup>4</sup>', ops:['10a<sup>5</sup>b<sup>4</sup>','&minus;10a<sup>5</sup>b<sup>4</sup>','10a<sup>4</sup>b<sup>3</sup>','7a<sup>5</sup>b<sup>4</sup>'],
+   ex:'Signos: (−)(−)=+. Coef: 5×2=10. Exp a: 4+1=5. Exp b: 1+3=4. Resultado: 10a⁵b⁴.'},
+  {nv:6, expr:'(&minus;4m<sup>3</sup>n<sup>2</sup>)(&minus;6m<sup>2</sup>n<sup>4</sup>)',
+   ok:'24m<sup>5</sup>n<sup>6</sup>', ops:['24m<sup>5</sup>n<sup>6</sup>','&minus;24m<sup>5</sup>n<sup>6</sup>','24m<sup>6</sup>n<sup>8</sup>','10m<sup>5</sup>n<sup>6</sup>'],
+   ex:'Signos: (−)(−)=+. Coef: 4×6=24. Exp m: 3+2=5. Exp n: 2+4=6. Resultado: 24m⁵n⁶.'},
+  {nv:6, expr:'(&minus;8p<sup>4</sup>q<sup>3</sup>)(&minus;3pq<sup>2</sup>)',
+   ok:'24p<sup>5</sup>q<sup>5</sup>', ops:['24p<sup>5</sup>q<sup>5</sup>','&minus;24p<sup>5</sup>q<sup>5</sup>','24p<sup>4</sup>q<sup>6</sup>','11p<sup>5</sup>q<sup>5</sup>'],
+   ex:'Signos: (−)(−)=+. Coef: 8×3=24. Exp p: 4+1=5. Exp q: 3+2=5. Resultado: 24p⁵q⁵.'},
+  {nv:6, expr:'(&minus;7r<sup>2</sup>s<sup>4</sup>)(&minus;2r<sup>4</sup>s)',
+   ok:'14r<sup>6</sup>s<sup>5</sup>', ops:['14r<sup>6</sup>s<sup>5</sup>','&minus;14r<sup>6</sup>s<sup>5</sup>','14r<sup>8</sup>s<sup>4</sup>','9r<sup>6</sup>s<sup>5</sup>'],
+   ex:'Signos: (−)(−)=+. Coef: 7×2=14. Exp r: 2+4=6. Exp s: 4+1=5. Resultado: 14r⁶s⁵.'},
+  {nv:6, expr:'(&minus;6x<sup>3</sup>y<sup>4</sup>)(&minus;5x<sup>2</sup>y<sup>3</sup>)',
+   ok:'30x<sup>5</sup>y<sup>7</sup>', ops:['30x<sup>5</sup>y<sup>7</sup>','&minus;30x<sup>5</sup>y<sup>7</sup>','30x<sup>6</sup>y<sup>7</sup>','11x<sup>5</sup>y<sup>7</sup>'],
+   ex:'Signos: (−)(−)=+. Coef: 6×5=30. Exp x: 3+2=5. Exp y: 4+3=7. Resultado: 30x⁵y⁷.'},
+  {nv:6, expr:'(&minus;9a<sup>2</sup>b<sup>5</sup>)(&minus;4a<sup>3</sup>b<sup>2</sup>)',
+   ok:'36a<sup>5</sup>b<sup>7</sup>', ops:['36a<sup>5</sup>b<sup>7</sup>','&minus;36a<sup>5</sup>b<sup>7</sup>','36a<sup>6</sup>b<sup>2</sup>','13a<sup>5</sup>b<sup>7</sup>'],
+   ex:'Signos: (−)(−)=+. Coef: 9×4=36. Exp a: 2+3=5. Exp b: 5+2=7. Resultado: 36a⁵b⁷.'},
+
+  // NIVEL 7 — tres variables, signos mezclados
+  {nv:7, expr:'(2x<sup>2</sup>y<sup>3</sup>z)(&minus;3xy<sup>2</sup>z<sup>3</sup>)',
+   ok:'&minus;6x<sup>3</sup>y<sup>5</sup>z<sup>4</sup>', ops:['&minus;6x<sup>3</sup>y<sup>5</sup>z<sup>4</sup>','6x<sup>3</sup>y<sup>5</sup>z<sup>4</sup>','&minus;6x<sup>2</sup>y<sup>6</sup>z<sup>3</sup>','&minus;6x<sup>3</sup>y<sup>6</sup>z<sup>4</sup>'],
+   ex:'Signos: (+)(−)=−. Coef: 2×3=6. Exp x: 2+1=3. Exp y: 3+2=5. Exp z: 1+3=4. Resultado: −6x³y⁵z⁴.'},
+  {nv:7, expr:'(&minus;4a<sup>3</sup>b<sup>2</sup>c)(&minus;2ab<sup>3</sup>c<sup>2</sup>)',
+   ok:'8a<sup>4</sup>b<sup>5</sup>c<sup>3</sup>', ops:['8a<sup>4</sup>b<sup>5</sup>c<sup>3</sup>','&minus;8a<sup>4</sup>b<sup>5</sup>c<sup>3</sup>','8a<sup>3</sup>b<sup>6</sup>c<sup>2</sup>','6a<sup>4</sup>b<sup>5</sup>c<sup>3</sup>'],
+   ex:'Signos: (−)(−)=+. Coef: 4×2=8. Exp a: 3+1=4. Exp b: 2+3=5. Exp c: 1+2=3. Resultado: 8a⁴b⁵c³.'},
+  {nv:7, expr:'(5x<sup>3</sup>y<sup>2</sup>z<sup>4</sup>)(&minus;3x<sup>2</sup>yz<sup>3</sup>)',
+   ok:'&minus;15x<sup>5</sup>y<sup>3</sup>z<sup>7</sup>', ops:['&minus;15x<sup>5</sup>y<sup>3</sup>z<sup>7</sup>','15x<sup>5</sup>y<sup>3</sup>z<sup>7</sup>','&minus;15x<sup>6</sup>y<sup>2</sup>z<sup>7</sup>','&minus;15x<sup>5</sup>y<sup>3</sup>z<sup>6</sup>'],
+   ex:'Signos: (+)(−)=−. Coef: 5×3=15. Exp x: 3+2=5. Exp y: 2+1=3. Exp z: 4+3=7. Resultado: −15x⁵y³z⁷.'},
+  {nv:7, expr:'(&minus;6a<sup>2</sup>b<sup>4</sup>c<sup>3</sup>)(4ab<sup>2</sup>c)',
+   ok:'&minus;24a<sup>3</sup>b<sup>6</sup>c<sup>4</sup>', ops:['&minus;24a<sup>3</sup>b<sup>6</sup>c<sup>4</sup>','24a<sup>3</sup>b<sup>6</sup>c<sup>4</sup>','&minus;24a<sup>2</sup>b<sup>8</sup>c<sup>3</sup>','&minus;24a<sup>3</sup>b<sup>6</sup>c<sup>3</sup>'],
+   ex:'Signos: (−)(+)=−. Coef: 6×4=24. Exp a: 2+1=3. Exp b: 4+2=6. Exp c: 3+1=4. Resultado: −24a³b⁶c⁴.'},
+  {nv:7, expr:'(&minus;3m<sup>4</sup>n<sup>2</sup>p)(&minus;5mn<sup>3</sup>p<sup>2</sup>)',
+   ok:'15m<sup>5</sup>n<sup>5</sup>p<sup>3</sup>', ops:['15m<sup>5</sup>n<sup>5</sup>p<sup>3</sup>','&minus;15m<sup>5</sup>n<sup>5</sup>p<sup>3</sup>','15m<sup>4</sup>n<sup>6</sup>p<sup>2</sup>','8m<sup>5</sup>n<sup>5</sup>p<sup>3</sup>'],
+   ex:'Signos: (−)(−)=+. Coef: 3×5=15. Exp m: 4+1=5. Exp n: 2+3=5. Exp p: 1+2=3. Resultado: 15m⁵n⁵p³.'},
+  {nv:7, expr:'(4x<sup>2</sup>y<sup>5</sup>z<sup>3</sup>)(&minus;7xy<sup>2</sup>z<sup>4</sup>)',
+   ok:'&minus;28x<sup>3</sup>y<sup>7</sup>z<sup>7</sup>', ops:['&minus;28x<sup>3</sup>y<sup>7</sup>z<sup>7</sup>','28x<sup>3</sup>y<sup>7</sup>z<sup>7</sup>','&minus;28x<sup>2</sup>y<sup>3</sup>z<sup>2</sup>','&minus;28x<sup>3</sup>y<sup>2</sup>z<sup>7</sup>'],
+   ex:'Signos: (+)(−)=−. Coef: 4×7=28. Exp x: 2+1=3. Exp y: 5+2=7. Exp z: 3+4=7. Resultado: −28x³y⁷z⁷.'},
+  {nv:7, expr:'(&minus;2a<sup>3</sup>b<sup>2</sup>c<sup>4</sup>)(&minus;5a<sup>4</sup>bc<sup>3</sup>)',
+   ok:'10a<sup>7</sup>b<sup>3</sup>c<sup>7</sup>', ops:['10a<sup>7</sup>b<sup>3</sup>c<sup>7</sup>','&minus;10a<sup>7</sup>b<sup>3</sup>c<sup>7</sup>','10a<sup>2</sup>b<sup>3</sup>c<sup>7</sup>','7a<sup>7</sup>b<sup>3</sup>c<sup>7</sup>'],
+   ex:'Signos: (−)(−)=+. Coef: 2×5=10. Exp a: 3+4=7. Exp b: 2+1=3. Exp c: 4+3=7. Resultado: 10a⁷b³c⁷.'}
+];
+
+// =====================================================
+// QUIZ ENGINE
+// =====================================================
+let quizListo=false, quizPregs=[], quizResp=[], quizOrden=[];
+const LETRAS=['A','B','C','D'];
+const NV_LBL=['','Nivel 1 · Básico','Nivel 2 · Coeficientes','Nivel 3 · 2 Variables','Nivel 4 · 1 Negativo','Nivel 5 · Exp. altos','Nivel 6 · 2 Negativos','Nivel 7 · 3 Variables'];
+const NV_COL=['','#43a047','#039be5','#8e24aa','#e65100','#c62828','#00897b','#37474f'];
+
+function sr(s){const x=Math.sin(s*127.1+311.7)*43758.5453123;return x-Math.floor(x);}
+
+function generarQuiz(){
+  quizListo=true;
+  const t=Date.now();
+  quizPregs=[];
+  for(let nv=1;nv<=7;nv++){
+    const pool=BANCO.filter(q=>q.nv===nv);
+    const idx=Math.floor(sr(t+nv*137)*pool.length);
+    quizPregs.push(pool[idx]);
+  }
+  quizResp=new Array(7).fill(-1);
+  quizOrden=quizPregs.map((q,i)=>[0,1,2,3].sort((a,b)=>sr(t+i*73+a*17)-sr(t+i*73+b*13)));
+  renderQuiz();
+}
+
+function renderQuiz(){
+  document.getElementById('quiz-wrap').innerHTML=quizPregs.map((q,i)=>`
+    <div class="qcard" id="qcard-${i}">
+      <div class="qcard-hdr">
+        <div class="qnum">Pregunta ${i+1} de 7</div>
+        <div class="qnivel" style="background:${NV_COL[q.nv]}20;color:${NV_COL[q.nv]};">${NV_LBL[q.nv]}</div>
+      </div>
+      <div class="qtexto">Resuelve la multiplicación de monomios:</div>
+      <div class="qexpr">${q.expr}</div>
+      <div class="qopts" id="qopts-${i}">
+        ${quizOrden[i].map((oi,li)=>`
+          <div class="qopt" id="qopt-${i}-${li}" onclick="selOpt(${i},${li},${oi})">
+            <div class="qopt-letra">${LETRAS[li]}</div>
+            <div>${q.ops[oi]}</div>
+          </div>`).join('')}
+      </div>
+      <div class="qfb" id="qfb-${i}"></div>
+    </div>`).join('');
+  document.getElementById('btn-ver').style.display='block';
+  document.getElementById('res-wrap').style.display='none';
+}
+
+function selOpt(qi,li,oi){
+  if(quizResp[qi]!==-1) return;
+  quizResp[qi]=oi;
+  document.querySelectorAll('#qopts-'+qi+' .qopt').forEach(el=>el.classList.remove('sel'));
+  document.getElementById('qopt-'+qi+'-'+li).classList.add('sel');
+}
+
+function verificarQuiz(){
+  if(quizResp.includes(-1)){
+    const em=document.getElementById('quiz-emsg');
+    em.style.display='block';
+    setTimeout(()=>em.style.display='none',2500);
+    return;
+  }
+  let score=0;
+  quizPregs.forEach((q,i)=>{
+    const okIdx=q.ops.indexOf(q.ok);
+    const corr=quizResp[i]===okIdx;
+    if(corr) score++;
+    const opts=document.querySelectorAll('#qopts-'+i+' .qopt');
+    quizOrden[i].forEach((oi,li)=>{
+      if(oi===okIdx) opts[li].classList.add('correcto');
+      else if(oi===quizResp[i]&&!corr) opts[li].classList.add('incorrecto');
+    });
+    const fb=document.getElementById('qfb-'+i);
+    fb.className='qfb show '+(corr?'ok':'nook');
+    fb.innerHTML=(corr?'✓ Correcto. ':'✗ Incorrecto. ')+q.ex;
+  });
+  document.getElementById('btn-ver').style.display='none';
+  mostrarTablaResultados(score);
+}
+
+function mostrarTablaResultados(score){
+  const aprobado=score>=6;
+  const pct=Math.round(score/7*100);
+  const nombre=document.getElementById('inp-nombre').value.trim()||'Sin nombre';
+  let filas=quizPregs.map((q,i)=>{
+    const okIdx=q.ops.indexOf(q.ok);
+    const corr=quizResp[i]===okIdx;
+    const lCor=LETRAS[quizOrden[i].indexOf(okIdx)];
+    const lAlu=quizResp[i]>=0?LETRAS[quizOrden[i].indexOf(quizResp[i])]:'?';
+    return `<tr class="${corr?'ok-row':'nook-row'}">
+      <td class="col-ic">${corr?'✅':'❌'}</td>
+      <td style="font-size:.72rem;font-weight:700;">${NV_LBL[q.nv]}</td>
+      <td class="col-expr" style="font-size:.78rem;">${q.expr}</td>
+      <td class="col-resp" style="color:${corr?'var(--ver)':'var(--roj)'};">${lAlu}</td>
+      <td class="col-corr">${lCor} · ${q.ok}</td>
+    </tr>
+    <tr class="${corr?'ok-row':'nook-row'}">
+      <td colspan="5" class="col-exp" style="padding-bottom:10px;border-top:none;color:#666;">
+        ${q.ex}
+      </td>
+    </tr>`;
+  }).join('');
+
+  const wrap=document.getElementById('res-wrap');
+  wrap.innerHTML=`
+    <div class="score-box ${aprobado?'':'repaso'}">
+      <div style="background:rgba(255,255,255,.2);border-radius:9px;padding:7px 14px;margin-bottom:10px;display:inline-block;min-width:180px;">
+        <span style="font-size:.65rem;font-weight:800;letter-spacing:1px;opacity:.75;display:block;margin-bottom:2px;">ALUMNO</span>
+        <span style="font-size:1.05rem;font-weight:900;letter-spacing:.3px;">&#128100; ${nombre}</span>
+      </div>
+      <div class="score-ico">${aprobado?'🏆':'📚'}</div>
+      <h2>${score}/7 · ${pct}%</h2>
+      <p>${aprobado
+        ?"¡Excelente! Dominas la multiplicación de monomios: coeficientes × coeficientes, exponentes que se suman."
+        :"Buen intento. Revisa los ejemplos — recuerda: los exponentes se SUMAN, no se multiplican."}</p>
+      <p style="font-size:.75rem;margin-top:5px;opacity:.7;">Umbral: 6/7 · ${aprobado?'✓ Aprobado':'Vuelve a intentarlo'}</p>
+      <button class="btn-reiniciar" onclick="reiniciarQuiz()">↺ Nuevo intento con preguntas distintas</button>
+    </div>
+    <div class="card card-v" style="margin-top:4px;">
+      <div class="pill p-v">Tabla de resultados detallada</div>
+      <div style="overflow-x:auto;">
+        <table class="res-tabla">
+          <thead><tr>
+            <th></th><th>Nivel</th><th>Expresión</th><th>Tu resp.</th><th>Correcta</th>
+          </tr></thead>
+          <tbody>${filas}</tbody>
+        </table>
+      </div>
+    </div>`;
+  wrap.style.display='block';
+  window.scrollTo({top:wrap.offsetTop-60,behavior:'smooth'});
+}
+
+function reiniciarQuiz(){
+  quizListo=false; quizPregs=[]; quizResp=[]; quizOrden=[];
+  document.getElementById('quiz-wrap').innerHTML='';
+  document.getElementById('res-wrap').style.display='none';
+  document.getElementById('btn-ver').style.display='block';
+  generarQuiz();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// =====================================================
+// DOCENTE
+// =====================================================
+function abrirDoc(){document.getElementById('modal-doc').classList.add('show');}
+function cerrarDoc(){
+  document.getElementById('modal-doc').classList.remove('show');
+  document.getElementById('doc-cod').value='';
+  document.getElementById('doc-err').style.display='none';
+}
+function verificarDoc(){
+  const v=document.getElementById('doc-cod').value.trim();
+  if(v==='890'||v==='890ac'||v==='890AC'){
+    document.getElementById('doc-login-area').style.display='none';
+    document.getElementById('doc-panel').classList.add('show');
+  } else {
+    document.getElementById('doc-err').style.display='block';
+    document.getElementById('doc-cod').value='';
+  }
+}
+function docPreview(){
+  const wrap=document.getElementById('doc-preview-wrap');
+  if(wrap.innerHTML){wrap.innerHTML='';return;}
+  const NV_LBL2=['','N1·Básico','N2·Coef','N3·2vars','N4·1neg','N5·Altos','N6·2neg','N7·3vars'];
+  const mock=[
+    {nv:1,expr:'(2x²)(3x³)',ok:'6x⁵',resp:'6x⁵',corr:true,ex:'Coef: 2×3=6. Exp x: 2+3=5.'},
+    {nv:2,expr:'(4x³)(7x⁴)',ok:'28x⁷',resp:'28x⁷',corr:true,ex:'Coef: 4×7=28. Exp x: 3+4=7.'},
+    {nv:3,expr:'(3x²y)(4xy²)',ok:'12x³y³',resp:'12x²y²',corr:false,ex:'Coef: 12. Exp x: 2+1=3. Exp y: 1+2=3.'},
+    {nv:4,expr:'(−2x³y²)(4xy)',ok:'−8x⁴y³',resp:'−8x⁴y³',corr:true,ex:'Signos: (−)(+)=−. Coef: 8. x:3+1=4. y:2+1=3.'},
+    {nv:5,expr:'(3x²y³)(−3x³y²)',ok:'−9x⁵y⁵',resp:'−9x⁵y⁵',corr:true,ex:'Signos: (−). Coef: 9. x:5. y:5.'},
+    {nv:6,expr:'(−3x²y³)(−4x³y²)',ok:'12x⁵y⁵',resp:'−12x⁵y⁵',corr:false,ex:'Signos: (−)(−)=+. Resultado positivo.'},
+    {nv:7,expr:'(2x²y³z)(−3xy²z³)',ok:'−6x³y⁵z⁴',resp:'−6x³y⁵z⁴',corr:true,ex:'Signos (−). x:3. y:5. z:4.'}
+  ];
+  const score=mock.filter(r=>r.corr).length;
+  let filas=mock.map(r=>`
+    <tr class="${r.corr?'ok-row':'nook-row'}">
+      <td class="col-ic">${r.corr?'✅':'❌'}</td>
+      <td style="font-size:.7rem;font-weight:700;">${NV_LBL2[r.nv]}</td>
+      <td style="font-family:monospace;font-size:.72rem;font-weight:700;">${r.expr}</td>
+      <td style="font-family:monospace;font-size:.72rem;color:${r.corr?'var(--ver)':'var(--roj)'};">${r.resp}</td>
+      <td style="font-family:monospace;font-size:.72rem;color:var(--ver);font-weight:800;">${r.ok}</td>
+    </tr>
+    <tr class="${r.corr?'ok-row':'nook-row'}">
+      <td colspan="5" style="font-size:.68rem;color:#666;padding-bottom:8px;border-top:none;">${r.ex}</td>
+    </tr>`).join('');
+  wrap.innerHTML=`
+    <div class="preview-wrap">
+      <h4>Vista previa — ejemplo de resultado (${score}/7)</h4>
+      <div style="background:${score>=6?'var(--ver)':'var(--az2)'};border-radius:9px;padding:10px 12px;color:#fff;text-align:center;margin-bottom:10px;">
+        <div style="font-family:'Bebas Neue';font-size:1.4rem;">${score}/7 · ${Math.round(score/7*100)}% · ${score>=6?'Aprobado ✓':'Repaso'}</div>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="res-tabla" style="font-size:.72rem;">
+          <thead><tr><th></th><th>Nivel</th><th>Expresión</th><th>Resp.</th><th>Correcta</th></tr></thead>
+          <tbody>${filas}</tbody>
+        </table>
+      </div>
+      <p style="font-size:.7rem;color:#888;margin-top:7px;">Esta es una tabla de ejemplo. Cada alumno ve su propia tabla con sus respuestas reales.</p>
+    </div>`;
+}
+
+// Auto-inicia quiz si se carga en esa pestaña
+window.onload=function(){generarQuiz();};
+</script>
+</body>
+</html>
