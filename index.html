@@ -139,10 +139,14 @@ function nombreBonito(filename) {
 }
 
 function cargarActividades() {
+  cargarConRama('master');
+}
+
+function cargarConRama(rama) {
   var xhr = new XMLHttpRequest();
   xhr.open('GET',
     'https://api.github.com/repos/' + USER + '/' + REPO
-    + '/git/trees/HEAD?recursive=1', true);
+    + '/git/trees/' + rama + '?recursive=1', true);
   xhr.setRequestHeader('Accept', 'application/vnd.github.v3+json');
   xhr.onreadystatechange = function() {
     if (xhr.readyState !== 4) return;
@@ -162,12 +166,12 @@ function cargarActividades() {
       var st = el('stat-total');
       if (st) st.textContent = allActs.length || '0';
       filtrar();
-    } else if (xhr.status === 404) {
-      mostrarError('Repositorio no encontrado o sin archivos HTML aún.');
+    } else if (xhr.status === 404 && rama === 'master') {
+      cargarConRama('main');
     } else if (xhr.status === 403) {
       mostrarError('Límite de API alcanzado. Intenta en unos minutos.');
     } else {
-      mostrarError('Error al cargar actividades (HTTP ' + xhr.status + ').');
+      mostrarError('No se encontraron actividades en este repositorio.');
     }
   };
   xhr.send();
