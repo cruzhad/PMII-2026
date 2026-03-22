@@ -126,6 +126,8 @@ var REPO = 'PMII2026';
 var BASE = 'https://' + USER + '.github.io/' + REPO + '/';
 var allActs = [];
 
+function el(id) { return document.getElementById(id); }
+
 function nombreBonito(filename) {
   return filename
     .replace(/\.html$/i, '')
@@ -157,7 +159,8 @@ function cargarActividades() {
       }
       htmlFiles.sort();
       allActs = htmlFiles;
-      document.getElementById('stat-total').textContent = allActs.length || '0';
+      var st = el('stat-total');
+      if (st) st.textContent = allActs.length || '0';
       filtrar();
     } else if (xhr.status === 404) {
       mostrarError('Repositorio no encontrado o sin archivos HTML aún.');
@@ -171,18 +174,19 @@ function cargarActividades() {
 }
 
 function filtrar() {
-  var q = document.getElementById('search-inp').value.trim().toLowerCase();
+  var sinp = el('search-inp');
+  var q = sinp ? sinp.value.trim().toLowerCase() : '';
   var lista = allActs.filter(function(f) {
     return !q || f.toLowerCase().indexOf(q) !== -1 || nombreBonito(f).toLowerCase().indexOf(q) !== -1;
   });
 
-  var grid = document.getElementById('acts-grid');
-  var emptyMsg = document.getElementById('empty-msg');
+  var grid = el('acts-grid');
+  var emptyMsg = el('empty-msg');
+  if (!grid) return;
 
   if (lista.length === 0) {
     grid.innerHTML = '';
-    emptyMsg.style.display = 'block';
-    grid.appendChild(emptyMsg);
+    if (emptyMsg) { emptyMsg.style.display = 'block'; grid.appendChild(emptyMsg); }
   } else {
     var html = '';
     for (var i = 0; i < lista.length; i++) {
@@ -191,28 +195,26 @@ function filtrar() {
       html += '<a class="act-card c' + (i % 12) + '" href="' + BASE + encodeURIComponent(f) + '" target="_blank">'
         + '<div class="act-num">Actividad ' + (i + 1) + '</div>'
         + '<div class="act-name">' + nom + '</div>'
-        + '<div class="act-hint">Abrir actividad →</div>'
+        + '<div class="act-hint">Abrir actividad \u2192</div>'
         + '</a>';
     }
     grid.innerHTML = html;
-    grid.appendChild(emptyMsg);
-    emptyMsg.style.display = 'none';
+    if (emptyMsg) { grid.appendChild(emptyMsg); emptyMsg.style.display = 'none'; }
   }
 
-  var lbl = document.getElementById('count-lbl');
-  lbl.textContent = lista.length + ' actividad' + (lista.length !== 1 ? 'es' : '');
+  var lbl = el('count-lbl');
+  if (lbl) lbl.textContent = lista.length + ' actividad' + (lista.length !== 1 ? 'es' : '');
 }
 
 function mostrarError(msg) {
-  var grid = document.getElementById('acts-grid');
+  var grid = el('acts-grid');
+  if (!grid) return;
   grid.innerHTML = '';
-  var err = document.getElementById('error-msg');
-  err.textContent = '⚠️ ' + msg;
-  err.style.display = 'block';
-  grid.appendChild(err);
+  var err = el('error-msg');
+  if (err) { err.textContent = '\u26a0\ufe0f ' + msg; err.style.display = 'block'; grid.appendChild(err); }
 }
 
-window.onload = function() { cargarActividades(); };
+document.addEventListener('DOMContentLoaded', function() { cargarActividades(); });
 </script>
 </body>
 </html>
