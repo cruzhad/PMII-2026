@@ -129,9 +129,11 @@ var allActs = [];
 function nombreBonito(filename) {
   return filename
     .replace(/\.html$/i, '')
-    .replace(/[-_]/g, ' ')
-    .replace(/\b(S|s)(\d+)\b/g, 'Sesión $2')
-    .replace(/\b(A|a)(\d+)\b/g, 'Actividad $2');
+    .replace(/\s*\(\d+\)\s*/g, ' ')
+    .replace(/_v\d+/gi, '')
+    .replace(/[-_]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 function cargarActividades() {
@@ -149,8 +151,7 @@ function cargarActividades() {
         var item = data.tree[i];
         if (item.type === 'blob'
           && /\.html$/i.test(item.path)
-          && !/^index\.html$/i.test(item.path)
-          && item.path.indexOf('/') === -1) {
+          && !/^index\.html$/i.test(item.path)) {
           htmlFiles.push(item.path);
         }
       }
@@ -187,7 +188,7 @@ function filtrar() {
     for (var i = 0; i < lista.length; i++) {
       var f = lista[i];
       var nom = nombreBonito(f);
-      html += '<a class="act-card c' + (i % 12) + '" href="' + BASE + f + '" target="_blank">'
+      html += '<a class="act-card c' + (i % 12) + '" href="' + BASE + encodeURIComponent(f) + '" target="_blank">'
         + '<div class="act-num">Actividad ' + (i + 1) + '</div>'
         + '<div class="act-name">' + nom + '</div>'
         + '<div class="act-hint">Abrir actividad →</div>'
