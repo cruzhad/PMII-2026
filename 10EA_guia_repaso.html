@@ -324,7 +324,7 @@ sup{font-size:.65em;vertical-align:super;line-height:0;}
     <div class="pill p-mo">Pregunta de activación</div>
     <p class="instr" id="act-pregunta">Cargando...</p>
     <label class="lbl">Tu respuesta (mínimo 50 caracteres):</label>
-    <textarea class="inp" id="act-resp" rows="3" data-req="1" data-ml="50"
+    <textarea class="inp" id="act-resp" rows="3" data-req="1" data-ml="10"
       placeholder="Escribe con tus propias palabras... (mínimo 50 caracteres)"
       oncopy="return false" onpaste="return false" oncut="return false" oncontextmenu="return false"></textarea>
   </div>
@@ -402,7 +402,7 @@ sup{font-size:.65em;vertical-align:super;line-height:0;}
   <div class="card card-v">
     <div class="pill p-v">Ejercicio C · El coeficiente 1 invisible</div>
     <p class="instr">Un error muy común es decir que x "no tiene coeficiente". Explica por qué eso es incorrecto:</p>
-    <textarea class="inp" id="coef1-exp" rows="2" data-req="1" data-ml="25"
+    <textarea class="inp" id="coef1-exp" rows="2" data-req="1" data-ml="10"
       oncopy="return false" onpaste="return false" oncontextmenu="return false"
       placeholder="x sí tiene coeficiente porque... (mínimo 25 caracteres)"></textarea>
   </div>
@@ -586,17 +586,17 @@ sup{font-size:.65em;vertical-align:super;line-height:0;}
         <tbody>
           <tr>
             <td class="td-fix" style="color:var(--roj);">3x + 5y = 8xy</td>
-            <td><textarea class="inp" id="err1-exp" rows="2" data-req="1" data-ml="15" oncopy="return false" onpaste="return false" oncontextmenu="return false" placeholder="El error es..."></textarea></td>
+            <td><textarea class="inp" id="err1-exp" rows="2" data-req="1" data-ml="5" oncopy="return false" onpaste="return false" oncontextmenu="return false" placeholder="Escribe el error (ej: sumó variables distintas...)"></textarea></td>
             <td><input type="text" id="err1-corr" data-req="1" data-ml="3" data-expo="1" oncopy="return false" onpaste="return false" oncontextmenu="return false" placeholder="correcto:"></td>
           </tr>
           <tr>
             <td class="td-fix" style="color:var(--roj);">4x<sup>2</sup> + 4x = 8x<sup>2</sup></td>
-            <td><textarea class="inp" id="err2-exp" rows="2" data-req="1" data-ml="15" oncopy="return false" onpaste="return false" oncontextmenu="return false" placeholder="El error es..."></textarea></td>
+            <td><textarea class="inp" id="err2-exp" rows="2" data-ml="5" data-req="1" oncopy="return false" onpaste="return false" oncontextmenu="return false" placeholder="Escribe el error (ej: sumó variables distintas...)"></textarea></td>
             <td><input type="text" id="err2-corr" data-req="1" data-ml="3" data-expo="1" oncopy="return false" onpaste="return false" oncontextmenu="return false" placeholder="correcto:"></td>
           </tr>
           <tr>
             <td class="td-fix" style="color:var(--roj);">2x + 2x = 2x<sup>2</sup></td>
-            <td><textarea class="inp" id="err3-exp" rows="2" data-req="1" data-ml="15" oncopy="return false" onpaste="return false" oncontextmenu="return false" placeholder="El error es..."></textarea></td>
+            <td><textarea class="inp" id="err3-exp" rows="2" data-req="1" data-ml="5" oncopy="return false" onpaste="return false" oncontextmenu="return false" placeholder="Escribe el error (ej: sumó variables distintas...)"></textarea></td>
             <td><input type="text" id="err3-corr" data-req="1" data-ml="3" data-expo="1" oncopy="return false" onpaste="return false" oncontextmenu="return false" placeholder="correcto:"></td>
           </tr>
         </tbody>
@@ -608,13 +608,13 @@ sup{font-size:.65em;vertical-align:super;line-height:0;}
     <div class="pill p-am">Ejercicio C · Paréntesis: ¿igual o diferente?</div>
     <p class="instr">Una confusión muy frecuente: <strong>2x + 2x</strong> vs <strong>2x &middot; 2x</strong> vs <strong>(2x)<sup>2</sup></strong></p>
     <div id="tabla-parent"></div>
-    <label class="lbl">¿Por qué 2(x+3) ≠ 2x+3? Explica con tus palabras:</label>
-    <textarea class="inp" id="parent-exp" rows="2" data-req="1" data-ml="25"
+    <label class="lbl">&#128221; ¿Por qué 2(x+3) ≠ 2x+3? Explica con tus palabras (mínimo 10 caracteres):</label>
+    <textarea class="inp" id="parent-exp" rows="2" data-req="1" data-ml="10"
       oncopy="return false" onpaste="return false" oncontextmenu="return false"
-      placeholder="El paréntesis indica que... (mínimo 25 caracteres)"></textarea>
+      placeholder="El paréntesis indica que..."></textarea>
   </div>
 
-  <div class="emsg" id="s4-err">&#9888;&#65039; Completa todos los campos antes de continuar.</div>
+  <div class="emsg" id="s4-err">&#9888;&#65039; Hay campos incompletos. Revisa: simplificaciones (A), explicaciones de error (B) y la pregunta del paréntesis al final. Los campos marcados en rojo están vacíos o muy cortos.</div>
   <button class="btn-sig" onclick="avanzar('s4','s5')">Siguiente &#8594; Multiplicación</button>
 </div>
 
@@ -687,7 +687,7 @@ sup{font-size:.65em;vertical-align:super;line-height:0;}
     <div class="card card-mo">
       <div class="pill p-mo">Reflexión · Lo más importante que aprendiste</div>
       <p class="instr">Mirando todo lo que trabajaste hoy: vocabulario, clasificación, traducción, semejantes y multiplicación, ¿cuál fue el concepto que te costó más trabajo y por qué?</p>
-      <textarea class="inp" id="reflex-dif" rows="3" data-req="1" data-ml="40"
+      <textarea class="inp" id="reflex-dif" rows="3" data-req="1" data-ml="10"
         oncopy="return false" onpaste="return false" oncontextmenu="return false"
         placeholder="Lo que más me costó fue... porque... (mínimo 40 caracteres)"></textarea>
     </div>
@@ -695,7 +695,7 @@ sup{font-size:.65em;vertical-align:super;line-height:0;}
       <div class="pill p-v">Tu propia situación CDMX</div>
       <p class="instr">Inventa una situación de tu vida en la CDMX que se represente con un <strong>trinomio o polinomio</strong> (3 o más conceptos distintos). Escribe la situación y su expresión algebraica.</p>
       <label class="lbl">Situación (mínimo 60 caracteres):</label>
-      <textarea class="inp" id="sit-propia" rows="3" data-req="1" data-ml="60"
+      <textarea class="inp" id="sit-propia" rows="3" data-req="1" data-ml="10"
         oncopy="return false" onpaste="return false" oncontextmenu="return false"
         placeholder="Cada semana gasto en... y en... y también... (mínimo 60 caracteres)"></textarea>
       <label class="lbl">Expresión algebraica:</label>
@@ -1189,7 +1189,7 @@ function buildTradB(){
   for(var i=0;i<TRAD_B_SEL.length;i++){
     var t=TRAD_B_SEL[i];
     html += '<tr><td class="td-expr">'+t.expr+'</td>'
-      +'<td><textarea class="inp" id="tradb-'+i+'" rows="2" data-req="1" data-ml="8" placeholder="Escribe en español: pista — '+t.hint+'" oncopy="return false" onpaste="return false" oncontextmenu="return false"></textarea></td></tr>';
+      +'<td><textarea class="inp" id="tradb-'+i+'" rows="2" data-req="1" data-ml="3" placeholder="Escribe en español: pista — '+t.hint+'" oncopy="return false" onpaste="return false" oncontextmenu="return false"></textarea></td></tr>';
   }
   document.getElementById('tabla-trad-b').innerHTML = html;
 }
@@ -1263,7 +1263,7 @@ function buildTablaDosVar(){
   for(var i=0;i<sel.length;i++){
     var d=sel[i];
     html += '<tr><td class="td-fix">'+d[0]+'</td>'
-      +'<td><input type="text" id="dv-proc-'+i+'" data-req="1" data-ml="6" placeholder="ej: coef: ?×?=? · x: ?+?=? · y: ?+?=?" oncopy="return false" onpaste="return false" oncontextmenu="return false"></td>'
+      +'<td><input type="text" id="dv-proc-'+i+'" data-req="1" data-ml="3" placeholder="ej: coef: ?×?=? · x: ?+?=? · y: ?+?=?" oncopy="return false" onpaste="return false" oncontextmenu="return false"></td>'
       +'<td><input type="text" id="dv-res-'+i+'" data-req="1" data-ml="2" data-expo="1" placeholder="?" oncopy="return false" onpaste="return false" oncontextmenu="return false"></td>'
       +'</tr>';
   }
@@ -1297,7 +1297,7 @@ function buildTablasSemej(){
   var html = '<table><thead><tr><th>Expresión</th><th>Resultado simplificado</th></tr></thead><tbody>';
   for(var i=0;i<sel.length;i++){
     html += '<tr><td class="td-fix">'+sel[i][0]+'</td>'
-      +'<td><input type="text" id="semej-'+i+'" data-req="1" data-ml="2" data-expo="1" placeholder="?" oncopy="return false" onpaste="return false" oncontextmenu="return false"></td></tr>';
+      +'<td><input type="text" id="semej-'+i+'" data-req="1" data-ml="1" data-expo="1" placeholder="?" oncopy="return false" onpaste="return false" oncontextmenu="return false"></td></tr>';
   }
   html += '</tbody></table>';
   document.getElementById('tabla-semej').innerHTML = html;
