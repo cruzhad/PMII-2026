@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Examen Integrador · Pensamiento Matemático II</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --mo:#5B2D8E;--mo2:#7B3FC0;--mo3:#B88EE8;--mo-f:#f3ecfb;
+  --ver:#1B6B45;--ver2:#52B788;--nar:#E85D04;--nar2:#F9A53A;
+  --roj:#C1121F;--az:#023E8A;--az2:#1565C0;--am:#F5A623;
+  --cr:#fdf9ff;--tie:#1a0a2e;--gris:#ede8f5;--gris2:#d5cce8;
+  --som:0 3px 18px rgba(91,45,142,.12);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--cr);color:var(--tie);font-size:15px;overflow-x:hidden;}
+
+.hdr{background:linear-gradient(135deg,var(--tie),#2d0a5e);padding:16px 14px 12px;text-align:center;position:relative;overflow:hidden;}
+.hdr::after{content:'';position:absolute;right:-30px;top:-30px;width:140px;height:140px;background:var(--mo2);opacity:.1;border-radius:50%;}
+.hdr-tag{font-size:.63rem;font-weight:800;letter-spacing:3px;color:var(--mo3);text-transform:uppercase;margin-bottom:2px;}
+.hdr h1{font-family:'Bebas Neue';font-size:1.9rem;color:#fff;line-height:1;}
+.hdr h1 em{color:var(--nar2);font-style:normal;}
+.hdr-sub{font-size:.72rem;color:rgba(255,255,255,.45);margin-top:3px;}
+.prof-trig{display:inline-block;margin-top:7px;background:rgba(255,255,255,.08);border-radius:20px;padding:3px 11px;font-size:.65rem;color:rgba(255,255,255,.45);cursor:pointer;}
+
+.prog-wrap{background:#fff;padding:10px 14px 8px;border-bottom:2px solid var(--gris2);position:sticky;top:0;z-index:90;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.prog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.prog-label{font-size:.72rem;font-weight:800;color:var(--mo2);}
+.prog-count{font-size:.68rem;color:#999;}
+.prog-bar-bg{background:var(--gris2);border-radius:4px;height:5px;}
+.prog-bar{background:linear-gradient(90deg,var(--mo2),var(--nar2));height:5px;border-radius:4px;transition:width .4s;}
+.prog-dots{display:flex;gap:4px;margin-top:6px;flex-wrap:wrap;}
+.prog-dot{width:20px;height:20px;border-radius:50%;background:var(--gris2);color:#aaa;font-size:.6rem;font-weight:800;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.prog-dot.activa{background:var(--mo2);color:#fff;}
+.prog-dot.done{background:var(--ver2);color:#fff;}
+.prog-dot.saltada{background:#f9a53a;color:#fff;}
+
+.inicio{padding:14px;max-width:660px;margin:0 auto;}
+.alerta-roj{background:linear-gradient(135deg,var(--roj),#b71c1c);border-radius:12px;padding:14px;margin-bottom:14px;display:flex;gap:11px;color:#fff;align-items:flex-start;}
+.alerta-roj .ico{font-size:1.5rem;flex-shrink:0;}
+.alerta-roj p{font-size:.82rem;line-height:1.65;}
+.alerta-roj strong{font-size:.87rem;display:block;margin-bottom:2px;}
+.calif-aviso{background:linear-gradient(135deg,#e8f5e9,#f1f8e9);border:2px solid var(--ver2);border-radius:12px;padding:12px 14px;margin-bottom:12px;display:flex;gap:10px;align-items:flex-start;}
+.calif-aviso .ico{font-size:1.3rem;flex-shrink:0;}
+.calif-aviso p{font-size:.82rem;font-weight:800;color:var(--ver);margin-bottom:3px;}
+.calif-aviso span{font-size:.78rem;line-height:1.65;color:#2e7d32;display:block;}
+.card-ini{background:#fff;border-radius:12px;padding:15px;box-shadow:var(--som);margin-bottom:12px;}
+.lbl{font-size:.78rem;font-weight:800;color:var(--mo);display:block;margin-bottom:4px;margin-top:8px;}
+.inp{width:100%;padding:9px 12px;border:2px solid var(--gris2);border-radius:8px;font-size:.88rem;font-family:'Nunito';color:var(--tie);background:#fff;transition:border-color .2s;}
+.inp:focus{outline:none;border-color:var(--mo2);}
+.inp.err{border-color:var(--roj)!important;}
+.emsg{display:none;background:#fdecea;border:1.5px solid var(--roj);border-radius:8px;padding:7px 11px;font-size:.79rem;color:var(--roj);font-weight:700;margin:6px 0;}
+.emsg.show{display:block;}
+.btn-ini{display:block;width:100%;padding:13px;background:linear-gradient(135deg,var(--mo2),var(--mo));color:#fff;border:none;border-radius:11px;font-size:1rem;font-weight:800;cursor:pointer;font-family:'Nunito';margin-top:10px;}
+
+.pregunta-wrap{display:none;padding:14px;max-width:660px;margin:0 auto;}
+.pregunta-wrap.on{display:block;}
+.tipo-badge{display:inline-flex;align-items:center;gap:5px;font-size:.63rem;font-weight:800;letter-spacing:.4px;padding:3px 9px;border-radius:12px;margin-bottom:9px;text-transform:uppercase;}
+.tb-mo{background:var(--mo-f);color:var(--mo);}
+.tb-v{background:#d4edda;color:var(--ver);}
+.tb-a{background:#cce5ff;color:var(--az2);}
+.tb-am{background:#fff3cd;color:#856404;}
+.tb-r{background:#fdecea;color:var(--roj);}
+.tb-tie{background:var(--gris);color:var(--tie);}
+.qcard{background:#fff;border-radius:14px;padding:16px;box-shadow:var(--som);margin-bottom:12px;}
+.qcard-mo{border-left:4px solid var(--mo2);}
+.qcard-v{border-left:4px solid var(--ver2);}
+.qcard-a{border-left:4px solid var(--az2);}
+.qcard-am{border-left:4px solid var(--am);}
+.qcard-r{border-left:4px solid var(--roj);}
+.qcard-tie{border-left:4px solid var(--tie);}
+.qtexto{font-size:.95rem;font-weight:800;line-height:1.6;margin-bottom:12px;color:var(--tie);}
+.qtexto .expr{font-family:monospace;background:var(--gris);border-radius:5px;padding:1px 6px;}
+
+.opts{display:flex;flex-direction:column;gap:8px;}
+.opt{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border:2.5px solid var(--gris2);border-radius:9px;cursor:pointer;transition:all .15s;font-size:.87rem;font-weight:700;background:#f8f5ff;color:var(--tie);line-height:1.45;}
+.opt:hover{border-color:var(--mo2);background:var(--mo-f);}
+.opt.sel{border-color:var(--mo2);background:var(--mo-f);}
+.opt-letra{width:26px;height:26px;border-radius:50%;background:var(--mo2);color:#fff;font-weight:800;font-size:.78rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.opt.sel .opt-letra{background:var(--mo);}
+
+.sel-group{display:flex;flex-direction:column;gap:8px;margin-top:4px;}
+.sel-row{display:flex;align-items:center;gap:8px;}
+.sel-row label{font-size:.78rem;font-weight:800;color:var(--mo2);min-width:100px;}
+.sel{padding:8px 10px;border:2px solid var(--gris2);border-radius:8px;font-size:.85rem;font-family:'Nunito';color:var(--tie);background:#fff;appearance:none;flex:1;}
+.sel:focus{outline:none;border-color:var(--mo2);}
+.sel.err{border-color:var(--roj)!important;}
+
+.inp-field{width:100%;padding:10px 12px;border:2px solid var(--gris2);border-radius:8px;font-size:.88rem;font-family:'Nunito';color:var(--tie);background:#fff;transition:border-color .2s;margin-top:4px;}
+.inp-field:focus{outline:none;border-color:var(--mo2);}
+.inp-field.err{border-color:var(--roj)!important;}
+textarea.inp-field{resize:vertical;min-height:70px;}
+
+.sym-bar{display:flex;flex-wrap:wrap;gap:5px;padding:7px 9px;background:#fff;border:2px solid var(--mo2);border-radius:9px;margin-bottom:5px;box-shadow:var(--som);}
+.sym-btn{background:var(--tie);color:#fff;border:none;border-radius:6px;padding:7px 12px;font-family:'Nunito';font-size:.9rem;font-weight:800;cursor:pointer;min-width:38px;line-height:1;transition:background .1s;}
+.sym-btn:active{background:var(--mo2);}
+.sym-btn.op{background:var(--mo2);}
+.sym-btn.neg{background:var(--roj);}
+.sym-btn.del{background:#888;}
+.sym-hint{font-size:.68rem;color:var(--mo2);font-style:italic;margin-top:2px;display:block;}
+.sym-preview{font-family:monospace;font-size:.9rem;font-weight:800;background:var(--gris);border-radius:6px;padding:5px 10px;margin-top:4px;min-height:28px;display:block;color:var(--tie);}
+
+.expr-error{background:#fdecea;border:2px solid var(--roj);border-radius:9px;padding:10px 13px;margin-bottom:10px;font-family:monospace;font-weight:800;font-size:1rem;text-align:center;color:var(--roj);}
+.expr-error .err-tag{font-family:'Nunito';font-size:.72rem;font-weight:800;display:block;margin-top:4px;text-transform:uppercase;letter-spacing:.3px;}
+
+.nav-btns{display:flex;gap:10px;margin-top:4px;}
+.btn-ant{flex:1;padding:12px;background:#fff;color:var(--tie);border:2px solid var(--gris2);border-radius:11px;font-size:.9rem;font-weight:800;cursor:pointer;font-family:'Nunito';}
+.btn-sig{flex:2;padding:12px;background:var(--mo2);color:#fff;border:none;border-radius:11px;font-size:.9rem;font-weight:800;cursor:pointer;font-family:'Nunito';transition:background .2s;}
+.btn-sig:hover{background:var(--mo);}
+.btn-fin{flex:2;padding:12px;background:linear-gradient(135deg,var(--ver),#1b5e20);color:#fff;border:none;border-radius:11px;font-size:.9rem;font-weight:800;cursor:pointer;font-family:'Nunito';}
+
+.aviso-intento{display:none;background:#fff3cd;border:1.5px solid var(--am);border-radius:8px;padding:8px 12px;font-size:.79rem;color:#856404;font-weight:700;margin-top:8px;}
+.aviso-intento.show{display:block;}
+.aviso-saltada{background:#fdecea;border-color:var(--roj);color:var(--roj);}
+
+.hint{font-size:.73rem;color:#888;font-style:italic;margin-top:3px;line-height:1.5;}
+.instr{font-size:.82rem;line-height:1.7;color:#444;margin-bottom:8px;}
+.det-instruccion{background:#e3f2fd;border:1.5px solid var(--az2);border-radius:9px;padding:9px 12px;font-size:.8rem;line-height:1.65;margin-bottom:10px;color:var(--az2);}
+.det-instruccion strong{display:block;margin-bottom:2px;}
+
+.res-wrap{padding:14px;max-width:660px;margin:0 auto;display:none;}
+.res-wrap.on{display:block;}
+.res-hdr{background:linear-gradient(135deg,var(--tie),#2d0a5e);border-radius:14px;padding:20px;text-align:center;color:#fff;margin-bottom:14px;position:relative;overflow:hidden;}
+.res-wm{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-around;opacity:.04;pointer-events:none;overflow:hidden;font-weight:900;font-size:.8rem;text-transform:uppercase;color:#fff;}
+.res-wm-row{white-space:nowrap;}
+.res-nota{font-family:'Bebas Neue';font-size:3.2rem;line-height:1;margin:6px 0;}
+.res-card{background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:var(--som);}
+.res-tabla{width:100%;border-collapse:collapse;font-size:.8rem;}
+.res-tabla th{background:var(--tie);color:#fff;padding:7px 9px;text-align:left;font-size:.72rem;font-weight:700;}
+.res-tabla td{padding:6px 9px;border:1.5px solid var(--gris2);vertical-align:top;font-size:.78rem;line-height:1.4;}
+.res-tabla tr.ok-row td{background:#f0fff4;}
+.res-tabla tr.nook-row td{background:#fff5f5;}
+.res-tabla tr.skip-row td{background:#fffde7;}
+.res-tabla tr.fb-row td{background:#f8f5ff;font-size:.74rem;color:#555;border-top:none;padding-bottom:8px;}
+.btn-pdf{display:block;width:100%;padding:13px;background:var(--ver);color:#fff;border:none;border-radius:11px;font-size:.96rem;font-weight:800;cursor:pointer;font-family:'Nunito';margin-top:10px;}
+
+.doc-modal{display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.6);align-items:center;justify-content:center;}
+.doc-modal.show{display:flex;}
+.doc-inner{background:#fff;border-radius:14px;padding:18px;max-width:420px;width:92%;box-shadow:0 10px 40px rgba(0,0,0,.3);max-height:92vh;overflow-y:auto;}
+.doc-inner h3{font-family:'Bebas Neue';font-size:1.4rem;color:var(--mo);margin-bottom:8px;}
+.dbtn{width:100%;padding:10px;border:none;border-radius:9px;font-family:'Nunito';font-weight:800;font-size:.88rem;cursor:pointer;margin-top:7px;}
+.dbtn-mo{background:var(--mo2);color:#fff;}
+.dbtn-v{background:var(--ver);color:#fff;}
+.dbtn-out{background:transparent;border:2px solid var(--mo2);color:var(--mo2);}
+
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:998;align-items:center;justify-content:center;}
+.modal-bg.show{display:flex;}
+.modal-box{background:#fff;border-radius:14px;padding:22px;max-width:320px;width:90%;box-shadow:0 10px 40px rgba(0,0,0,.3);}
+.mbtn{flex:1;padding:11px;border:none;border-radius:9px;font-family:'Nunito';font-weight:800;font-size:.88rem;cursor:pointer;}
+
+/* aviso reinicio por pestaña */
+.aviso-reinicio{background:#fef7e0;border-left:5px solid var(--am);border-radius:9px;padding:8px 12px;margin-bottom:12px;font-size:.75rem;color:#7d5d00;display:flex;gap:8px;align-items:center;}
+.aviso-reinicio .ico-re{font-size:1rem;}
+
+@media print{
+  .prog-wrap,.nav-btns,.btn-pdf,.doc-modal,.modal-bg,.sym-bar,.sym-hint,.aviso-reinicio{display:none!important;}
+  .hdr{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .res-hdr{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-tag">Pensamiento Matemático II &nbsp;·&nbsp; PF1 + PF2 + PF3</div>
+  <h1>Examen <em>Integrador</em></h1>
+  <div class="hdr-sub">Lenguaje algebraico &nbsp;·&nbsp; Clasificación &nbsp;·&nbsp; Operaciones &nbsp;·&nbsp; CDMX</div>
+  <div class="prof-trig" id="prof-trig">👨‍🏫 Prof. Adrián Cruz</div>
+</div>
+
+<div class="prog-wrap no-print" id="prog-wrap" style="display:none;">
+  <div class="prog-top">
+    <span class="prog-label" id="prog-label">Pregunta 1 de 16</span>
+    <span class="prog-count" id="prog-tipo-lbl"></span>
+  </div>
+  <div class="prog-bar-bg"><div class="prog-bar" id="prog-bar" style="width:0%"></div></div>
+  <div class="prog-dots" id="prog-dots"></div>
+</div>
+
+<div class="modal-bg" id="modal-confirm">
+  <div class="modal-box">
+    <h3 style="color:var(--roj);font-family:'Bebas Neue';font-size:1.3rem;margin-bottom:8px;">⚠ Entregar examen</h3>
+    <p style="font-size:.83rem;color:#555;line-height:1.65;margin-bottom:14px;">
+      Una vez que entregues <strong>no podrás editar</strong> tus respuestas y se generará tu calificación. ¿Estás seguro?
+    </p>
+    <div style="display:flex;gap:8px;">
+      <button class="mbtn" style="background:var(--roj);color:#fff;" onclick="confirmarFinalizar()">Sí, entregar ✓</button>
+      <button class="mbtn" style="background:var(--gris);color:var(--tie);" onclick="document.getElementById('modal-confirm').classList.remove('show')">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<div class="doc-modal" id="modal-doc">
+  <div class="doc-inner">
+    <h3>🔒 Panel Docente</h3>
+    <div id="doc-login">
+      <label class="lbl" style="color:var(--az2);">Código de acceso:</label>
+      <input class="inp" id="doc-cod" type="password" placeholder="••••" autocomplete="off" onkeydown="if(event.key==='Enter')chkDoc()">
+      <div id="doc-err" style="display:none;color:var(--roj);font-size:.8rem;margin-top:4px;font-weight:700;">Código incorrecto.</div>
+      <div style="display:flex;gap:8px;margin-top:9px;">
+        <button class="dbtn dbtn-mo" style="flex:1;" onclick="chkDoc()">Entrar</button>
+        <button class="dbtn dbtn-out" style="flex:1;" onclick="cerrarDoc()">Cancelar</button>
+      </div>
+    </div>
+    <div id="doc-panel" style="display:none;">
+      <div style="background:var(--mo2);border-radius:8px;padding:8px 12px;margin-bottom:10px;">
+        <span style="font-weight:800;color:#fff;font-size:.85rem;">Panel Docente — 13EA Examen v3</span>
+      </div>
+      <div style="background:var(--mo-f);border-radius:9px;padding:11px 13px;margin-bottom:10px;font-size:.78rem;line-height:1.9;">
+        <strong>Desglose /10:</strong><br>
+        3 OMC inicial × 0.4 = <strong>1.2 pts</strong><br>
+        2 Traducción A × 0.4 = <strong>0.8 pts</strong><br>
+        2 Traducción B × 0.3 = <strong>0.6 pts</strong><br>
+        1 Situación CDMX = <strong>0.6 pts</strong><br>
+        2 Semejantes × 0.4 = <strong>0.8 pts</strong><br>
+        2 Detecta error × 0.4 = <strong>0.8 pts</strong><br>
+        3 Multiplicación × 0.4 = <strong>1.2 pts</strong><br>
+        6 Quiz OMC × 0.25 = <strong>1.5 pts</strong><br>
+        1 Comprensión abierta = <strong>1.5 pts</strong><br>
+        <strong>TOTAL: 10 pts</strong>
+      </div>
+      <div style="background:#fff3cd;border-radius:9px;padding:10px 12px;margin-bottom:10px;font-size:.78rem;line-height:1.75;border-left:4px solid var(--am);">
+        <strong>⚠️ Errores frecuentes a vigilar:</strong><br>
+        ❌ Coeficiente implícito 1: "x no tiene coeficiente"<br>
+        ❌ Sumar no-semejantes: 3x+5y=8xy<br>
+        ❌ Multiplicar expo al multiplicar: x²·x³=x⁶<br>
+        ❌ Confundir sumar y multiplicar monomios<br>
+        ❌ Olvidar la ley de signos al multiplicar
+      </div>
+      <div style="font-size:.78rem;color:#666;line-height:1.7;margin-bottom:10px;">
+        <strong>Nota:</strong> El examen no muestra correcto/incorrecto durante la prueba. Todo el feedback aparece en el resumen final. Si el alumno intenta avanzar 3 veces con una pregunta en blanco, ésta se desbloquea automáticamente con 0 puntos.
+      </div>
+      <button class="dbtn dbtn-mo" onclick="docSaltar()">⏭ Ir a resultados (demo)</button>
+      <button class="dbtn dbtn-v" style="margin-top:6px;" onclick="docRecorrer()">▶ Recorrer sin validar</button>
+      <button class="dbtn dbtn-out" style="margin-top:6px;" onclick="cerrarDoc()">Cerrar panel</button>
+    </div>
+  </div>
+</div>
+
+<div class="inicio" id="pantalla-inicio">
+  <div style="height:14px;"></div>
+  <!-- AVISO DE REINICIO POR CAMBIO DE PESTAÑA / MINIMIZAR -->
+  <div class="aviso-reinicio">
+    <span class="ico-re">🔒</span>
+    <span><strong>Política de integridad académica</strong><br>Si minimizas la ventana, cambias de pestaña, abres otra app o bloqueas la pantalla, el examen se <strong>REINICIARÁ AUTOMÁTICAMENTE</strong> y perderás tu avance. Mantén esta pestaña activa hasta entregar.</span>
+  </div>
+  <div class="alerta-roj">
+    <div class="ico">⚠️</div>
+    <div><strong>No cierres ni minimices esta página</strong>
+    <p>Este examen es individual y único para cada sesión. Si cierras la ventana perderás tu avance. Conéctate a WiFi si puedes antes de comenzar.</p></div>
+  </div>
+  <div class="calif-aviso">
+    <div class="ico">📋</div>
+    <div><p>Todo cuenta para tu calificación</p>
+    <span>Aunque no veas ✅ o ❌ durante el examen, cada respuesta queda registrada. Al final se genera tu calificación automáticamente.</span></div>
+  </div>
+  <div class="card-ini">
+    <label class="lbl">👤 Nombre completo y grupo:</label>
+    <input class="inp" id="inp-nombre" type="text" autocomplete="off" placeholder="Apellido Paterno Apellido Materno Nombre(s) — Grupo" style="font-size:.95rem;font-weight:700;">
+    <div style="font-size:.72rem;color:#888;margin-top:3px;">Aparecerá en tus resultados y en el PDF.</div>
+  </div>
+  <div class="emsg" id="ini-err">⚠️ Escribe tu nombre completo antes de comenzar.</div>
+  <button class="btn-ini" onclick="comenzar()">Comenzar examen →</button>
+  <div style="margin-top:8px;text-align:right;">
+    <span style="font-size:.6rem;color:#ddd;cursor:pointer;" onclick="abrirDoc()">v3.0</span>
+  </div>
+</div>
+
+<div class="pregunta-wrap" id="pantalla-pregunta">
+  <div style="height:10px;"></div>
+  <div id="pregunta-contenido"></div>
+  <div class="aviso-intento" id="aviso-intento"></div>
+  <div class="nav-btns" style="margin-top:10px;">
+    <button class="btn-ant" id="btn-ant" onclick="irAnterior()" style="display:none;">◀ Anterior</button>
+    <button class="btn-sig" id="btn-sig" onclick="irSiguiente()">Siguiente ▶</button>
+    <button class="btn-fin" id="btn-fin" onclick="pedirFinalizar()" style="display:none;">✓ Entregar examen</button>
+  </div>
+</div>
+
+<div class="res-wrap" id="pantalla-resultados">
+  <div id="res-contenido"></div>
+</div>
+
+<div style="text-align:center;padding:10px 0 18px;font-size:.68rem;color:#ccc;">
+  Pensamiento Matemático II &nbsp;·&nbsp; Examen Integrador &nbsp;·&nbsp; Prof. Adrián Cruz &nbsp;·&nbsp; 2025–2026
+</div>
+
+<script>
+// ======================= BANCOS DE PREGUNTAS =======================
+var CONTEXTOS = [
+  {nom:'La Merced', sit:'En el mercado de La Merced compras diferentes productos.', items:[{desc:'kilogramos de tomate',vr:'t',precio:18},{desc:'kilogramos de cebolla',vr:'c',precio:12}]},
+  {nom:'Metro CDMX', sit:'Registras tus gastos de transporte en la CDMX.', items:[{desc:'viajes en metro',vr:'v',precio:5},{desc:'viajes en metrobús',vr:'m',precio:6}]},
+  {nom:'Taquería de Tepito', sit:'En la taquería de tu colonia llevas el control de lo que gastas.', items:[{desc:'tacos de canasta',vr:'t',precio:12},{desc:'refrescos',vr:'r',precio:15}]},
+  {nom:'Tianguis de Coyoacán', sit:'Vendes artesanías en el tianguis de Coyoacán los fines de semana.', items:[{desc:'pulseras vendidas',vr:'p',precio:35},{desc:'aretes vendidos',vr:'a',precio:50}]},
+  {nom:'Bachillerato CDMX', sit:'Llevas el control de tus gastos semanales como estudiante.', items:[{desc:'boletos de transporte',vr:'b',precio:7},{desc:'comidas en la cooperativa',vr:'c',precio:30}]},
+  {nom:'Puesto de jugos Iztapalapa', sit:'Tu familia tiene un puesto de jugos en Iztapalapa y llevas las cuentas.', items:[{desc:'kilos de naranja',vr:'n',precio:15},{desc:'kilos de zanahoria',vr:'z',precio:10}]},
+  {nom:'Deportivo Xochimilco', sit:'En el deportivo de Xochimilco apuntas los gastos de tu equipo.', items:[{desc:'horas de cancha',vr:'h',precio:80},{desc:'pelotas rentadas',vr:'p',precio:25}]},
+  {nom:'Renta de videojuegos Tlalpan', sit:'Un negocio familiar en Tlalpan renta videojuegos y consolas.', items:[{desc:'juegos rentados por día',vr:'j',precio:20},{desc:'horas de consola',vr:'h',precio:15}]}
+];
+
+var QB_INI = [
+  [{p:'¿Cuál es el coeficiente de la expresión <strong>x</strong>?', ops:['0','1','x','No tiene coeficiente','x²'],ok:1, ex:'Cuando no aparece ningún número, el coeficiente es 1 implícito. x = 1·x.'},
+   {p:'En el término <strong>7y</strong>, ¿cuál es la variable?', ops:['7','y','7y','1','No tiene variable'],ok:1, ex:'La variable es la letra (y). El número 7 es el coeficiente.'},
+   {p:'¿Cuántos términos tiene la expresión <strong>5x − 3y + 2</strong>?', ops:['1','2','3','4','6'],ok:2, ex:'Tres términos separados por + y −: 5x, −3y y 2.'},
+   {p:'¿Cuál de estas NO es una expresión algebraica?', ops:['3x + 5','2a − b','x² + 2x + 1','7 × 4 = 28','4mn'],ok:3, ex:'7 × 4 = 28 es una ecuación aritmética (tiene = y valores fijos). Las demás son expresiones algebraicas.'},
+   {p:'En <strong>9ab²</strong>, ¿cuál es el coeficiente?', ops:['9','a','b²','ab²','2'],ok:0, ex:'El coeficiente es el número que multiplica a las variables. En 9ab² el coeficiente es 9.'},
+   {p:'¿Cuántos términos tiene <strong>4mn</strong>?', ops:['2','4','1','3','0'],ok:2, ex:'4mn es un solo término (monomio): coeficiente 4 y variables m, n multiplicadas.'}],
+  [{p:'La expresión <strong>3x² + 2x − 7</strong> es:', ops:['Monomio','Binomio','Trinomio','Polinomio de 4 términos','Ecuación'],ok:2, ex:'Tiene 3 términos (3x², 2x y −7) → trinomio.'},
+   {p:'La expresión <strong>−5mn</strong> es:', ops:['Binomio','Monomio','Trinomio','Polinomio','Ecuación'],ok:1, ex:'−5mn es un solo término: coeficiente −5, variables m y n. Monomio.'},
+   {p:'¿Cuál es el grado del monomio <strong>−4x³y²</strong>?', ops:['3','2','5','6','4'],ok:2, ex:'El grado es la SUMA de los exponentes: 3 + 2 = 5. No es el exponente mayor ni el producto.'},
+   {p:'Después de simplificar, ¿qué nombre tiene <strong>4x² + 3x − 2x²</strong>?', ops:['Trinomio','Monomio','Binomio','Polinomio de 4 términos','Sigue siendo trinomio'],ok:2, ex:'(4−2)x² = 2x². Resultado: 2x² + 3x. Dos términos → binomio.'},
+   {p:'¿Cuál es el grado del monomio <strong>6k⁵</strong>?', ops:['6','1','5','11','30'],ok:2, ex:'El grado de un monomio con una sola variable es su exponente: 5. El 6 es el coeficiente, no el grado.'},
+   {p:'¿Cuál de estas es un BINOMIO?', ops:['12x⁴','4a − 3b','x² + x + 1','2p − q + r − 1','7mn'],ok:1, ex:'4a − 3b tiene exactamente 2 términos → binomio.'}],
+  [{p:'¿Por qué <strong>3x + 5y = 8xy</strong> es INCORRECTO?', ops:['Porque se suman los exponentes','Porque x e y son variables distintas — no son semejantes','Porque el coeficiente de y es 5','Porque se debe multiplicar, no sumar','Porque el resultado debe ser negativo'],ok:1, ex:'3x y 5y representan cantidades distintas. Variables distintas → no son semejantes.'},
+   {p:'Simplifica: <strong>5x + 3x − 2x</strong>', ops:['6x','6x²','10x − 2x','8x','15x − 2x'],ok:0, ex:'5+3−2=6. Todos son semejantes (misma x, exp 1). Resultado: 6x.'},
+   {p:'¿Cuántos términos tiene <strong>8x² + 3x − 2x² + x</strong> después de simplificar?', ops:['4','3','2','1','5'],ok:2, ex:'(8−2)x²=6x². (3+1)x=4x. Resultado: 6x²+4x → binomio (2 términos).'},
+   {p:'¿Cuál par SÍ son semejantes?', ops:['3x² y 3y²','5a y 5a²','7m y −2m','6xy y 3x','4x² y 4y'],ok:2, ex:'7m y −2m: misma variable m, mismo exponente 1 → semejantes.'},
+   {p:'Simplifica: <strong>4a + 3b − a + 2b</strong>', ops:['8ab','3a + 5b','4a + 5b','3a + b','7ab'],ok:1, ex:'(4−1)a = 3a. (3+2)b = 5b. Resultado: 3a + 5b.'},
+   {p:'Simplifica: <strong>6n + 4m − 6n</strong>', ops:['6m','6mn','4m','10m − 6n','0'],ok:2, ex:'(6−6)n = 0. Los n se cancelan completamente. Resultado: 4m.'}],
+  [{p:'Aplica la ley: <strong>x³ · x⁴ = ?</strong>', ops:['x<sup>7</sup>','x<sup>12</sup>','2x<sup>7</sup>','x','x<sup>1</sup>'],ok:0, ex:'Los exponentes se SUMAN: 3+4=7. Resultado: x⁷. No se multiplican (eso daría x¹²).'},
+   {p:'Multiplica: <strong>(3x²)(4x³)</strong>', ops:['12x<sup>5</sup>','7x<sup>5</sup>','12x<sup>6</sup>','7x<sup>6</sup>','3x<sup>5</sup>'],ok:0, ex:'Coef: 3×4=12. Exp: 2+3=5. Resultado: 12x⁵. Error común: sumar coeficientes (3+4=7) o multiplicar exponentes (2×3=6).'},
+   {p:'Multiplica: <strong>(7a³)(2a)</strong>', ops:['14a<sup>4</sup>','9a<sup>4</sup>','14a<sup>3</sup>','9a<sup>3</sup>','14a<sup>2</sup>'],ok:0, ex:'Coef: 7×2=14. Exp: 3+1=4. Resultado: 14a⁴.'},
+   {p:'¿Cuál es el error en <strong>x² · x³ = x⁶</strong>?', ops:['Multiplicó los exponentes en vez de sumarlos','Sumó mal: debería ser x¹','El coeficiente es incorrecto','No hay error, está bien','Debió restar los exponentes'],ok:0, ex:'2+3=5, NO 2×3=6. Los exponentes se SUMAN al multiplicar potencias de la misma base.'},
+   {p:'Multiplica: <strong>(5m)(2m⁴)</strong>', ops:['10m<sup>5</sup>','7m<sup>5</sup>','10m<sup>4</sup>','5m<sup>5</sup>','10m<sup>8</sup>'],ok:0, ex:'Coef: 5×2=10. Exp: 1+4=5. Resultado: 10m⁵.'},
+   {p:'El área de un rectángulo de lados <strong>3x²</strong> y <strong>4x</strong> es:', ops:['12x<sup>3</sup>','7x<sup>3</sup>','12x<sup>2</sup>','12x<sup>4</sup>','7x<sup>2</sup>'],ok:0, ex:'Área = 3x² × 4x. Coef: 3×4=12. Exp: 2+1=3. Área = 12x³.'}],
+  [{p:'Multiplica: <strong>(−3x²)(4x³)</strong>', ops:['−12x<sup>5</sup>','12x<sup>5</sup>','−12x<sup>6</sup>','−7x<sup>5</sup>','12x<sup>6</sup>'],ok:0, ex:'(−)(+)=−. Coef: 3×4=12. Exp: 2+3=5. Resultado: −12x⁵.'},
+   {p:'Multiplica: <strong>(−2a)(−5a⁴)</strong>', ops:['10a<sup>5</sup>','−10a<sup>5</sup>','10a<sup>4</sup>','−7a<sup>5</sup>','−10a<sup>4</sup>'],ok:0, ex:'(−)(−)=+. Coef: 2×5=10. Exp: 1+4=5. Resultado: +10a⁵.'},
+   {p:'¿Cuál resultado tiene signo NEGATIVO?', ops:['(−2x)(−3x)','(4a)(5a)','(−3m)(2m)','(7n)(−n)(−1)','(−x)(−x)'],ok:2, ex:'(−3m)(2m): (−)(+)=−. Resultado: −6m². Las demás dan positivo porque los negativos se cancelan en pares.'},
+   {p:'Multiplica: <strong>(−4k²)(−4k²)</strong>', ops:['16k<sup>4</sup>','−16k<sup>4</sup>','16k<sup>2</sup>','−8k<sup>4</sup>','8k<sup>4</sup>'],ok:0, ex:'(−)(−)=+. Coef: 4×4=16. Exp: 2+2=4. Resultado: +16k⁴.'},
+   {p:'Multiplica: <strong>(6n)(−3n⁵)</strong>', ops:['−18n<sup>6</sup>','18n<sup>6</sup>','−18n<sup>5</sup>','3n<sup>6</sup>','−18n<sup>30</sup>'],ok:0, ex:'(+)(−)=−. Coef: 6×3=18. Exp: 1+5=6. Resultado: −18n⁶.'},
+   {p:'Multiplica: <strong>(−y⁴)(7y³)</strong>', ops:['−7y<sup>7</sup>','7y<sup>7</sup>','−7y<sup>12</sup>','7y<sup>12</sup>','−7y<sup>4</sup>'],ok:0, ex:'Coef: (−1)×7=−7. (−)(+)=−. Exp: 4+3=7. Resultado: −7y⁷.'}]
+];
+
+var QB_QUIZ = [
+  [{p:'Simplifica: <strong>3x + 2y − x + 4y − y</strong>', ops:['2x + 5y','4x + 5y','2x + 6y','4x + 6y','2x + 4y'],ok:0, ex:'x: 3−1=2. y: 2+4−1=5. Resultado: 2x + 5y.'},
+   {p:'Simplifica: <strong>5a² + 3a − 2a² + a − 4</strong>', ops:['3a² + 4a − 4','7a² + 4a − 4','3a² + 2a − 4','7a² + 2a − 4','3a³ + 4a − 4'],ok:0, ex:'a²: 5−2=3. a: 3+1=4. Constante: −4. Resultado: 3a² + 4a − 4.'},
+   {p:'Simplifica: <strong>4xy + 2x − xy + 3x − 5xy</strong>', ops:['−2xy + 5x','6xy + 5x','2xy + 5x','−2xy + x','2xy + 5xy'],ok:0, ex:'xy: 4−1−5=−2. x: 2+3=5. Resultado: −2xy + 5x.'},
+   {p:'Simplifica: <strong>6m + 2n − 3m + n + m</strong>', ops:['4m + 3n','4m + 2n','3m + 3n','8m + 3n','4m + n'],ok:0, ex:'m: 6−3+1=4. n: 2+1=3. Resultado: 4m + 3n.'},
+   {p:'Simplifica: <strong>x² + 2xy + y² − x² + 3xy</strong>', ops:['5xy + y²','5xy − y²','2xy + y²','3x² + 5xy','5x²y²'],ok:0, ex:'x²: 1−1=0. xy: 2+3=5. y²: 1. Resultado: 5xy + y².'},
+   {p:'Simplifica: <strong>8p − 3q + 2p + 5q − p</strong>', ops:['9p + 2q','11p + 2q','9p − 2q','11p − 2q','10p + 2q'],ok:0, ex:'p: 8+2−1=9. q: −3+5=2. Resultado: 9p + 2q.'}],
+  [{p:'Multiplica: <strong>(2x²y)(3xy²)</strong>', ops:['6x<sup>3</sup>y<sup>3</sup>','5x<sup>3</sup>y<sup>3</sup>','6x<sup>2</sup>y<sup>2</sup>','6x<sup>3</sup>y','6x<sup>2</sup>y<sup>3</sup>'],ok:0, ex:'Coef:2×3=6. x:2+1=3. y:1+2=3. Resultado: 6x³y³.'},
+   {p:'Multiplica: <strong>(4ab²)(2a³b)</strong>', ops:['8a<sup>4</sup>b<sup>3</sup>','6a<sup>4</sup>b<sup>3</sup>','8a<sup>3</sup>b<sup>3</sup>','8a<sup>4</sup>b','8a<sup>4</sup>b<sup>2</sup>'],ok:0, ex:'Coef:4×2=8. a:1+3=4. b:2+1=3. Resultado: 8a⁴b³.'},
+   {p:'En <strong>(3m²n³)(5mn)</strong>, el exponente de n en el resultado es:', ops:['4','3','5','6','2'],ok:0, ex:'Exp n: 3+1=4. El resultado completo es 15m³n⁴.'},
+   {p:'Multiplica: <strong>(−2xy)(3x²y²)</strong>', ops:['−6x<sup>3</sup>y<sup>3</sup>','6x<sup>3</sup>y<sup>3</sup>','−6x<sup>2</sup>y<sup>2</sup>','−5x<sup>3</sup>y<sup>3</sup>','6x<sup>2</sup>y<sup>3</sup>'],ok:0, ex:'(−)(+)=−. Coef:2×3=6. x:1+2=3. y:1+2=3. Resultado: −6x³y³.'},
+   {p:'¿Cuál es el resultado de <strong>(x²y)(x³y²)</strong>?', ops:['x<sup>5</sup>y<sup>3</sup>','x<sup>6</sup>y<sup>2</sup>','x<sup>5</sup>y<sup>2</sup>','x<sup>6</sup>y<sup>3</sup>','x<sup>5</sup>y'],ok:0, ex:'x:2+3=5. y:1+2=3. Resultado: x⁵y³.'},
+   {p:'El producto de dos monomios siempre da:', ops:['Otro monomio','Un binomio','Un trinomio','Puede ser cualquier tipo','Una ecuación'],ok:0, ex:'El producto de dos monomios (cada uno es un término único) siempre da un monomio.'}],
+  [{p:'¿Cuál es la diferencia entre <strong>2x + 2x</strong> y <strong>(2x)(2x)</strong>?', ops:['2x+2x=4x y (2x)(2x)=4x², son distintos','No hay diferencia','Ambas dan 4x²','La primera da 4x² y la segunda 4x','Ambas dan 4x'],ok:0, ex:'2x+2x=4x (suma). (2x)(2x)=4x² (multiplicación: 2×2=4, exp 1+1=2).'},
+   {p:'¿Cuál de estas afirmaciones es FALSA?', ops:['x² y x son semejantes porque tienen la misma variable','El coeficiente de x es 1','3x y 5x son semejantes','2(x+4)=2x+8','(−)(−) da resultado positivo'],ok:0, ex:'x² y x NO son semejantes: misma variable pero exponentes distintos (2≠1).'},
+   {p:'¿Cuál expresión representa "el costo total de t tacos a $15 y r refrescos a $12"?', ops:['15t + 12r','15 + 12','15t · 12r','15 + t + 12 + r','27tr'],ok:0, ex:'t tacos × $15 = 15t. r refrescos × $12 = 12r. Total: 15t + 12r.'},
+   {p:'"El cambio si pagas con $500 una compra de c pesos" es:', ops:['500 − c','c − 500','500c','500 + c','500 ÷ c'],ok:0, ex:'Pago 500, gasto c. Cambio = 500 − c.'},
+   {p:'¿Cuál expresión NO puede ser resultado de multiplicar dos monomios?', ops:['3x + 2y','6x<sup>7</sup>','−15a³b⁴','8m⁵','−x²y³'],ok:0, ex:'3x + 2y es un binomio (dos términos). El producto de dos monomios siempre da un solo término.'},
+   {p:'Un alumno dice que el grado de <strong>4x³y²</strong> es 3. ¿Está correcto?', ops:['No, el grado es 5 (suma: 3+2)','Sí, porque el exponente mayor es 3','No, el grado es 2','No, el grado es 4','Sí, siempre es el exponente de x'],ok:0, ex:'El grado es la SUMA de todos los exponentes: 3+2=5.'}],
+  [{p:'Multiplica: <strong>(−3x²y)(2xy³)</strong>', ops:['−6x<sup>3</sup>y<sup>4</sup>','6x<sup>3</sup>y<sup>4</sup>','−6x<sup>2</sup>y<sup>3</sup>','−5x<sup>3</sup>y<sup>4</sup>','6x<sup>2</sup>y<sup>4</sup>'],ok:0, ex:'(−)(+)=−. Coef:3×2=6. x:2+1=3. y:1+3=4. Resultado: −6x³y⁴.'},
+   {p:'Multiplica: <strong>(−4ab²)(−3a²b)</strong>', ops:['12a<sup>3</sup>b<sup>3</sup>','−12a<sup>3</sup>b<sup>3</sup>','12a<sup>2</sup>b<sup>2</sup>','7a<sup>3</sup>b<sup>3</sup>','−12a<sup>3</sup>b<sup>2</sup>'],ok:0, ex:'(−)(−)=+. Coef:4×3=12. a:1+2=3. b:2+1=3. Resultado: 12a³b³.'},
+   {p:'Si simplificas <strong>3x²y + 2xy² − x²y + 4xy²</strong>, ¿cuántos términos quedan?', ops:['2','4','3','1','5'],ok:0, ex:'x²y: 3−1=2. xy²: 2+4=6. Resultado: 2x²y + 6xy². Dos términos.'},
+   {p:'¿Cuál es la forma correcta de simplificar <strong>4mn + 2m + 3mn − m</strong>?', ops:['7mn + m','9mn + m','7mn + 3m','8mn','7mn + 2m'],ok:0, ex:'mn: 4+3=7. m: 2−1=1. Resultado: 7mn + m.'},
+   {p:'Multiplica: <strong>(5pq²)(−2p³q)</strong>', ops:['−10p<sup>4</sup>q<sup>3</sup>','10p<sup>4</sup>q<sup>3</sup>','−10p<sup>3</sup>q<sup>2</sup>','−7p<sup>4</sup>q<sup>3</sup>','10p<sup>3</sup>q<sup>3</sup>'],ok:0, ex:'(+)(−)=−. Coef:5×2=10. p:1+3=4. q:2+1=3. Resultado: −10p⁴q³.'},
+   {p:'Multiplica: <strong>(2x²y)(−xy)(3y²)</strong>', ops:['−6x<sup>3</sup>y<sup>4</sup>','6x<sup>3</sup>y<sup>4</sup>','−6x<sup>2</sup>y<sup>3</sup>','−5x<sup>3</sup>y<sup>4</sup>','6x<sup>3</sup>y<sup>3</sup>'],ok:0, ex:'Coef: 2×(−1)×3=−6. x: 2+1=3. y: 1+1+2=4. Resultado: −6x³y⁴.'}]
+];
+
+var TRAD_A_BANCO = [
+  [{txt:'El triple de un número',expr:'3x'},{txt:'La mitad de un número',expr:'x/2'},{txt:'Un número aumentado en 8',expr:'x+8'},{txt:'El doble de un número menos 5',expr:'2x-5'},{txt:'El cuadrado de la suma de un número y 3',expr:'(x+3)^2'},{txt:'El cuádruple de un número',expr:'4x'}],
+  [{txt:'La tercera parte de un número',expr:'x/3'},{txt:'El quíntuple de un número',expr:'5x'},{txt:'Un número disminuido en 12',expr:'x-12'},{txt:'El cubo de un número',expr:'x^3'},{txt:'El triple de la suma de dos números',expr:'3*(x+y)'},{txt:'La suma de dos números',expr:'x+y'}],
+  [{txt:'El doble de un número',expr:'2x'},{txt:'La cuarta parte de un número',expr:'x/4'},{txt:'Un número aumentado en su mitad',expr:'x+x/2'},{txt:'El cuadrado de un número menos su triple',expr:'x^2-3x'},{txt:'El doble del cociente de x entre y',expr:'2*(x/y)'},{txt:'La diferencia entre un número y 9',expr:'x-9'}],
+  [{txt:'El séptuple de un número',expr:'7x'},{txt:'La diferencia entre el cubo y el cuadrado de un número',expr:'x^3-x^2'},{txt:'El doble de la suma de dos números',expr:'2*(x+y)'},{txt:'El cuadrado de un número más 1',expr:'x^2+1'},{txt:'El triple del cociente de x entre y, disminuido en 1',expr:'3*(x/y)-1'},{txt:'Un número más su cuadrado',expr:'x+x^2'}],
+  [{txt:'El cuádruplo de un número',expr:'4x'},{txt:'La sexta parte de un número',expr:'x/6'},{txt:'Un número disminuido en su triple',expr:'x-3x'},{txt:'El cuadrado de la diferencia entre dos números',expr:'(x-y)^2'},{txt:'La mitad de la suma de dos números',expr:'(x+y)/2'},{txt:'Un número más su doble',expr:'x+2x'}],
+  [{txt:'El décuple de un número',expr:'10x'},{txt:'Un número menos su mitad',expr:'x-x/2'},{txt:'El cubo de un número menos 1',expr:'x^3-1'},{txt:'El cuádruple de la suma de dos números',expr:'4*(x+y)'},{txt:'El cociente de x entre 3',expr:'x/3'},{txt:'La suma de un número y su cuadrado',expr:'x+x^2'}]
+];
+
+var TRAD_B_BANCO = [
+  [{expr:'4x + 7',kw:['cuádruple','número','más','siete']},{expr:'(x+3)²',kw:['suma','cuadrado','tres']},{expr:'x/2 + 5',kw:['mitad','número','más','cinco']},{expr:'3(x+y)',kw:['triple','suma','dos']},{expr:'x² − 2x',kw:['cuadrado','doble','menos']}],
+  [{expr:'5x − 3',kw:['quíntuple','número','menos','tres']},{expr:'(x−2)²',kw:['cuadrado','diferencia','dos']},{expr:'x/3 + 1',kw:['tercera','parte','más','uno']},{expr:'2(x−y)',kw:['doble','diferencia','dos']},{expr:'x³ + x',kw:['cubo','número','más']}],
+  [{expr:'x + 2x',kw:['número','doble','suma']},{expr:'(x+1)²',kw:['suma','uno','cuadrado']},{expr:'2x/3',kw:['doble','tercera','parte']},{expr:'4(x+3)',kw:['cuádruple','suma','tres']},{expr:'x² + 1',kw:['cuadrado','número','más']}]
+];
+
+var SEMEJ_BANCO = [
+  {expr:'4x + 2y − x + 3y',res:'3x + 5y'},{expr:'6a² + 3a − 2a² + a',res:'4a² + 4a'},{expr:'5xy + 2x − 3xy + 4x',res:'2xy + 6x'},{expr:'3m + 4n − m + 2n + m',res:'3m + 6n'},{expr:'7x² − 2x + x² − 3x + 1',res:'8x² − 5x + 1'},{expr:'2ab + 3a − ab + 2a',res:'ab + 5a'},{expr:'9p − 4q + 3p + q − 2p',res:'10p − 3q'},{expr:'5x²y + 2xy² − 2x²y + xy²',res:'3x²y + 3xy²'}
+];
+
+var ERR_BANCO = [
+  {op:'3x<sup>2</sup> + 5x',res:'8x<sup>3</sup>', err_kw:['expo','semej','distint','grado'], corr:'3x² + 5x (no son semejantes, grado diferente)'},
+  {op:'4x + 3x',res:'7x<sup>2</sup>', err_kw:['expo','eleva','semej','sum'], corr:'7x'},
+  {op:'5a + 2b',res:'7ab', err_kw:['distint','variable','semej','multi'], corr:'5a + 2b (no son semejantes, variables distintas)'},
+  {op:'(2x)(3x)',res:'5x<sup>2</sup>', err_kw:['coef','sum','multi','product'], corr:'6x²'},
+  {op:'8y<sup>2</sup> − 3y<sup>2</sup>',res:'5y', err_kw:['expo','perdió','resultado'], corr:'5y²'},
+  {op:'x<sup>2</sup> · x<sup>3</sup>',res:'x<sup>6</sup>', err_kw:['sum','multi','expo'], corr:'x⁵'}
+];
+
+var MULTI_BASICA = [{expr:'x² · x⁵',res:'x^7'},{expr:'3x² · 4x³',res:'12x^5'},{expr:'5m · 2m⁴',res:'10m^5'},{expr:'7a³ · 2a',res:'14a^4'},{expr:'4n⁵ · 3n²',res:'12n^7'},{expr:'9k² · k⁴',res:'9k^6'}];
+var MULTI_SIGNOS = [{expr:'(−3x²)(4x³)',res:'-12x^5'},{expr:'(−2a)(−5a⁴)',res:'10a^5'},{expr:'(6m)(−3m⁵)',res:'-18m^6'},{expr:'(−4n²)(−4n²)',res:'16n^4'},{expr:'(−k)(7k³)',res:'-7k^4'},{expr:'(−2x²)(−3x)',res:'6x^3'}];
+var MULTI_DOSVAR = [{expr:'(2x²y)(3xy²)',res:'6x^3y^3'},{expr:'(4ab²)(2a³b)',res:'8a^4b^3'},{expr:'(3m²n³)(5mn)',res:'15m^3n^4'},{expr:'(−2xy)(3x²y²)',res:'-6x^3y^3'},{expr:'(5p³q)(2pq⁴)',res:'10p^4q^5'}];
+
+var COMP_BANCO = [
+  {q:'Explica con tus propias palabras la diferencia entre SUMAR y MULTIPLICAR dos monomios. ¿Qué le pasa a los coeficientes y a los exponentes en cada caso? Da un ejemplo de cada uno.', kw:['suma','multi','expo','coef','semej','result']},
+  {q:'Un compañero suma 3x² + 5x y obtiene 8x³. Explica detalladamente qué error cometió y cuál es la respuesta correcta. ¿Por qué esos dos términos no se pueden sumar así?', kw:['expo','semej','grado','distint','coef']},
+  {q:'¿Por qué x² y x NO son términos semejantes aunque los dos tienen la misma variable? Explica y da un ejemplo de términos que SÍ sean semejantes y otro que NO lo sean.', kw:['expo','grado','semej','variable','distint']},
+  {q:'Un alumno calcula (−3x²)(−4x³) = −12x⁵. ¿Tiene razón? Explica qué dice la ley de signos al multiplicar y cómo afecta al resultado. ¿Cuál es la respuesta correcta?', kw:['signo','negat','posit','result','ley']},
+  {q:'Explica con tus palabras qué significa el coeficiente y el exponente en la expresión 5x³. ¿Qué le pasaría al resultado si cambias el coeficiente? ¿Y si cambias el exponente?', kw:['coef','expo','variable','signific','camb']}
+];
+
+// ======================= VARIABLES GLOBALES =======================
+var nombreAlumno = '';
+var preguntas = [];
+var respuestas = [];
+var intentos = [];
+var saltadas = [];
+var qActual = 0;
+var modoRecorrer = false;
+var LETRAS = ['A','B','C','D','E'];
+var _campoActivo = null;
+var examenEnCurso = false;       // Flag para saber si el examen está activo (pregunta visible y no finalizado)
+var reinicioPorVisibilidad = false; 
+
+// ======================= FUNCIONES AUXILIARES =======================
+function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+function pickN(arr,n){ var a=arr.slice(),r=[]; for(var i=0;i<n&&a.length;i++){var j=Math.floor(Math.random()*a.length);r.push(a.splice(j,1)[0]);} return r; }
+function barajarOps(q){ var n=q.ops.length,ord=[]; for(var i=0;i<n;i++) ord.push(i); ord.sort(function(){return Math.random()-.5;}); var ops=[], okIdx=0; for(var i=0;i<ord.length;i++){ ops.push(q.ops[ord[i]]); if(ord[i]===q.ok) okIdx=i; } return {ops:ops,okIdx:okIdx}; }
+
+function normExpr(s){ return (s||'').trim().toLowerCase().replace(/\s+/g,'').replace(/²/g,'^2').replace(/³/g,'^3'); }
+function normalizarEstructural(expr, ignorarVariables){ var n=normExpr(expr); if(ignorarVariables){ n=n.replace(/[a-z]/g,'x'); n=n.replace(/[*×]/g,''); } return n; }
+function hasLetter(s){ return /[a-zA-Z]/.test(s); }
+function valKw(txt, kws){ var t=(txt||'').toLowerCase(); for(var i=0;i<kws.length;i++) if(t.indexOf(kws[i])!==-1) return true; return false; }
+
+// ======================= GENERACIÓN DEL EXAMEN =======================
+function generarExamen(){
+  preguntas = [];
+  var omc1=pick(QB_INI[0]), omc2=pick(QB_INI[2]), omc3=pick(QB_INI[4]);
+  var b1=barajarOps(omc1), b2=barajarOps(omc2), b3=barajarOps(omc3);
+  preguntas.push({tipo:'omc',sub:'Vocabulario',color:'mo',dato:omc1,ops:b1.ops,okIdx:b1.okIdx});
+  preguntas.push({tipo:'omc',sub:'Clasificación / Semejantes',color:'v',dato:omc2,ops:b2.ops,okIdx:b2.okIdx});
+  preguntas.push({tipo:'omc',sub:'Multiplicación',color:'a',dato:omc3,ops:b3.ops,okIdx:b3.okIdx});
+  var setTradA=pick(TRAD_A_BANCO), tradASel=pickN(setTradA,2);
+  for(var i=0;i<tradASel.length;i++) preguntas.push({tipo:'trad_a',sub:'Traducción A',color:'mo',dato:tradASel[i]});
+  var setTradB=pick(TRAD_B_BANCO), tradBSel=pickN(setTradB,2);
+  for(var i=0;i<tradBSel.length;i++) preguntas.push({tipo:'trad_b',sub:'Traducción B',color:'v',dato:tradBSel[i]});
+  var ctx=pick(CONTEXTOS); preguntas.push({tipo:'situacion',sub:'Situación CDMX',color:'a',dato:ctx});
+  var semej=pickN(SEMEJ_BANCO,2); for(var i=0;i<semej.length;i++) preguntas.push({tipo:'semej',sub:'Términos semejantes',color:'am',dato:semej[i]});
+  var errs=pickN(ERR_BANCO,2); for(var i=0;i<errs.length;i++) preguntas.push({tipo:'error',sub:'Detecta el error',color:'r',dato:errs[i]});
+  var mb=pick(MULTI_BASICA), ms=pick(MULTI_SIGNOS), md=pick(MULTI_DOSVAR);
+  preguntas.push({tipo:'multi',sub:'Multiplicación básica',color:'a',dato:mb});
+  preguntas.push({tipo:'multi',sub:'Multiplicación con signos',color:'r',dato:ms});
+  preguntas.push({tipo:'multi',sub:'Multiplicación dos variables',color:'tie',dato:md});
+  var qA=pickN(QB_QUIZ[0],2), qB=pickN(QB_QUIZ[1],2), qC=pickN(QB_QUIZ[2],2);
+  var quizSel=qA.concat(qB).concat(qC); quizSel=quizSel.sort(function(){return Math.random()-.5;});
+  for(var i=0;i<quizSel.length;i++){ var bq=barajarOps(quizSel[i]); preguntas.push({tipo:'omc_quiz',sub:'Quiz final',color:'mo',dato:quizSel[i],ops:bq.ops,okIdx:bq.okIdx}); }
+  var comp=pick(COMP_BANCO); preguntas.push({tipo:'comprension',sub:'Comprensión',color:'v',dato:comp});
+  respuestas=new Array(preguntas.length).fill(null); intentos=new Array(preguntas.length).fill(0); saltadas=new Array(preguntas.length).fill(false);
+}
+
+// ======================= BARRA DE SÍMBOLOS =======================
+function simInsert(c){
+  if(!_campoActivo) return;
+  var el=_campoActivo, s=el.value, start=el.selectionStart!==undefined?el.selectionStart:s.length, end=el.selectionEnd!==undefined?el.selectionEnd:s.length;
+  el.value=s.substring(0,start)+c+s.substring(end);
+  var pos=start+c.length; try{el.setSelectionRange(pos,pos);}catch(e){}
+  el.focus(); actualizarPreview(el);
+  var id=el.getAttribute('data-qidx'); if(id!==null) respuestas[parseInt(id)]=el.value;
+}
+function simDel(){
+  if(!_campoActivo) return;
+  var el=_campoActivo, s=el.value, pos=el.selectionStart!==undefined?el.selectionStart:s.length;
+  if(pos>0){ el.value=s.substring(0,pos-1)+s.substring(pos); try{el.setSelectionRange(pos-1,pos-1);}catch(e){} }
+  el.focus(); actualizarPreview(el);
+  var id=el.getAttribute('data-qidx'); if(id!==null) respuestas[parseInt(id)]=el.value;
+}
+function actualizarPreview(el){
+  var prevId=el.getAttribute('data-prev'); if(!prevId) return;
+  var prev=document.getElementById(prevId); if(!prev) return;
+  var v=el.value; if(!v){ prev.innerHTML='<span style="color:#ccc;font-style:italic;">Tu expresión aquí...</span>'; return; }
+  var r=v.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  r=r.replace(/\^([0-9]+)/g,'<sup>$1</sup>');
+  r=r.replace(/([a-zA-Z0-9]+(?:<sup>[^<]+<\/sup>)?)\/([a-zA-Z0-9]+)/g,'<span style="display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;font-size:.88em;margin:0 2px;"><span style="border-bottom:1.5px solid currentColor;padding:0 3px;">$1</span><span style="padding:0 3px;">$2</span></span>');
+  prev.innerHTML=r;
+}
+function htmlBarraSimbolos(campoId,prevId){
+  return '<div class="sym-bar" onmousedown="return false"><button class="sym-btn op" type="button" onmousedown="return false" onclick="simInsert(\'^\')">^</button><button class="sym-btn op" type="button" onmousedown="return false" onclick="simInsert(\'(\')">( )</button><button class="sym-btn op" type="button" onmousedown="return false" onclick="simInsert(\')\')">)</button><button class="sym-btn op" type="button" onmousedown="return false" onclick="simInsert(\'+\')">+</button><button class="sym-btn neg" type="button" onmousedown="return false" onclick="simInsert(\'-\')">−</button><button class="sym-btn op" type="button" onmousedown="return false" onclick="simInsert(\'*\')">×</button><button class="sym-btn op" type="button" onmousedown="return false" onclick="simInsert(\'/\')">/</button><button class="sym-btn del" type="button" onmousedown="return false" onclick="simDel()">⌫</button></div><span class="sym-hint">^ = exponente &nbsp;·&nbsp; / = división &nbsp;·&nbsp; × = multiplicación</span><span class="sym-preview" id="'+prevId+'"><span style="color:#ccc;font-style:italic;">Tu expresión aquí...</span></span>';
+}
+function htmlCampoExpr(qIdx,placeholder){
+  var campoId='campo-'+qIdx, prevId='prev-'+qIdx;
+  return htmlBarraSimbolos(campoId,prevId)+'<input type="text" class="inp-field" id="'+campoId+'" data-qidx="'+qIdx+'" data-prev="'+prevId+'" placeholder="'+placeholder+'" oncopy="return false" onpaste="return false" oncut="return false" oncontextmenu="return false">';
+}
+
+// ======================= RENDER DE PREGUNTAS =======================
+function renderPregunta(idx){
+  var q=preguntas[idx];
+  var html='';
+  var colorMap={mo:'qcard-mo',v:'qcard-v',a:'qcard-a',am:'qcard-am',r:'qcard-r',tie:'qcard-tie'};
+  var tbMap={mo:'tb-mo',v:'tb-v',a:'tb-a',am:'tb-am',r:'tb-r',tie:'tb-tie'};
+  html+='<div class="tipo-badge '+tbMap[q.color]+'">'+q.sub+'</div><div class="qcard '+colorMap[q.color]+'">';
+  if(q.tipo==='omc'||q.tipo==='omc_quiz'){
+    html+='<div class="qtexto">'+q.dato.p+'</div><div class="opts">';
+    var sel=respuestas[idx];
+    for(var i=0;i<q.ops.length;i++){
+      var clsSel=(sel!==null && sel===i)?' sel':'';
+      html+='<div class="opt'+clsSel+'" onclick="selOpc('+idx+','+i+')"><div class="opt-letra">'+LETRAS[i]+'</div><div>'+q.ops[i]+'</div></div>';
+    }
+    html+='</div>';
+  } else if(q.tipo==='trad_a'){
+    html+='<div class="qtexto">Escribe la expresión algebraica que representa:<br><span class="expr">'+q.dato.txt+'</span></div>'+htmlCampoExpr(idx,'ej: 2x, (x+?)^2, x/?')+'<p class="hint">Escribe usando letras, números y los botones de arriba para ^, /, paréntesis.</p>';
+  } else if(q.tipo==='trad_b'){
+    html+='<div class="qtexto">Escribe con tus palabras lo que representa la siguiente expresión algebraica:<br><span class="expr">'+q.dato.expr+'</span></div><textarea class="inp-field" id="campo-'+idx+'" data-qidx="'+idx+'" rows="3" placeholder="Escribe con tus propias palabras..." oncopy="return false" onpaste="return false" oncut="return false" oncontextmenu="return false"></textarea>';
+  } else if(q.tipo==='situacion'){
+    var ctx=q.dato;
+    html+='<div style="background:linear-gradient(135deg,#e3f2fd,var(--mo-f));border:2px solid var(--mo3);border-radius:11px;padding:12px 13px;margin-bottom:10px;"><div style="display:inline-block;background:var(--az2);color:#fff;border-radius:7px;padding:3px 11px;font-size:.72rem;font-weight:800;margin-bottom:7px;">'+ctx.nom+'</div><p class="instr">'+ctx.sit+'</p><div style="display:flex;flex-direction:column;gap:5px;margin:7px 0;"><div style="background:#e3f2fd;border-radius:7px;padding:5px 9px;font-size:.82rem;font-weight:700;">'+ctx.items[0].desc+' → $'+ctx.items[0].precio+' c/u &nbsp;·&nbsp; variable: <span style="color:var(--mo2);font-family:monospace;">'+ctx.items[0].vr+'</span></div><div style="background:#e3f2fd;border-radius:7px;padding:5px 9px;font-size:.82rem;font-weight:700;">'+ctx.items[1].desc+' → $'+ctx.items[1].precio+' c/u &nbsp;·&nbsp; variable: <span style="color:var(--mo2);font-family:monospace;">'+ctx.items[1].vr+'</span></div></div></div><p class="instr">Escribe la expresión algebraica que representa el <strong>costo total</strong> de la compra:</p>'+htmlCampoExpr(idx,'ej: precio × variable + precio × variable');
+  } else if(q.tipo==='semej'){
+    html+='<div class="qtexto">Simplifica la siguiente expresión combinando los términos semejantes:<br><span class="expr">'+q.dato.expr+'</span></div>'+htmlCampoExpr(idx,'resultado simplificado')+'<p class="hint">Si dos términos tienen distinta variable o distinto exponente, no se pueden combinar — escríbelos tal como quedan.</p>';
+  } else if(q.tipo==='error'){
+    html+='<div class="det-instruccion"><strong>¿Cómo funciona esta pregunta?</strong>Verás una operación con un resultado <em>incorrecto</em>. Debes: (1) explicar cuál es el error, y (2) escribir la corrección. <strong>Si los términos no se pueden simplificar, escríbelos exactamente igual que en la pregunta.</strong></div><div class="expr-error">'+q.dato.op+' = '+q.dato.res+'<span class="err-tag">⚠ Esta operación tiene un error — detéctalo</span></div><p class="instr" style="margin-bottom:4px;"><strong>1. Explica el error:</strong></p><textarea class="inp-field" id="campo-err-'+idx+'" data-qidx="'+idx+'" rows="2" placeholder="El error es... porque..." oncopy="return false" onpaste="return false" oncut="return false" oncontextmenu="return false"></textarea><p class="instr" style="margin-top:8px;margin-bottom:4px;"><strong>2. Escribe la corrección:</strong></p>'+htmlCampoExpr('corr-'+idx,'resultado correcto');
+  } else if(q.tipo==='multi'){
+    html+='<div class="qtexto">Calcula el resultado de la multiplicación:<br><span class="expr">'+q.dato.expr+'</span></div>'+htmlCampoExpr(idx,'resultado')+'<p class="hint">Solo el resultado final. Recuerda: coeficientes se multiplican, exponentes se suman.</p>';
+  } else if(q.tipo==='comprension'){
+    html+='<div class="qtexto">'+q.dato.q+'</div><p class="hint" style="margin-bottom:6px;">Mínimo 60 caracteres. Usa tus propias palabras.</p><textarea class="inp-field" id="campo-'+idx+'" data-qidx="'+idx+'" rows="5" placeholder="Escribe tu explicación aquí..." oncopy="return false" onpaste="return false" oncut="return false" oncontextmenu="return false"></textarea>';
+  }
+  html+='</div>';
+  document.getElementById('pregunta-contenido').innerHTML=html;
+  conectarCampos(idx,q);
+  document.getElementById('btn-ant').style.display=idx>0?'block':'none';
+  var esUltima=idx===preguntas.length-1;
+  document.getElementById('btn-sig').style.display=esUltima?'none':'block';
+  document.getElementById('btn-fin').style.display=esUltima?'block':'none';
+  document.getElementById('aviso-intento').className='aviso-intento';
+  document.getElementById('aviso-intento').innerHTML='';
+  actualizarBarra();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function conectarCampos(idx,q){
+  var campo=document.getElementById('campo-'+idx);
+  if(campo){
+    if(respuestas[idx]!==null && typeof respuestas[idx]==='string') campo.value=respuestas[idx];
+    campo.addEventListener('focus',function(){ _campoActivo=this; });
+    campo.addEventListener('input',function(){ respuestas[idx]=this.value; actualizarPreview(this); });
+    campo.addEventListener('paste',function(e){ e.preventDefault(); });
+    campo.addEventListener('copy',function(e){ if(campo.id==='inp-nombre') return; e.preventDefault(); });
+    campo.addEventListener('cut',function(e){ e.preventDefault(); });
+    campo.addEventListener('contextmenu',function(e){ e.preventDefault(); });
+  }
+  var campoErr=document.getElementById('campo-err-'+idx);
+  if(campoErr){
+    if(respuestas[idx]!==null && typeof respuestas[idx]==='object' && respuestas[idx].err) campoErr.value=respuestas[idx].err;
+    campoErr.addEventListener('focus',function(){ _campoActivo=null; });
+    campoErr.addEventListener('input',function(){ var corrEl=document.getElementById('campo-corr-'+idx); var corrVal=corrEl?corrEl.value:''; respuestas[idx]={err:this.value, corr:corrVal}; });
+    campoErr.addEventListener('paste',function(e){ e.preventDefault(); });
+    campoErr.addEventListener('copy',function(e){ e.preventDefault(); });
+    campoErr.addEventListener('cut',function(e){ e.preventDefault(); });
+    campoErr.addEventListener('contextmenu',function(e){ e.preventDefault(); });
+  }
+  var campoCorr=document.getElementById('campo-corr-'+idx);
+  if(campoCorr){
+    if(respuestas[idx]!==null && typeof respuestas[idx]==='object' && respuestas[idx].corr) campoCorr.value=respuestas[idx].corr;
+    campoCorr.addEventListener('focus',function(){ _campoActivo=this; });
+    campoCorr.addEventListener('input',function(){ var errEl=document.getElementById('campo-err-'+idx); var errVal=errEl?errEl.value:''; respuestas[idx]={err:errVal, corr:this.value}; actualizarPreview(this); });
+    campoCorr.addEventListener('paste',function(e){ e.preventDefault(); });
+    campoCorr.addEventListener('copy',function(e){ e.preventDefault(); });
+    campoCorr.addEventListener('cut',function(e){ e.preventDefault(); });
+    campoCorr.addEventListener('contextmenu',function(e){ e.preventDefault(); });
+  }
+}
+function selOpc(idx,optIdx){ respuestas[idx]=optIdx; var opts=document.querySelectorAll('.opt'); for(var i=0;i<opts.length;i++) opts[i].classList.remove('sel'); var optEl=document.querySelectorAll('.opt')[optIdx]; if(optEl) optEl.classList.add('sel'); }
+
+// ======================= NAVEGACIÓN =======================
+function estaContestada(idx){
+  if(modoRecorrer || saltadas[idx]) return true;
+  var q=preguntas[idx], r=respuestas[idx];
+  if(q.tipo==='omc'||q.tipo==='omc_quiz') return r!==null && r>=0;
+  if(q.tipo==='error') return r!==null && typeof r==='object' && r.err && r.err.trim().length>=3 && r.corr && r.corr.trim().length>=1;
+  if(q.tipo==='trad_b'||q.tipo==='comprension'){ var el=document.getElementById('campo-'+idx); var val=el?el.value.trim():(r||''); return val.length>=5; }
+  var el=document.getElementById('campo-'+idx); var val=el?el.value.trim():(typeof r==='string'?r:''); return val.length>=1;
+}
+function irSiguiente(){
+  if(!estaContestada(qActual)){
+    intentos[qActual]++;
+    var av=document.getElementById('aviso-intento');
+    if(intentos[qActual]>=3){ saltadas[qActual]=true; av.className='aviso-intento aviso-saltada show'; av.innerHTML='⚠️ Esta pregunta se saltó automáticamente y valdrá 0 puntos.'; setTimeout(function(){ irSiguienteReal(); },1200); return; }
+    av.className='aviso-intento show'; av.innerHTML='✏️ Contesta esta pregunta antes de avanzar. (Intento '+intentos[qActual]+'/3)'; return;
+  }
+  irSiguienteReal();
+}
+function irSiguienteReal(){ if(qActual<preguntas.length-1){ qActual++; renderPregunta(qActual); } }
+function irAnterior(){ if(qActual>0){ qActual--; renderPregunta(qActual); } }
+function pedirFinalizar(){
+  if(!estaContestada(qActual)){
+    intentos[qActual]++;
+    var av=document.getElementById('aviso-intento');
+    if(intentos[qActual]>=3){ saltadas[qActual]=true; av.className='aviso-intento aviso-saltada show'; av.innerHTML='⚠️ Esta pregunta se saltó automáticamente y valdrá 0 puntos.'; setTimeout(function(){ document.getElementById('modal-confirm').classList.add('show'); },1200); return; }
+    av.className='aviso-intento show'; av.innerHTML='✏️ Contesta esta pregunta antes de entregar. (Intento '+intentos[qActual]+'/3)'; return;
+  }
+  document.getElementById('modal-confirm').classList.add('show');
+}
+function confirmarFinalizar(){ document.getElementById('modal-confirm').classList.remove('show'); mostrarResultados(); examenEnCurso = false; }
+function actualizarBarra(){
+  var total=preguntas.length, pct=Math.round((qActual/(total-1))*100);
+  document.getElementById('prog-bar').style.width=pct+'%';
+  document.getElementById('prog-label').textContent='Pregunta '+(qActual+1)+' de '+total;
+  document.getElementById('prog-tipo-lbl').textContent=preguntas[qActual]?preguntas[qActual].sub:'';
+  var dots=document.getElementById('prog-dots'); dots.innerHTML='';
+  for(var i=0;i<total;i++){ var d=document.createElement('div'); d.className='prog-dot'; if(i===qActual) d.className+=' activa'; else if(saltadas[i]) d.className+=' saltada'; else if(respuestas[i]!==null) d.className+=' done'; d.textContent=i+1; dots.appendChild(d); }
+}
+
+// ======================= CALIFICACIÓN =======================
+function calcNota(){
+  var pts=0, det=[];
+  var omc_ok=0; for(var i=0;i<3;i++) if(!saltadas[i] && respuestas[i]!==null && respuestas[i]===preguntas[i].okIdx) omc_ok++; pts+=Math.round(omc_ok*0.4*10)/10; det.push({cat:'OMC Inicial',pts:Math.round(omc_ok*0.4*10)/10,max:1.2,d:omc_ok+'/3'});
+  var tra_pts=0; for(var i=3;i<=4;i++) if(!saltadas[i]){ var val=(document.getElementById('campo-'+i)?document.getElementById('campo-'+i).value.trim():respuestas[i]); var esp=preguntas[i].dato.expr; if(normalizarEstructural(val,true)===normalizarEstructural(esp,true)) tra_pts+=0.4; } tra_pts=Math.min(Math.round(tra_pts*10)/10,0.8); pts+=tra_pts; det.push({cat:'Traducción A',pts:tra_pts,max:0.8});
+  var trb_pts=0; for(var i=5;i<=6;i++) if(!saltadas[i]){ var val=document.getElementById('campo-'+i)?document.getElementById('campo-'+i).value.trim():respuestas[i]; if(val.length>=8 && valKw(val,preguntas[i].dato.kw)) trb_pts+=0.3; else if(val.length>=8) trb_pts+=0.15; } trb_pts=Math.min(Math.round(trb_pts*10)/10,0.6); pts+=trb_pts; det.push({cat:'Traducción B',pts:trb_pts,max:0.6});
+  var sit_pts=0; if(!saltadas[7]){ var val=document.getElementById('campo-7')?document.getElementById('campo-7').value.trim():respuestas[7]; var ctx=preguntas[7].dato; var esp=ctx.items[0].precio+ctx.items[0].vr+'+'+ctx.items[1].precio+ctx.items[1].vr; if(normalizarEstructural(val,true)===normalizarEstructural(esp,true)) sit_pts=0.6; } pts+=sit_pts; det.push({cat:'Situación CDMX',pts:sit_pts,max:0.6});
+  var sem_pts=0; for(var i=8;i<=9;i++) if(!saltadas[i]){ var val=document.getElementById('campo-'+i)?document.getElementById('campo-'+i).value.trim():respuestas[i]; var esp=normalizarEstructural(preguntas[i].dato.res,false); var got=normalizarEstructural(val,false); if(got===esp) sem_pts+=0.4; else if(val.length>=2) sem_pts+=0.1; } sem_pts=Math.min(Math.round(sem_pts*10)/10,0.8); pts+=sem_pts; det.push({cat:'Semejantes',pts:sem_pts,max:0.8});
+  var err_pts=0; for(var i=10;i<=11;i++) if(!saltadas[i]){ var r=respuestas[i]; if(r && typeof r==='object'){ if(r.err && r.err.trim().length>=8 && valKw(r.err,preguntas[i].dato.err_kw)) err_pts+=0.2; else if(r.err && r.err.trim().length>=8) err_pts+=0.1; if(r.corr && r.corr.trim().length>=1) err_pts+=0.2; } } err_pts=Math.min(Math.round(err_pts*10)/10,0.8); pts+=err_pts; det.push({cat:'Detecta el error',pts:err_pts,max:0.8});
+  var mul_pts=0; for(var i=12;i<=14;i++) if(!saltadas[i]){ var val=document.getElementById('campo-'+i)?document.getElementById('campo-'+i).value.trim():respuestas[i]; var esp=normalizarEstructural(preguntas[i].dato.res,false); var got=normalizarEstructural(val,false); if(got===esp) mul_pts+=0.4; else if(hasLetter(val)) mul_pts+=0.1; } mul_pts=Math.min(Math.round(mul_pts*10)/10,1.2); pts+=mul_pts; det.push({cat:'Multiplicación',pts:mul_pts,max:1.2});
+  var quiz_ok=0; for(var i=15;i<=20;i++) if(!saltadas[i] && respuestas[i]!==null && respuestas[i]===preguntas[i].okIdx) quiz_ok++; var quiz_pts=Math.round(quiz_ok*0.25*10)/10; pts+=quiz_pts; det.push({cat:'Quiz final',pts:quiz_pts,max:1.5,d:quiz_ok+'/6'});
+  var compIdx=preguntas.length-1, comp_pts=0; if(!saltadas[compIdx]){ var val=document.getElementById('campo-'+compIdx)?document.getElementById('campo-'+compIdx).value.trim():respuestas[compIdx]; if(val.length>=40 && valKw(val,preguntas[compIdx].dato.kw)) comp_pts=1.5; else if(val.length>=30 && valKw(val,preguntas[compIdx].dato.kw)) comp_pts=1.0; else if(val.length>=20 && valKw(val,preguntas[compIdx].dato.kw)) comp_pts=0.5; else if(val.length>=30) comp_pts=0.5; } pts+=comp_pts; det.push({cat:'Comprensión',pts:comp_pts,max:1.5});
+  return {total:Math.min(Math.round(pts*10)/10,10), det:det};
+}
+
+// ======================= RESULTADOS =======================
+function mostrarResultados(){
+  examenEnCurso = false;
+  document.getElementById('pantalla-pregunta').className='pregunta-wrap'; document.getElementById('prog-wrap').style.display='none';
+  var nom=nombreAlumno, nota=calcNota();
+  var msg=nota.total>=9?'Excelente. Dominas los contenidos del curso.':nota.total>=7?'Buen resultado. Repasa las secciones con ❌.':nota.total>=6?'Suficiente. Hay áreas de oportunidad importantes.':'Por debajo del mínimo. Revisa cada sección con detalle.';
+  var em=nota.total>=9?'🎉':nota.total>=7?'📘':nota.total>=6?'💡':'⚡';
+  var wmR=''; for(var i=0;i<8;i++) wmR+='<div class="res-wm-row">'+nom+' · Examen PM2 · '+nom+'</div>';
+  var html='<div class="res-hdr"><div class="res-wm">'+wmR+'</div><div style="background:rgba(255,255,255,.18);border-radius:10px;padding:7px 18px;display:inline-block;margin-bottom:8px;"><span style="font-size:.6rem;font-weight:800;letter-spacing:1.5px;opacity:.75;display:block;text-transform:uppercase;">Alumno</span><span style="font-size:1.05rem;font-weight:900;">'+nom+'</span></div><br><div style="font-size:2rem;">'+em+'</div><div class="res-nota">'+nota.total+'<span style="font-size:1.2rem;opacity:.7;">/10</span></div><div style="font-size:.82rem;opacity:.85;max-width:280px;margin:6px auto;">'+msg+'</div><div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:10px;">';
+  for(var i=0;i<nota.det.length;i++){ var d=nota.det[i]; var col=d.pts>=d.max*0.8?'#a5d6a7':d.pts>=d.max*0.6?'#fff59d':'#ef9a9a'; html+='<div style="background:rgba(255,255,255,.15);border-radius:7px;padding:3px 9px;font-size:.72rem;font-weight:700;">'+d.cat+': <strong style="color:'+col+';">'+d.pts+'/'+d.max+'</strong>'+(d.d?' ('+d.d+')':'')+'</div>'; }
+  html+='</div></div><div class="res-card" style="border-left:4px solid var(--mo2);"><div style="font-size:.75rem;font-weight:800;color:var(--mo);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Detalle de respuestas</div><div style="overflow-x:auto;"><table class="res-tabla"><thead><th>#</th><th>Tipo</th><th>Tu respuesta</th><th>Correcto / Esperado</th><th></th></thead><tbody>';
+  for(var i=0;i<preguntas.length;i++){
+    var q=preguntas[i], r=respuestas[i], correcto=false, tuResp='—', esperado='—', skipRow=saltadas[i];
+    if(q.tipo==='omc'||q.tipo==='omc_quiz'){ tuResp=(r!==null && r>=0)?q.ops[r]:'—'; esperado=q.ops[q.okIdx]; correcto=!skipRow && r===q.okIdx; }
+    else if(q.tipo==='trad_a'){ var el=document.getElementById('campo-'+i); tuResp=el?el.value.trim():r; if(!tuResp)tuResp='—'; esperado=q.dato.expr; correcto=!skipRow && normalizarEstructural(tuResp,true)===normalizarEstructural(esperado,true); }
+    else if(q.tipo==='multi'||q.tipo==='semej'){ var el=document.getElementById('campo-'+i); tuResp=el?el.value.trim():r; if(!tuResp)tuResp='—'; esperado=q.dato.res; correcto=!skipRow && normalizarEstructural(tuResp,false)===normalizarEstructural(esperado,false); }
+    else if(q.tipo==='trad_b'){ var el=document.getElementById('campo-'+i); tuResp=el?el.value.trim():r; if(!tuResp)tuResp='—'; esperado='(respuesta libre — revisa palabras clave)'; correcto=!skipRow&&tuResp.length>=8; }
+    else if(q.tipo==='situacion'){ var el=document.getElementById('campo-'+i); tuResp=el?el.value.trim():r; var ctx=q.dato; esperado=ctx.items[0].precio+ctx.items[0].vr+'+'+ctx.items[1].precio+ctx.items[1].vr; correcto=!skipRow && normalizarEstructural(tuResp,true)===normalizarEstructural(esperado,true); }
+    else if(q.tipo==='error'){ var errEl=document.getElementById('campo-err-'+i); var corrEl=document.getElementById('campo-corr-'+i); var errTxt=errEl?errEl.value.trim():(r&&r.err?r.err:'—'); var corrTxt=corrEl?corrEl.value.trim():(r&&r.corr?r.corr:'—'); tuResp='Error: '+errTxt+' / Corrección: '+corrTxt; esperado='Corrección: '+q.dato.corr; correcto=!skipRow&&errTxt.length>=8&&corrTxt.length>=1; }
+    else if(q.tipo==='comprension'){ var el=document.getElementById('campo-'+i); tuResp=el?el.value.trim():r; if(!tuResp)tuResp='—'; esperado='Explicación con palabras clave del tema'; correcto=!skipRow&&tuResp.length>=40&&valKw(tuResp,q.dato.kw); }
+    var rowClass=skipRow?'skip-row':(correcto?'ok-row':'nook-row');
+    html+='<tr class="'+rowClass+'"><td>'+(i+1)+'</td><td>'+q.sub+'</td><td style="max-width:160px;word-break:break-word;">'+tuResp+'</td><td style="max-width:130px;word-break:break-word;">'+esperado+'</td><td style="text-align:center;">'+(skipRow?'⏭':correcto?'✅':'❌')+'</td></tr>';
+    if((q.tipo==='omc'||q.tipo==='omc_quiz')&&q.dato.ex) html+='<tr class="fb-row"><td colspan="5">'+q.dato.ex+'</td></tr>';
+  }
+  html+='</tbody></table></div></div><div style="background:linear-gradient(135deg,var(--ver),#1b5e20);border-radius:12px;padding:13px;margin:10px 0;"><div style="font-family:\'Bebas Neue\';font-size:1.15rem;color:#fff;margin-bottom:4px;">Esta tabla es tu guía de repaso</div><div style="background:rgba(255,255,255,.12);border-radius:8px;padding:8px 12px;font-size:.8rem;color:#fff;line-height:1.65;">Revisa las filas marcadas con ❌ y compara tu respuesta con la esperada. En las preguntas abiertas, busca las palabras clave del tema.</div></div><div style="background:#fff3cd;border:2px solid var(--am);border-radius:10px;padding:11px;font-size:.79rem;line-height:1.7;margin-bottom:12px;"><strong>📷 Entrega en Classroom:</strong> Captura larga o PDF de <em>toda</em> la página.<br>Chrome: Menú ⋮ → Imprimir → Guardar como PDF.<br><strong style="color:var(--roj);">⚠️ Una sola imagen · No se aceptan capturas parciales.</strong></div><button class="btn-pdf" onclick="guardarPDF()">💾 Guardar como PDF</button>';
+  document.getElementById('res-contenido').innerHTML=html;
+  document.getElementById('pantalla-resultados').className='res-wrap on';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ======================= REINICIO POR PÉRDIDA DE FOCO (minimizar / cambio pestaña) =======================
+function reiniciarExamenPorPerdidaFoco() {
+  if (!examenEnCurso) return;          // Solo reinicia si el examen está activo (en medio de preguntas)
+  if (modoRecorrer) return;            // Modo docente no se reinicia automáticamente
+  // Marcar que se reinicia para evitar doble llamada
+  examenEnCurso = false;
+  // Limpiar estado
+  nombreAlumno = '';
+  preguntas = [];
+  respuestas = [];
+  intentos = [];
+  saltadas = [];
+  qActual = 0;
+  modoRecorrer = false;
+  _campoActivo = null;
+  // Ocultar pantallas de examen y resultados, mostrar inicio
+  document.getElementById('pantalla-pregunta').className = 'pregunta-wrap';
+  document.getElementById('pantalla-resultados').className = 'res-wrap';
+  document.getElementById('prog-wrap').style.display = 'none';
+  document.getElementById('pantalla-inicio').style.display = 'block';
+  // Limpiar campos del inicio
+  var inpNombre = document.getElementById('inp-nombre');
+  if (inpNombre) inpNombre.value = '';
+  var iniErr = document.getElementById('ini-err');
+  if (iniErr) iniErr.classList.remove('show');
+  // Mostrar mensaje emergente de reinicio
+  alert('⚠️ El examen se ha REINICIADO porque detectamos que cambiaste de pestaña, minimizaste la ventana o bloqueaste la pantalla.\nPor razones de integridad académica, debes volver a comenzar desde cero.\nAsegúrate de mantener esta pestaña activa hasta entregar el examen.');
+  // Asegurar scroll
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// Detectar pérdida de visibilidad (cambio de pestaña, minimizar, bloqueo pantalla)
+document.addEventListener('visibilitychange', function() {
+  if (document.hidden) {
+    // La página se ocultó (cambio de pestaña, minimizar, bloqueo). Marcamos que hubo una ocultación.
+    // No reiniciamos inmediatamente porque puede ser momentáneo, pero al regresar reiniciamos.
+    window._examenOculto = true;
+  } else {
+    // La página volvió a ser visible. Si estaba activo el examen y hubo ocultación previa, reiniciamos.
+    if (window._examenOculto === true && examenEnCurso && !modoRecorrer) {
+      window._examenOculto = false;
+      reiniciarExamenPorPerdidaFoco();
+    } else {
+      window._examenOculto = false;
+    }
+  }
+});
+
+// También prevenir que el usuario haga clic fuera (blur de la ventana) como medida extra
+window.addEventListener('blur', function() {
+  if (examenEnCurso && !modoRecorrer) {
+    window._examenBlur = true;
+  }
+});
+window.addEventListener('focus', function() {
+  if (window._examenBlur === true && examenEnCurso && !modoRecorrer) {
+    window._examenBlur = false;
+    reiniciarExamenPorPerdidaFoco();
+  } else {
+    window._examenBlur = false;
+  }
+});
+
+// ======================= INICIO Y DOCENTE =======================
+function comenzar(){
+  var n=document.getElementById('inp-nombre').value.trim();
+  if(n.length<5){ document.getElementById('ini-err').classList.add('show'); document.getElementById('inp-nombre').focus(); return; }
+  document.getElementById('ini-err').classList.remove('show');
+  nombreAlumno=n; generarExamen();
+  document.getElementById('pantalla-inicio').style.display='none';
+  document.getElementById('prog-wrap').style.display='block';
+  document.getElementById('pantalla-pregunta').className='pregunta-wrap on';
+  examenEnCurso = true;
+  window._examenOculto = false;
+  window._examenBlur = false;
+  qActual=0; renderPregunta(0);
+}
+function guardarPDF(){ window.scrollTo({top:0,behavior:'instant'}); setTimeout(function(){window.print();},300); }
+function abrirDoc(){ document.getElementById('modal-doc').classList.add('show'); }
+function cerrarDoc(){ document.getElementById('modal-doc').classList.remove('show'); document.getElementById('doc-cod').value=''; document.getElementById('doc-err').style.display='none'; }
+function chkDoc(){ var v=document.getElementById('doc-cod').value.trim(); if(v==='890'||v==='890ac'||v==='890AC'){ document.getElementById('doc-login').style.display='none'; document.getElementById('doc-panel').style.display='block'; } else { document.getElementById('doc-err').style.display='block'; document.getElementById('doc-cod').value=''; } }
+function docSaltar(){ cerrarDoc(); document.getElementById('inp-nombre').value='Modo Docente Demo'; document.getElementById('ini-err').classList.remove('show'); generarExamen(); for(var i=0;i<preguntas.length;i++){ var q=preguntas[i]; if(q.tipo==='omc'||q.tipo==='omc_quiz') respuestas[i]=q.okIdx; else if(q.tipo==='trad_a'||q.tipo==='multi'||q.tipo==='semej') respuestas[i]=q.dato.expr||q.dato.res; else if(q.tipo==='trad_b') respuestas[i]='Respuesta de ejemplo para modo docente'; else if(q.tipo==='situacion') respuestas[i]='10t+5c'; else if(q.tipo==='error') respuestas[i]={err:'El error es que se sumaron los exponentes',corr:q.dato.corr}; else if(q.tipo==='comprension') respuestas[i]='La diferencia entre sumar y multiplicar monomios es que al sumar los coeficientes se suman pero las variables quedan igual, mientras que al multiplicar los coeficientes se multiplican y los exponentes se suman.'; } nombreAlumno='Modo Docente Demo'; examenEnCurso=false; document.getElementById('pantalla-inicio').style.display='none'; document.getElementById('prog-wrap').style.display='none'; mostrarResultados(); }
+function docRecorrer(){ cerrarDoc(); modoRecorrer=true; var n=document.getElementById('inp-nombre').value.trim(); if(n.length<3){ document.getElementById('inp-nombre').value='Docente'; } nombreAlumno=document.getElementById('inp-nombre').value.trim()||'Docente'; generarExamen(); examenEnCurso=true; document.getElementById('pantalla-inicio').style.display='none'; document.getElementById('prog-wrap').style.display='block'; document.getElementById('pantalla-pregunta').className='pregunta-wrap on'; qActual=0; renderPregunta(0); document.body.style.outline='3px dashed var(--az2)'; document.body.style.outlineOffset='-3px'; }
+
+document.getElementById('prof-trig').addEventListener('click', abrirDoc);
+</script>
+</body>
+</html>
