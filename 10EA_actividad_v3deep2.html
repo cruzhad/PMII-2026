@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>División de monomios · S10 · PM II (validación robusta)</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']], processEscapes: true },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] },
+  startup: { typeset: false }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+<style>
+/* ========== ESTILOS ORIGINALES (sin cambios) ========== */
+:root{
+  --mo:#5B2D8E;--mo2:#7B3FC0;--mo3:#B88EE8;--mo-f:#f3ecfb;
+  --ver:#1B6B45;--ver2:#52B788;--nar:#E85D04;--nar2:#F9A53A;
+  --roj:#C1121F;--az:#023E8A;--az2:#1565C0;--am:#F5A623;
+  --cr:#fdf9ff;--tie:#1a0a2e;--gris:#ede8f5;--gris2:#d5cce8;
+  --som:0 3px 18px rgba(91,45,142,.12);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--cr);color:var(--tie);font-size:15px;overflow-x:hidden;}
+.hdr{background:linear-gradient(135deg,var(--tie),#1a3050);padding:18px 16px 14px;text-align:center;}
+.hdr-tag{font-size:.65rem;font-weight:800;letter-spacing:3px;color:var(--mo3);text-transform:uppercase;margin-bottom:3px;}
+.hdr h1{font-family:'Bebas Neue';font-size:1.9rem;color:#fff;line-height:1;}
+.hdr h1 em{color:var(--nar2);font-style:normal;}
+.hdr-sub{font-size:.74rem;color:rgba(255,255,255,.45);margin-top:4px;}
+.hdr-autor{margin-top:8px;font-size:.73rem;color:rgba(255,255,255,.55);font-weight:700;}
+.prog-wrap{background:#fff;padding:10px 14px;border-bottom:2px solid var(--gris2);position:sticky;top:0;z-index:90;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.prog-bar-bg{background:var(--gris2);border-radius:4px;height:5px;margin-bottom:5px;}
+.prog-bar{background:linear-gradient(90deg,var(--az2),var(--ver2));height:5px;border-radius:4px;transition:width .4s;}
+.prog-steps{display:flex;justify-content:space-between;font-size:.58rem;font-weight:800;color:#bbb;letter-spacing:.3px;}
+.prog-steps span.done{color:var(--az2);}
+.sec{display:none;padding:14px;max-width:700px;margin:0 auto;}
+.sec.on{display:block;}
+.card{background:#fff;border-radius:12px;padding:15px;margin-bottom:12px;box-shadow:var(--som);}
+.card-mo{border-left:4px solid var(--mo2);}
+.card-v{border-left:4px solid var(--ver2);}
+.card-a{border-left:4px solid var(--az2);}
+.card-am{border-left:4px solid var(--am);}
+.card-r{border-left:4px solid var(--roj);}
+.card-tie{border-left:4px solid var(--tie);}
+.pill{display:inline-block;font-size:.63rem;font-weight:800;letter-spacing:.4px;padding:3px 9px;border-radius:12px;margin-bottom:8px;text-transform:uppercase;}
+.p-mo{background:var(--mo-f);color:var(--mo);}
+.p-v{background:#d4edda;color:var(--ver);}
+.p-a{background:#cce5ff;color:var(--az2);}
+.p-am{background:#fff3cd;color:#856404;}
+.p-r{background:#fdecea;color:var(--roj);}
+.p-tie{background:var(--gris);color:var(--tie);}
+.alerta{background:linear-gradient(135deg,#ff6b35,#f7b731);border-radius:12px;padding:14px 15px;margin-bottom:14px;display:flex;gap:12px;align-items:flex-start;color:#fff;}
+.alerta-ico{font-size:1.5rem;flex-shrink:0;margin-top:1px;}
+.alerta-txt{font-size:.82rem;line-height:1.65;}
+.alerta-txt strong{font-size:.88rem;display:block;margin-bottom:3px;}
+.calif-aviso{background:linear-gradient(135deg,#e8f5e9,#f1f8e9);border:2px solid var(--ver2);border-radius:12px;padding:13px 15px;margin-bottom:10px;display:flex;gap:11px;align-items:flex-start;}
+.calif-aviso-txt p{font-size:.84rem;font-weight:800;color:var(--ver);margin-bottom:4px;}
+.calif-aviso-txt span{font-size:.79rem;line-height:1.65;color:#2e7d32;display:block;}
+.lbl{font-size:.78rem;font-weight:800;color:var(--mo);display:block;margin-bottom:4px;margin-top:10px;}
+.inp{width:100%;padding:9px 12px;border:2px solid var(--gris2);border-radius:8px;font-size:.88rem;font-family:'Nunito';color:var(--tie);background:#fff;transition:border-color .2s;}
+.inp:focus{outline:none;border-color:var(--az2);}
+.inp.err{border-color:var(--roj)!important;}
+textarea.inp{resize:vertical;min-height:70px;}
+.sel{width:100%;padding:9px 12px;border:2px solid var(--gris2);border-radius:8px;font-size:.88rem;font-family:'Nunito';color:var(--tie);background:#fff;appearance:none;}
+.sel.err{border-color:var(--roj)!important;}
+.alg-wrap{margin-bottom:4px;}
+.alg-btns{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px;}
+.alg-btn{background:#fff;border:1.5px solid var(--mo3);color:var(--mo2);border-radius:6px;padding:4px 9px;font-size:.78rem;font-weight:800;cursor:pointer;font-family:'Nunito';transition:background .15s,color .15s;line-height:1;flex-shrink:0;user-select:none;}
+.alg-btn:active,.alg-btn:hover{background:var(--mo2);color:#fff;border-color:var(--mo2);}
+.alg-btn.op{border-color:var(--gris2);color:var(--tie);}
+.alg-btn.op:hover{background:var(--tie);color:#fff;border-color:var(--tie);}
+.alg-btn.neg{border-color:var(--roj);color:var(--roj);}
+.alg-btn.neg:hover{background:var(--roj);color:#fff;}
+.alg-btn.clr{border-color:#aaa;color:#666;}
+.alg-btn.clr:hover{background:#666;color:#fff;}
+.alg-preview{min-height:32px;background:var(--gris);border-radius:7px;padding:5px 11px;margin-top:4px;font-size:.95rem;color:var(--tie);border-left:3px solid var(--mo3);transition:background .2s;}
+.alg-preview.active{background:#fff;border-color:var(--az2);box-shadow:0 0 0 2px rgba(21,101,192,.1);}
+.alg-preview mjx-container{display:inline!important;}
+.alg-hint{font-size:.69rem;color:#888;font-style:italic;margin-top:2px;display:block;}
+.emsg{display:none;background:#fdecea;border:1.5px solid var(--roj);border-radius:8px;padding:8px 12px;font-size:.8rem;color:var(--roj);font-weight:700;margin:8px 0;}
+.emsg.show{display:block;}
+.t-wrap{overflow-x:auto;margin:10px 0;}
+table{width:100%;border-collapse:collapse;font-size:.82rem;}
+th{background:var(--tie);color:#fff;padding:8px 9px;text-align:center;font-weight:700;font-size:.75rem;white-space:nowrap;}
+td{padding:7px 9px;border:1.5px solid var(--gris2);vertical-align:middle;}
+td input.inp-cell{border:1.5px solid var(--gris2);border-radius:6px;padding:5px 7px;font-family:'Nunito';font-size:.82rem;text-align:center;width:100%;background:#fff;color:var(--tie);}
+td input.inp-cell:focus{outline:none;border-color:var(--az2);}
+td textarea.inp-cell{border:1.5px solid var(--gris2);border-radius:6px;padding:5px 7px;font-family:'Nunito';font-size:.8rem;resize:none;min-height:40px;width:100%;background:#fff;}
+.td-fix{background:var(--gris);font-weight:800;text-align:center;}
+.td-ok{background:#e8f5e9;color:var(--ver);font-weight:800;text-align:center;font-family:monospace;}
+.td-nok{background:#fdecea;color:var(--roj);font-weight:800;text-align:center;font-family:monospace;}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.15;margin:0 3px;}
+.frac .num{border-bottom:2px solid currentColor;padding:1px 8px;font-weight:800;}
+.frac .den{padding:1px 8px;font-weight:800;}
+.frac-sm{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1;margin:0 2px;}
+.frac-sm .num{border-bottom:1.5px solid currentColor;padding:0 4px;font-size:.85em;}
+.frac-sm .den{padding:0 4px;font-size:.85em;}
+.ley-box{background:linear-gradient(135deg,#e3f2fd,#bbdefb);border:2.5px solid var(--az2);border-radius:14px;padding:16px;text-align:center;margin:10px 0;}
+.ley-box .ley-titulo{font-size:.7rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--az2);margin-bottom:8px;}
+.ley-box .ley-sub{font-size:.8rem;color:#555;line-height:1.6;margin-top:6px;}
+.cuaderno{background:linear-gradient(135deg,#fffde7,#fff8e1);border:2.5px solid #f9a825;border-radius:14px;padding:16px;margin:12px 0;}
+.cuaderno-hdr{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.cuaderno-hdr .ico{font-size:1.6rem;}
+.cuaderno-hdr h3{font-family:'Bebas Neue';font-size:1.25rem;color:#4a3200;letter-spacing:.5px;}
+.cuaderno-regla{background:#fff;border-radius:9px;padding:11px 13px;margin-bottom:10px;border-left:4px solid #f9a825;}
+.cuaderno-confirm{display:flex;align-items:center;gap:10px;margin-top:12px;padding:10px 13px;background:#fff;border-radius:9px;border:1.5px solid #f9a825;}
+.cuaderno-confirm input[type=checkbox]{width:20px;height:20px;cursor:pointer;}
+.cuaderno-confirm label{font-size:.83rem;font-weight:700;cursor:pointer;}
+.paso-box{background:var(--gris);border-radius:10px;padding:12px;margin:8px 0;font-family:monospace;font-size:.88rem;line-height:2;font-weight:700;}
+.paso-box .d1{color:var(--roj);}
+.paso-box .d2{color:var(--ver);}
+.paso-box .d3{color:var(--az2);}
+.paso-box .d4{color:var(--mo2);}
+.quiz-hdr{background:linear-gradient(135deg,#0a1628,var(--az));border-radius:14px;padding:16px;color:#fff;margin-bottom:12px;text-align:center;}
+.quiz-hdr h2{font-family:'Bebas Neue';font-size:1.5rem;}
+.qcard{background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:var(--som);border:2px solid var(--gris2);}
+.qcard-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.qnum{font-size:.65rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--az2);}
+.qnivel{font-size:.6rem;font-weight:800;padding:2px 7px;border-radius:8px;background:var(--gris);color:#666;}
+.qtext{font-size:.9rem;font-weight:700;margin-bottom:10px;line-height:1.6;}
+.qopts{display:flex;flex-direction:column;gap:7px;}
+.qopt{display:flex;align-items:center;gap:10px;padding:10px 12px;border:2.5px solid var(--gris2);border-radius:9px;cursor:pointer;transition:all .2s;font-size:.86rem;font-weight:700;}
+.qopt:hover{border-color:var(--az2);background:#f0f4ff;}
+.qopt.sel{border-color:var(--az2);background:#e8f0ff;}
+.qopt.correcto{border-color:var(--ver2);background:#e8f5e9;color:#1b5e20;}
+.qopt.incorrecto{border-color:var(--roj);background:#fdecea;color:var(--roj);}
+.qopt-letra{width:22px;height:22px;border-radius:50%;background:var(--gris2);font-weight:800;font-size:.8rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.qopt.correcto .qopt-letra{background:var(--ver2);color:#fff;}
+.qopt.incorrecto .qopt-letra{background:var(--roj);color:#fff;}
+.qfb{margin-top:8px;padding:8px 11px;border-radius:8px;font-size:.8rem;line-height:1.5;display:none;}
+.qfb.show{display:block;}
+.qfb.ok{background:#e8f5e9;color:#1b5e20;border:1.5px solid var(--ver2);}
+.qfb.nook{background:#fdecea;color:var(--roj);border:1.5px solid var(--roj);}
+.btn-sig{display:block;width:100%;padding:13px;background:var(--az2);color:#fff;border:none;border-radius:11px;font-size:.96rem;font-weight:800;cursor:pointer;font-family:'Nunito';margin-top:14px;transition:all .2s;}
+.btn-sig:hover{background:var(--az);}
+.btn-ver{display:block;width:100%;padding:13px;background:var(--mo2);color:#fff;border:none;border-radius:11px;font-size:.96rem;font-weight:800;cursor:pointer;font-family:'Nunito';margin-top:10px;}
+.btn-fin{display:block;width:100%;padding:13px;background:linear-gradient(135deg,var(--ver),#1b5e20);color:#fff;border:none;border-radius:11px;font-size:.96rem;font-weight:800;cursor:pointer;font-family:'Nunito';margin-top:14px;}
+.btn-sig-quiz{display:none;width:100%;padding:12px;background:var(--ver);color:#fff;border:none;border-radius:11px;font-size:.92rem;font-weight:800;cursor:pointer;font-family:'Nunito';margin-top:10px;}
+.btn-pdf{display:block;width:100%;padding:13px;background:var(--ver);color:#fff;border:none;border-radius:11px;font-size:.96rem;font-weight:800;cursor:pointer;font-family:'Nunito';margin-top:10px;}
+.sec-num{font-family:'Bebas Neue';font-size:2.2rem;color:var(--az2);line-height:1;margin-right:8px;}
+.sec-hdr{display:flex;align-items:center;margin-bottom:4px;}
+.sec-tit{font-size:1.05rem;font-weight:900;}
+.sec-sub{font-size:.74rem;color:#888;margin-top:1px;}
+.instr{font-size:.82rem;line-height:1.7;color:#444;}
+.narr{background:linear-gradient(135deg,var(--tie),#1a3050);border-radius:12px;padding:15px;margin-bottom:12px;color:#fff;position:relative;overflow:hidden;}
+.narr p{font-size:.87rem;line-height:1.75;opacity:.95;}
+.narr strong{color:var(--nar2);}
+.narr .narr-ico{font-size:1.6rem;margin-bottom:6px;display:block;}
+.ctx-card{background:linear-gradient(135deg,#e3f2fd,#f3ecfb);border:2px solid var(--mo3);border-radius:12px;padding:13px;margin-bottom:12px;}
+.ctx-sit{font-size:.88rem;line-height:1.7;margin-bottom:8px;}
+.zona-badge{display:inline-block;background:var(--az2);color:#fff;border-radius:8px;padding:4px 12px;font-size:.72rem;font-weight:800;margin-bottom:8px;}
+.opt-grid{display:flex;flex-direction:column;gap:6px;margin-top:8px;}
+.opt-btn{display:flex;align-items:center;gap:10px;padding:10px 13px;border:2px solid var(--gris2);border-radius:9px;cursor:pointer;font-size:.85rem;font-weight:700;transition:all .18s;background:#fff;}
+.opt-btn:hover{border-color:var(--az2);background:#f0f4ff;}
+.opt-btn.sel-opt{border-color:var(--az2);background:#e8f0ff;}
+.opt-btn.sel-opt .opt-ico{background:var(--az2);color:#fff;}
+.opt-btn.ok-opt{border-color:var(--ver2);background:#e8f5e9;color:#1b5e20;}
+.opt-btn.ok-opt .opt-ico{background:var(--ver2);color:#fff;}
+.opt-btn.nok-opt{border-color:var(--roj);background:#fdecea;color:var(--roj);}
+.opt-btn.nok-opt .opt-ico{background:var(--roj);color:#fff;}
+.opt-ico{width:22px;height:22px;border-radius:50%;background:var(--gris2);font-weight:800;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.opt-fb{margin-top:6px;padding:7px 11px;border-radius:8px;font-size:.78rem;line-height:1.5;display:none;}
+.opt-fb.show{display:block;}
+.opt-fb.ok{background:#e8f5e9;color:#1b5e20;border:1.5px solid var(--ver2);}
+.opt-fb.nook{background:#fdecea;color:var(--roj);border:1.5px solid var(--roj);}
+.res-hdr{background:linear-gradient(135deg,var(--tie),#1a3050);border-radius:14px;padding:20px;text-align:center;color:#fff;margin-bottom:14px;position:relative;overflow:hidden;}
+.res-wm{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-around;opacity:.04;pointer-events:none;overflow:hidden;font-weight:900;font-size:.8rem;text-transform:uppercase;color:#fff;}
+.res-wm-row{white-space:nowrap;}
+.res-nota{font-family:'Bebas Neue';font-size:3rem;line-height:1;margin:6px 0;}
+.res-tabla{width:100%;border-collapse:collapse;font-size:.8rem;}
+.res-tabla th{background:var(--tie);color:#fff;padding:7px 8px;text-align:left;font-size:.72rem;font-weight:700;}
+.res-tabla td{padding:6px 9px;border:1.5px solid var(--gris2);vertical-align:top;font-size:.79rem;}
+.res-tabla tr.ok-row td{background:#f0fff4;}
+.res-tabla tr.nook-row td{background:#fff5f5;}
+.res-tabla tr.par-row td{background:#f8f4ff;font-size:.74rem;color:#666;border-top:none;padding-bottom:9px;}
+.doc-modal{display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.6);align-items:center;justify-content:center;}
+.doc-modal.show{display:flex;}
+.doc-inner{background:#fff;border-radius:14px;padding:18px;max-width:420px;width:92%;box-shadow:0 10px 40px rgba(0,0,0,.3);max-height:92vh;overflow-y:auto;}
+.doc-inner h3{font-family:'Bebas Neue';font-size:1.4rem;color:var(--mo);margin-bottom:8px;}
+.doc-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--gris2);font-size:.79rem;}
+.doc-row:last-child{border-bottom:none;}
+.dbtn{width:100%;padding:10px;border:none;border-radius:9px;font-family:'Nunito';font-weight:800;font-size:.88rem;cursor:pointer;margin-top:7px;}
+.dbtn-mo{background:var(--mo2);color:#fff;}
+.dbtn-v{background:var(--ver);color:#fff;}
+.dbtn-out{background:transparent;border:2px solid var(--mo2);color:var(--mo2);}
+.papel-hint{background:linear-gradient(135deg,#fff8e1,#fffde7);border:2px dashed #f9a825;border-radius:10px;padding:11px 14px;margin:10px 0;display:flex;gap:10px;align-items:flex-start;}
+.papel-hint-ico{font-size:1.4rem;flex-shrink:0;}
+.papel-hint-txt{font-size:.79rem;line-height:1.65;color:#5d4037;font-weight:700;}
+.ej-bloque{background:#fff;border-radius:9px;padding:10px 13px;border:1.5px solid var(--gris2);margin-bottom:8px;}
+.ej-bloque .ej-titulo{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--az2);margin-bottom:6px;}
+.ej-bloque .ej-expr{text-align:center;margin:6px 0;font-size:1rem;}
+.ej-bloque .ej-pasos{font-family:monospace;font-size:.8rem;line-height:1.8;background:var(--gris);border-radius:6px;padding:7px 10px;margin-top:6px;}
+sup{font-size:.65em;vertical-align:super;line-height:0;}
+.separador{border:none;border-top:2px dashed var(--gris2);margin:14px 0;}
+@media print{
+  .no-print,.prog-wrap,.doc-modal,.alg-btns,.alg-hint,.btn-sig,.btn-ver,.btn-sig-quiz{display:none!important;}
+  body{background:#fff!important;}
+  .card,.qcard{box-shadow:none!important;border:1px solid #ddd!important;}
+  .res-hdr{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ MODAL DOCENTE (igual) ═══ -->
+<div class="doc-modal" id="modal-doc">
+  <div class="doc-inner">
+    <h3>🔒 Panel Docente</h3>
+    <div id="doc-login">
+      <label class="lbl" style="color:var(--az2);">Código:</label>
+      <input class="inp" id="doc-cod" type="password" placeholder="••••" autocomplete="off" onkeydown="if(event.key==='Enter')chkDoc()">
+      <div id="doc-err" style="display:none;color:var(--roj);font-size:.79rem;margin-top:4px;font-weight:700;">Código incorrecto.</div>
+      <div style="display:flex;gap:8px;margin-top:9px;">
+        <button class="dbtn dbtn-mo" style="flex:1;" onclick="chkDoc()">Entrar</button>
+        <button class="dbtn dbtn-out" style="flex:1;" onclick="cerrarDoc()">Cancelar</button>
+      </div>
+    </div>
+    <div id="doc-panel" style="display:none;">
+      <div style="background:var(--az2);border-radius:8px;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <span style="font-weight:800;color:#fff;font-size:.85rem;">👨‍🏫 Panel Docente · S10</span>
+        <button onclick="cerrarDoc()" style="background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:6px;padding:3px 9px;font-size:.73rem;cursor:pointer;font-family:'Nunito';font-weight:700;">Cerrar</button>
+      </div>
+      <div style="background:#e3f2fd;border-radius:9px;padding:11px 13px;margin-bottom:10px;">
+        <div class="doc-row"><span style="font-weight:700;">Actividad</span><span style="color:var(--az2);font-weight:800;">S10 · División y factorización</span></div>
+        <div class="doc-row"><span style="font-weight:700;">Secciones</span><span style="color:var(--az2);font-weight:800;">S0–S5 + Resultados</span></div>
+        <div class="doc-row"><span style="font-weight:700;">Quiz</span><span style="color:var(--az2);font-weight:800;">10 niveles × 6 preguntas</span></div>
+        <div class="doc-row"><span style="font-weight:700;">Versión</span><span style="color:var(--az2);font-weight:800;">v4 · Validación robusta</span></div>
+      </div>
+      <div style="background:#fff;border-radius:9px;padding:11px 13px;margin-bottom:10px;font-size:.78rem;line-height:1.7;">
+        <strong style="color:var(--az2);">Mejoras de validación:</strong><br>
+        ✅ Tabla inversa: se verifica el exponente correcto.<br>
+        ✅ División básica: se compara el resultado exacto.<br>
+        ✅ Signos: se valida el monomio resultante.<br>
+        ✅ Factorización: se valida la expresión factorizada.<br>
+        ✅ CDMX: se valida la respuesta contextual.<br>
+        ✅ Reflexiones: se mantiene control de longitud.
+      </div>
+      <button class="dbtn dbtn-mo" onclick="docSaltar()">⏭ Ir a resultados (demo)</button>
+      <button class="dbtn dbtn-v" style="margin-top:6px;" onclick="docRecorrer()">▶ Recorrer sin validar</button>
+      <button class="dbtn dbtn-out" style="margin-top:6px;" onclick="cerrarDoc()">Cerrar panel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ HEADER (igual) ═══ -->
+<div class="hdr">
+  <div class="hdr-tag">Pensamiento Matemático II · S10 · PF3</div>
+  <h1>Dividir <em>Monomios</em></h1>
+  <div class="hdr-sub">La operación inversa &nbsp;·&nbsp; Factor común &nbsp;·&nbsp; CDMX</div>
+  <div class="hdr-autor">Prof. Adrián Cruz</div>
+</div>
+
+<!-- ═══ BARRA DE PROGRESO ═══ -->
+<div class="prog-wrap no-print">
+  <div class="prog-bar-bg"><div class="prog-bar" id="prog-bar" style="width:0%"></div></div>
+  <div class="prog-steps">
+    <span id="ps0">Inicio</span><span id="ps1">Intuición</span><span id="ps2">Ley ÷</span>
+    <span id="ps3">Signos</span><span id="ps4">Factor</span><span id="ps5">CDMX</span>
+    <span id="ps6">Quiz</span><span id="ps-fin">Resultados</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     S0 — INICIO (igual)
+═══════════════════════════════════════════════════════ -->
+<div class="sec on" id="s0">
+  <div class="alerta" style="margin-top:4px;">
+    <div class="alerta-ico">⚠️</div>
+    <div class="alerta-txt">
+      <strong>Antes de empezar</strong>
+      No cierres ni minimices esta página — perderías tu avance. Ten tu cuaderno y pluma listos.
+    </div>
+  </div>
+  <div class="calif-aviso">
+    <div style="font-size:1.4rem;">📋</div>
+    <div class="calif-aviso-txt">
+      <p>Cuaderno + pantalla = tu calificación</p>
+      <span>Algunas secciones te piden copiar en tu cuaderno antes de contestar en pantalla. Ambas cosas cuentan.</span>
+    </div>
+  </div>
+  <div class="card">
+    <label class="lbl">👤 Tu nombre (apellidos primero) y grupo:</label>
+    <input class="inp" id="inp-nombre" type="text" autocomplete="off" placeholder="Apellidos Nombre — Grupo" style="font-size:.95rem;font-weight:700;">
+  </div>
+  <div class="card card-a">
+    <div class="pill p-a">Activación — Antes de ver la teoría</div>
+    <p class="instr" id="act-preg">Cargando...</p>
+    <label class="lbl">Tu respuesta (mínimo 50 caracteres):</label>
+    <textarea class="inp" id="act-resp" rows="3" data-req="1" data-ml="50"
+      oncopy="return false" onpaste="return false" oncut="return false" oncontextmenu="return false"
+      placeholder="Escribe con tus propias palabras..."></textarea>
+  </div>
+  <div class="emsg" id="s0-err">⚠️ Completa todos los campos para continuar.</div>
+  <button class="btn-sig" onclick="avanzar('s0','s1')">Comenzar →</button>
+  <div style="margin-top:8px;text-align:right;"><span style="font-size:.6rem;color:#ccc;cursor:pointer;" onclick="abrirDoc()">v4.0</span></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     S1 — INTUICIÓN (tabla 2 filas + selección) - VALIDACIÓN ROBUSTA
+═══════════════════════════════════════════════════════ -->
+<div class="sec" id="s1">
+  <div class="sec-hdr"><div class="sec-num">1</div>
+    <div><div class="sec-tit">La operación inversa</div><div class="sec-sub">Si multiplicar "junta", dividir "separa"</div></div>
+  </div>
+  <div class="narr"><span class="narr-ico">🔍</span><p>Ya sabes que multiplicar monomios <strong>"junta"</strong> dos expresiones. Dividir hace lo contrario: dado el resultado, recupera uno de los factores. Observa el patrón con números primero.</p></div>
+  <div class="papel-hint"><div class="papel-hint-ico">✏️</div><div class="papel-hint-txt">Resuelve las siguientes divisiones en tu cuaderno, luego escribe los resultados aquí.</div></div>
+  <div class="card card-tie">
+    <div class="pill p-tie">Paso previo · Del número al monomio</div>
+    <p class="instr" style="margin-bottom:10px;">Observa cómo funciona la división. Completa:</p>
+    <div class="t-wrap">
+      <table>
+        <thead><tr><th>Multiplicación conocida</th><th style="text-align:center;">División</th><th>Resultado</th></tr></thead>
+        <tbody>
+          <tr><td class="td-fix" style="font-size:.8rem;">2³ × 2⁴ = 2⁷ = 128</td><td style="text-align:center;font-size:1rem;"><span class="frac"><span class="num">2<sup>7</sup></span><span class="den">2<sup>4</sup></span></span> = 2<sup style="color:var(--roj);">?</sup></td>
+             <td><div class="alg-wrap"><input type="text" id="inv-0" data-req="1" data-ml="1" data-alg="1" class="inp-cell" placeholder="2^?" style="width:80px;"></div></td></tr>
+          <tr><td class="td-fix" style="font-size:.8rem;">(3x²)(4x³) = 12x⁵</td><td style="text-align:center;font-size:1rem;"><span class="frac"><span class="num">12x<sup>5</sup></span><span class="den">4x<sup>3</sup></span></span> = ?</td>
+             <td><div class="alg-wrap"><input type="text" id="inv-1" data-req="1" data-ml="2" data-alg="1" class="inp-cell" placeholder="?x^?" style="width:80px;"></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="background:#e8f5e9;border-radius:8px;padding:8px 12px;margin-top:8px;font-size:.8rem;line-height:1.6;"><strong style="color:var(--ver);">💡 ¿Qué observas?</strong> En la primera fila: 7 − 4 = 3. En la segunda fila: ¿qué le pasó al exponente de x?</div>
+  </div>
+  <div class="card card-mo">
+    <div class="pill p-mo">Conjetura — elige la opción correcta</div>
+    <p class="instr">Al dividir dos monomios de la misma base, los <strong>exponentes</strong> se:</p>
+    <div class="opt-grid" id="sel-exp-op">
+      <div class="opt-btn" onclick="selOpt('sel-exp-op',0,'sel-exp-fb','nook','Los exponentes se RESTAN (no suman).')" data-v="0"><div class="opt-ico">A</div><span>Suman</span></div>
+      <div class="opt-btn" onclick="selOpt('sel-exp-op',1,'sel-exp-fb','ok','¡Correcto! Al dividir potencias de la misma base: aᵐ ÷ aⁿ = aᵐ⁻ⁿ.')" data-v="1"><div class="opt-ico">B</div><span>Restan</span></div>
+      <div class="opt-btn" onclick="selOpt('sel-exp-op',2,'sel-exp-fb','nook','Los exponentes se RESTAN.')" data-v="2"><div class="opt-ico">C</div><span>Multiplican</span></div>
+    </div>
+    <div class="opt-fb" id="sel-exp-fb"></div>
+    <input type="hidden" id="sel-exp-val" value="">
+  </div>
+  <div class="card card-a">
+    <div class="pill p-a">¿Y los coeficientes?</div>
+    <p class="instr">Al dividir dos monomios, los <strong>coeficientes</strong> (números) se:</p>
+    <div class="opt-grid" id="sel-coef-op">
+      <div class="opt-btn" onclick="selOpt('sel-coef-op',0,'sel-coef-fb','ok','¡Correcto! Los coeficientes se dividen entre sí.')" data-v="0"><div class="opt-ico">A</div><span>Dividen entre sí</span></div>
+      <div class="opt-btn" onclick="selOpt('sel-coef-op',1,'sel-coef-fb','nook','Los coeficientes se DIVIDEN.')" data-v="1"><div class="opt-ico">B</div><span>Restan entre sí</span></div>
+      <div class="opt-btn" onclick="selOpt('sel-coef-op',2,'sel-coef-fb','nook','Los coeficientes se DIVIDEN.')" data-v="2"><div class="opt-ico">C</div><span>Se conserva solo el numerador</span></div>
+    </div>
+    <div class="opt-fb" id="sel-coef-fb"></div>
+    <input type="hidden" id="sel-coef-val" value="">
+  </div>
+  <div class="emsg" id="s1-err">⚠️ Completa la tabla y elige una opción en cada pregunta.</div>
+  <button class="btn-sig" onclick="avanzar('s1','s2')">Siguiente → La ley formal</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     S2 — LEY DEL COCIENTE (cuaderno + 3 ejercicios) - VALIDACIÓN ROBUSTA
+═══════════════════════════════════════════════════════ -->
+<div class="sec" id="s2">
+  <div class="sec-hdr"><div class="sec-num">2</div><div><div class="sec-tit">Ley del cociente de potencias</div><div class="sec-sub">\(a^m \div a^n = a^{m-n}\)</div></div></div>
+  <div class="ley-box"><div class="ley-titulo">Ley del Cociente de Potencias</div><div style="margin:10px 0;font-size:1.1rem;">\[\dfrac{c_1 \cdot a^m}{c_2 \cdot a^n} = \dfrac{c_1}{c_2} \cdot a^{m-n}\]</div><div class="ley-sub"><strong>Paso 1</strong> Divide los coeficientes · <strong>Paso 2</strong> Resta los exponentes · <strong>Paso 3</strong> Si exp. = 0 → escribe 1</div></div>
+  <div class="cuaderno"><div class="cuaderno-hdr"><div class="ico">📘</div><h3>PAUSA · COPIA EN TU CUADERNO</h3></div><div class="cuaderno-regla"><p style="font-size:.78rem;font-weight:800;color:#856404;margin-bottom:8px;">Regla y 3 ejemplos resueltos:</p><div style="display:flex;flex-wrap:wrap;gap:8px;"><div class="ej-bloque" style="flex:1;min-width:140px;"><div class="ej-titulo">Ejemplo 1 · Normal</div><div class="ej-expr"><span class="frac-sm"><span class="num">15x<sup>7</sup></span><span class="den">3x<sup>2</sup></span></span></div><div class="ej-pasos">Coef: 15÷3 = <strong style="color:var(--ver);">5</strong><br>Exp: 7−2 = <strong style="color:var(--roj);">5</strong><br>→ <strong>5x⁵</strong></div></div><div class="ej-bloque" style="flex:1;min-width:140px;"><div class="ej-titulo">Ejemplo 2 · x⁰ = 1</div><div class="ej-expr"><span class="frac-sm"><span class="num">8m<sup>4</sup></span><span class="den">8m<sup>4</sup></span></span></div><div class="ej-pasos">Coef: 8÷8 = <strong style="color:var(--ver);">1</strong><br>Exp: 4−4 = <strong style="color:var(--roj);">0</strong>→1<br>→ <strong>1</strong></div></div><div class="ej-bloque" style="flex:1;min-width:140px;"><div class="ej-titulo">Ejemplo 3 · Exp. neg.</div><div class="ej-expr"><span class="frac-sm"><span class="num">4a<sup>3</sup></span><span class="den">6a<sup>5</sup></span></span></div><div class="ej-pasos">Coef: 4÷6 = <strong style="color:var(--ver);">2/3</strong><br>Exp: 3−5 = <strong style="color:var(--roj);">−2</strong><br>→ <strong><span class="frac-sm"><span class="num">2</span><span class="den">3</span></span>a<sup>−2</sup></strong></div></div></div></div><div class="cuaderno-confirm"><input type="checkbox" id="chk-cuaderno"><label for="chk-cuaderno">✓ Ya copié la regla y los 3 ejemplos en mi cuaderno.</label></div></div>
+  <div class="papel-hint"><div class="papel-hint-ico">✏️</div><div class="papel-hint-txt">Resuelve las siguientes divisiones paso a paso en tu cuaderno, luego escribe el resultado aquí.</div></div>
+  <div class="card card-a"><div class="pill p-a">Ejercicio · Aplica la ley — 3 divisiones</div><div class="t-wrap"><div id="tabla-div-a"></div></div></div>
+  <div class="card card-v">
+    <div class="pill p-v">El caso x⁰ = 1</div>
+    <p class="instr">Un alumno resolvió <strong id="caso-x0-expr">—</strong> y escribió como resultado <strong>"<span id="caso-x0-var">k</span>⁰"</strong>. ¿Está correcto? Elige:</p>
+    <div class="opt-grid" id="sel-x0-op">
+      <div class="opt-btn" onclick="selOpt('sel-x0-op',0,'sel-x0-fb','ok','¡Correcto! x⁰ = 1 siempre. La respuesta simplificada DEBE ser 1.')" data-v="0"><div class="opt-ico">A</div><span>No está correcto. Debió escribir 1 porque x⁰ = 1</span></div>
+      <div class="opt-btn" onclick="selOpt('sel-x0-op',1,'sel-x0-fb','nook','x⁰ como paso intermedio está bien, pero la respuesta SIMPLIFICADA es siempre 1.')" data-v="1"><div class="opt-ico">B</div><span>Sí está correcto, x⁰ es la respuesta final</span></div>
+      <div class="opt-btn" onclick="selOpt('sel-x0-op',2,'sel-x0-fb','nook','El exponente 0 no significa resultado 0.')" data-v="2"><div class="opt-ico">C</div><span>No está correcto. El resultado es 0</span></div>
+    </div>
+    <div class="opt-fb" id="sel-x0-fb"></div>
+    <input type="hidden" id="sel-x0-val" value="">
+  </div>
+  <div class="emsg" id="s2-err">⚠️ Completa los ejercicios, marca el cuaderno y elige una opción.</div>
+  <button class="btn-sig" onclick="avanzar('s2','s3')">Siguiente → Signos y exponentes negativos</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     S3 — SIGNOS (3 filas + detección error) - VALIDACIÓN ROBUSTA
+═══════════════════════════════════════════════════════ -->
+<div class="sec" id="s3">
+  <div class="sec-hdr"><div class="sec-num">3</div><div><div class="sec-tit">Signos y exponentes negativos</div><div class="sec-sub">Ley de signos · ¿Qué significa x⁻ⁿ?</div></div></div>
+  <div class="card" style="background:linear-gradient(135deg,#e3f2fd,#bbdefb);border:none;">
+    <p style="font-size:.82rem;font-weight:800;color:var(--az2);margin-bottom:8px;">💡 Ley de signos para la división:</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:.85rem;font-weight:800;"><div style="background:#fff;border-radius:6px;padding:6px 10px;text-align:center;">(+) ÷ (+) = <span style="color:var(--ver);">+</span></div><div style="background:#fff;border-radius:6px;padding:6px 10px;text-align:center;">(−) ÷ (−) = <span style="color:var(--ver);">+</span></div><div style="background:#fff;border-radius:6px;padding:6px 10px;text-align:center;">(+) ÷ (−) = <span style="color:var(--roj);">−</span></div><div style="background:#fff;border-radius:6px;padding:6px 10px;text-align:center;">(−) ÷ (+) = <span style="color:var(--roj);">−</span></div></div>
+    <div style="margin-top:10px;background:#fff;border-radius:6px;padding:8px 12px;font-size:.8rem;line-height:1.7;"><strong>¿Qué es x⁻ⁿ?</strong> Un exponente negativo significa que la base está en el denominador:<br>\(x^{-2} = \dfrac{1}{x^2}\) &nbsp;&nbsp; \(x^{-1} = \dfrac{1}{x}\) &nbsp;&nbsp; \(x^{-3} = \dfrac{1}{x^3}\)</div>
+  </div>
+  <div class="papel-hint"><div class="papel-hint-ico">✏️</div><div class="papel-hint-txt">Resuelve en tu cuaderno: primero el signo, luego coeficiente, luego exponente. Escribe solo el resultado aquí.</div></div>
+  <div class="card card-r"><div class="pill p-r">Ejercicio A · División con signos — 3 operaciones</div><div class="t-wrap"><div id="tabla-signos"></div></div></div>
+  <div class="card card-mo"><div class="pill p-mo">Ejercicio B · Detecta el error</div><p class="instr">Cada operación tiene <strong>un error</strong>. ¿Cuál es?</p><div id="errores-wrap"></div></div>
+  <div class="emsg" id="s3-err">⚠️ Completa todos los campos para continuar.</div>
+  <button class="btn-sig" onclick="avanzar('s3','s4')">Siguiente → Factor común</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     S4 — FACTOR COMÚN (4 filas + checkbox) - VALIDACIÓN ROBUSTA
+═══════════════════════════════════════════════════════ -->
+<div class="sec" id="s4">
+  <div class="sec-hdr"><div class="sec-num">4</div><div><div class="sec-tit">Factorización — Factor común</div><div class="sec-sub">"Deshacer" la multiplicación distributiva</div></div></div>
+  <div class="narr"><span class="narr-ico">🔎</span><p>Factorizar es lo opuesto de distribuir. Si antes hacías <strong>3x(2x+5) = 6x²+15x</strong>, ahora el reto es: dado <strong>6x²+15x</strong>, encontrar el factor que estaba "afuera" del paréntesis.</p></div>
+  <div class="cuaderno"><div class="cuaderno-hdr"><div class="ico">📘</div><h3>PAUSA · COPIA EL PROCEDIMIENTO</h3></div><div class="cuaderno-regla"><div class="paso-box"><span class="d3">Ejemplo: factoriza 12x³ + 8x²</span><br><span class="d1">Paso 1 · Factor numérico:</span> MCD(12, 8) = <strong>4</strong><br><span class="d2">Paso 2 · Factor literal:</span> exp. mínimo de x: min(3,2) = <strong>x²</strong><br><span class="d4">Paso 3 · Factor común:</span> <strong>4x²</strong><br><span class="d3">Paso 4 · Divide cada término:</span><br>&nbsp;&nbsp; 12x³ ÷ 4x² = <strong class="d2">3x</strong> &nbsp;&nbsp; 8x² ÷ 4x² = <strong class="d2">2</strong><br><span class="d2">Resultado:</span> 4x²(3x + 2) ← verifica distribuyendo ✓</div></div><div class="cuaderno-confirm"><input type="checkbox" id="chk-fact"><label for="chk-fact">✓ Ya copié el procedimiento y lo entiendo.</label></div></div>
+  <div class="papel-hint"><div class="papel-hint-ico">✏️</div><div class="papel-hint-txt">Haz los 4 pasos en tu cuaderno para cada expresión. Verifica distribuyendo antes de escribir el resultado aquí.</div></div>
+  <div class="card card-a"><div class="pill p-a">Ejercicio · Factoriza — 4 expresiones</div><div class="t-wrap"><div id="tabla-fact"></div></div></div>
+  <div class="card card-am">
+    <div class="pill p-am">Reflexión conceptual</div>
+    <p class="instr">¿Por qué al factorizar <strong>6x² + 9x</strong> el factor literal mínimo es <strong>x</strong> (no x²)?</p>
+    <div class="opt-grid" id="sel-fact-op">
+      <div class="opt-btn" onclick="selOpt('sel-fact-op',0,'sel-fact-fb','ok','¡Correcto! x² no divide a 9x sin dejar fracción.')" data-v="0"><div class="opt-ico">A</div><span>Porque x² no divide a 9x sin dejar fracción (9x ÷ x² = 9/x)</span></div>
+      <div class="opt-btn" onclick="selOpt('sel-fact-op',1,'sel-fact-fb','nook','El factor común debe dividir a TODOS los términos sin dejar fracción.')" data-v="1"><div class="opt-ico">B</div><span>Porque x es más pequeño y es más fácil de usar</span></div>
+      <div class="opt-btn" onclick="selOpt('sel-fact-op',2,'sel-fact-fb','nook','El mínimo exponente entre todos los términos marca el límite.')" data-v="2"><div class="opt-ico">C</div><span>Porque el primer término tiene exponente 2 y se usa el del primer término</span></div>
+    </div>
+    <div class="opt-fb" id="sel-fact-fb"></div>
+    <input type="hidden" id="sel-fact-val" value="">
+  </div>
+  <div class="emsg" id="s4-err">⚠️ Completa la tabla, marca el cuaderno y elige la opción.</div>
+  <button class="btn-sig" onclick="avanzar('s4','s5')">Siguiente → Aplicación CDMX</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     S5 — CDMX (validación robusta)
+═══════════════════════════════════════════════════════ -->
+<div class="sec" id="s5">
+  <div class="sec-hdr"><div class="sec-num">5</div><div><div class="sec-tit" id="s5-zona-tit">Aplicación en la CDMX</div><div class="sec-sub">División y factor común en contexto real</div></div></div>
+  <div class="ctx-card"><div class="zona-badge" id="s5-zona-badge">Zona CDMX</div><div class="ctx-sit" id="s5-sit"></div></div>
+  <div class="papel-hint"><div class="papel-hint-ico">✏️</div><div class="papel-hint-txt">Resuelve ambas partes en tu cuaderno primero. Escribe aquí solo los resultados finales.</div></div>
+  <div class="card card-mo"><div class="pill p-mo">Parte A · División de monomios en contexto</div><div id="s5-div-ctx"></div></div>
+  <div class="card card-a"><div class="pill p-a">Parte B · Factorización en contexto</div><div id="s5-fact-ctx"></div></div>
+  <div class="card card-v"><div class="pill p-v">Parte C · Conexión entre las dos operaciones</div><p class="instr">¿De qué manera la factorización y la división de monomios están relacionadas?</p><textarea class="inp" id="s5-conex" rows="3" data-req="1" data-ml="40" oncopy="return false" onpaste="return false" oncontextmenu="return false" placeholder="Están relacionadas porque... cuando factorizas... es como dividir..."></textarea></div>
+  <div class="emsg" id="s5-err">⚠️ Completa todos los campos para continuar.</div>
+  <button class="btn-sig" onclick="avanzar('s5','s6')">Siguiente → Quiz + Cierre</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     S6 — QUIZ + CIERRE (sin cambios, ya estaba bien)
+═══════════════════════════════════════════════════════ -->
+<div class="sec" id="s6">
+  <div class="sec-hdr"><div class="sec-num">6</div><div><div class="sec-tit">Quiz integrador</div><div class="sec-sub">División, signos y factorización · 10 preguntas</div></div></div>
+  <div class="quiz-hdr"><h2>🎯 QUIZ · S10 · 10 PREGUNTAS</h2><div style="font-size:.8rem;margin-top:4px;opacity:.75;">División · Signos · Factor común · Banco de 60 preguntas</div></div>
+  <div id="quiz-wrap"></div>
+  <div class="emsg" id="s6q-err">⚠️ Responde todas las preguntas antes de verificar.</div>
+  <button class="btn-ver" id="btn-ver-quiz" onclick="verificarQuiz()">Verificar respuestas ✓</button>
+  <button class="btn-sig-quiz" id="btn-sig-quiz" onclick="irCierre()">Siguiente → Cierre</button>
+  <div id="cierre-wrap" style="display:none;margin-top:14px;">
+    <div class="card card-mo"><div class="pill p-mo">Cierre · Lo que construiste hoy</div><p class="instr">Completa con tus propias palabras (mínimo 40 caracteres):</p><p style="font-size:.85rem;font-weight:800;margin:8px 0 4px;">"Dividir monomios es lo opuesto de multiplicarlos porque..."</p><textarea class="inp" id="cierre-inv" rows="3" data-req="1" data-ml="40" oncopy="return false" onpaste="return false" oncontextmenu="return false" placeholder="...cuando multiplicas sumas los exponentes, entonces cuando divides..."></textarea><label class="lbl" style="margin-top:10px;">Tu expresión algebraica inventada (situación CDMX propia):</label><div class="alg-wrap"><input class="inp" id="cierre-expr" type="text" data-req="1" data-ml="3" data-alg="1" oncopy="return false" onpaste="return false" oncontextmenu="return false" placeholder="Ej: 12x^3 / 4x = 3x^2"></div></div>
+    <div class="emsg" id="s6-err">⚠️ Completa los campos de cierre para finalizar.</div>
+    <button class="btn-fin" onclick="finalizar()">✓ Finalizar y ver mi calificación</button>
+  </div>
+</div>
+
+<div class="sec" id="final"><div id="res-contenido"></div></div>
+<div style="text-align:center;padding:12px 0 20px;font-size:.7rem;color:#ccc;">Pensamiento Matemático II · S10 División y Factorización · Prof. Adrián Cruz</div>
+
+<script>
+// ==================== FUNCIONES AUXILIARES (MATHJAX, ÁLGEBRA, ETC.) ====================
+function mjxTypeset(el){ if(!el)return; if(window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([el]).catch(function(){}); }
+function texDeInput(s){ if(!s)return ''; var r=s,prev='',iter=0; while(prev!==r&&iter<5){ prev=r;iter++; r=r.replace(/([\w\)\^\.]+)\/([\w\(\-][\w\.\^]*)/g,function(m,num,den){ return '\\dfrac{'+num+'}{'+den+'}'; }); } r=r.replace(/\^([0-9]+)/g,function(m,p){return '^{'+p+'}';}); r=r.replace(/\^\(-([0-9]+)\)/g,function(m,p){return '^{-'+p+'}';}); r=r.replace(/\^-([0-9]+)/g,function(m,p){return '^{-'+p+'}';}); r=r.replace(/\*/g,'\\cdot '); r=r.replace(/·/g,'\\cdot '); return r; }
+function renderPreview(inputId){ var el=document.getElementById(inputId),prev=document.getElementById('prev-'+inputId); if(!el||!prev)return; var v=el.value.trim(); if(!v){ prev.innerHTML='<span style=\"color:#bbb;font-style:italic;font-size:.78rem;\">Vista previa...</span>'; prev.classList.remove('active'); return; } prev.innerHTML='\\('+texDeInput(v)+'\\)'; prev.classList.add('active'); mjxTypeset(prev); }
+function insSymbol(inputId,sym){ var el=document.getElementById(inputId); if(!el)return; el.focus(); var s=el.value,start=el.selectionStart!==undefined?el.selectionStart:s.length,end=el.selectionEnd!==undefined?el.selectionEnd:s.length; el.value=s.substring(0,start)+sym+s.substring(end); var pos=start+sym.length; try{el.setSelectionRange(pos,pos);}catch(e){} renderPreview(inputId); }
+function borrarSym(inputId){ var el=document.getElementById(inputId); if(!el)return; el.focus(); var s=el.value,pos=el.selectionStart!==undefined?el.selectionStart:s.length; if(pos>0){ el.value=s.substring(0,pos-1)+s.substring(pos); try{el.setSelectionRange(pos-1,pos-1);}catch(e){} } renderPreview(inputId); }
+function algHTML(inputId){ return '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:5px;"><button class="alg-btn" type="button" onmousedown="return false" onclick="insSymbol(\''+inputId+'\',\'^\')">xⁿ <small>^</small></button><button class="alg-btn" type="button" onmousedown="return false" onclick="insSymbol(\''+inputId+'\',\'/\')">÷ <small>/</small></button><button class="alg-btn op" type="button" onmousedown="return false" onclick="insSymbol(\''+inputId+'\',\'+\')">+</button><button class="alg-btn neg" type="button" onmousedown="return false" onclick="insSymbol(\''+inputId+'\',\'-\')">−</button><button class="alg-btn op" type="button" onmousedown="return false" onclick="insSymbol(\''+inputId+'\',\'*\')">×</button><button class="alg-btn op" type="button" onmousedown="return false" onclick="insSymbol(\''+inputId+'\',\'(\')">( )</button><button class="alg-btn clr" type="button" onmousedown="return false" onclick="borrarSym(\''+inputId+'\')">⌫</button></div><div class="alg-preview" id="prev-'+inputId+'"><span style="color:#bbb;font-style:italic;font-size:.78rem;">Vista previa...</span></div><span class="alg-hint">^ = exponente (x^2) &nbsp;|&nbsp; / = fracción (÷) &nbsp;|&nbsp; * = multiplicación</span>'; }
+function inyectarAlg(){ var campos=document.querySelectorAll('[data-alg]'); for(var i=0;i<campos.length;i++){ var el=campos[i],id=el.id; if(!id||document.getElementById('prev-'+id))continue; var wrap=el.parentNode; if(!wrap.classList.contains('alg-wrap')){ var w2=document.createElement('div'); w2.className='alg-wrap'; el.parentNode.insertBefore(w2,el); w2.appendChild(el); wrap=w2; } wrap.insertAdjacentHTML('beforeend',algHTML(id)); el.addEventListener('input',(function(iid){return function(){renderPreview(iid);};})(id)); } mjxTypeset(document.body); }
+function selOpt(gridId,idx,fbId,tipo,msg){ var grid=document.getElementById(gridId); if(!grid)return; var btns=grid.querySelectorAll('.opt-btn'); for(var i=0;i<btns.length;i++)btns[i].classList.remove('sel-opt'); btns[idx].classList.add('sel-opt'); var valId=gridId.replace('-op','-val'); var hid=document.getElementById(valId); if(hid)hid.value=String(idx); var fb=document.getElementById(fbId); if(fb){ fb.className='opt-fb show '+(tipo==='ok'?'ok':'nook'); fb.innerHTML=(tipo==='ok'?'<strong>✓ Correcto.</strong> ':'<strong>✗ Incorrecto.</strong> ')+msg; fb.scrollIntoView({behavior:'smooth',block:'nearest'}); } }
+
+// ==================== DATOS ORIGINALES ====================
+var ZONAS=[ {nom:'La Merced',badge:'Mercado de La Merced',sit:'En La Merced, un puesto divide el costo total de sus cajas entre el número de cajas para calcular el precio unitario.',v:'c',c1:12,e1:4,c2:4,e2:2,fact_expr:'20c³ + 15c²',div_res:'3c²',fact_res:'5c²(4c+3)',div_ctx:'El costo total es 12c⁴ pesos. Si se reparte entre 4c² clientes, ¿cuánto paga cada uno?',fact_ctx:'El carnicero tiene 20c³ + 15c² pesos. Factoriza para saber cuántos grupos iguales puede hacer.'}, {nom:'Metro CDMX',badge:'Sistema Metro CDMX',sit:'El Metro calcula tarifas dividiendo el costo total de operación entre el número de pasajeros por kilómetro.',v:'p',c1:18,e1:5,c2:6,e2:2,fact_expr:'24p⁴ + 16p³',div_res:'3p³',fact_res:'8p³(3p+2)',div_ctx:'El sistema transporta 18p⁵ pasajeros. Si hay 6p² vagones, ¿cuántos pasajeros hay por vagón?',fact_ctx:'El mantenimiento costó 24p⁴ + 16p³ pesos. Factoriza para distribuir el gasto en grupos iguales.'}, {nom:'Deportivo Xochimilco',badge:'Deportivo Xochimilco',sit:'El deportivo divide el total de metros cuadrados entre el número de equipos registrados para asignar espacio.',v:'t',c1:21,e1:6,c2:7,e2:3,fact_expr:'15t³ + 10t²',div_res:'3t³',fact_res:'5t²(3t+2)',div_ctx:'El área total es 21t⁶ m². Si hay 7t³ equipos, ¿cuántos m² le tocan a cada uno?',fact_ctx:'La cancha mide 15t³ + 10t² m². Factoriza para encontrar cuántas secciones iguales se pueden hacer.'}, {nom:'Taquería Tepito',badge:'Taquería de Tepito',sit:'El taquero divide las ganancias totales entre el número de horas trabajadas para calcular la ganancia por hora.',v:'h',c1:16,e1:5,c2:4,e2:2,fact_expr:'18h⁴ + 12h³',div_res:'4h³',fact_res:'6h³(3h+2)',div_ctx:'En una semana ganó 16h⁵ pesos. Si trabajó 4h² horas, ¿cuánto ganó por hora?',fact_ctx:'El total de tacos fue 18h⁴ + 12h³. Factoriza para organizar el pedido por turnos.'}, {nom:'Tianguis de Coyoacán',badge:'Tianguis Coyoacán',sit:'Una artesana divide su producción total entre el número de puestos para saber cuántas piezas van a cada puesto.',v:'n',c1:20,e1:5,c2:5,e2:2,fact_expr:'14n³ + 21n²',div_res:'4n³',fact_res:'7n²(2n+3)',div_ctx:'Produjo 20n⁵ piezas. Si las reparte en 5n² puestos, ¿cuántas le tocan a cada uno?',fact_ctx:'El inventario es 14n³ + 21n² piezas. Factoriza para organizar los grupos de empaque.'}, {nom:'Bachillerato CDMX',badge:'Bachillerato CDMX',sit:'La directora divide el presupuesto total entre el número de grupos para distribuirlo equitativamente.',v:'g',c1:15,e1:5,c2:3,e2:2,fact_expr:'12g³ + 18g²',div_res:'5g³',fact_res:'6g²(2g+3)',div_ctx:'El presupuesto es 15g⁵ pesos. Si hay 3g² grupos, ¿cuánto le toca a cada grupo?',fact_ctx:'El gasto en papelería fue 12g³ + 18g². Factoriza para repartirlo en partes iguales.'}, {nom:'Jugos Iztapalapa',badge:'Puesto de Jugos Iztapalapa',sit:'El negocio familiar divide el total de vasos vendidos entre los días de la semana para calcular el promedio diario.',v:'d',c1:24,e1:6,c2:8,e2:3,fact_expr:'16d⁴ + 24d³',div_res:'3d³',fact_res:'8d³(2d+3)',div_ctx:'Vendió 24d⁶ vasos. Si trabajó 8d³ días, ¿cuántos vendió por día?',fact_ctx:'Las ventas fueron 16d⁴ + 24d³ vasos. Factoriza para distribuir entre turnos iguales.'}, {nom:'Mercado Jamaica',badge:'Mercado Jamaica',sit:'El mayorista divide el costo total de arreglos florales entre el número de docenas para calcular el precio por docena.',v:'k',c1:18,e1:5,c2:6,e2:2,fact_expr:'20k³ + 30k²',div_res:'3k³',fact_res:'10k²(2k+3)',div_ctx:'El costo total es 18k⁵ pesos. Si tiene 6k² docenas, ¿cuánto cuesta cada docena?',fact_ctx:'El inventario es 20k³ + 30k² arreglos. Factoriza para organizar los pedidos.'} ];
+var ACTIVACION=[ {q:'Ya sabes multiplicar monomios: (3x²)(4x³) = 12x⁵. Ahora imagina el proceso al revés: si te doy el resultado 12x⁵ y uno de los factores (4x³), ¿cómo recuperarías el otro? ¿Qué operaciones harías?',kw:['divid','coeficiente','exponente','restar','inversa']}, {q:'En tu vida cotidiana, si tienes N pesos y los repartes entre P personas, divides. ¿Qué crees que pasa cuando "repartes" 12x⁵ entre 4x²? ¿Qué le pasará al número y qué le pasará a la x?',kw:['número','exponente','restar','divid','variable']}, {q:'¿Qué relación existe entre multiplicar y dividir? Si la ley para multiplicar potencias es "sumar exponentes", ¿qué crees que será la ley para dividirlas? Justifica tu conjetura.',kw:['sumar','restar','inversa','exponente','opuesto']}, {q:'Cuando factorizas 6x² + 9x estás buscando "qué factor salió del paréntesis" antes de distribuir. ¿Puedes adivinar cuál es ese factor? ¿Cómo lo buscarías?',kw:['factor','común','paréntesis','distribuir','número']}, {q:'Si ya sabes que (4x)(3x²) = 12x³, ¿qué operación tendrías que hacer para encontrar 12x³ ÷ 4x? ¿Y qué diferencia habría con 12x³ ÷ 4x³?',kw:['divid','exponente','restar','coeficiente','diferencia']} ];
+var QB = [
+[{p:'¿Cuál es el resultado de \\(\\dfrac{20x^6}{4x^2}\\)?',ops:['5x⁴','16x⁴','5x³','5x⁸'],ok:0,ex:'Coef: 20÷4=5. Exp: 6−2=4.'}],
+[{p:'¿Cuál es el resultado de \\(\\dfrac{7x^4}{7x^4}\\)?',ops:['1','x⁰','0','7'],ok:0,ex:'Coef: 7÷7=1. Exp: 4−4=0 → 1.'}],
+[{p:'Un alumno calcula x⁵ ÷ x² = x⁷. ¿Qué error cometió?',ops:['Sumó los exponentes','Restó mal','No hay error','Multiplicó exponentes'],ok:0,ex:'Al DIVIDIR los exponentes se RESTAN.']},
+[{p:'¿Cuál es el resultado de (−12x⁴) ÷ (4x²)?',ops:['−3x²','3x²','−3x⁶','−8x²'],ok:0,ex:'(−)(+)=−. Coef: 12÷4=3. Exp: 4−2=2.'}],
+[{p:'¿Cuál es el factor común de 6x² + 9x?',ops:['3x','3x²','6x','3'],ok:0,ex:'MCD(6,9)=3. Exp mín: min(2,1)=1 → 3x.'}],
+[{p:'¿Cuál expresión equivale a 3x²(2x + 5)?',ops:['6x³+15x²','6x²+15x','6x³+5x²','5x³+15x²'],ok:0,ex:'3x²·2x=6x³, 3x²·5=15x².'}],
+[{p:'Un mercado tiene 18k⁵ flores. Las distribuye en 6k² puestos iguales. ¿Cuántas flores por puesto?',ops:['3k³','12k³','3k⁷','3k⁵'],ok:0,ex:'18÷6=3, exp 5−2=3 → 3k³.'}],
+[{p:'¿Cuánto vale \\(x^{-3}\\) como fracción?',ops:['\\(\\dfrac{1}{x^3}\\)','−x³','x³','\\(\\dfrac{-1}{x^3}\\)'],ok:0,ex:'x⁻³ = 1/x³.'}],
+[{p:'¿Cuál afirmación sobre división de monomios es FALSA?',ops:['Al dividir, los exponentes siempre se suman','Los coeficientes se dividen','Los exponentes se restan','Si el exp. es 0, se escribe 1'],ok:0,ex:'Los exponentes se RESTAN, no se suman.'}],
+[{p:'¿Qué significa que el factor común sea "el máximo"?',ops:['Es el monomio más grande que divide a todos sin fracción','Es el coeficiente más grande','Es el exponente mayor','Es cualquier monomio que divida al primer término'],ok:0,ex:'Es el mayor factor que divide a todos los términos.']}
+];
+for(var i=QB.length; i<10; i++) QB.push(QB[0]); // duplica el primero para tener 10 niveles
+
+// ==================== VARIABLES GLOBALES ====================
+var ZONA, actQ;
+var QUIZ_SEL=[], estadoQuiz=[], quizVerificado=false;
+var modoDocente=false, modoRecorrer=false;
+var SECS=['s0','s1','s2','s3','s4','s5','s6','final'];
+var LETRAS=['A','B','C','D'];
+var NV_COL=['','#43a047','#039be5','#8e24aa','#e65100','#c62828','#006064','#37474f','#bf360c','#0d47a1','#1b5e20'];
+var NV_LBL=['','División básica','x⁰=1','Errores exp.','Signos','Factor común','Verificación','Div+Factor','CDMX','Razonamiento','Profundo'];
+
+// Respuestas correctas almacenadas dinámicamente
+var respCorrectas = {
+  inv: ['', ''],                // inv-0, inv-1
+  div: ['', '', ''],            // resultados de división básica (monomio)
+  signos: ['', '', ''],         // resultados de signos
+  factorizacion: ['', '', '', ''], // expresión factorizada completa
+  cdmxDiv: '',                  // resultado división CDMX
+  cdmxFact: ''                  // factorización CDMX
+};
+
+function rInt(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
+function pick(arr){return arr[Math.floor(Math.random()*arr.length)];}
+function frac(num,den){ return '<span class="frac"><span class="num">'+num+'</span><span class="den">'+den+'</span></span>'; }
+
+// Normalización de expresiones algebraicas para comparación
+function normalizarExpr(expr){
+  if(!expr) return '';
+  var s = expr.toString().toLowerCase().trim();
+  // Reemplazar exponentes: x^2 → x2 (para simplificar), pero mejor mantener estructura
+  // Eliminar espacios, convertir multiplicación explícita
+  s = s.replace(/\s+/g, '');
+  s = s.replace(/\*/g, '');
+  s = s.replace(/·/g, '');
+  // Convertir ^ a notación de texto: x^2 -> x2 (pero cuidado con números de más de un dígito)
+  s = s.replace(/\^(\d+)/g, function(m, p) { return p; });
+  // Eliminar signo de multiplicación implícito entre número y letra: 3x -> 3x (se mantiene)
+  // Ordenar términos para comparar sumas: ej 3x+2 vs 2+3x
+  // Separar por '+' y '-', ordenar alfabéticamente y volver a unir
+  var partes = s.split(/(?=[+-])/);
+  partes.sort();
+  return partes.join('');
+}
+
+function compararRespuesta(user, correcta){
+  if(!user || !correcta) return false;
+  var u = normalizarExpr(user);
+  var c = normalizarExpr(correcta);
+  return u === c;
+}
+
+// ==================== CONSTRUCCIÓN DE TABLAS CON ALMACENAMIENTO DE RESPUESTAS ====================
+function buildTablaDivA(){
+  var vars=['x','m','a','n','p','k'];
+  var v=vars[rInt(0,vars.length-1)];
+  var items=[];
+  // Generar 3 divisiones con sus resultados
+  var c1a = rInt(2,6)*4, e1a = rInt(4,8), c2a = 4, e2a = rInt(1,e1a-2);
+  var resA = (c1a/c2a) + v + '^' + (e1a-e2a);
+  items.push({num: c1a+v+'^'+e1a, den: c2a+v+'^'+e2a, res: resA});
+  
+  var c1b = rInt(2,8), e1b = rInt(3,7), c2b = c1b, e2b = e1b;
+  var resB = '1';
+  items.push({num: c1b+v+'^'+e1b, den: c2b+v+'^'+e2b, res: resB});
+  
+  var c1c = rInt(2,5)*3, e1c = rInt(5,9), c2c = 3, e2c = rInt(2,e1c-2);
+  var resC = (c1c/c2c) + v + '^' + (e1c-e2c);
+  items.push({num: c1c+v+'^'+e1c, den: c2c+v+'^'+e2c, res: resC});
+  
+  var html='<table><thead><tr><th>División</th><th>Coef<br><small>÷</small></th><th>Exp<br><small>−</small></th><th>Resultado</th></tr></thead><tbody>';
+  for(var i=0;i<items.length;i++){
+    var d=items[i];
+    respCorrectas.div[i] = d.res;
+    html+='<tr><td style="text-align:center;vertical-align:middle;font-size:1rem;">'+frac(d.num,d.den)+'</td>'
+      +'<td><input type="text" id="diva-c-'+i+'" data-req="1" data-ml="1" class="inp-cell" placeholder="?" style="width:55px;"></td>'
+      +'<td><input type="text" id="diva-e-'+i+'" data-req="1" data-ml="1" class="inp-cell" placeholder="?" style="width:55px;"></td>'
+      +'<td><input type="text" id="diva-res-'+i+'" data-req="1" data-ml="1" data-alg="1" class="inp-cell" placeholder="?"></td></tr>';
+  }
+  html+='</tbody></table>';
+  document.getElementById('tabla-div-a').innerHTML=html;
+  var e=rInt(3,8);
+  document.getElementById('caso-x0-expr').innerHTML = frac(6+v+'<sup>'+e+'</sup>', 6+v+'<sup>'+e+'</sup>')+' ';
+  document.getElementById('caso-x0-var').textContent=v;
+  setTimeout(inyectarAlg,80);
+}
+
+function buildTablaSignos(){
+  var vs=['x','m','a','p','n'];
+  var v=vs[rInt(0,vs.length-1)];
+  var items=[
+    {n:'−12'+v+'<sup>5</sup>', d:'4'+v+'<sup>2</sup>', signo:'neg', r:'−3'+v+'<sup>3</sup>'},
+    {n:'−20'+v+'<sup>6</sup>', d:'−5'+v+'<sup>3</sup>', signo:'pos', r:'4'+v+'<sup>3</sup>'},
+    {n:'15'+v+'<sup>4</sup>', d:'−3'+v, signo:'neg', r:'−5'+v+'<sup>3</sup>'}
+  ];
+  var html='<table><thead><tr><th>División</th><th>Signo</th><th>Resultado</th></tr></thead><tbody>';
+  for(var i=0;i<items.length;i++){
+    var d=items[i];
+    respCorrectas.signos[i] = d.r;
+    html+='<tr><td style="text-align:center;vertical-align:middle;font-size:1rem;">'+frac(d.n,d.d)+'</td>'
+      +'<td><select id="sign-s-'+i+'" data-req="1" class="inp-cell" style="padding:4px;min-width:100px;"><option value="">--</option><option value="pos">+ Positivo</option><option value="neg">− Negativo</option></select></td>'
+      +'<td><input type="text" id="sign-r-'+i+'" data-req="1" data-ml="1" data-alg="1" class="inp-cell" placeholder="?"></td></tr>';
+  }
+  html+='</tbody></table>';
+  document.getElementById('tabla-signos').innerHTML=html;
+  
+  var vs2=['x','m','a','p'];
+  var ve=vs2[rInt(0,vs2.length-1)];
+  var errData=[
+    {e:'12'+ve+'⁵ ÷ 4'+ve+'² = 8'+ve+'³', opts:['Restó coeficientes (12−4=8) en vez de dividirlos. Correcto: 3'+ve+'³','El exponente está mal','No hay error','El resultado debería ser negativo'], ok:0},
+    {e:ve+'⁶ ÷ '+ve+'⁶ = '+ve+'⁰', opts:['No simplificó: '+ve+'⁰=1. La respuesta final debe ser 1','Está correcto','El exponente debería ser 1','No se puede dividir'], ok:0},
+    {e:'(−6'+ve+'⁴) ÷ (2'+ve+'²) = 3'+ve+'²', opts:['Ignoró el signo: (−)÷(+)=−. Correcto: −3'+ve+'²','El exponente está mal','El coeficiente está mal','No hay error'], ok:0}
+  ];
+  var errHtml='';
+  for(var i=0;i<errData.length;i++){
+    var d=errData[i];
+    errHtml+='<div class="card" style="background:#fff8f8;border-left:4px solid var(--roj);margin-bottom:10px;">'
+      +'<p style="font-family:monospace;font-size:.9rem;font-weight:800;color:var(--roj);background:#fdecea;border-radius:7px;padding:7px 12px;margin-bottom:8px;">❌ '+d.e+'</p>'
+      +'<p class="instr" style="margin-bottom:6px;">¿Cuál es el error?</p>'
+      +'<div class="opt-grid" id="err-op-'+i+'">';
+    for(var j=0;j<d.opts.length;j++){
+      var esOk=j===d.ok;
+      errHtml+='<div class="opt-btn" onclick="selOpt(\'err-op-'+i+'\','+j+',\'err-fb-'+i+'\','
+        +(esOk?'\'ok\',\'✓ Correcto. '+d.opts[d.ok].replace(/'/g,"\\'")+'\'':'\'nook\',\'Esa no es la respuesta correcta. Analiza con cuidado.\'')+')\" data-v="'+j+'">'
+        +'<div class="opt-ico">'+LETRAS[j]+'</div><span>'+d.opts[j]+'</span></div>';
+    }
+    errHtml+='</div><div class="opt-fb" id="err-fb-'+i+'"></div><input type="hidden" id="err-val-'+i+'" value=""></div>';
+  }
+  document.getElementById('errores-wrap').innerHTML=errHtml;
+  setTimeout(inyectarAlg,80);
+}
+
+function buildTablaFact(){
+  var vars=['x','m','a','p','n','k'];
+  var v=vars[rInt(0,vars.length-1)];
+  var items=[
+    {e:'6'+v+'³ + 9'+v+'²', fc:'3'+v+'²', par:'(2'+v+' + 3)', res:'3'+v+'²(2'+v+'+3)'},
+    {e:'12'+v+'⁴ + 8'+v+'³', fc:'4'+v+'³', par:'(3'+v+' + 2)', res:'4'+v+'³(3'+v+'+2)'},
+    {e:'15'+v+'⁵ + 10'+v+'³', fc:'5'+v+'³', par:'(3'+v+'² + 2)', res:'5'+v+'³(3'+v+'²+2)'},
+    {e:'20'+v+'⁴ − 12'+v+'³', fc:'4'+v+'³', par:'(5'+v+' − 3)', res:'4'+v+'³(5'+v+'-3)'}
+  ];
+  var html='<table><thead><tr><th>Expresión</th><th>Factor común</th><th>Factorizado &nbsp;<small>FC( )</small></th></tr></thead><tbody>';
+  for(var i=0;i<items.length;i++){
+    var d=items[i];
+    respCorrectas.factorizacion[i] = d.res;
+    html+='<tr><td class="td-fix" style="font-size:.83rem;">'+d.e+'</td>'
+      +'<td><input type="text" id="fact-fc-'+i+'" data-req="1" data-ml="1" data-alg="1" class="inp-cell" placeholder="?"></td>'
+      +'<td><input type="text" id="fact-ex-'+i+'" data-req="1" data-ml="3" data-alg="1" class="inp-cell" placeholder="FC( + )"></td></tr>';
+  }
+  html+='</tbody></table>';
+  document.getElementById('tabla-fact').innerHTML=html;
+  setTimeout(inyectarAlg,80);
+}
+
+function buildCtxCDMX(){
+  ZONA=pick(ZONAS);
+  document.getElementById('s5-zona-tit').textContent='Aplicación — '+ZONA.nom;
+  document.getElementById('s5-zona-badge').textContent=ZONA.badge;
+  document.getElementById('s5-sit').textContent=ZONA.sit;
+  
+  // División
+  var divExpr = ZONA.c1+ZONA.v+'^'+ZONA.e1 + ' ÷ ' + ZONA.c2+ZONA.v+'^'+ZONA.e2;
+  respCorrectas.cdmxDiv = ZONA.div_res;
+  document.getElementById('s5-div-ctx').innerHTML=
+    '<p class="instr" style="margin-bottom:8px;">'+ZONA.div_ctx+'</p>'
+    +'<p style="font-family:monospace;background:var(--gris);padding:6px;border-radius:7px;">'+divExpr+'</p>'
+    +'<div class="alg-wrap"><input type="text" id="s5a-res" data-req="1" data-ml="1" data-alg="1" class="inp" placeholder="Resultado"></div>';
+  
+  // Factorización
+  respCorrectas.cdmxFact = ZONA.fact_res;
+  document.getElementById('s5-fact-ctx').innerHTML=
+    '<p class="instr" style="margin-bottom:8px;">'+ZONA.fact_ctx+'</p>'
+    +'<p style="font-family:monospace;background:var(--gris);padding:6px;border-radius:7px;">'+ZONA.fact_expr+'</p>'
+    +'<div class="alg-wrap"><input type="text" id="s5b-ex" data-req="1" data-ml="3" data-alg="1" class="inp" placeholder="Expresión factorizada"></div>';
+  
+  setTimeout(inyectarAlg,80);
+}
+
+// ==================== VALIDACIÓN SIN BLOQUEO (solo muestra errores) ====================
+function validarSecMostrarErrores(id){
+  var sec=document.getElementById(id);
+  if(!sec||modoRecorrer) return;
+  
+  // Limpiar errores visuales previos
+  var todosErrores=sec.querySelectorAll('.err');
+  for(var i=0;i<todosErrores.length;i++) todosErrores[i].classList.remove('err');
+  
+  var ok=true;
+  
+  // Campos data-req genéricos
+  var els=sec.querySelectorAll('[data-req]');
+  for(var i=0;i<els.length;i++){
+    var el=els[i];
+    var ml=parseInt(el.getAttribute('data-ml')||'1');
+    var v=el.tagName==='SELECT'?el.value:el.value.trim();
+    if(!v||v.length<ml){ el.classList.add('err'); ok=false; }
+  }
+  
+  if(id==='s0'){
+    var nom=document.getElementById('inp-nombre').value.trim();
+    if(nom.length<5){ document.getElementById('inp-nombre').classList.add('err'); ok=false; }
+  }
+  
+  // Checkboxes
+  if(id==='s2'){ var chk=document.getElementById('chk-cuaderno'); if(chk&&!chk.checked){ chk.classList.add('err'); ok=false; } else if(chk) chk.classList.remove('err'); }
+  if(id==='s4'){ var chkf=document.getElementById('chk-fact'); if(chkf&&!chkf.checked){ chkf.classList.add('err'); ok=false; } else if(chkf) chkf.classList.remove('err'); }
+  
+  // Selecciones múltiples
+  if(id==='s1'){ var sv1=document.getElementById('sel-exp-val'); var sv2=document.getElementById('sel-coef-val'); if(!sv1||sv1.value===''){ ok=false; } if(!sv2||sv2.value===''){ ok=false; } }
+  if(id==='s2'){ var sx0=document.getElementById('sel-x0-val'); if(!sx0||sx0.value===''){ ok=false; } }
+  if(id==='s3'){ for(var i=0;i<3;i++){ var ev=document.getElementById('err-val-'+i); if(!ev||ev.value===''){ ok=false; } } }
+  if(id==='s4'){ var sfv=document.getElementById('sel-fact-val'); if(!sfv||sfv.value===''){ ok=false; } }
+  
+  // Validación de contenido algebraico específico
+  if(id==='s1'){
+    var inv0 = document.getElementById('inv-0').value.trim();
+    var inv1 = document.getElementById('inv-1').value.trim();
+    if(!compararRespuesta(inv0, '3')){ document.getElementById('inv-0').classList.add('err'); ok=false; }
+    if(!compararRespuesta(inv1, '3x^2')){ document.getElementById('inv-1').classList.add('err'); ok=false; }
+  }
+  if(id==='s2'){
+    for(var i=0;i<3;i++){
+      var inp = document.getElementById('diva-res-'+i);
+      if(inp && !compararRespuesta(inp.value.trim(), respCorrectas.div[i])){ inp.classList.add('err'); ok=false; }
+    }
+  }
+  if(id==='s3'){
+    for(var i=0;i<3;i++){
+      var inp = document.getElementById('sign-r-'+i);
+      if(inp && !compararRespuesta(inp.value.trim(), respCorrectas.signos[i])){ inp.classList.add('err'); ok=false; }
+    }
+  }
+  if(id==='s4'){
+    for(var i=0;i<4;i++){
+      var inp = document.getElementById('fact-ex-'+i);
+      if(inp && !compararRespuesta(inp.value.trim(), respCorrectas.factorizacion[i])){ inp.classList.add('err'); ok=false; }
+    }
+  }
+  if(id==='s5'){
+    var divRes = document.getElementById('s5a-res');
+    var factRes = document.getElementById('s5b-ex');
+    if(divRes && !compararRespuesta(divRes.value.trim(), respCorrectas.cdmxDiv)){ divRes.classList.add('err'); ok=false; }
+    if(factRes && !compararRespuesta(factRes.value.trim(), respCorrectas.cdmxFact)){ factRes.classList.add('err'); ok=false; }
+  }
+  
+  var em=document.getElementById(id+'-err');
+  if(em) em.classList.toggle('show',!ok);
+  if(!ok){
+    var primer=sec.querySelector('.err');
+    if(primer) primer.scrollIntoView({behavior:'smooth',block:'center'});
+    else sec.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+}
+
+// ==================== FUNCIONES DE AVANCE SIN BLOQUEO ====================
+function avanzar(from, to){
+  validarSecMostrarErrores(from);   // Muestra errores pero NO bloquea
+  showSec(to);
+}
+
+function finalizar(){
+  validarSecMostrarErrores('s6');   // Muestra errores en sección quiz/cierre
+  var nom=document.getElementById('inp-nombre').value.trim()||'Sin nombre';
+  var nota=calcNota();
+  var msg=nota.total>=8?'Excelente. Dominas la división y factorización de monomios.':nota.total>=6?'Buen trabajo. Repasa los puntos marcados antes del examen.':'Hay áreas de oportunidad. Revisa las secciones con más errores.';
+  var emoji=nota.total>=8?'🎉':'📘';
+  var wmR=''; for(var i=0;i<8;i++)wmR+='<div class="res-wm-row">'+nom+' &nbsp;·&nbsp; S10 Div y Fact &nbsp;·&nbsp; '+nom+'</div>';
+  var quizFilas=''; for(var i=0;i<QUIZ_SEL.length;i++){ var q=QUIZ_SEL[i],nv=0; for(var ni=0;ni<QB.length;ni++){ for(var qi=0;qi<QB[ni].length;qi++){ if(QB[ni][qi]===q){nv=ni+1;break;} } if(nv)break; } var corr=estadoQuiz[i]===q.ok,tuResp='—'; var tuOpts=document.querySelectorAll('#qopts-'+i+' .qopt'); for(var j=0;j<tuOpts.length;j++){ if(parseInt(tuOpts[j].getAttribute('data-oi'))===estadoQuiz[i]){ var lc=tuOpts[j].lastElementChild; tuResp=lc?lc.innerHTML:'?'; } } quizFilas+='<tr class="'+(corr?'ok-row':'nook-row')+'"><td style="text-align:center;">'+(corr?'✅':'❌')+'</td><td style="font-size:.72rem;font-weight:800;color:'+NV_COL[nv]+';">'+NV_LBL[nv]+'</td><td>'+q.p+'</td><td>'+tuResp+'</td><td style="color:var(--ver);font-weight:700;">'+q.ops[q.ok]+'</td></tr><tr class="par-row"><td colspan="5">'+q.ex+'</td></tr>'; } function refRow(id,lbl,minL){ var val=document.getElementById(id)?document.getElementById(id).value.trim():'—'; var ok=val.length>=minL; return '<tr class="'+(ok?'ok-row':'nook-row')+'"><td style="text-align:center;">'+(ok?'✅':'📝')+'</td><td colspan="4">'+lbl+'<br><span style="font-size:.75rem;color:#555;">'+val.substring(0,120)+(val.length>120?'...':'')+'</span></td></tr>'; } var html='<div class="res-hdr"><div class="res-wm">'+wmR+'</div><div style="background:rgba(255,255,255,.18);border-radius:10px;padding:10px 18px;display:inline-block;margin-bottom:8px;"><span style="font-size:.62rem;font-weight:800;letter-spacing:1.5px;opacity:.75;display:block;text-transform:uppercase;">Alumno</span><span style="font-size:1.1rem;font-weight:900;">'+nom+'</span></div><br><div>'+emoji+'</div><div class="res-nota">'+nota.total+'<span style="font-size:1.2rem;opacity:.7;">/10</span></div><div style="font-size:.8rem;opacity:.8;">'+msg+'</div><div style="display:flex;gap:8px;justify-content:center;margin-top:10px;flex-wrap:wrap;">'; for(var i=0;i<nota.det.length;i++){ var d=nota.det[i]; html+='<div style="background:rgba(255,255,255,.15);border-radius:8px;padding:4px 11px;font-size:.75rem;font-weight:700;">'+d.cat+': <strong>'+d.pts+'/'+d.max+'</strong></div>'; } html+='</div></div><div class="card card-v"><div class="pill p-v">Quiz — Detalle completo</div><div style="overflow-x:auto;"><table class="res-tabla"><thead><tr><th></th><th>Tema</th><th>Pregunta</th><th>Tu respuesta</th><th>Correcta</th></tr></thead><tbody>'+quizFilas+'</tbody></table></div></div><div class="card card-mo"><div class="pill p-mo">Reflexiones escritas</div><div style="overflow-x:auto;"><table class="res-tabla"><tbody>'+refRow('act-resp','Activación inicial',50)+refRow('s5-conex','Conexión división-factorización',40)+refRow('cierre-inv','Cierre — operación inversa',40)+'</tbody></table></div></div><div style="background:linear-gradient(135deg,#1B6B45,#2e7d32);border-radius:12px;padding:14px;margin:12px 0;"><div style="font-family:\'Bebas Neue\';font-size:1.2rem;color:#fff;margin-bottom:6px;">Esta pantalla es tu guía de repaso</div><div style="background:rgba(255,255,255,.12);border-radius:8px;padding:9px 12px;font-size:.82rem;color:#fff;line-height:1.65;">Cada pregunta del quiz incluye la explicación correcta. Úsala junto con tu cuaderno para preparar el examen.</div></div><div style="background:#fff3cd;border:2px solid var(--am);border-radius:10px;padding:12px;font-size:.8rem;line-height:1.7;"><strong>📸 Entrega en Classroom:</strong> Captura de esta pantalla + foto de tu cuaderno con los ejercicios resueltos.<br><strong style="color:var(--roj);">⚠️ Ambas evidencias son necesarias para la calificación completa.</strong></div><button class="btn-pdf" onclick="guardarPDF()" style="margin-top:12px;">💾 Guardar como PDF</button><button style="background:#fff;color:var(--tie);border:2px solid var(--gris2);border-radius:10px;padding:11px 22px;font-family:\'Nunito\';font-weight:800;font-size:.9rem;cursor:pointer;margin-top:12px;display:inline-block;" onclick="if(confirm(\'¿Reiniciar?\'))location.reload();">↺ Reiniciar</button>'; document.getElementById('res-contenido').innerHTML=html; showSec('final'); setTimeout(function(){mjxTypeset(document.getElementById('final'));},200); }
+
+function calcNota(){
+  var pts=0,det=[];
+  
+  // Quiz (5 puntos)
+  var qc=0; for(var i=0;i<QUIZ_SEL.length;i++) if(estadoQuiz[i]===QUIZ_SEL[i].ok) qc++;
+  var qpts=Math.round(qc*0.5*10)/10; pts+=qpts;
+  det.push({cat:'Quiz (10 preguntas)',pts:qpts,max:5});
+  
+  // Tabla inversa (0.5 puntos: cada una 0.25)
+  var invOk=0;
+  if(compararRespuesta(document.getElementById('inv-0')?.value.trim(), '3')) invOk+=0.25;
+  if(compararRespuesta(document.getElementById('inv-1')?.value.trim(), '3x^2')) invOk+=0.25;
+  pts+=invOk;
+  det.push({cat:'Tabla inversa',pts:invOk,max:0.5});
+  
+  // Selecciones s1 (0.5)
+  var se_pts=0;
+  var sev1=document.getElementById('sel-exp-val');
+  var sev2=document.getElementById('sel-coef-val');
+  if(sev1&&sev1.value==='1') se_pts+=0.25;
+  if(sev2&&sev2.value==='0') se_pts+=0.25;
+  pts+=se_pts;
+  det.push({cat:'Conjeturas',pts:se_pts,max:0.5});
+  
+  // División básica (1 punto: 3 ejercicios, cada uno 1/3 ≈0.333)
+  var divOk=0;
+  for(var i=0;i<3;i++) if(compararRespuesta(document.getElementById('diva-res-'+i)?.value.trim(), respCorrectas.div[i])) divOk++;
+  var divPts = Math.min(divOk * (1/3), 1);
+  pts+=divPts;
+  det.push({cat:'División básica',pts:divPts,max:1});
+  
+  // Caso x⁰ (0.25)
+  var sx0=document.getElementById('sel-x0-val');
+  if(sx0&&sx0.value==='0'){ pts+=0.25; det.push({cat:'Caso x⁰',pts:0.25,max:0.25}); } else det.push({cat:'Caso x⁰',pts:0,max:0.25});
+  
+  // Signos (0.75: 3 ejercicios, cada uno 0.25)
+  var signOk=0;
+  for(var i=0;i<3;i++) if(compararRespuesta(document.getElementById('sign-r-'+i)?.value.trim(), respCorrectas.signos[i])) signOk++;
+  var signPts = signOk * 0.25;
+  pts+=signPts;
+  det.push({cat:'Signos',pts:signPts,max:0.75});
+  
+  // Errores (0.5: 3 detecciones, cada una 0.1667)
+  var errOk=0;
+  for(var i=0;i<3;i++){ var ev=document.getElementById('err-val-'+i); if(ev&&ev.value==='0') errOk++; }
+  var errPts = Math.min(errOk * (0.5/3), 0.5);
+  pts+=errPts;
+  det.push({cat:'Detección errores',pts:errPts,max:0.5});
+  
+  // Factorización (1 punto: 4 expresiones, cada una 0.25)
+  var factOk=0;
+  for(var i=0;i<4;i++) if(compararRespuesta(document.getElementById('fact-ex-'+i)?.value.trim(), respCorrectas.factorizacion[i])) factOk++;
+  var factPts = factOk * 0.25;
+  pts+=factPts;
+  det.push({cat:'Factorización',pts:factPts,max:1});
+  
+  // Reflexión factorización (0.25)
+  var rfv=document.getElementById('sel-fact-val');
+  if(rfv&&rfv.value==='0'){ pts+=0.25; det.push({cat:'Reflexión FC',pts:0.25,max:0.25}); } else det.push({cat:'Reflexión FC',pts:0,max:0.25});
+  
+  // CDMX (0.5: división 0.25, factorización 0.25)
+  var cdmxPts=0;
+  if(compararRespuesta(document.getElementById('s5a-res')?.value.trim(), respCorrectas.cdmxDiv)) cdmxPts+=0.25;
+  if(compararRespuesta(document.getElementById('s5b-ex')?.value.trim(), respCorrectas.cdmxFact)) cdmxPts+=0.25;
+  pts+=cdmxPts;
+  det.push({cat:'CDMX',pts:cdmxPts,max:0.5});
+  
+  // Reflexiones finales (0.5: solo longitud)
+  var rf=document.getElementById('cierre-inv');
+  var rf_pts=0;
+  if(rf&&rf.value.trim().length>=40) rf_pts+=0.25;
+  var ce=document.getElementById('cierre-expr');
+  if(ce&&ce.value.trim().length>=3) rf_pts+=0.25;
+  pts+=rf_pts;
+  det.push({cat:'Cierre',pts:rf_pts,max:0.5});
+  
+  return {total:Math.min(Math.round(pts*10)/10,10),max:10,det:det};
+}
+
+function guardarPDF(){window.scrollTo(0,0);setTimeout(function(){window.print();},200);}
+function abrirDoc(){document.getElementById('modal-doc').classList.add('show');}
+function cerrarDoc(){document.getElementById('modal-doc').classList.remove('show');document.getElementById('doc-cod').value='';document.getElementById('doc-err').style.display='none';}
+function chkDoc(){ var v=document.getElementById('doc-cod').value.trim(); if(v==='890'||v==='890ac'||v==='890AC'||v==='2025AC'){ document.getElementById('doc-login').style.display='none'; document.getElementById('doc-panel').style.display='block'; } else { document.getElementById('doc-err').style.display='block'; document.getElementById('doc-cod').value=''; } }
+function docSaltar(){ cerrarDoc(); modoDocente=true; document.getElementById('inp-nombre').value='Modo Docente — Demo'; estadoQuiz=new Array(10).fill(0); finalizar(); }
+function docRecorrer(){ cerrarDoc(); modoRecorrer=true; document.body.style.outline='3px dashed var(--az2)'; document.body.style.outlineOffset='-3px'; alert('Modo recorrido activo. Los botones Siguiente no validarán.'); }
+
+// ==================== FUNCIONES DE QUIZ (sin cambios) ====================
+function renderQuiz(){ var html=''; window._quizOrdenes=[]; for(var i=0;i<QUIZ_SEL.length;i++){ var q=QUIZ_SEL[i]; var nv=0; for(var ni=0;ni<QB.length;ni++){ for(var qi=0;qi<QB[ni].length;qi++){ if(QB[ni][qi]===q){nv=ni+1;break;} } if(nv)break; } var ord=[0,1,2,3].sort(function(){return Math.random()-.5;}); window._quizOrdenes.push(ord); html+='<div class="qcard" id="qcard-'+i+'"><div class="qcard-hdr"><div class="qnum">Pregunta '+(i+1)+' de 10</div><div class="qnivel" style="background:'+NV_COL[nv]+'22;color:'+NV_COL[nv]+';">'+NV_LBL[nv]+'</div></div><div class="qtext">'+q.p+'</div><div class="qopts" id="qopts-'+i+'">'; for(var j=0;j<ord.length;j++){ var oi=ord[j]; html+='<div class="qopt" id="qopt-'+i+'-'+j+'" data-oi="'+oi+'" onclick="selQ('+i+','+j+')"><div class="qopt-letra">'+LETRAS[j]+'</div><div>'+q.ops[oi]+'</div></div>'; } html+='</div><div class="qfb" id="qfb-'+i+'"></div></div>'; } document.getElementById('quiz-wrap').innerHTML=html; quizVerificado=false; mjxTypeset(document.getElementById('quiz-wrap')); }
+function selQ(qi,li){ if(quizVerificado)return; var oi=parseInt(document.getElementById('qopt-'+qi+'-'+li).getAttribute('data-oi')); estadoQuiz[qi]=oi; var opts=document.querySelectorAll('#qopts-'+qi+' .qopt'); for(var i=0;i<opts.length;i++)opts[i].classList.remove('sel'); document.getElementById('qopt-'+qi+'-'+li).classList.add('sel'); }
+function verificarQuiz(){ var sinResp=false; for(var i=0;i<QUIZ_SEL.length;i++)if(estadoQuiz[i]===-1){sinResp=true;break;} if(sinResp){ document.getElementById('s6q-err').classList.add('show'); setTimeout(function(){document.getElementById('s6q-err').classList.remove('show');},2500); return; } quizVerificado=true; for(var i=0;i<QUIZ_SEL.length;i++){ var q=QUIZ_SEL[i],corr=estadoQuiz[i]===q.ok; var opts=document.querySelectorAll('#qopts-'+i+' .qopt'); for(var j=0;j<opts.length;j++){ var oi=parseInt(opts[j].getAttribute('data-oi')); if(oi===q.ok)opts[j].classList.add('correcto'); else if(oi===estadoQuiz[i]&&!corr)opts[j].classList.add('incorrecto'); } var fb=document.getElementById('qfb-'+i); fb.className='qfb show '+(corr?'ok':'nook'); fb.innerHTML=(corr?'<strong>✓ Correcto.</strong> ':'<strong>✗ Incorrecto.</strong> ')+q.ex; } document.getElementById('btn-ver-quiz').style.display='none'; document.getElementById('btn-sig-quiz').style.display='block'; }
+function irCierre(){ document.getElementById('btn-sig-quiz').style.display='none'; document.getElementById('cierre-wrap').style.display='block'; document.getElementById('cierre-wrap').scrollIntoView({behavior:'smooth',block:'start'}); setTimeout(inyectarAlg,80); }
+
+// ==================== FUNCIONES DE NAVEGACIÓN Y PROGRESO ====================
+function updProg(idx){ var pct=[0,14,28,42,56,70,85,100][Math.min(idx,7)]||0; document.getElementById('prog-bar').style.width=pct+'%'; var ids=['ps0','ps1','ps2','ps3','ps4','ps5','ps6','ps-fin']; for(var i=0;i<ids.length;i++){ var el=document.getElementById(ids[i]); if(el)el.classList.toggle('done',i<=idx); } }
+function showSec(id){ for(var i=0;i<SECS.length;i++){ var s=document.getElementById(SECS[i]); if(s)s.classList.toggle('on',SECS[i]===id); } updProg(SECS.indexOf(id)); window.scrollTo({top:0,behavior:'smooth'}); var sec=document.getElementById(id); if(sec)mjxTypeset(sec); }
+
+function aplicarAntiPaste(){ var els=document.querySelectorAll('textarea,input[type=text]'); for(var i=0;i<els.length;i++){ var el=els[i]; if(el.id==='inp-nombre')continue; el.addEventListener('paste',function(e){e.preventDefault();}); el.addEventListener('copy',function(e){e.preventDefault();}); el.addEventListener('cut',function(e){e.preventDefault();}); el.addEventListener('contextmenu',function(e){e.preventDefault();}); } }
+
+// ==================== INIT ====================
+function init(){
+  actQ=pick(ACTIVACION);
+  QUIZ_SEL=QB.map(function(niv){ return pick(niv); });
+  estadoQuiz=new Array(10).fill(-1);
+  quizVerificado=false;
+  document.getElementById('act-preg').textContent=actQ.q;
+  buildTablaDivA();
+  buildTablaSignos();
+  buildTablaFact();
+  buildCtxCDMX();
+  renderQuiz();
+  aplicarAntiPaste();
+  setTimeout(function(){ inyectarAlg(); mjxTypeset(document.body); },350);
+}
+window.onload=function(){ init(); };
+</script>
+</body>
+</html>
