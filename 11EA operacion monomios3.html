@@ -1,0 +1,1761 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Operaciones con Binomios · S11 · PM II</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\$$','\']], displayMath: [['\\[','\']], processEscapes: true },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] },
+  startup: { typeset: false }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- ═══ NUEVO: Bibliotecas de validación simbólica y numérica ═══ -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<script src="https://cdn.jsdelivr.net/npm/mathjs@12.4.3/lib/browser/math.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/algebrite@1.4.0/dist/algebrite.bundle-for-browser.js"></script>
+
+<style>
+:root{
+  --mo:#5B2D8E;--mo2:#7B3FC0;--mo3:#B88EE8;--mo-f:#f3ecfb;
+  --ver:#1B6B45;--ver2:#52B788;--nar:#E85D04;--nar2:#F9A53A;
+  --roj:#C1121F;--az:#023E8A;--az2:#1565C0;--am:#F5A623;
+  --cr:#fdf9ff;--tie:#1a0a2e;--gris:#ede8f5;--gris2:#d5cce8;
+  --som:0 3px 18px rgba(91,45,142,.12);
+  --cyan:#00838f;--cyan2:#00bcd4;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--cr);color:var(--tie);font-size:15px;overflow-x:hidden;}
+
+/* ── HEADER ── */
+.hdr{background:linear-gradient(135deg,#0d1b2a,#1a3a5c);padding:18px 16px 14px;text-align:center;}
+.hdr-tag{font-size:.65rem;font-weight:800;letter-spacing:3px;color:var(--cyan2);text-transform:uppercase;margin-bottom:3px;}
+.hdr h1{font-family:'Bebas Neue';font-size:1.9rem;color:#fff;line-height:1;}
+.hdr h1 em{color:var(--nar2);font-style:normal;}
+.hdr-sub{font-size:.74rem;color:rgba(255,255,255,.45);margin-top:4px;}
+.hdr-autor{margin-top:8px;font-size:.73rem;color:rgba(255,255,255,.55);font-weight:700;}
+
+/* ── PROGRESO ── */
+.prog-wrap{background:#fff;padding:10px 14px;border-bottom:2px solid var(--gris2);position:sticky;top:0;z-index:90;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.prog-bar-bg{background:var(--gris2);border-radius:4px;height:5px;margin-bottom:5px;}
+.prog-bar{background:linear-gradient(90deg,var(--cyan),var(--ver2));height:5px;border-radius:4px;transition:width .4s;}
+.prog-steps{display:flex;justify-content:space-between;font-size:.58rem;font-weight:800;color:#bbb;letter-spacing:.3px;}
+.prog-steps span.done{color:var(--cyan);}
+
+/* ── SECCIONES ── */
+.sec{display:none;padding:14px;max-width:700px;margin:0 auto;}
+.sec.on{display:block;}
+
+/* ── CARDS ── */
+.card{background:#fff;border-radius:12px;padding:15px;margin-bottom:12px;box-shadow:var(--som);}
+.card-mo{border-left:4px solid var(--mo2);}
+.card-v{border-left:4px solid var(--ver2);}
+.card-a{border-left:4px solid var(--az2);}
+.card-am{border-left:4px solid var(--am);}
+.card-r{border-left:4px solid var(--roj);}
+.card-tie{border-left:4px solid var(--tie);}
+.card-cy{border-left:4px solid var(--cyan);}
+
+/* ── PILLS ── */
+.pill{display:inline-block;font-size:.63rem;font-weight:800;letter-spacing:.4px;padding:3px 9px;border-radius:12px;margin-bottom:8px;text-transform:uppercase;}
+.p-mo{background:var(--mo-f);color:var(--mo);}
+.p-v{background:#d4edda;color:var(--ver);}
+.p-a{background:#cce5ff;color:var(--az2);}
+.p-am{background:#fff3cd;color:#856404;}
+.p-r{background:#fdecea;color:var(--roj);}
+.p-tie{background:var(--gris);color:var(--tie);}
+.p-cy{background:#e0f7fa;color:var(--cyan);}
+
+/* ── ALERTAS ── */
+.alerta{background:linear-gradient(135deg,#ff6b35,#f7b731);border-radius:12px;padding:14px 15px;margin-bottom:14px;display:flex;gap:12px;align-items:flex-start;color:#fff;}
+.alerta-ico{font-size:1.5rem;flex-shrink:0;margin-top:1px;}
+.alerta-txt{font-size:.82rem;line-height:1.65;}
+.alerta-txt strong{font-size:.88rem;display:block;margin-bottom:3px;}
+.calif-aviso{background:linear-gradient(135deg,#e8f5e9,#f1f8e9);border:2px solid var(--ver2);border-radius:12px;padding:13px 15px;margin-bottom:10px;display:flex;gap:11px;align-items:flex-start;}
+.calif-aviso-txt p{font-size:.84rem;font-weight:800;color:var(--ver);margin-bottom:4px;}
+.calif-aviso-txt span{font-size:.79rem;line-height:1.65;color:#2e7d32;display:block;}
+
+/* ── INPUTS ── */
+.lbl{font-size:.78rem;font-weight:800;color:var(--mo);display:block;margin-bottom:4px;margin-top:10px;}
+.inp{width:100%;padding:9px 12px;border:2px solid var(--gris2);border-radius:8px;font-size:.88rem;font-family:'Nunito';color:var(--tie);background:#fff;transition:border-color .2s;}
+.inp:focus{outline:none;border-color:var(--az2);}
+.inp.err{border-color:var(--roj)!important;}
+textarea.inp{resize:vertical;min-height:70px;}
+.sel{width:100%;padding:9px 12px;border:2px solid var(--gris2);border-radius:8px;font-size:.88rem;font-family:'Nunito';color:var(--tie);background:#fff;appearance:none;}
+
+/* ── SISTEMA ALGEBRAICO ── */
+.alg-wrap{margin-bottom:4px;}
+.alg-btns{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px;}
+.alg-btn{background:#fff;border:1.5px solid var(--mo3);color:var(--mo2);border-radius:6px;
+  padding:4px 9px;font-size:.78rem;font-weight:800;cursor:pointer;font-family:'Nunito';
+  transition:background .15s,color .15s;line-height:1;flex-shrink:0;user-select:none;}
+.alg-btn:active,.alg-btn:hover{background:var(--mo2);color:#fff;border-color:var(--mo2);}
+.alg-btn.op{border-color:var(--gris2);color:var(--tie);}
+.alg-btn.op:hover{background:var(--tie);color:#fff;border-color:var(--tie);}
+.alg-btn.neg{border-color:var(--roj);color:var(--roj);}
+.alg-btn.neg:hover{background:var(--roj);color:#fff;}
+.alg-btn.clr{border-color:#aaa;color:#666;}
+.alg-btn.clr:hover{background:#666;color:#fff;}
+.alg-preview{min-height:32px;background:var(--gris);border-radius:7px;padding:5px 11px;
+  margin-top:4px;font-size:.95rem;color:var(--tie);border-left:3px solid var(--mo3);transition:background .2s;}
+.alg-preview.active{background:#fff;border-color:var(--az2);box-shadow:0 0 0 2px rgba(21,101,192,.1);}
+.alg-preview mjx-container{display:inline!important;}
+.alg-hint{font-size:.69rem;color:#888;font-style:italic;margin-top:2px;display:block;}
+
+/* ── ERRORES ── */
+.emsg{display:none;background:#fdecea;border:1.5px solid var(--roj);border-radius:8px;padding:8px 12px;font-size:.8rem;color:var(--roj);font-weight:700;margin:8px 0;}
+.emsg.show{display:block;}
+
+/* ── TABLAS ── */
+.t-wrap{overflow-x:auto;margin:10px 0;}
+table{width:100%;border-collapse:collapse;font-size:.82rem;}
+th{background:var(--tie);color:#fff;padding:8px 9px;text-align:center;font-weight:700;font-size:.75rem;white-space:nowrap;}
+td{padding:7px 9px;border:1.5px solid var(--gris2);vertical-align:middle;}
+td input.inp-cell{border:1.5px solid var(--gris2);border-radius:6px;padding:5px 7px;font-family:'Nunito';font-size:.82rem;text-align:center;width:100%;background:#fff;color:var(--tie);}
+td input.inp-cell:focus{outline:none;border-color:var(--az2);}
+td input.inp-cell.correcto{background:#e8f5e9;border-color:var(--ver2);}
+td input.inp-cell.incorrecto{background:#fdecea;border-color:var(--roj);}
+.td-fix{background:var(--gris);font-weight:800;text-align:center;}
+
+/* ── FRACCIÓN VERTICAL ── */
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.15;margin:0 3px;}
+.frac .num{border-bottom:2px solid currentColor;padding:1px 8px;font-weight:800;}
+.frac .den{padding:1px 8px;font-weight:800;}
+.frac-sm{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1;margin:0 2px;}
+.frac-sm .num{border-bottom:1.5px solid currentColor;padding:0 4px;font-size:.85em;}
+.frac-sm .den{padding:0 4px;font-size:.85em;}
+
+/* ── CUADERNO ── */
+.cuaderno{background:linear-gradient(135deg,#fffde7,#fff8e1);border:2.5px solid #f9a825;border-radius:14px;padding:16px;margin:12px 0;}
+.cuaderno-hdr{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.cuaderno-hdr .ico{font-size:1.6rem;}
+.cuaderno-hdr h3{font-family:'Bebas Neue';font-size:1.25rem;color:#4a3200;letter-spacing:.5px;}
+.cuaderno-regla{background:#fff;border-radius:9px;padding:11px 13px;margin-bottom:10px;border-left:4px solid #f9a825;}
+.cuaderno-confirm{display:flex;align-items:center;gap:10px;margin-top:12px;padding:10px 13px;background:#fff;border-radius:9px;border:1.5px solid #f9a825;}
+.cuaderno-confirm input[type=checkbox]{width:20px;height:20px;cursor:pointer;}
+.cuaderno-confirm label{font-size:.83rem;font-weight:700;cursor:pointer;}
+
+/* ── PASO BOX ── */
+.paso-box{background:var(--gris);border-radius:10px;padding:12px;margin:8px 0;font-family:monospace;font-size:.88rem;line-height:2;font-weight:700;}
+.paso-box .d1{color:var(--roj);}
+.paso-box .d2{color:var(--ver);}
+.paso-box .d3{color:var(--az2);}
+.paso-box .d4{color:var(--mo2);}
+.paso-box .d5{color:var(--cyan);}
+
+/* ── FOIL BOX ── */
+.foil-box{background:linear-gradient(135deg,#f3ecfb,#e8f0ff);border:2.5px solid var(--mo2);border-radius:14px;padding:16px;margin:12px 0;text-align:center;}
+.foil-titulo{font-family:'Bebas Neue';font-size:1.3rem;color:var(--mo);letter-spacing:1px;margin-bottom:10px;}
+.foil-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0;}
+.foil-item{background:#fff;border-radius:9px;padding:9px 12px;border:2px solid var(--mo3);}
+.foil-letra{font-family:'Bebas Neue';font-size:1.6rem;line-height:1;}
+.foil-desc{font-size:.72rem;color:#555;line-height:1.4;margin-top:2px;}
+.foil-F{color:var(--roj);}
+.foil-O{color:var(--ver);}
+.foil-I{color:var(--az2);}
+.foil-L{color:var(--mo2);}
+
+/* ── OPCIONES SELECCIÓN ── */
+.opt-grid{display:flex;flex-direction:column;gap:6px;margin-top:8px;}
+.opt-btn{display:flex;align-items:center;gap:10px;padding:10px 13px;border:2px solid var(--gris2);border-radius:9px;cursor:pointer;font-size:.85rem;font-weight:700;transition:all .18s;background:#fff;}
+.opt-btn:hover{border-color:var(--az2);background:#f0f4ff;}
+.opt-btn.sel-opt{border-color:var(--az2);background:#e8f0ff;}
+.opt-btn.ok-opt{border-color:var(--ver2);background:#e8f5e9;color:#1b5e20;}
+.opt-btn.ok-opt .opt-ico{background:var(--ver2);color:#fff;}
+.opt-btn.nok-opt{border-color:var(--roj);background:#fdecea;color:var(--roj);}
+.opt-btn.nok-opt .opt-ico{background:var(--roj);color:#fff;}
+.opt-ico{width:22px;height:22px;border-radius:50%;background:var(--gris2);font-weight:800;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.opt-fb{margin-top:6px;padding:7px 11px;border-radius:8px;font-size:.78rem;line-height:1.5;display:none;}
+.opt-fb.show{display:block;}
+.opt-fb.ok{background:#e8f5e9;color:#1b5e20;border:1.5px solid var(--ver2);}
+.opt-fb.nook{background:#fdecea;color:var(--roj);border:1.5px solid var(--roj);}
+
+/* ── QUIZ ── */
+.quiz-hdr{background:linear-gradient(135deg,#0d1b2a,#0d47a1);border-radius:14px;padding:16px;color:#fff;margin-bottom:12px;text-align:center;}
+.quiz-hdr h2{font-family:'Bebas Neue';font-size:1.5rem;}
+.qcard{background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:var(--som);border:2px solid var(--gris2);}
+.qcard-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.qnum{font-size:.65rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--az2);}
+.qnivel{font-size:.6rem;font-weight:800;padding:2px 7px;border-radius:8px;background:var(--gris);color:#666;}
+.qtext{font-size:.9rem;font-weight:700;margin-bottom:10px;line-height:1.6;}
+.qopts{display:flex;flex-direction:column;gap:7px;}
+.qopt{display:flex;align-items:center;gap:10px;padding:10px 12px;border:2.5px solid var(--gris2);border-radius:9px;cursor:pointer;transition:all .2s;font-size:.86rem;font-weight:700;}
+.qopt:hover{border-color:var(--az2);background:#f0f4ff;}
+.qopt.sel{border-color:var(--az2);background:#e8f0ff;}
+.qopt.correcto{border-color:var(--ver2);background:#e8f5e9;color:#1b5e20;}
+.qopt.incorrecto{border-color:var(--roj);background:#fdecea;color:var(--roj);}
+.qopt-letra{width:22px;height:22px;border-radius:50%;background:var(--gris2);font-weight:800;font-size:.8rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.qopt.correcto .qopt-letra{background:var(--ver2);color:#fff;}
+.qopt.incorrecto .qopt-letra{background:var(--roj);color:#fff;}
+.qfb{margin-top:8px;padding:8px 11px;border-radius:8px;font-size:.8rem;line-height:1.5;display:none;}
+.qfb.show{display:block;}
+.qfb.ok{background:#e8f5e9;color:#1b5e20;border:1.5px solid var(--ver2);}
+.qfb.nook{background:#fdecea;color:var(--roj);border:1.5px solid var(--roj);}
+
+/* ── BOTONES ── */
+.btn-sig{display:block;width:100%;padding:13px;background:var(--az2);color:#fff;border:none;border-radius:11px;font-size:.96rem;font-weight:800;cursor:pointer;font-family:'Nunito';margin-top:14px;transition:all .2s;}
+.btn-sig:hover{background:var(--az);}
+.btn-ver{display:block;width:100%;padding:13px;background:var(--mo2);color:#fff;border:none;border-radius:11px;font-size:.96rem;font-weight:800;cursor:pointer;font-family:'Nunito';margin-top:10px;}
+.btn-fin{display:block;width:100%;padding:13px;background:linear-gradient(135deg,var(--ver),#1b5e20);color:#fff;border:none;border-radius:11px;font-size:.96rem;font-weight:800;cursor:pointer;font-family:'Nunito';margin-top:14px;}
+.btn-sig-quiz{display:none;width:100%;padding:12px;background:var(--ver);color:#fff;border:none;border-radius:11px;font-size:.92rem;font-weight:800;cursor:pointer;font-family:'Nunito';margin-top:10px;}
+.btn-pdf{display:block;width:100%;padding:13px;background:var(--ver);color:#fff;border:none;border-radius:11px;font-size:.96rem;font-weight:800;cursor:pointer;font-family:'Nunito';margin-top:10px;}
+
+/* ── SECCIÓN HDR ── */
+.sec-num{font-family:'Bebas Neue';font-size:2.2rem;color:var(--cyan);line-height:1;margin-right:8px;}
+.sec-hdr{display:flex;align-items:center;margin-bottom:4px;}
+.sec-tit{font-size:1.05rem;font-weight:900;}
+.sec-sub{font-size:.74rem;color:#888;margin-top:1px;}
+.instr{font-size:.82rem;line-height:1.7;color:#444;}
+.narr{background:linear-gradient(135deg,#0d1b2a,#1a3a5c);border-radius:12px;padding:15px;margin-bottom:12px;color:#fff;position:relative;overflow:hidden;}
+.narr p{font-size:.87rem;line-height:1.75;opacity:.95;}
+.narr strong{color:var(--nar2);}
+.narr .narr-ico{font-size:1.6rem;margin-bottom:6px;display:block;}
+.ctx-card{background:linear-gradient(135deg,#e3f2fd,#f3ecfb);border:2px solid var(--mo3);border-radius:12px;padding:13px;margin-bottom:12px;}
+.ctx-sit{font-size:.88rem;line-height:1.7;margin-bottom:8px;}
+.zona-badge{display:inline-block;background:var(--az2);color:#fff;border-radius:8px;padding:4px 12px;font-size:.72rem;font-weight:800;margin-bottom:8px;}
+
+/* ── PAPEL HINT ── */
+.papel-hint{background:linear-gradient(135deg,#fff8e1,#fffde7);border:2px dashed #f9a825;border-radius:10px;padding:11px 14px;margin:10px 0;display:flex;gap:10px;align-items:flex-start;}
+.papel-hint-ico{font-size:1.4rem;flex-shrink:0;}
+.papel-hint-txt{font-size:.79rem;line-height:1.65;color:#5d4037;font-weight:700;}
+
+/* ── EJ BLOQUE ── */
+.ej-bloque{background:#fff;border-radius:9px;padding:10px 13px;border:1.5px solid var(--gris2);margin-bottom:8px;}
+.ej-bloque .ej-titulo{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--az2);margin-bottom:6px;}
+.ej-bloque .ej-expr{text-align:center;margin:6px 0;font-size:1rem;}
+.ej-bloque .ej-pasos{font-family:monospace;font-size:.8rem;line-height:1.8;background:var(--gris);border-radius:6px;padding:7px 10px;margin-top:6px;}
+
+/* ── RESULTADOS ── */
+.res-hdr{background:linear-gradient(135deg,#0d1b2a,#1a3a5c);border-radius:14px;padding:20px;text-align:center;color:#fff;margin-bottom:14px;position:relative;overflow:hidden;}
+.res-wm{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-around;opacity:.04;pointer-events:none;overflow:hidden;font-weight:900;font-size:.8rem;text-transform:uppercase;color:#fff;}
+.res-wm-row{white-space:nowrap;}
+.res-nota{font-family:'Bebas Neue';font-size:3rem;line-height:1;margin:6px 0;}
+.res-tabla{width:100%;border-collapse:collapse;font-size:.8rem;}
+.res-tabla th{background:var(--tie);color:#fff;padding:7px 8px;text-align:left;font-size:.72rem;font-weight:700;}
+.res-tabla td{padding:6px 9px;border:1.5px solid var(--gris2);vertical-align:top;font-size:.79rem;}
+.res-tabla tr.ok-row td{background:#f0fff4;}
+.res-tabla tr.nook-row td{background:#fff5f5;}
+.res-tabla tr.par-row td{background:#f8f4ff;font-size:.74rem;color:#666;border-top:none;padding-bottom:9px;}
+
+/* ── PANEL DOCENTE ── */
+.doc-modal{display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.6);align-items:center;justify-content:center;}
+.doc-modal.show{display:flex;}
+.doc-inner{background:#fff;border-radius:14px;padding:18px;max-width:420px;width:92%;box-shadow:0 10px 40px rgba(0,0,0,.3);max-height:92vh;overflow-y:auto;}
+.doc-inner h3{font-family:'Bebas Neue';font-size:1.4rem;color:var(--mo);margin-bottom:8px;}
+.doc-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--gris2);font-size:.79rem;}
+.doc-row:last-child{border-bottom:none;}
+.dbtn{width:100%;padding:10px;border:none;border-radius:9px;font-family:'Nunito';font-weight:800;font-size:.88rem;cursor:pointer;margin-top:7px;}
+.dbtn-mo{background:var(--mo2);color:#fff;}
+.dbtn-v{background:var(--ver);color:#fff;}
+.dbtn-out{background:transparent;border:2px solid var(--mo2);color:var(--mo2);}
+
+/* ══════════════════════════════════════════════════════════ */
+/* ═══ NUEVO: Badges de validación simbólica en inputs ═══ */
+/* ══════════════════════════════════════════════════════════ */
+.val-sym-badge{
+  display:inline-block;
+  font-size:.58rem;
+  font-weight:800;
+  padding:2px 8px;
+  border-radius:6px;
+  margin-top:3px;
+  letter-spacing:.3px;
+  vertical-align:middle;
+  opacity:0;
+  transform:translateY(-4px);
+  transition:opacity .3s, transform .3s;
+}
+.val-sym-badge.vis{
+  opacity:1;
+  transform:translateY(0);
+}
+.val-sym-badge.ok{
+  background:#e8f5e9;
+  color:#1b5e20;
+  border:1px solid #52b788;
+}
+.val-sym-badge.fail{
+  background:#fdecea;
+  color:#c1121f;
+  border:1px solid #ef5350;
+}
+.val-sym-badge.fallback{
+  background:#fff3cd;
+  color:#856404;
+  border:1px solid #f9a825;
+}
+
+/* ═══ NUEVO: Panel de depuración docente ═══ */
+.val-debug{
+  background:#f5f5f5;
+  border:1.5px solid #e0e0e0;
+  border-radius:8px;
+  padding:8px 11px;
+  margin-top:8px;
+  font-size:.7rem;
+  font-family:'DM Mono',monospace;
+  color:#555;
+  line-height:1.6;
+  display:none;
+}
+.val-debug.show{display:block;}
+.val-debug .vd-label{font-weight:800;color:var(--az2);margin-right:4px;}
+.val-debug .vd-ok{color:#1b5e20;font-weight:800;}
+.val-debug .vd-fail{color:#c1121f;font-weight:800;}
+.val-debug .vd-warn{color:#856404;font-weight:800;}
+
+sup{font-size:.65em;vertical-align:super;line-height:0;}
+sub{font-size:.65em;vertical-align:sub;line-height:0;}
+.separador{border:none;border-top:2px dashed var(--gris2);margin:14px 0;}
+
+@media print{
+  .no-print,.prog-wrap,.doc-modal,.alg-btns,.alg-hint,.btn-sig,.btn-ver,.btn-sig-quiz{display:none!important;}
+  body{background:#fff!important;}
+  .card,.qcard{box-shadow:none!important;border:1px solid #ddd!important;}
+  .res-hdr{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ MODAL DOCENTE ═══ -->
+<div class="doc-modal" id="modal-doc">
+  <div class="doc-inner">
+    <h3>🔒 Panel Docente</h3>
+    <div id="doc-login">
+      <label class="lbl" style="color:var(--az2);">Código:</label>
+      <input class="inp" id="doc-cod" type="password" placeholder="••••" autocomplete="off" onkeydown="if(event.key==='Enter')chkDoc()">
+      <div id="doc-err" style="display:none;color:var(--roj);font-size:.79rem;margin-top:4px;font-weight:700;">Código incorrecto.</div>
+      <div style="display:flex;gap:8px;margin-top:9px;">
+        <button class="dbtn dbtn-mo" style="flex:1;" onclick="chkDoc()">Entrar</button>
+        <button class="dbtn dbtn-out" style="flex:1;" onclick="cerrarDoc()">Cancelar</button>
+      </div>
+    </div>
+    <div id="doc-panel" style="display:none;">
+      <div style="background:var(--az2);border-radius:8px;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <span style="font-weight:800;color:#fff;font-size:.85rem;">👨‍🏫 Panel Docente · S11</span>
+        <button onclick="cerrarDoc()" style="background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:6px;padding:3px 9px;font-size:.73rem;cursor:pointer;font-family:'Nunito';font-weight:700;">Cerrar</button>
+      </div>
+      <div style="background:#e3f2fd;border-radius:9px;padding:11px 13px;margin-bottom:10px;">
+        <div class="doc-row"><span style="font-weight:700;">Actividad</span><span style="color:var(--az2);font-weight:800;">S11 · Operaciones con binomios</span></div>
+        <div class="doc-row"><span style="font-weight:700;">Secciones</span><span style="color:var(--az2);font-weight:800;">S0–S5 + Resultados</span></div>
+        <div class="doc-row"><span style="font-weight:700;">Quiz</span><span style="color:var(--az2);font-weight:800;">10 niveles × 6 preguntas</span></div>
+        <div class="doc-row"><span style="font-weight:700;">Versión</span><span style="color:var(--az2);font-weight:800;">v4 · Validación simbólica Algebrite + math.js</span></div>
+      </div>
+      <div style="background:#fff;border-radius:9px;padding:11px 13px;margin-bottom:10px;font-size:.78rem;line-height:1.8;">
+        <strong style="color:var(--az2);">Estructura S11:</strong><br>
+        <strong>S1</strong> Suma y resta de binomios<br>
+        <strong>S2</strong> Monomio × binomio<br>
+        <strong>S3</strong> Producto de dos binomios — FOIL<br>
+        <strong>S4</strong> Aplicación CDMX<br>
+        <strong>S5</strong> Quiz 10 preguntas + cierre
+      </div>
+      <!-- ═══ NUEVO: Toggle panel de depuración ═══ -->
+      <div style="background:#fff;border-radius:9px;padding:11px 13px;margin-bottom:10px;">
+        <label style="font-size:.78rem;font-weight:800;display:flex;align-items:center;gap:8px;cursor:pointer;">
+          <input type="checkbox" id="doc-debug-toggle" onchange="toggleDebugPanel()"> Mostrar panel de depuración de validación
+        </label>
+        <span style="font-size:.68rem;color:#888;">Muestra qué motor usó Algebrite / math.js / fallback para cada campo.</span>
+      </div>
+      <button class="dbtn dbtn-mo" onclick="docSaltar()">⏭ Ir a resultados (demo)</button>
+      <button class="dbtn dbtn-v" style="margin-top:6px;" onclick="docRecorrer()">▶ Recorrer sin validar</button>
+      <button class="dbtn dbtn-out" style="margin-top:6px;" onclick="cerrarDoc()">Cerrar panel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ HEADER ═══ -->
+<div class="hdr">
+  <div class="hdr-tag">Pensamiento Matemático II · S11 · PF3</div>
+  <h1>Operar <em>Binomios</em></h1>
+  <div class="hdr-sub">Suma y resta · Monomio × Binomio · FOIL</div>
+  <div class="hdr-autor">Prof. Adrián Cruz</div>
+</div>
+
+<!-- ═══ BARRA DE PROGRESO ═══ -->
+<div class="prog-wrap no-print">
+  <div class="prog-bar-bg"><div class="prog-bar" id="prog-bar" style="width:0%"></div></div>
+  <div class="prog-steps">
+    <span id="ps0">Inicio</span><span id="ps1">+/−</span><span id="ps2">×Bin</span>
+    <span id="ps3">FOIL</span><span id="ps4">CDMX</span><span id="ps5">Quiz</span>
+    <span id="ps-fin">Resultados</span>
+  </div>
+</div>
+
+<!-- S0 — INICIO -->
+<div class="sec on" id="s0">
+  <div class="alerta" style="margin-top:4px;">
+    <div class="alerta-ico">⚠️</div>
+    <div class="alerta-txt">
+      <strong>Antes de empezar</strong>
+      Ten tu cuaderno y pluma listos — varias secciones requieren trabajo escrito antes de contestar en pantalla.
+    </div>
+  </div>
+  <div class="calif-aviso">
+    <div style="font-size:1.4rem;">📋</div>
+    <div class="calif-aviso-txt">
+      <p>Cuaderno + pantalla = calificación completa</p>
+      <span>Al finalizar deberás entregar captura de pantalla Y foto de tu cuaderno con los ejercicios.</span>
+    </div>
+  </div>
+  <div class="card">
+    <label class="lbl">👤 Tu nombre (apellidos primero) y grupo:</label>
+    <input class="inp" id="inp-nombre" type="text" autocomplete="off" placeholder="Apellidos Nombre — Grupo" style="font-size:.95rem;font-weight:700;">
+  </div>
+  <div class="card card-cy">
+    <div class="pill p-cy">Activación — ¿Qué recuerdas de S10?</div>
+    <p class="instr" id="act-preg">Cargando...</p>
+    <label class="lbl">Tu respuesta (mínimo 50 caracteres):</label>
+    <textarea class="inp" id="act-resp" rows="3" data-req="1" data-ml="50"
+      oncopy="return false" onpaste="return false" oncut="return false" oncontextmenu="return false"
+      placeholder="Escribe con tus propias palabras..."></textarea>
+  </div>
+  <div class="emsg" id="s0-err">⚠️ Completa todos los campos para continuar.</div>
+  <button class="btn-sig" onclick="avanzar('s0','s1')">Comenzar →</button>
+  <div style="margin-top:8px;text-align:right;"><span style="font-size:.6rem;color:#ccc;cursor:pointer;" onclick="abrirDoc()">v4.0</span></div>
+</div>
+
+<!-- S1 — SUMA Y RESTA DE BINOMIOS -->
+<div class="sec" id="s1">
+  <div class="sec-hdr"><div class="sec-num">1</div>
+    <div><div class="sec-tit">Suma y resta de binomios</div>
+    <div class="sec-sub">Términos semejantes · La misma variable, el mismo exponente</div></div>
+  </div>
+  <div class="narr"><span class="narr-ico">🔗</span><p>Un binomio tiene <strong>dos términos</strong>. Para sumarlos o restarlos, aplicas lo que ya sabes de términos semejantes: solo puedes operar los que tienen <strong>la misma variable con el mismo exponente</strong>.</p></div>
+  <div class="cuaderno">
+    <div class="cuaderno-hdr"><div class="ico">📘</div><h3>PAUSA · COPIA EN TU CUADERNO</h3></div>
+    <div class="cuaderno-regla">
+      <p style="font-size:.78rem;font-weight:800;color:#856404;margin-bottom:8px;">Regla + 2 ejemplos resueltos paso a paso:</p>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <div class="ej-bloque" style="flex:1;min-width:150px;"><div class="ej-titulo">Ejemplo 1 · Suma</div><div class="ej-expr">(3x + 5) + (2x − 1)</div><div class="ej-pasos">Agrupa semejantes:<br>(3x + 2x) + (5 − 1)<br>= <strong>5x + 4</strong></div></div>
+        <div class="ej-bloque" style="flex:1;min-width:150px;"><div class="ej-titulo">Ejemplo 2 · Resta</div><div class="ej-expr">(4x² − 3) − (x² + 2)</div><div class="ej-pasos">Distribuye el (−):<br>4x² − 3 − x² − 2<br>= <strong>3x² − 5</strong></div></div>
+      </div>
+      <div style="background:#fdecea;border-radius:7px;padding:7px 12px;margin-top:8px;font-size:.78rem;font-weight:800;color:var(--roj);">⚠️ Al restar: el signo (−) se distribuye a TODOS los términos del segundo binomio.</div>
+    </div>
+    <div class="cuaderno-confirm"><input type="checkbox" id="chk-s1"><label for="chk-s1">✓ Ya copié la regla y los 2 ejemplos en mi cuaderno.</label></div>
+  </div>
+  <div class="papel-hint"><div class="papel-hint-ico">✏️</div><div class="papel-hint-txt">Resuelve cada operación en tu cuaderno agrupando semejantes. Escribe el binomio simplificado aquí.</div></div>
+  <div class="card card-a"><div class="pill p-a">Ejercicio A · Suma y resta — 4 operaciones</div><div class="t-wrap"><div id="tabla-sr"></div></div></div>
+  <div class="card card-r">
+    <div class="pill p-r">Ejercicio B · Detecta el error</div>
+    <p class="instr">Un alumno sumó <strong id="err-sr-expr">—</strong> y obtuvo <strong id="err-sr-res">—</strong>. ¿Qué error cometió?</p>
+    <div class="opt-grid" id="sel-err-sr">
+      <div class="opt-btn" onclick="selOpt('sel-err-sr',0,'fb-err-sr','ok',ERR_SR_MSG[0])" data-v="0"><div class="opt-ico">A</div><span id="err-sr-opt0">—</span></div>
+      <div class="opt-btn" onclick="selOpt('sel-err-sr',1,'fb-err-sr','nook',ERR_SR_MSG[1])" data-v="1"><div class="opt-ico">B</div><span id="err-sr-opt1">—</span></div>
+      <div class="opt-btn" onclick="selOpt('sel-err-sr',2,'fb-err-sr','nook',ERR_SR_MSG[2])" data-v="2"><div class="opt-ico">C</div><span id="err-sr-opt2">—</span></div>
+    </div>
+    <div class="opt-fb" id="fb-err-sr"></div>
+    <input type="hidden" id="sel-err-sr-val" value="">
+  </div>
+  <div class="emsg" id="s1-err">⚠️ Completa la tabla, marca el cuaderno y elige una opción.</div>
+  <button class="btn-sig" onclick="avanzar('s1','s2')">Siguiente → Monomio × Binomio</button>
+</div>
+
+<!-- S2 — MONOMIO × BINOMIO -->
+<div class="sec" id="s2">
+  <div class="sec-hdr"><div class="sec-num">2</div>
+    <div><div class="sec-tit">Monomio × Binomio</div>
+    <div class="sec-sub">Propiedad distributiva · El monomio "entra" al paréntesis</div></div>
+  </div>
+  <div class="narr"><span class="narr-ico">✖️</span><p>Cuando un <strong>monomio multiplica a un binomio</strong>, debes distribuirlo a cada término del binomio. Recuerda las reglas de exponentes que ya dominas: <strong>multiplica coeficientes y suma exponentes</strong>.</p></div>
+  <div class="cuaderno">
+    <div class="cuaderno-hdr"><div class="ico">📘</div><h3>PAUSA · COPIA EN TU CUADERNO</h3></div>
+    <div class="cuaderno-regla">
+      <p style="font-size:.78rem;font-weight:800;color:#856404;margin-bottom:8px;">Procedimiento + 2 ejemplos con flechas:</p>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <div class="ej-bloque" style="flex:1;min-width:155px;"><div class="ej-titulo">Ejemplo 1</div><div class="ej-expr">3x²(2x + 5)</div><div class="ej-pasos">3x²·2x + 3x²·5 = 6x³ + 15x²</div></div>
+        <div class="ej-bloque" style="flex:1;min-width:155px;"><div class="ej-titulo">Ejemplo 2 · Con signo</div><div class="ej-expr">−4x(3x² − 2)</div><div class="ej-pasos">−4x·3x² + (−4x)·(−2) = −12x³ + 8x</div></div>
+      </div>
+      <div style="background:#e3f2fd;border-radius:7px;padding:7px 12px;margin-top:8px;font-size:.78rem;font-weight:800;color:var(--az2);">💡 Dibuja las flechas en tu cuaderno: el monomio apunta a cada término del binomio.</div>
+    </div>
+    <div class="cuaderno-confirm"><input type="checkbox" id="chk-s2"><label for="chk-s2">✓ Ya copié el procedimiento y dibujé las flechas en mi cuaderno.</label></div>
+  </div>
+  <div class="papel-hint"><div class="papel-hint-ico">✏️</div><div class="papel-hint-txt">Dibuja las flechas en tu cuaderno para cada ejercicio. El monomio multiplica término por término. Escribe el binomio resultante aquí.</div></div>
+  <div class="card card-mo"><div class="pill p-mo">Ejercicio A · Monomio × Binomio — 4 operaciones</div><div class="t-wrap"><div id="tabla-mb"></div></div></div>
+  <div class="card card-am">
+    <div class="pill p-am">Ejercicio B · Razonamiento inverso</div>
+    <p class="instr">Si <strong id="inv-mb-expr">—</strong> = <strong id="inv-mb-res">—</strong>, ¿cuál fue el monomio multiplicador?</p>
+    <div class="opt-grid" id="sel-inv-mb">
+      <div class="opt-btn" onclick="selOpt('sel-inv-mb',0,'fb-inv-mb','ok',INV_MB_MSG[0])" data-v="0"><div class="opt-ico">A</div><span id="inv-mb-opt0">—</span></div>
+      <div class="opt-btn" onclick="selOpt('sel-inv-mb',1,'fb-inv-mb','nook',INV_MB_MSG[1])" data-v="1"><div class="opt-ico">B</div><span id="inv-mb-opt1">—</span></div>
+      <div class="opt-btn" onclick="selOpt('sel-inv-mb',2,'fb-inv-mb','nook',INV_MB_MSG[2])" data-v="2"><div class="opt-ico">C</div><span id="inv-mb-opt2">—</span></div>
+    </div>
+    <div class="opt-fb" id="fb-inv-mb"></div>
+    <input type="hidden" id="sel-inv-mb-val" value="">
+  </div>
+  <div class="emsg" id="s2-err">⚠️ Completa la tabla, marca el cuaderno y elige una opción.</div>
+  <button class="btn-sig" onclick="avanzar('s2','s3')">Siguiente → Producto FOIL</button>
+</div>
+
+<!-- S3 — FOIL -->
+<div class="sec" id="s3">
+  <div class="sec-hdr"><div class="sec-num">3</div>
+    <div><div class="sec-tit">Producto de dos binomios — FOIL</div>
+    <div class="sec-sub">First · Outer · Inner · Last</div></div>
+  </div>
+  <div class="narr"><span class="narr-ico">🎯</span><p>Cuando <strong>dos binomios se multiplican</strong> entre sí, cada término del primero multiplica a cada término del segundo. El método FOIL te dice el orden: <strong>Primeros · Externos · Internos · Últimos</strong>. Al final siempre simplificas los términos semejantes.</p></div>
+  <div class="foil-box">
+    <div class="foil-titulo">Método FOIL</div>
+    <div style="font-size:1.1rem;font-weight:800;margin-bottom:12px;">(a + b)(c + d)</div>
+    <div class="foil-grid">
+      <div class="foil-item"><div class="foil-letra foil-F">F</div><div class="foil-desc"><strong>First</strong> (Primeros)<br>a · c</div></div>
+      <div class="foil-item"><div class="foil-letra foil-O">O</div><div class="foil-desc"><strong>Outer</strong> (Externos)<br>a · d</div></div>
+      <div class="foil-item"><div class="foil-letra foil-I">I</div><div class="foil-desc"><strong>Inner</strong> (Internos)<br>b · c</div></div>
+      <div class="foil-item"><div class="foil-letra foil-L">L</div><div class="foil-desc"><strong>Last</strong> (Últimos)<br>b · d</div></div>
+    </div>
+    <div style="font-size:.82rem;color:#444;margin-top:8px;line-height:1.6;">Resultado: <strong>ac + ad + bc + bd</strong> → simplifica si hay semejantes</div>
+  </div>
+  <div class="cuaderno">
+    <div class="cuaderno-hdr"><div class="ico">📘</div><h3>PAUSA · COPIA EL DIAGRAMA FOIL</h3></div>
+    <div class="cuaderno-regla">
+      <p style="font-size:.78rem;font-weight:800;color:#856404;margin-bottom:8px;">Copia este ejemplo con las 4 flechas etiquetadas F-O-I-L:</p>
+      <div class="ej-bloque"><div class="ej-titulo">Ejemplo completo · (2x + 3)(x − 4)</div><div class="ej-pasos"><span style="color:var(--roj);">F:</span> 2x·x = 2x²<br><span style="color:var(--ver);">O:</span> 2x·(−4) = −8x<br><span style="color:var(--az2);">I:</span> 3·x = 3x<br><span style="color:var(--mo2);">L:</span> 3·(−4) = −12<br>─────────────<br>Suma: 2x² − 8x + 3x − 12<br>Simplifica: <strong>2x² − 5x − 12</strong></div></div>
+      <div style="background:#e8f5e9;border-radius:7px;padding:7px 12px;margin-top:6px;font-size:.78rem;font-weight:800;color:var(--ver);">✓ Siempre hay 4 multiplicaciones. Nunca te saltes O ni I.</div>
+    </div>
+    <div class="cuaderno-confirm"><input type="checkbox" id="chk-s3"><label for="chk-s3">✓ Ya copié el diagrama FOIL con las 4 flechas y el ejemplo resuelto.</label></div>
+  </div>
+  <div class="papel-hint"><div class="papel-hint-ico">✏️</div><div class="papel-hint-txt">Para cada ejercicio escribe en tu cuaderno los 4 pasos (F, O, I, L) y luego simplifica. Solo escribe aquí el trinomio resultado final.</div></div>
+  <div class="card card-mo"><div class="pill p-mo">Ejercicio A · FOIL — 3 productos</div><div class="t-wrap"><div id="tabla-foil"></div></div></div>
+  <div class="card card-r">
+    <div class="pill p-r">Ejercicio B · Detecta el error FOIL</div>
+    <p class="instr">Un alumno resolvió <strong id="foil-err-expr">—</strong> y obtuvo <strong id="foil-err-res">—</strong>. ¿Qué salió mal?</p>
+    <div class="opt-grid" id="sel-foil-err">
+      <div class="opt-btn" onclick="selOpt('sel-foil-err',0,'fb-foil-err','ok',FOIL_ERR_MSG[0])" data-v="0"><div class="opt-ico">A</div><span id="foil-err-opt0">—</span></div>
+      <div class="opt-btn" onclick="selOpt('sel-foil-err',1,'fb-foil-err','nook',FOIL_ERR_MSG[1])" data-v="1"><div class="opt-ico">B</div><span id="foil-err-opt1">—</span></div>
+      <div class="opt-btn" onclick="selOpt('sel-foil-err',2,'fb-foil-err','nook',FOIL_ERR_MSG[2])" data-v="2"><div class="opt-ico">C</div><span id="foil-err-opt2">—</span></div>
+    </div>
+    <div class="opt-fb" id="fb-foil-err"></div>
+    <input type="hidden" id="sel-foil-err-val" value="">
+  </div>
+  <div class="card card-v">
+    <div class="pill p-v">Reflexión conceptual</div>
+    <p class="instr">¿Por qué el producto de dos binomios casi siempre da un <strong>trinomio</strong> y no un binomio o tetranomio?</p>
+    <div class="opt-grid" id="sel-reflex-foil">
+      <div class="opt-btn" onclick="selOpt('sel-reflex-foil',0,'fb-reflex-foil','ok','¡Correcto! Las 4 multiplicaciones FOIL dan 4 términos, pero los dos del medio (O e I) tienen la misma variable y exponente, así que se simplifican en uno → quedan 3 términos = trinomio.')" data-v="0"><div class="opt-ico">A</div><span>Porque los términos O e I son semejantes y se simplifican</span></div>
+      <div class="opt-btn" onclick="selOpt('sel-reflex-foil',1,'fb-reflex-foil','nook','No siempre da 3 términos por regla matemática fija. Es porque los términos del medio se simplifican.')" data-v="1"><div class="opt-ico">B</div><span>Porque la regla algebraica indica que dos binomios siempre producen tres términos</span></div>
+      <div class="opt-btn" onclick="selOpt('sel-reflex-foil',2,'fb-reflex-foil','nook','FOIL siempre da 4 productos. La razón por la que el resultado suele ser trinomio es que 2 de esos 4 términos son semejantes y se combinan.')" data-v="2"><div class="opt-ico">C</div><span>Porque FOIL solo hace 3 multiplicaciones</span></div>
+    </div>
+    <div class="opt-fb" id="fb-reflex-foil"></div>
+    <input type="hidden" id="sel-reflex-foil-val" value="">
+  </div>
+  <div class="emsg" id="s3-err">⚠️ Completa la tabla, marca el cuaderno y elige opciones.</div>
+  <button class="btn-sig" onclick="avanzar('s3','s4')">Siguiente → Aplicación CDMX</button>
+</div>
+
+<!-- S4 — CDMX -->
+<div class="sec" id="s4">
+  <div class="sec-hdr"><div class="sec-num">4</div>
+    <div><div class="sec-tit" id="s4-zona-tit">Aplicación en la CDMX</div>
+    <div class="sec-sub">Binomios en situaciones reales</div></div>
+  </div>
+  <div class="ctx-card"><div class="zona-badge" id="s4-zona-badge">Zona CDMX</div><div class="ctx-sit" id="s4-sit"></div></div>
+  <div class="papel-hint"><div class="papel-hint-ico">✏️</div><div class="papel-hint-txt">Resuelve las tres partes en tu cuaderno. Escribe aquí solo los resultados finales.</div></div>
+  <div class="card card-a"><div class="pill p-a">Parte A · Suma de binomios en contexto</div><div id="s4-sr-ctx"></div></div>
+  <div class="card card-mo"><div class="pill p-mo">Parte B · Monomio × Binomio en contexto</div><div id="s4-mb-ctx"></div></div>
+  <div class="card card-cy"><div class="pill p-cy">Parte C · Producto de binomios (FOIL) en contexto</div><div id="s4-foil-ctx"></div></div>
+  <div class="emsg" id="s4-err">⚠️ Completa los tres campos para continuar.</div>
+  <button class="btn-sig" onclick="avanzar('s4','s5')">Siguiente → Quiz + Cierre</button>
+</div>
+
+<!-- S5 — QUIZ + CIERRE -->
+<div class="sec" id="s5">
+  <div class="sec-hdr"><div class="sec-num">5</div>
+    <div><div class="sec-tit">Quiz integrador</div>
+    <div class="sec-sub">Suma/resta · Monomio×Binomio · FOIL · 10 preguntas</div></div>
+  </div>
+  <div class="quiz-hdr"><h2>🎯 QUIZ · S11 · 10 PREGUNTAS</h2><div style="font-size:.8rem;margin-top:4px;opacity:.75;">Operaciones con binomios · Banco de 60 preguntas · 10 niveles</div></div>
+  <div id="quiz-wrap"></div>
+  <div class="emsg" id="s5q-err">⚠️ Responde todas las preguntas antes de verificar.</div>
+  <button class="btn-ver" id="btn-ver-quiz" onclick="verificarQuiz()">Verificar respuestas ✓</button>
+  <button class="btn-sig-quiz" id="btn-sig-quiz" onclick="irCierre()">Siguiente → Cierre</button>
+  <div id="cierre-wrap" style="display:none;margin-top:14px;">
+    <div class="card card-mo">
+      <div class="pill p-mo">Cierre · Lo que construiste hoy</div>
+      <p class="instr">Completa con tus propias palabras (mínimo 40 caracteres):</p>
+      <p style="font-size:.85rem;font-weight:800;margin:8px 0 4px;">"FOIL funciona porque la multiplicación es distributiva, lo que significa que..."</p>
+      <textarea class="inp" id="cierre-reflex" rows="3" data-req="1" data-ml="40"
+        oncopy="return false" onpaste="return false" oncontextmenu="return false"
+        placeholder="...cada término del primer binomio debe multiplicarse con cada término del segundo..."></textarea>
+      <label class="lbl" style="margin-top:10px;">Inventa tu propio producto de binomios con contexto CDMX y escribe el resultado:</label>
+      <div class="alg-wrap"><input class="inp" id="cierre-expr" type="text" data-req="1" data-ml="5" data-alg="1"
+        oncopy="return false" onpaste="return false" oncontextmenu="return false"
+        placeholder="Ej: (2x+3)(x-1) = 2x^2+x-3"></div>
+    </div>
+    <div class="emsg" id="s5-err">⚠️ Completa los campos de cierre para finalizar.</div>
+    <button class="btn-fin" onclick="finalizar()">✓ Finalizar y ver mi calificación</button>
+  </div>
+</div>
+
+<!-- FINAL -->
+<div class="sec" id="final"><div id="res-contenido"></div></div>
+<div style="text-align:center;padding:12px 0 20px;font-size:.7rem;color:#ccc;">Pensamiento Matemático II · S11 Operaciones con Binomios · Prof. Adrián Cruz</div>
+
+<script>
+// ╔══════════════════════════════════════════════════════════════════╗
+// ║  MOTOR DE VALIDACIÓN SIMBÓLICA — Algebrite + math.js           ║
+// ║  v4.0 — Integrado en toda la actividad                         ║
+// ╚══════════════════════════════════════════════════════════════════╝
+
+/**
+ * Estado global del motor de validación.
+ * Se llena con cada comparación para el panel de depuración docente.
+ */
+var VAL_DEBUG_LOG = [];
+var MOSTRAR_DEBUG = false;
+
+/**
+ * Detecta qué variables algebraicas están presentes en una expresión.
+ * Busca letras minúsculas que NO sean funciones comunes.
+ */
+function detectarVariables(expr) {
+  var funcionesConocidas = [
+    'sin','cos','tan','log','ln','sqrt','abs','exp',
+    'sec','csc','cot','asin','acos','atan'
+  ];
+  var encontradas = {};
+  var re = /\b([a-z])\b/g;
+  var m;
+  while ((m = re.exec(expr)) !== null) {
+    var letra = m[1];
+    // Verificar que no sea parte de una función conocida
+    var antes = expr.substring(Math.max(0, m.index - 4), m.index);
+    var esFuncion = false;
+    for (var i = 0; i < funcionesConocidas.length; i++) {
+      if (antes.endsWith(funcionesConocidas[i].slice(0, -1))) {
+        esFuncion = true;
+        break;
+      }
+    }
+    if (!esFuncion) {
+      encontradas[letra] = true;
+    }
+  }
+  return Object.keys(encontradas);
+}
+
+/**
+ * Convierte notación matemática del usuario a formato que
+ * Algebrite y math.js pueden interpretar.
+ */
+function normalizarParaMotor(expr) {
+  if (!expr) return '';
+  var s = expr.trim()
+    .replace(/\s+/g, '')
+    .replace(/\u2212/g, '-')
+    .replace(/\u2013/g, '-')
+    .replace(/\u2014/g, '-')
+    .replace(/\u00B7/g, '*')
+    .replace(/\u00D7/g, '*')
+    .replace(/\u00F7/g, '/')
+    .replace(/\u00B2/g, '^2')
+    .replace(/\u00B3/g, '^3')
+    .replace(/\u2070/g, '^0')
+    .replace(/\u00B9/g, '^1')
+    .replace(/\u2071/g, '^1')
+    .replace(/\u2074/g, '^4')
+    .replace(/\u2075/g, '^5')
+    .replace(/\u2076/g, '^6')
+    .replace(/\u2077/g, '^7')
+    .replace(/\u2078/g, '^8')
+    .replace(/\u2079/g, '^9')
+    .replace(/\u207B\u00B9/g, '^-1')
+    .replace(/\u207B/g, '-')
+    .toLowerCase();
+
+  s = s.replace(/(\d)([a-z])/g, '$1*$2');
+
+  s = s.replace(/([a-z])(\d)(?!\^)/g, function(m, l, d, offset) {
+    if (s[offset] === '^') return m;
+    return l + '*' + d;
+  });
+
+  s = s.replace(/\)$$$$([$$a-z0-9])/g, ')*1');
+
+  s = s.replace(/([a-z])\(/g, '1*(');
+
+  return s;
+}
+
+function validarConAlgebrite(userRaw, correctaRaw) {
+  try {
+    var u = normalizarParaMotor(userRaw);
+    var c = normalizarParaMotor(correctaRaw);
+    if (!u || !c) return { ok: false, motor: 'algebrite' };
+
+    var uRun = Algebrite.run(u);
+    var cRun = Algebrite.run(c);
+    var diff = Algebrite.simplify(
+      Algebrite.subtract(
+        Algebrite.run(uRun),
+        Algebrite.run(cRun)
+      )
+    );
+    var diffStr = diff.toString().trim();
+
+    if (diffStr === '0') {
+      return { ok: true, motor: 'algebrite', detalle: 'simplify(' + u + ' - ' + c + ') = 0' };
+    }
+
+    var restaStr = Algebrite.run('(' + u + ') - (' + c + ')');
+    var simplificado = Algebrite.simplify(restaStr).toString().trim();
+    if (simplificado === '0') {
+      return { ok: true, motor: 'algebrite', detalle: 'simplificación alternativa = 0' };
+    }
+
+    return { ok: false, motor: 'algebrite', detalle: 'diff=' + diffStr };
+  } catch (e) {
+    return { ok: false, motor: 'algebrite', error: e.message || String(e) };
+  }
+}
+
+function validarConMathJS(userRaw, correctaRaw) {
+  try {
+    var u = normalizarParaMotor(userRaw);
+    var c = normalizarParaMotor(correctaRaw);
+    if (!u || !c) return { ok: false, motor: 'mathjs' };
+
+    var vars = detectarVariables(u + c);
+    if (vars.length === 0) {
+      var uVal = math.evaluate(u);
+      var cVal = math.evaluate(c);
+      var iguales = Math.abs(uVal - cVal) < 1e-10;
+      return { ok: iguales, motor: 'mathjs', detalle: 'constantes: ' + uVal + ' vs ' + cVal };
+    }
+
+    var uNode, cNode;
+    try {
+      uNode = math.parse(u).compile();
+      cNode = math.parse(c).compile();
+    } catch (parseErr) {
+      return { ok: false, motor: 'mathjs', error: 'parse: ' + parseErr.message };
+    }
+
+    var valoresPrueba = [1, 2, -1, 3, -2, 0.5];
+    var coincidencias = 0;
+    var detalle = '';
+
+    for (var vi = 0; vi < valoresPrueba.length; vi++) {
+      var scope = {};
+      for (var vj = 0; vj < vars.length; vj++) {
+        scope[vars[vj]] = valoresPrueba[vi];
+      }
+
+      var uVal, cVal;
+      try {
+        uVal = uNode.evaluate(scope);
+        cVal = cNode.evaluate(scope);
+      } catch (evalErr) {
+        detalle += 'eval_error@' + valoresPrueba[vi] + ';';
+        continue;
+      }
+
+      if (typeof uVal === 'number' && typeof cVal === 'number') {
+        if (Math.abs(uVal - cVal) < 1e-8) {
+          coincidencias++;
+        } else {
+          return {
+            ok: false,
+            motor: 'mathjs',
+            detalle: 'fallo@x=' + valoresPrueba[vi] + ': ' + uVal + ' vs ' + cVal
+          };
+        }
+      } else {
+        detalle += 'no_num@' + valoresPrueba[vi] + ';';
+      }
+    }
+
+    if (coincidencias >= 4) {
+      return {
+        ok: true,
+        motor: 'mathjs',
+        detalle: coincidencias + '/6 valores coinciden'
+      };
+    }
+
+    return {
+      ok: false,
+      motor: 'mathjs',
+      detalle: 'solo ' + coincidencias + '/6 coincidieron. ' + detalle
+    };
+  } catch (e) {
+    return { ok: false, motor: 'mathjs', error: e.message || String(e) };
+  }
+}
+
+function normalizarExpr(expr) {
+  if (!expr) return '';
+  var s = expr.trim().toLowerCase().replace(/\s+/g, '');
+  var terminos = s.split(/(?=[+-])/);
+  terminos = terminos.filter(function(t) { return t.length > 0; });
+  if (terminos.length > 0 && terminos[0].charAt(0) !== '+' && terminos[0].charAt(0) !== '-') {
+    terminos[0] = '+' + terminos[0];
+  }
+  terminos.sort(function(a, b) {
+    var hasVarA = /[a-z]/.test(a);
+    var hasVarB = /[a-z]/.test(b);
+    if (hasVarA && !hasVarB) return -1;
+    if (!hasVarA && hasVarB) return 1;
+    return a.localeCompare(b);
+  });
+  return terminos.join('');
+}
+
+function compararRespuesta(user, correcta, campoId) {
+  if (!user || !correcta) {
+    registrarDebug(campoId, user, correcta, { ok: false, motor: 'ninguno', detalle: 'vacío' });
+    return false;
+  }
+
+  var r1 = validarConAlgebrite(user, correcta);
+  if (r1.ok) {
+    registrarDebug(campoId, user, correcta, r1);
+    return true;
+  }
+
+  var r2 = validarConMathJS(user, correcta);
+  if (r2.ok) {
+    registrarDebug(campoId, user, correcta, r2);
+    return true;
+  }
+
+  var uText = normalizarExpr(user);
+  var cText = normalizarExpr(correcta);
+  var r3 = { ok: uText === cText, motor: 'texto', detalle: '"' + uText + '" vs "' + cText + '"' };
+
+  registrarDebug(campoId, user, correcta, r1.ok ? r1 : (r2.ok ? r2 : r3));
+
+  if (r3.ok) return true;
+
+  registrarDebug(campoId, user, correcta, r3);
+  return false;
+}
+
+function registrarDebug(campoId, user, correcta, resultado) {
+  if (!campoId) return;
+  var entrada = {
+    campo: campoId,
+    usuario: user,
+    correcta: correcta,
+    motor: resultado.motor || '?',
+    ok: resultado.ok,
+    detalle: resultado.detalle || '',
+    error: resultado.error || '',
+    timestamp: Date.now()
+  };
+  VAL_DEBUG_LOG.push(entrada);
+
+  if (MOSTRAR_DEBUG) {
+    actualizarPanelDebug();
+  }
+}
+
+function actualizarPanelDebug() {
+  var panel = document.getElementById('val-debug-panel');
+  if (!panel) return;
+
+  var html = '<div style="font-weight:800;margin-bottom:6px;color:var(--az2);">🔍 Log de Validación (' + VAL_DEBUG_LOG.length + ' comparaciones)</div>';
+
+  for (var i = 0; i < VAL_DEBUG_LOG.length; i++) {
+    var e = VAL_DEBUG_LOG[i];
+    var icono = e.ok ? '✅' : '❌';
+    var colorMotor = e.motor === 'algebrite' ? 'var(--ver)' :
+                     e.motor === 'mathjs' ? 'var(--az2)' :
+                     e.motor === 'texto' ? 'var(--am)' : 'var(--roj)';
+    html += '<div style="border-bottom:1px solid #eee;padding:4px 0;font-size:.68rem;">'
+      + icono + ' <strong>' + e.campo + '</strong> '
+      + '<span style="background:' + colorMotor + ';color:#fff;padding:1px 5px;border-radius:4px;font-size:.6rem;">' + e.motor + '</span> '
+      + '<span style="color:#888;">u:"' + (e.usuario || '').substring(0, 20) + '" → c:"' + (e.correcta || '').substring(0, 20) + '"</span>'
+      + (e.detalle ? ' <span style="color:#aaa;">(' + e.detalle.substring(0, 40) + ')</span>' : '')
+      + (e.error ? ' <span style="color:var(--roj);">ERR: ' + e.error.substring(0, 30) + '</span>' : '')
+      + '</div>';
+  }
+
+  panel.innerHTML = html;
+}
+
+function mostrarBadgeMotor(inputId, resultado) {
+  var inp = document.getElementById(inputId);
+  if (!inp) return;
+
+  var prev = inp.parentNode.querySelector('.val-sym-badge');
+  if (prev) prev.remove();
+
+  var badge = document.createElement('span');
+  badge.className = 'val-sym-badge vis';
+
+  if (resultado.ok) {
+    if (resultado.motor === 'algebrite') {
+      badge.className += ' ok';
+      badge.textContent = '✓ Algebrite';
+    } else if (resultado.motor === 'mathjs') {
+      badge.className += ' ok';
+      badge.textContent = '✓ math.js';
+    } else {
+      badge.className += ' fallback';
+      badge.textContent = '~ Texto';
+    }
+  } else {
+    badge.className += ' fail';
+    badge.textContent = '✗ Incorrecto';
+  }
+
+  var contenedor = inp.closest('.alg-wrap') || inp.parentNode;
+  contenedor.appendChild(badge);
+}
+
+function toggleDebugPanel() {
+  MOSTRAR_DEBUG = document.getElementById('doc-debug-toggle').checked;
+  var panel = document.getElementById('val-debug-panel');
+  if (panel) {
+    panel.classList.toggle('show', MOSTRAR_DEBUG);
+    if (MOSTRAR_DEBUG) actualizarPanelDebug();
+  }
+}
+
+
+// ╔══════════════════════════════════════════════════════════════════╗
+// ║  MÓDULO ANTIFRAUDE — Monitoreo de integridad                   ║
+// ║  [AF] Agregado sin modificar código existente                   ║
+// ╚══════════════════════════════════════════════════════════════════╝
+
+var AF = {
+  secNames: {},
+  umbralSwitches: 8,
+  switches: 0, splits: 0, floats: 0,
+  pastes: 0, copies: 0, keyBlocks: 0, devtools: 0,
+  isSplit: false, isFloat: false, isKeyboard: false,
+  kbFocusTime: 0,
+  baseH: window.innerHeight, baseW: window.innerWidth,
+  restingH: window.innerHeight, restingW: window.innerWidth,
+  screenH: window.screen ? window.screen.height : 0,
+  screenW: window.screen ? window.screen.width : 0,
+  events: [], secEntry: {}, secDur: {},
+  startTime: Date.now(),
+  log: function(type, detail) {
+    this.events.push({ t: Date.now(), e: type, d: detail || '' });
+  },
+  fmtTime: function(seg) {
+    var m = Math.floor(seg / 60);
+    var s = seg % 60;
+    return m + 'm ' + s + 's';
+  },
+  fmtHora: function(ts) {
+    try { return new Date(ts).toLocaleTimeString(); }
+    catch(e) { return '?'; }
+  }
+};
+
+AF.secNames = {'s0':'Inicio','s1':'Suma y resta','s2':'Monomio × Binomio','s3':'FOIL','s4':'Aplicación CDMX','s5':'Quiz + Cierre','final':'Resultados'};
+
+document.addEventListener('visibilitychange', function() {
+  if (document.hidden) {
+    AF.switches++;
+    AF.log('app_salida', 'multitask #' + AF.switches);
+  } else {
+    AF.log('app_retorno', 'regreso #' + AF.switches);
+  }
+});
+window.addEventListener('blur', function() { AF.log('blur', 'foco perdido'); });
+window.addEventListener('focus', function() { AF.log('focus', 'foco recuperado'); });
+
+document.addEventListener('focusin', function(e) {
+  var tag = e.target.tagName;
+  if (tag === 'INPUT' || tag === 'TEXTAREA') {
+    AF.isKeyboard = true;
+    AF.kbFocusTime = Date.now();
+    AF.log('teclado_abierto', tag + (e.target.id ? '#' + e.target.id : ''));
+  }
+});
+document.addEventListener('focusout', function(e) {
+  var tag = e.target.tagName;
+  if (tag === 'INPUT' || tag === 'TEXTAREA') {
+    setTimeout(function() {
+      var active = document.activeElement;
+      var stillEditing = active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA');
+      if (!stillEditing) {
+        AF.isKeyboard = false;
+        setTimeout(function() {
+          AF.restingH = window.innerHeight;
+          AF.restingW = window.innerWidth;
+          AF.log('teclado_cerrado', 'base=' + AF.restingH + 'px');
+        }, 400);
+      }
+    }, 250);
+  }
+});
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', function() {
+    if (window.innerHeight - window.visualViewport.height > 120) {
+      AF.isKeyboard = true;
+    }
+  });
+}
+
+function afCheckPantalla() {
+  if (AF.isKeyboard) return;
+  if (Date.now() - AF.kbFocusTime < 600) return;
+  var h = window.innerHeight, w = window.innerWidth;
+  var ratioH = h / AF.restingH;
+  if (ratioH < 0.65 && ratioH > 0.15) {
+    if (!AF.isSplit) { AF.isSplit = true; AF.splits++; AF.log('split_inicio', h + '/' + AF.restingH); }
+  } else if (AF.isSplit) { AF.isSplit = false; AF.log('split_fin', 'restaurado'); }
+  var ratioW = w / AF.screenW;
+  if (ratioW < 0.85 && ratioW > 0.20) {
+    if (!AF.isFloat) { AF.isFloat = true; AF.floats++; AF.log('flotante_inicio', w + 'x' + h); }
+  } else if (AF.isFloat) { AF.isFloat = false; AF.log('flotante_fin', 'restaurado'); }
+}
+var afResizeTimer = null;
+window.addEventListener('resize', function() {
+  afCheckPantalla();
+  if (afResizeTimer) clearTimeout(afResizeTimer);
+  afResizeTimer = setTimeout(function() { AF.log('resize', window.innerWidth + 'x' + window.innerHeight); }, 500);
+});
+setInterval(afCheckPantalla, 3000);
+
+document.addEventListener('paste', function(e) {
+  e.preventDefault();
+  AF.pastes++;
+  AF.log('paste_bloqueado', '#' + AF.pastes);
+  if (AF.pastes >= 2) {
+    var av = document.createElement('div');
+    av.style.cssText = 'position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:9999;background:#C1121F;color:#fff;padding:10px 18px;border-radius:10px;font-family:Nunito,sans-serif;font-weight:800;font-size:.82rem;box-shadow:0 4px 20px rgba(0,0,0,.3);';
+    av.textContent = '⚠️ Intento de pegar detectado (' + AF.pastes + ')';
+    document.body.appendChild(av);
+    setTimeout(function() { av.remove(); }, 2500);
+  }
+});
+document.addEventListener('copy', function(e) {
+  e.preventDefault();
+  AF.copies++;
+  AF.log('copy_bloqueado', '#' + AF.copies);
+});
+
+document.addEventListener('keydown', function(e) {
+  var blocked = false;
+  if (e.key === 'F12') blocked = true;
+  if (e.key === 'PrintScreen') blocked = true;
+  if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) blocked = true;
+  if (e.ctrlKey && (e.key === 'u' || e.key === 'U')) blocked = true;
+  if (blocked) { e.preventDefault(); AF.keyBlocks++; AF.log('tecla_bloqueada', e.key); }
+});
+
+setInterval(function() {
+  if (window.outerWidth - window.innerWidth > 200) { AF.devtools++; AF.log('devtools_posible', ''); }
+}, 5000);
+
+window.addEventListener('orientationchange', function() {
+  AF.log('orientacion', screen.orientation ? screen.orientation.type : 'cambio');
+  setTimeout(function() { AF.restingH = window.innerHeight; AF.restingW = window.innerWidth; }, 500);
+});
+
+function afSecEnter(id) { AF.secEntry[id] = Date.now(); AF.log('sec_entrada', id); }
+function afSecExit(id) {
+  if (AF.secEntry[id]) {
+    var dur = Math.round((Date.now() - AF.secEntry[id]) / 1000);
+    AF.secDur[id] = (AF.secDur[id] || 0) + dur;
+    AF.log('sec_salida', id + ' (' + dur + 's)');
+  }
+}
+
+function afGenerarReporte() {
+  var totalSeg = Math.round((Date.now() - AF.startTime) / 1000);
+  var html = '<div class="card card-r" style="margin-top:12px;">'
+    + '<div class="pill p-r">📊 Registro de actividad</div>'
+    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:.8rem;margin-top:6px;">'
+    + '<div style="background:var(--gris,#ede8f5);padding:8px 10px;border-radius:8px;"><strong>Tiempo total:</strong> ' + AF.fmtTime(totalSeg) + '</div>'
+    + '<div style="background:' + (AF.switches > AF.umbralSwitches ? '#fdecea' : 'var(--gris,#ede8f5)') + ';padding:8px 10px;border-radius:8px;"><strong>Cambios de app:</strong> ' + AF.switches + (AF.switches > AF.umbralSwitches ? ' ⚠️' : '') + '</div>'
+    + '<div style="background:' + (AF.splits > 0 ? '#fff3cd' : 'var(--gris,#ede8f5)') + ';padding:8px 10px;border-radius:8px;"><strong>Pantalla dividida:</strong> ' + AF.splits + (AF.splits > 0 ? ' ⚡' : '') + '</div>'
+    + '<div style="background:' + (AF.floats > 0 ? '#fff3cd' : 'var(--gris,#ede8f5)') + ';padding:8px 10px;border-radius:8px;"><strong>Ventana flotante:</strong> ' + AF.floats + (AF.floats > 0 ? ' ⚡' : '') + '</div>'
+    + '<div style="background:' + (AF.pastes > 0 ? '#fdecea' : 'var(--gris,#ede8f5)') + ';padding:8px 10px;border-radius:8px;"><strong>Intentos pegar:</strong> ' + AF.pastes + (AF.pastes > 0 ? ' ⚠️' : '') + '</div>'
+    + '<div style="background:' + (AF.devtools > 0 ? '#fdecea' : 'var(--gris,#ede8f5)') + ';padding:8px 10px;border-radius:8px;"><strong>DevTools:</strong> ' + (AF.devtools > 0 ? 'Detectado ⚠️' : 'No') + '</div>'
+    + '<div style="background:' + (AF.keyBlocks > 0 ? '#fff3cd' : 'var(--gris,#ede8f5)') + ';padding:8px 10px;border-radius:8px;"><strong>Teclas bloqueadas:</strong> ' + AF.keyBlocks + '</div>'
+    + '<div style="background:' + (AF.copies > 0 ? '#fdecea' : 'var(--gris,#ede8f5)') + ';padding:8px 10px;border-radius:8px;"><strong>Intentos copiar:</strong> ' + AF.copies + (AF.copies > 0 ? ' ⚠️' : '') + '</div>'
+    + '</div>';
+  html += '<div style="margin-top:8px;font-size:.75rem;background:var(--gris,#ede8f5);padding:8px 10px;border-radius:8px;"><strong>Tiempo por sección:</strong><br>';
+  for (var sk in AF.secNames) {
+    if (AF.secDur[sk] !== undefined) html += AF.secNames[sk] + ': <strong>' + AF.fmtTime(AF.secDur[sk]) + '</strong> · ';
+  }
+  html += '</div>';
+  if (AF.events.length > 0) {
+    html += '<details style="margin-top:8px;font-size:.72rem;"><summary style="cursor:pointer;font-weight:800;color:#283593;">Timeline (' + AF.events.length + ' eventos)</summary><div style="max-height:250px;overflow-y:auto;background:var(--gris,#ede8f5);padding:8px;border-radius:8px;margin-top:4px;font-family:monospace;font-size:.7rem;">';
+    var show = AF.events.slice(-40);
+    for (var ei = 0; ei < show.length; ei++) html += AF.fmtHora(show[ei].t) + ' · <strong>' + show[ei].e + '</strong> ' + show[ei].d + '<br>';
+    html += '</div></details>';
+  }
+  html += '</div>';
+  return html;
+}
+
+AF.log('init', AF.screenW + 'x' + AF.screenH + ' | viewport ' + AF.baseW + 'x' + AF.baseH);
+
+/* [AF] Registro de la primera sección al cargar */
+afSecEnter('s0');
+
+
+// ╔══════════════════════════════════════════════════════════════════╗
+// ║  FUNCIONES AUXILIARES (originales, sin cambios funcionales)     ║
+// ╚══════════════════════════════════════════════════════════════════╝
+
+function mjxTypeset(el){ if(!el)return; if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([el]).catch(function(){}); }
+function texDeInput(s){ if(!s)return''; var r=s,prev='',iter=0; while(prev!==r&&iter<5){prev=r;iter++; r=r.replace(/([\w\)$$$$\^\.]+)\/([\w$$\-][\w\.\^]*)/g,function(m,n,d){return'\\dfrac{'+n+'}{'+d+'}';});} r=r.replace(/\^([0-9]+)/g,function(m,p){return'^{'+p+'}';}); r=r.replace(/\^\(-([0-9]+)$$/g,function(m,p){return'^{-'+p+'}';}); r=r.replace(/\^-([0-9]+)/g,function(m,p){return'^{-'+p+'}';}); r=r.replace(/\*/g,'\\cdot '); r=r.replace(/·/g,'\\cdot '); return r; }
+function renderPreview(inputId){ var el=document.getElementById(inputId),prev=document.getElementById('prev-'+inputId); if(!el||!prev)return; var v=el.value.trim(); if(!v){prev.innerHTML='<span style="color:#bbb;font-style:italic;font-size:.78rem;">Vista previa...</span>';prev.classList.remove('active');return;} prev.innerHTML='\\('+texDeInput(v)+'\\)'; prev.classList.add('active'); mjxTypeset(prev); }
+function insSymbol(inputId,sym){ var el=document.getElementById(inputId); if(!el)return; el.focus(); var s=el.value,start=el.selectionStart!==undefined?el.selectionStart:s.length,end=el.selectionEnd!==undefined?el.selectionEnd:s.length; el.value=s.substring(0,start)+sym+s.substring(end); var pos=start+sym.length; try{el.setSelectionRange(pos,pos);}catch(e){} renderPreview(inputId); }
+function borrarSym(inputId){ var el=document.getElementById(inputId); if(!el)return; el.focus(); var s=el.value,pos=el.selectionStart!==undefined?el.selectionStart:s.length; if(pos>0){el.value=s.substring(0,pos-1)+s.substring(pos); try{el.setSelectionRange(pos-1,pos-1);}catch(e){}} renderPreview(inputId); }
+function algHTML(id){ return '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:5px;"><button class="alg-btn" type="button" onmousedown="return false" onclick="insSymbol(\''+id+'\',\'^\')">xⁿ <small>^</small></button><button class="alg-btn op" type="button" onmousedown="return false" onclick="insSymbol(\''+id+'\',\'+\')">+</button><button class="alg-btn neg" type="button" onmousedown="return false" onclick="insSymbol(\''+id+'\',\'-\')">−</button><button class="alg-btn op" type="button" onmousedown="return false" onclick="insSymbol(\''+id+'\',\'*\')">×</button><button class="alg-btn op" type="button" onmousedown="return false" onclick="insSymbol(\''+id+'\',\'(\')">( )</button><button class="alg-btn" type="button" onmousedown="return false" onclick="insSymbol(\''+id+'\',\'/\')">÷ /</button><button class="alg-btn clr" type="button" onmousedown="return false" onclick="borrarSym(\''+id+'\')">⌫</button></div><div class="alg-preview" id="prev-'+id+'"><span style="color:#bbb;font-style:italic;font-size:.78rem;">Vista previa...</span></div><span class="alg-hint">^ = exponente (x^2) · * = multiplicación · / = división</span>'; }
+function inyectarAlg(){ var campos=document.querySelectorAll('[data-alg]'); for(var i=0;i<campos.length;i++){ var el=campos[i],id=el.id; if(!id||document.getElementById('prev-'+id))continue; var wrap=el.parentNode; if(!wrap.classList.contains('alg-wrap')){var w2=document.createElement('div');w2.className='alg-wrap';el.parentNode.insertBefore(w2,el);w2.appendChild(el);wrap=w2;} wrap.insertAdjacentHTML('beforeend',algHTML(id)); el.addEventListener('input',(function(iid){return function(){renderPreview(iid);};})(id)); } mjxTypeset(document.body); }
+function selOpt(gridId,idx,fbId,tipo,msg){ var grid=document.getElementById(gridId); if(!grid)return; var btns=grid.querySelectorAll('.opt-btn'); for(var i=0;i<btns.length;i++)btns[i].classList.remove('sel-opt'); btns[idx].classList.add('sel-opt'); var valId=gridId+'-val'; var hid=document.getElementById(valId); if(hid)hid.value=String(idx); var fb=document.getElementById(fbId); if(fb){fb.className='opt-fb show '+(tipo==='ok'?'ok':'nook'); fb.innerHTML=(tipo==='ok'?'<strong>✓ Correcto.</strong> ':'<strong>✗ Incorrecto.</strong> ')+msg; fb.scrollIntoView({behavior:'smooth',block:'nearest'}); } }
+
+
+// ╔══════════════════════════════════════════════════════════════════╗
+// ║  GLOBALES (originales)                                          ║
+// ╚══════════════════════════════════════════════════════════════════╝
+
+var ZONA_ACT, actQ;
+var QUIZ_SEL=[], estadoQuiz=[], quizVerificado=false;
+var modoDocente=false, modoRecorrer=false;
+var SECS=['s0','s1','s2','s3','s4','s5','final'];
+var LETRAS=['A','B','C','D'];
+var NV_COL=['','#43a047','#039be5','#8e24aa','#e65100','#c62828','#006064','#37474f','#bf360c','#0d47a1','#1b5e20'];
+var NV_LBL=['','Identificación','Suma básica','Resta básica','Mono×Binom básico','Mono×Binom signos','FOIL básico','FOIL completo','Error detectado','CDMX aplicado','Razonamiento profundo'];
+
+var respCorrectas = { sr: [], mb_t1: [], mb_t2: [], foil: [], cdmx: { a: '', b: '', c: '' } };
+
+
+// ╔══════════════════════════════════════════════════════════════════╗
+// ║  DATOS (Bancos — sin cambios)                                    ║
+// ╚══════════════════════════════════════════════════════════════════╝
+
+var ACTIVACIONES = [ {q:'En S10 aprendiste a dividir monomios. Ahora comenzamos con binomios. ¿Qué diferencia crees que hay entre multiplicar un monomio con otro monomio y multiplicar un monomio con un binomio?',kw:['dos','términ','distribut','binomio','paréntesis']}, {q:'Ya sabes que 3(x+2) = 3x+6 porque el 3 "entra" al paréntesis. ¿Cómo crees que funciona cuando en vez de un número tienes 3x? ¿Qué esperas que pase?',kw:['x','variable','distribut','exponente','multiply']} ];
+var ZONAS = [ {nom:'Tepito',badge:'Mercado de Tepito',sit:'En el mercado de Tepito, un vendedor calcula sus ganancias usando expresiones con binomios.', v:'x', sr_a:'(3x+7)',sr_b:'(2x−4)',sr_op:'+',sr_res:'5x+3', sr_ctx:'El vendedor de camisetas gana (3x+7) pesos en la mañana y (2x−4) en la tarde. ¿Cuánto ganó en total?', mo:'4x',bin_mb:'(2x+5)',mb_res:'8x²+20x', mb_ctx:'Si vende 4x camisetas a un precio de (2x+5) pesos cada una, ¿cuál es su ingreso total?', f_a:'(x+3)',f_b:'(x−2)',foil_res:'x²+x−6', foil_ctx:'El área de un exhibidor rectangular mide (x+3) de largo y (x−2) de ancho. ¿Cuál es el área?'} ];
+var ERR_SR_CASOS = [ {expr:'(3x+4)+(2x−1)',mal:'5x+5', opts:['Sumó 4+(−1)=5 en vez de 3. Correcto: 5x+3','Los términos con x están mal','No distribuyó correctamente','No hay error'], msgs:['✓ Correcto. 4+(−1)=3, no 5.','Los términos con x sí están bien.','Aquí no hay paréntesis que distribuir.','Sí hay error.']} ];
+var INV_MB_CASOS = [ {expr:'?(2x+4)',res:'6x²+12x', opts:['3x','6x','3x²'], msgs:['✓ Correcto. 3x·2x=6x² y 3x·4=12x.','6x·2x=12x² y 6x·4=24x.','3x²·2x=6x³ y 3x²·4=12x².']} ];
+var FOIL_ERR_CASOS = [ {expr:'(x+3)(x+4)',mal:'x²+7x+7', opts:['El término L: 3×4=12, no 7','El término O e I están mal','No hay error','El resultado correcto es x²+3x+4'], msgs:['✓ Correcto. L=3×4=12, no 3+4=7.','O=4x e I=3x → O+I=7x ✓. El error es en L.','Sí hay error.','x²+3x+4 no es el resultado.']} ];
+var QB = [
+[{p:'¿Cuáles son términos semejantes en: 3x² + 2x + 5x² − x?',ops:['3x² y 5x²; también 2x y −x','3x² y 2x','5x² y −x','Todos son semejantes'],ok:0,ex:'Semejantes = misma variable y mismo exponente.'}],
+[{p:'¿Cuál es el resultado de (3x + 4) + (2x + 1)?',ops:['5x+5','5x+3','6x+5','5x²+5'],ok:0,ex:'3x+2x=5x y 4+1=5.'}],
+[{p:'¿Cuál es el resultado de (5x + 3) − (2x + 1)?',ops:['3x+2','3x+4','7x+4','3x−2'],ok:0,ex:'5x+3−2x−1=3x+2.'}],
+[{p:'¿Cuál es el resultado de 3x(2x + 4)?',ops:['6x²+12x','6x²+4','6x+12x','6x³+12x²'],ok:0,ex:'3x·2x=6x², 3x·4=12x.'}],
+[{p:'¿Cuál es el resultado de −2x(3x + 5)?',ops:['−6x²−10x','−6x²+10x','6x²−10x','−6x+10x'],ok:0,ex:'(−2x)·3x=−6x², (−2x)·5=−10x.'}],
+[{p:'¿Cuál es el resultado de (x + 2)(x + 3)?',ops:['x²+5x+6','x²+6x+6','x²+5x+5','x²+6'],ok:0,ex:'F:x², O:3x, I:2x, L:6.'}],
+[{p:'¿Cuál es el resultado de (2x + 1)(x + 3)?',ops:['2x²+7x+3','2x²+4x+3','2x²+7x+1','2x²+3x+3'],ok:0,ex:'2x²+6x+x+3=2x²+7x+3.'}],
+[{p:'(x+2)(x+3) = x²+5x+5. ¿Cuál es el error?',ops:['El término L es 6, no 5','El término O está mal','El resultado correcto es x²+6x+6','No hay error'],ok:0,ex:'L=2×3=6.'}],
+[{p:'Un puesto en Tepito gana (3x+5) + (2x−1). ¿Total?',ops:['5x+4','5x+6','x+6','5x−4'],ok:0,ex:'3x+2x=5x, 5−1=4.'}],
+[{p:'¿Por qué (x+a)(x−a) da x²−a² sin término medio?',ops:['Porque O e I se anulan','Porque los binomios son iguales','Porque x² elimina los términos lineales','Porque FOIL solo aplica a suma'],ok:0,ex:'O=x·(−a)=−ax, I=a·x=+ax, se anulan.'}]
+];
+while(QB.length<10) QB.push(QB[0]);
+
+function rInt(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
+function pick(arr){return arr[Math.floor(Math.random()*arr.length)];}
+
+
+// ╔══════════════════════════════════════════════════════════════════╗
+// ║  CONSTRUCCIÓN DE TABLAS (sin cambios en estructura)              ║
+// ╚══════════════════════════════════════════════════════════════════╝
+
+function buildTablaSR() {
+  var vars=['x','m','a','n','p','k'];
+  var v=vars[rInt(0,vars.length-1)];
+  var items=[];
+  var gs=[
+    function(){var c1=rInt(2,6),c2=rInt(1,4),k1=rInt(1,9),k2=rInt(1,9); return{expr:'('+c1+v+'+'+k1+')+('+c2+v+'+'+k2+')', res:(c1+c2)+v+'+'+(k1+k2)};},
+    function(){var c1=rInt(3,7),c2=rInt(1,4),k1=rInt(2,9),k2=rInt(1,k1-1); return{expr:'('+c1+v+'+'+k1+')+('+c2+v+'−'+k2+')', res:(c1+c2)+v+'+'+(k1-k2)};},
+    function(){var c1=rInt(4,8),c2=rInt(1,3),k1=rInt(3,9),k2=rInt(1,k1-1); return{expr:'('+c1+v+'+'+k1+')−('+c2+v+'+'+k2+')', res:(c1-c2)+v+'+'+(k1-k2)};},
+    function(){var c1=rInt(4,8),c2=rInt(1,3),k1=rInt(1,6),k2=rInt(1,5); return{expr:'('+c1+v+'−'+k1+')−('+c2+v+'−'+k2+')', res:(c1-c2)+v+'+'+(-k1+k2)};}
+  ];
+  for(var i=0;i<gs.length;i++) items.push(gs[i]());
+  var html='<table><thead><tr><th>Operación</th><th>Resultado simplificado</th></tr></thead><tbody>';
+  for(var i=0;i<items.length;i++){
+    html+='<tr><td class="td-fix" style="font-size:.83rem;text-align:left;">'+items[i].expr+'</td>'
+      +'<td><input type="text" id="sr-'+i+'" data-req="1" data-ml="2" data-alg="1" class="inp-cell" placeholder="?" oncopy="return false" onpaste="return false" oncontextmenu="return false"></td></tr>';
+    respCorrectas.sr[i]=items[i].res;
+  }
+  html+='</tbody></table>';
+  document.getElementById('tabla-sr').innerHTML=html;
+  var ec=ERR_SR_CASOS[rInt(0,ERR_SR_CASOS.length-1)];
+  document.getElementById('err-sr-expr').textContent=ec.expr;
+  document.getElementById('err-sr-res').textContent=ec.mal;
+  document.getElementById('err-sr-opt0').textContent=ec.opts[0];
+  document.getElementById('err-sr-opt1').textContent=ec.opts[1];
+  document.getElementById('err-sr-opt2').textContent=ec.opts[2];
+  window.ERR_SR_MSG = ec.msgs;
+  setTimeout(inyectarAlg,80);
+}
+
+function buildTablaMB(){
+  var vars=['x','m','a','n','p'];
+  var v=vars[rInt(0,vars.length-1)];
+  var items=[];
+  var gs=[
+    function(){var cm=rInt(2,5),cb1=rInt(2,4),cb2=rInt(1,8); return{expr:cm+v+'('+cb1+v+'+'+cb2+')', t1:(cm*cb1)+v+'²', t2:'+'+(cm*cb2)+v};},
+    function(){var cm=rInt(2,4),ep=rInt(2,3),cb1=rInt(2,4),cb2=rInt(1,6); return{expr:cm+v+'^'+ep+'('+cb1+v+'+'+cb2+')', t1:(cm*cb1)+v+'^'+(ep+1), t2:'+'+(cm*cb2)+v+'^'+ep};},
+    function(){var cm=rInt(2,5),cb1=rInt(1,3),cb2=rInt(2,7); return{expr:cm+v+'('+cb1+v+'−'+cb2+')', t1:(cm*cb1)+v+'²', t2:'−'+(cm*cb2)+v};},
+    function(){var cm=rInt(2,4),cb1=rInt(2,5),cb2=rInt(1,5); return{expr:'−'+cm+v+'('+cb1+v+'−'+cb2+')', t1:'−'+(cm*cb1)+v+'²', t2:'+'+(cm*cb2)+v};}
+  ];
+  for(var i=0;i<gs.length;i++) items.push(gs[i]());
+  var html='<table><thead><tr><th>Producto</th><th>Primer término</th><th>Segundo término</th></tr></thead><tbody>';
+  for(var i=0;i<items.length;i++){
+    var d=items[i];
+    html+='<tr><td class="td-fix" style="font-size:.82rem;">'+d.expr+'</td>'
+      +'<td><input type="text" id="mb-t1-'+i+'" data-req="1" data-ml="2" data-alg="1" class="inp-cell" placeholder="?" oncopy="return false" onpaste="return false" oncontextmenu="return false"></td>'
+      +'<td><input type="text" id="mb-t2-'+i+'" data-req="1" data-ml="2" data-alg="1" class="inp-cell" placeholder="?" oncopy="return false" onpaste="return false" oncontextmenu="return false"></td></tr>';
+    respCorrectas.mb_t1[i]=d.t1;
+    respCorrectas.mb_t2[i]=d.t2;
+  }
+  html+='</tbody></table>';
+  document.getElementById('tabla-mb').innerHTML=html;
+  var ic=INV_MB_CASOS[rInt(0,INV_MB_CASOS.length-1)];
+  document.getElementById('inv-mb-expr').textContent=ic.expr;
+  document.getElementById('inv-mb-res').textContent=ic.res;
+  document.getElementById('inv-mb-opt0').textContent=ic.opts[0];
+  document.getElementById('inv-mb-opt1').textContent=ic.opts[1];
+  document.getElementById('inv-mb-opt2').textContent=ic.opts[2];
+  window.INV_MB_MSG = ic.msgs;
+  setTimeout(inyectarAlg,80);
+}
+
+function buildTablaFOIL(){
+  var vars=['x','m','a','n','p'];
+  var v=vars[rInt(0,vars.length-1)];
+  var items=[];
+  var gs=[
+    function(){var a=rInt(1,5),b=rInt(1,6); return{expr:'('+v+'+'+a+')('+v+'+'+b+')', res:v+'^2+'+(a+b)+v+'+'+(a*b)};},
+    function(){var a=rInt(2,5),b=rInt(1,4); return{expr:'('+v+'+'+a+')('+v+'−'+b+')', res:v+'^2+'+(a-b)+v+'-'+(a*b)};},
+    function(){var c=rInt(2,4),a=rInt(1,3),b=rInt(1,5); return{expr:'('+c+v+'+'+a+')('+v+'+'+b+')', res:c+v+'^2+'+(c*b+a)+v+'+'+(a*b)};}
+  ];
+  for(var i=0;i<gs.length;i++) items.push(gs[i]());
+  var html='<table><thead><tr><th>Producto</th><th>F · O · I · L<br><small>(escribe los 4 términos)</small></th><th>Resultado simplificado</th></tr></thead><tbody>';
+  for(var i=0;i<items.length;i++){
+    var d=items[i];
+    html+='<tr><td class="td-fix" style="font-size:.82rem;">'+d.expr+'</td>'
+      +'<td><input type="text" id="foil-p-'+i+'" data-req="1" data-ml="3" class="inp-cell" placeholder="F: O: I: L:" oncopy="return false" onpaste="return false" oncontextmenu="return false"></td>'
+      +'<td><input type="text" id="foil-r-'+i+'" data-req="1" data-ml="3" data-alg="1" class="inp-cell" placeholder="trinomio" oncopy="return false" onpaste="return false" oncontextmenu="return false"></td></tr>';
+    respCorrectas.foil[i]=d.res;
+  }
+  html+='</tbody></table>';
+  document.getElementById('tabla-foil').innerHTML=html;
+  var fc=FOIL_ERR_CASOS[rInt(0,FOIL_ERR_CASOS.length-1)];
+  document.getElementById('foil-err-expr').textContent=fc.expr;
+  document.getElementById('foil-err-res').textContent=fc.mal;
+  document.getElementById('foil-err-opt0').textContent=fc.opts[0];
+  document.getElementById('foil-err-opt1').textContent=fc.opts[1];
+  document.getElementById('foil-err-opt2').textContent=fc.opts[2];
+  window.FOIL_ERR_MSG = fc.msgs;
+  setTimeout(inyectarAlg,80);
+}
+
+function buildCDMX(){
+  ZONA_ACT=pick(ZONAS);
+  document.getElementById('s4-zona-tit').textContent='Aplicación — '+ZONA_ACT.nom;
+  document.getElementById('s4-zona-badge').textContent=ZONA_ACT.badge;
+  document.getElementById('s4-sit').textContent=ZONA_ACT.sit;
+  document.getElementById('s4-sr-ctx').innerHTML='<p class="instr">'+ZONA_ACT.sr_ctx+'</p><p style="font-family:monospace;font-weight:800;">'+ZONA_ACT.sr_a+' '+ZONA_ACT.sr_op+' '+ZONA_ACT.sr_b+'</p><div class="alg-wrap"><input type="text" id="s4a-res" data-req="1" data-ml="2" data-alg="1" class="inp" placeholder="Resultado simplificado"></div>';
+  respCorrectas.cdmx.a = ZONA_ACT.sr_res;
+  document.getElementById('s4-mb-ctx').innerHTML='<p class="instr">'+ZONA_ACT.mb_ctx+'</p><p style="font-family:monospace;font-weight:800;">'+ZONA_ACT.mo+'·'+ZONA_ACT.bin_mb+'</p><div class="alg-wrap"><input type="text" id="s4b-res" data-req="1" data-ml="3" data-alg="1" class="inp" placeholder="Resultado"></div>';
+  respCorrectas.cdmx.b = ZONA_ACT.mb_res;
+  document.getElementById('s4-foil-ctx').innerHTML='<p class="instr">'+ZONA_ACT.foil_ctx+'</p><p style="font-family:monospace;font-weight:800;">'+ZONA_ACT.f_a+'·'+ZONA_ACT.f_b+'</p><div class="alg-wrap"><input type="text" id="s4c-res" data-req="1" data-ml="3" data-alg="1" class="inp" placeholder="Trinomio resultado (FOIL)"></div>';
+  respCorrectas.cdmx.c = ZONA_ACT.foil_res;
+  setTimeout(inyectarAlg,80);
+}
+
+
+// ╔══════════════════════════════════════════════════════════════════╗
+// ║  VALIDACIÓN DE CAMPOS — CON MOTOR SIMBÓLICO INTEGRADO          ║
+// ╚══════════════════════════════════════════════════════════════════╝
+
+function validarCamposTabla(ids, correctas) {
+  var ok = true;
+  for (var i = 0; i < ids.length; i++) {
+    var inp = document.getElementById(ids[i]);
+    if (!inp) continue;
+
+    var user = inp.value.trim();
+    var correcto = correctas[i];
+
+    var resultado = {
+      ok: false,
+      motor: 'ninguno',
+      detalle: ''
+    };
+
+    if (user && correcto) {
+      var r1 = validarConAlgebrite(user, correcto);
+      if (r1.ok) {
+        resultado = r1;
+      } else {
+        var r2 = validarConMathJS(user, correcto);
+        if (r2.ok) {
+          resultado = r2;
+        } else {
+          var uText = normalizarExpr(user);
+          var cText = normalizarExpr(correcto);
+          resultado = {
+            ok: uText === cText,
+            motor: 'texto',
+            detalle: 'fallback textual'
+          };
+        }
+      }
+
+      registrarDebug(ids[i], user, correcto, resultado);
+    }
+
+    if (!resultado.ok) {
+      inp.classList.add('incorrecto');
+      inp.classList.remove('correcto');
+      mostrarBadgeMotor(ids[i], resultado);
+      ok = false;
+    } else {
+      inp.classList.remove('incorrecto');
+      inp.classList.add('correcto');
+      mostrarBadgeMotor(ids[i], resultado);
+    }
+  }
+  return ok;
+}
+
+function validarSecMostrarErrores(id) {
+  var sec = document.getElementById(id);
+  if (!sec || modoRecorrer) return;
+
+  var todosErrores = sec.querySelectorAll('.err');
+  for (var i = 0; i < todosErrores.length; i++) todosErrores[i].classList.remove('err');
+  var todosBadges = sec.querySelectorAll('.val-sym-badge');
+  for (var i = 0; i < todosBadges.length; i++) todosBadges[i].remove();
+
+  var ok = true;
+
+  var els = sec.querySelectorAll('[data-req]');
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    var ml = parseInt(el.getAttribute('data-ml') || '1');
+    var v = el.tagName === 'SELECT' ? el.value : el.value.trim();
+    if (!v || v.length < ml) {
+      el.classList.add('err');
+      ok = false;
+    }
+  }
+
+  if (id === 's0') {
+    var nom = document.getElementById('inp-nombre').value.trim();
+    if (nom.length < 5) {
+      document.getElementById('inp-nombre').classList.add('err');
+      ok = false;
+    }
+  }
+
+  var chkMap = { s1: 'chk-s1', s2: 'chk-s2', s3: 'chk-s3' };
+  if (chkMap[id]) {
+    var chk = document.getElementById(chkMap[id]);
+    if (chk && !chk.checked) {
+      chk.classList.add('err');
+      ok = false;
+    } else if (chk) chk.classList.remove('err');
+  }
+
+  var selMap = { s1: ['sel-err-sr-val'], s2: ['sel-inv-mb-val'], s3: ['sel-foil-err-val', 'sel-reflex-foil-val'] };
+  if (selMap[id]) {
+    for (var i = 0; i < selMap[id].length; i++) {
+      var sv = document.getElementById(selMap[id][i]);
+      if (!sv || sv.value === '') { ok = false; }
+    }
+  }
+
+  if (id === 's1') {
+    var idsSR = [];
+    for (var i = 0; i < 4; i++) idsSR.push('sr-' + i);
+    if (!validarCamposTabla(idsSR, respCorrectas.sr)) ok = false;
+  }
+
+  if (id === 's2') {
+    var idsT1 = [], idsT2 = [];
+    for (var i = 0; i < 4; i++) {
+      idsT1.push('mb-t1-' + i);
+      idsT2.push('mb-t2-' + i);
+    }
+    if (!validarCamposTabla(idsT1, respCorrectas.mb_t1)) ok = false;
+    if (!validarCamposTabla(idsT2, respCorrectas.mb_t2)) ok = false;
+  }
+
+  if (id === 's3') {
+    var idsFoil = [];
+    for (var i = 0; i < 3; i++) idsFoil.push('foil-r-' + i);
+    if (!validarCamposTabla(idsFoil, respCorrectas.foil)) ok = false;
+  }
+
+  if (id === 's4') {
+    var campos = [
+      { id: 's4a-res', correcta: respCorrectas.cdmx.a },
+      { id: 's4b-res', correcta: respCorrectas.cdmx.b },
+      { id: 's4c-res', correcta: respCorrectas.cdmx.c }
+    ];
+    for (var i = 0; i < campos.length; i++) {
+      var inp = document.getElementById(campos[i].id);
+      if (!inp) continue;
+      var userVal = inp.value.trim();
+      var resultado = { ok: false, motor: 'ninguno' };
+
+      if (userVal && campos[i].correcta) {
+        var r1 = validarConAlgebrite(userVal, campos[i].correcta);
+        if (r1.ok) {
+          resultado = r1;
+        } else {
+          var r2 = validarConMathJS(userVal, campos[i].correcta);
+          if (r2.ok) {
+            resultado = r2;
+          } else {
+            var uText = normalizarExpr(userVal);
+            var cText = normalizarExpr(campos[i].correcta);
+            resultado = { ok: uText === cText, motor: 'texto', detalle: 'fallback' };
+          }
+        }
+        registrarDebug(campos[i].id, userVal, campos[i].correcta, resultado);
+      }
+
+      if (!resultado.ok) {
+        inp.classList.add('err');
+        mostrarBadgeMotor(campos[i].id, resultado);
+        ok = false;
+      } else {
+        inp.classList.remove('err');
+        mostrarBadgeMotor(campos[i].id, resultado);
+      }
+    }
+  }
+
+  var em = document.getElementById(id + '-err');
+  if (em) em.classList.toggle('show', !ok);
+
+  if (!ok) {
+    var primer = sec.querySelector('.err');
+    if (primer) primer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    else sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+
+// ╔══════════════════════════════════════════════════════════════════╗
+// ║  AVANCE Y NAVEGACIÓN (con integración AF)                       ║
+// ╚══════════════════════════════════════════════════════════════════╝
+
+function avanzar(from, to) {
+  /* [AF] Registrar salida de la sección actual */
+  var _afAnt = document.querySelector('.sec.on');
+  if (_afAnt) afSecExit(_afAnt.id);
+
+  validarSecMostrarErrores(from);
+  showSec(to);
+
+  /* [AF] Registrar entrada a la nueva sección */
+  afSecEnter(to);
+}
+
+function finalizar() {
+  validarSecMostrarErrores('s5');
+  var nom = document.getElementById('inp-nombre').value.trim() || 'Sin nombre';
+  var nota = calcNota();
+  var msg = nota.total >= 8 ? 'Excelente. Dominas las operaciones con binomios.' :
+            nota.total >= 6 ? 'Buen trabajo. Repasa los puntos marcados.' :
+            'Hay áreas de oportunidad. Revisa con tu cuaderno.';
+  var emoji = nota.total >= 8 ? '🎉' : '📘';
+  var wmR = '';
+  for (var i = 0; i < 8; i++) wmR += '<div class="res-wm-row">' + nom + ' · S11 Binomios · ' + nom + '</div>';
+
+  var quizFilas = '';
+  for (var i = 0; i < QUIZ_SEL.length; i++) {
+    var q = QUIZ_SEL[i], nv = 0;
+    for (var ni = 0; ni < QB.length; ni++) {
+      for (var qi = 0; qi < QB[ni].length; qi++) {
+        if (QB[ni][qi] === q) { nv = ni + 1; break; }
+      }
+      if (nv) break;
+    }
+    var corr = estadoQuiz[i] === q.ok, tuResp = '—';
+    var tuOpts = document.querySelectorAll('#qopts-' + i + ' .qopt');
+    for (var j = 0; j < tuOpts.length; j++) {
+      if (parseInt(tuOpts[j].getAttribute('data-oi')) === estadoQuiz[i]) {
+        var lc = tuOpts[j].lastElementChild;
+        tuResp = lc ? lc.innerHTML : '?';
+      }
+    }
+    quizFilas += '<tr class="' + (corr ? 'ok-row' : 'nook-row') + '"><td style="text-align:center;">' + (corr ? '✅' : '❌') + '</td><td style="font-size:.72rem;font-weight:800;color:' + NV_COL[nv] + ';">' + NV_LBL[nv] + '</td><td>' + q.p + '</td><td>' + tuResp + '</td><td style="color:var(--ver);font-weight:700;">' + q.ops[q.ok] + '</td></tr><tr class="par-row"><td colspan="5">' + q.ex + '</td></tr>';
+  }
+
+  function refRow(id, lbl, minL) {
+    var val = document.getElementById(id) ? document.getElementById(id).value.trim() : '—';
+    var ok = val.length >= minL;
+    return '<tr class="' + (ok ? 'ok-row' : 'nook-row') + '"><td style="text-align:center;">' + (ok ? '✅' : '📝') + '</td><td colspan="4">' + lbl + '<br><span style="font-size:.75rem;color:#555;">' + val.substring(0, 120) + (val.length > 120 ? '...' : '') + '</span></td></tr>';
+  }
+
+  var statsMotor = { algebrite: 0, mathjs: 0, texto: 0, fallos: 0 };
+  for (var i = 0; i < VAL_DEBUG_LOG.length; i++) {
+    var e = VAL_DEBUG_LOG[i];
+    if (e.ok) {
+      if (e.motor === 'algebrite') statsMotor.algebrite++;
+      else if (e.motor === 'mathjs') statsMotor.mathjs++;
+      else if (e.motor === 'texto') statsMotor.texto++;
+    } else {
+      statsMotor.fallos++;
+    }
+  }
+
+  var motorStatsHTML = '<div class="card card-tie" style="margin-top:12px;">'
+    + '<div class="pill p-tie">Motor de validación — Estadísticas</div>'
+    + '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;">'
+    + '<div style="background:#e8f5e9;border-radius:8px;padding:6px 12px;font-size:.75rem;font-weight:700;">✓ Algebrite: <strong>' + statsMotor.algebrite + '</strong></div>'
+    + '<div style="background:#e3f2fd;border-radius:8px;padding:6px 12px;font-size:.75rem;font-weight:700;">✓ math.js: <strong>' + statsMotor.mathjs + '</strong></div>'
+    + '<div style="background:#fff3cd;border-radius:8px;padding:6px 12px;font-size:.75rem;font-weight:700;">~ Texto: <strong>' + statsMotor.texto + '</strong></div>'
+    + '<div style="background:#fdecea;border-radius:8px;padding:6px 12px;font-size:.75rem;font-weight:700;">✗ Incorrectas: <strong>' + statsMotor.fallos + '</strong></div>'
+    + '</div></div>';
+
+  var html = '<div class="res-hdr"><div class="res-wm">' + wmR + '</div><div style="background:rgba(255,255,255,.18);border-radius:10px;padding:10px 18px;display:inline-block;margin-bottom:8px;"><span style="font-size:.62rem;font-weight:800;letter-spacing:1.5px;opacity:.75;display:block;text-transform:uppercase;">Alumno</span><span style="font-size:1.1rem;font-weight:900;">' + nom + '</span></div><br><div>' + emoji + '</div><div class="res-nota">' + nota.total + '<span style="font-size:1.2rem;opacity:.7;">/10</span></div><div style="font-size:.8rem;opacity:.8;">' + msg + '</div><div style="display:flex;gap:8px;justify-content:center;margin-top:10px;flex-wrap:wrap;">';
+  for (var i = 0; i < nota.det.length; i++) {
+    var d = nota.det[i];
+    html += '<div style="background:rgba(255,255,255,.15);border-radius:8px;padding:4px 11px;font-size:.75rem;font-weight:700;">' + d.cat + ': <strong>' + d.pts + '/' + d.max + '</strong></div>';
+  }
+  html += '</div></div>';
+  html += '<div class="card card-v"><div class="pill p-v">Quiz — Detalle</div><div style="overflow-x:auto;"><table class="res-tabla"><thead><tr><th></th><th>Tema</th><th>Pregunta</th><th>Tu resp.</th><th>Correcta</th></tr></thead><tbody>' + quizFilas + '</tbody></table></div></div>';
+  html += '<div class="card card-mo"><div class="pill p-mo">Reflexiones</div><div style="overflow-x:auto;"><table class="res-tabla"><tbody>' + refRow('act-resp', 'Activación inicial', 50) + refRow('cierre-reflex', '¿Por qué funciona FOIL?', 40) + '</tbody></table></div></div>';
+  html += motorStatsHTML;
+
+  /* [AF] Inyectar reporte antifraude en la pantalla de resultados */
+  html += afGenerarReporte();
+
+  html += '<div style="background:linear-gradient(135deg,#1B6B45,#2e7d32);border-radius:12px;padding:14px;margin:12px 0;"><div style="font-family:\'Bebas Neue\';font-size:1.2rem;color:#fff;margin-bottom:6px;">Guía de repaso</div><div style="background:rgba(255,255,255,.12);border-radius:8px;padding:9px 12px;font-size:.82rem;color:#fff;line-height:1.65;">Cada pregunta del quiz incluye su explicación. Úsala junto con tu cuaderno.</div></div>';
+  html += '<div style="background:#fff3cd;border:2px solid var(--am);border-radius:10px;padding:12px;font-size:.8rem;line-height:1.7;"><strong>📸 Entrega en Classroom:</strong> Captura de esta pantalla + foto de tu cuaderno.<br><strong style="color:var(--roj);">⚠️ Ambas evidencias son necesarias para la calificación completa.</strong></div>';
+  html += '<button class="btn-pdf" onclick="guardarPDF()" style="margin-top:12px;">💾 Guardar como PDF</button>';
+  html += '<button style="background:#fff;color:var(--tie);border:2px solid var(--gris2);border-radius:10px;padding:11px 22px;font-family:\'Nunito\';font-weight:800;font-size:.9rem;cursor:pointer;margin-top:12px;display:inline-block;" onclick="if(confirm(\'¿Reiniciar?\'))location.reload();">↺ Reiniciar</button>';
+
+  /* [AF] Registrar salida de la sección actual y entrada a resultados */
+  var _afAnt = document.querySelector('.sec.on');
+  if (_afAnt) afSecExit(_afAnt.id);
+
+  document.getElementById('res-contenido').innerHTML = html;
+  showSec('final');
+
+  afSecEnter('final');
+
+  setTimeout(function() { mjxTypeset(document.getElementById('final')); }, 200);
+}
+
+function calcNota() {
+  var pts = 0, det = [];
+
+  var qc = 0;
+  for (var i = 0; i < QUIZ_SEL.length; i++) if (estadoQuiz[i] === QUIZ_SEL[i].ok) qc++;
+  var qpts = Math.round(qc * .5 * 10) / 10;
+  pts += qpts;
+  det.push({ cat: 'Quiz (10 preguntas)', pts: qpts, max: 5 });
+
+  var sr_ok = 0;
+  for (var i = 0; i < 4; i++) {
+    var inp = document.getElementById('sr-' + i);
+    if (inp && compararRespuesta(inp.value.trim(), respCorrectas.sr[i], 'sr-' + i)) sr_ok++;
+  }
+  var sr_pts = Math.min(sr_ok * 0.25, 1);
+  pts += sr_pts;
+  det.push({ cat: 'Suma/resta binomios', pts: sr_pts, max: 1 });
+
+  var sev = document.getElementById('sel-err-sr-val');
+  if (sev && sev.value === '0') { pts += 0.25; det.push({ cat: 'Detección error +/−', pts: 0.25, max: 0.25 }); }
+  else det.push({ cat: 'Detección error +/−', pts: 0, max: 0.25 });
+
+  var mb_ok = 0;
+  for (var i = 0; i < 4; i++) {
+    var t1 = document.getElementById('mb-t1-' + i);
+    var t2 = document.getElementById('mb-t2-' + i);
+    if (t1 && t2 &&
+        compararRespuesta(t1.value.trim(), respCorrectas.mb_t1[i], 'mb-t1-' + i) &&
+        compararRespuesta(t2.value.trim(), respCorrectas.mb_t2[i], 'mb-t2-' + i)) {
+      mb_ok++;
+    }
+  }
+  var mb_pts = Math.min(mb_ok * 0.25, 1);
+  pts += mb_pts;
+  det.push({ cat: 'Monomio×Binomio', pts: mb_pts, max: 1 });
+
+  var imb = document.getElementById('sel-inv-mb-val');
+  if (imb && imb.value === '0') { pts += 0.25; det.push({ cat: 'Razonamiento inverso', pts: 0.25, max: 0.25 }); }
+  else det.push({ cat: 'Razonamiento inverso', pts: 0, max: 0.25 });
+
+  var foil_ok = 0;
+  for (var i = 0; i < 3; i++) {
+    var inp = document.getElementById('foil-r-' + i);
+    if (inp && compararRespuesta(inp.value.trim(), respCorrectas.foil[i], 'foil-r-' + i)) foil_ok++;
+  }
+  var foil_pts = Math.min(foil_ok * (1 / 3), 1);
+  pts += foil_pts;
+  det.push({ cat: 'FOIL', pts: foil_pts, max: 1 });
+
+  var fev = document.getElementById('sel-foil-err-val'), rfv = document.getElementById('sel-reflex-foil-val');
+  var sel_pts = 0;
+  if (fev && fev.value === '0') sel_pts += 0.25;
+  if (rfv && rfv.value === '0') sel_pts += 0.25;
+  pts += sel_pts;
+  det.push({ cat: 'Reflexión FOIL', pts: sel_pts, max: 0.5 });
+
+  var cdmx_ok = 0;
+  var cdmx_campos = [
+    { id: 's4a-res', c: respCorrectas.cdmx.a },
+    { id: 's4b-res', c: respCorrectas.cdmx.b },
+    { id: 's4c-res', c: respCorrectas.cdmx.c }
+  ];
+  for (var i = 0; i < cdmx_campos.length; i++) {
+    var inp = document.getElementById(cdmx_campos[i].id);
+    if (inp && compararRespuesta(inp.value.trim(), cdmx_campos[i].c, cdmx_campos[i].id)) cdmx_ok++;
+  }
+  var cdmx_pts = Math.min(cdmx_ok * (1 / 3), 1);
+  pts += cdmx_pts;
+  det.push({ cat: 'CDMX aplicado', pts: cdmx_pts, max: 1 });
+
+  pts = Math.round(pts * 10) / 10;
+  return { total: pts, det: det };
+}
+
+
+// ╔══════════════════════════════════════════════════════════════════╗
+// ║  QUIZ (sin cambios)                                              ║
+// ╚══════════════════════════════════════════════════════════════════╝
+
+function buildQuiz(){
+  QUIZ_SEL=[]; estadoQuiz=[];
+  for(var nv=0;nv<QB.length;nv++){
+    var pool=QB[nv];
+    QUIZ_SEL.push(pool[rInt(0,pool.length-1)]);
+  }
+  var html='';
+  for(var i=0;i<QUIZ_SEL.length;i++){
+    var q=QUIZ_SEL[i], nv=0;
+    for(var ni=0;ni<QB.length;ni++){for(var qi=0;qi<QB[ni].length;qi++){if(QB[ni][qi]===q){nv=ni+1;break;}}if(nv)break;}
+    estadoQuiz.push(-1);
+    html+='<div class="qcard"><div class="qcard-hdr"><span class="qnum">Pregunta '+(i+1)+'</span><span class="qnivel" style="background:'+NV_COL[nv]+';color:#fff;">Nivel '+nv+'</span></div><div class="qtext">'+q.p+'</div><div class="qopts" id="qopts-'+i+'">';
+    for(var j=0;j<q.ops.length;j++){
+      html+='<div class="qopt" data-qi="'+i+'" data-oi="'+j+'" onclick="selQuiz('+i+','+j+')"><div class="qopt-letra">'+LETRAS[j]+'</div><span>'+q.ops[j]+'</span></div>';
+    }
+    html+='</div><div class="qfb" id="qfb-'+i+'"></div></div>';
+  }
+  document.getElementById('quiz-wrap').innerHTML=html;
+}
+
+function selQuiz(qi,oi){
+  estadoQuiz[qi]=oi;
+  var opts=document.querySelectorAll('#qopts-'+qi+' .qopt');
+  for(var i=0;i<opts.length;i++){
+    opts[i].classList.remove('sel','correcto','incorrecto');
+    if(i===oi)opts[i].classList.add('sel');
+  }
+}
+
+function verificarQuiz(){
+  var allAnswered=true;
+  for(var i=0;i<estadoQuiz.length;i++){if(estadoQuiz[i]===-1){allAnswered=false;break;}}
+  if(!allAnswered){
+    document.getElementById('s5q-err').classList.add('show');
+    return;
+  }
+  document.getElementById('s5q-err').classList.remove('show');
+  quizVerificado=true;
+  for(var i=0;i<QUIZ_SEL.length;i++){
+    var q=QUIZ_SEL[i];
+    var opts=document.querySelectorAll('#qopts-'+i+' .qopt');
+    for(var j=0;j<opts.length;j++){
+      opts[j].style.pointerEvents='none';
+      if(j===q.ok)opts[j].classList.add('correcto');
+      else if(j===estadoQuiz[i]&&j!==q.ok)opts[j].classList.add('incorrecto');
+    }
+    var fb=document.getElementById('qfb-'+i);
+    var isCorrect=estadoQuiz[i]===q.ok;
+    fb.className='qfb show '+(isCorrect?'ok':'nook');
+    fb.innerHTML=(isCorrect?'<strong>✓ Correcto.</strong> ':'<strong>✗ Incorrecto.</strong> ')+q.ex;
+  }
+  document.getElementById('btn-ver-quiz').style.display='none';
+  document.getElementById('btn-sig-quiz').style.display='block';
+}
+
+function irCierre(){
+  document.getElementById('cierre-wrap').style.display='block';
+  document.getElementById('cierre-wrap').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+
+// ╔══════════════════════════════════════════════════════════════════╗
+// ║  NAVEGACIÓN Y SHOW SEC (sin cambios)                            ║
+// ╚══════════════════════════════════════════════════════════════════╝
+
+function showSec(id){
+  var secs=document.querySelectorAll('.sec');
+  for(var i=0;i<secs.length;i++)secs[i].classList.remove('on');
+  var target=document.getElementById(id);
+  if(target){
+    target.classList.add('on');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  var idx=SECS.indexOf(id);
+  var pct=Math.round((idx/(SECS.length-1))*100);
+  document.getElementById('prog-bar').style.width=pct+'%';
+  for(var i=0;i<SECS.length;i++){
+    var sp=document.getElementById('ps'+(i===SECS.length-1?'-fin':i));
+    if(sp)sp.className=i<=idx?'done':'';
+  }
+}
+
+
+// ╔══════════════════════════════════════════════════════════════════╗
+// ║  PANEL DOCENTE (sin cambios)                                     ║
+// ╚══════════════════════════════════════════════════════════════════╝
+
+function abrirDoc(){document.getElementById('modal-doc').classList.add('show');}
+function cerrarDoc(){document.getElementById('modal-doc').classList.remove('show');}
+function chkDoc(){
+  var cod=document.getElementById('doc-cod').value;
+  if(cod==='1234'){
+    document.getElementById('doc-login').style.display='none';
+    document.getElementById('doc-panel').style.display='block';
+    document.getElementById('doc-err').style.display='none';
+    modoDocente=true;
+  }else{
+    document.getElementById('doc-err').style.display='block';
+  }
+}
+function docSaltar(){
+  cerrarDoc();
+  buildQuiz();
+  showSec('final');
+  finalizar();
+}
+function docRecorrer(){
+  modoRecorrer=true;
+  cerrarDoc();
+  alert('Modo recorrer activado: puedes avanzar sin validar.');
+}
+
+
+// ╔══════════════════════════════════════════════════════════════════╗
+// ║  GUARDAR PDF (sin cambios)                                       ║
+// ╚══════════════════════════════════════════════════════════════════╝
+
+function guardarPDF(){
+  window.print();
+}
+
+
+// ╔══════════════════════════════════════════════════════════════════╗
+// ║  INIT (sin cambios en lógica original)                           ║
+// ╚══════════════════════════════════════════════════════════════════╝
+
+(function init(){
+  var act=ACTIVACIONES[rInt(0,ACTIVACIONES.length-1)];
+  document.getElementById('act-preg').textContent=act.q;
+  buildTablaSR();
+  buildTablaMB();
+  buildTablaFOIL();
+  buildCDMX();
+  buildQuiz();
+})();
+</script>
+</body>
+</html>
