@@ -1,0 +1,1682 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Suma y Resta de Polinomios · S13 · PM II</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+<!-- KaTeX -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+
+<!-- math.js -->
+<script defer src="https://cdn.jsdelivr.net/npm/mathjs@11.12.1/lib/browser/math.js"></script>
+
+<!-- Algebrite -->
+<script defer src="https://cdn.jsdelivr.net/npm/algebrite@1.4.0/dist/algebrite.bundle-for-browser.js"></script>
+
+<style>
+:root{
+  --mo:#5B2D8E;--mo2:#7B3FC0;--mo3:#B88EE8;--mo-f:#f3ecfb;
+  --ver:#1B6B45;--ver2:#52B788;--nar:#E85D04;--nar2:#F9A53A;
+  --roj:#C1121F;--az:#023E8A;--az2:#1565C0;--am:#F5A623;
+  --cr:#fdf9ff;--tie:#1a0a2e;--gris:#ede8f5;--gris2:#d5cce8;
+  --som:0 3px 18px rgba(91,45,142,.12);
+  --indigo:#283593;--indigo2:#3949ab;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--cr);color:var(--tie);font-size:15px;overflow-x:hidden;}
+
+.hdr{background:linear-gradient(135deg,#1a0a2e,#283593,#1B6B45);padding:18px 16px 14px;text-align:center;}
+.hdr-tag{font-size:.65rem;font-weight:800;letter-spacing:3px;color:#90caf9;text-transform:uppercase;margin-bottom:3px;}
+.hdr h1{font-family:'Bebas Neue';font-size:1.9rem;color:#fff;line-height:1;}
+.hdr h1 em{color:var(--nar2);font-style:normal;}
+.hdr-sub{font-size:.74rem;color:rgba(255,255,255,.45);margin-top:4px;}
+.hdr-autor{margin-top:8px;font-size:.73rem;color:rgba(255,255,255,.55);font-weight:700;}
+
+.prog-wrap{background:#fff;padding:10px 14px;border-bottom:2px solid var(--gris2);position:sticky;top:0;z-index:90;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.prog-bar-bg{background:var(--gris2);border-radius:4px;height:5px;margin-bottom:5px;}
+.prog-bar{background:linear-gradient(90deg,var(--indigo2),var(--ver2));height:5px;border-radius:4px;transition:width .4s;}
+.prog-steps{display:flex;justify-content:space-between;font-size:.58rem;font-weight:800;color:#bbb;letter-spacing:.3px;}
+.prog-steps span.done{color:var(--indigo2);}
+
+.sec{display:none;padding:14px;max-width:700px;margin:0 auto;}
+.sec.on{display:block;}
+
+.card{background:#fff;border-radius:12px;padding:15px;margin-bottom:12px;box-shadow:var(--som);}
+.card-mo{border-left:4px solid var(--mo2);}
+.card-v{border-left:4px solid var(--ver2);}
+.card-a{border-left:4px solid var(--az2);}
+.card-am{border-left:4px solid var(--am);}
+.card-r{border-left:4px solid var(--roj);}
+.card-tie{border-left:4px solid var(--tie);}
+.card-in{border-left:4px solid var(--indigo2);}
+
+.pill{display:inline-block;font-size:.63rem;font-weight:800;letter-spacing:.4px;padding:3px 9px;border-radius:12px;margin-bottom:8px;text-transform:uppercase;}
+.p-mo{background:var(--mo-f);color:var(--mo);}
+.p-v{background:#d4edda;color:var(--ver);}
+.p-a{background:#cce5ff;color:var(--az2);}
+.p-am{background:#fff3cd;color:#856404;}
+.p-r{background:#fdecea;color:var(--roj);}
+.p-tie{background:var(--gris);color:var(--tie);}
+.p-in{background:#e8eaf6;color:var(--indigo);}
+
+.alerta{background:linear-gradient(135deg,#ff6b35,#f7b731);border-radius:12px;padding:14px 15px;margin-bottom:14px;display:flex;gap:12px;align-items:flex-start;color:#fff;}
+.alerta-ico{font-size:1.5rem;flex-shrink:0;margin-top:1px;}
+.alerta-txt{font-size:.82rem;line-height:1.65;}
+.alerta-txt strong{font-size:.88rem;display:block;margin-bottom:3px;}
+.calif-aviso{background:linear-gradient(135deg,#e8f5e9,#f1f8e9);border:2px solid var(--ver2);border-radius:12px;padding:13px 15px;margin-bottom:10px;display:flex;gap:11px;align-items:flex-start;}
+.calif-aviso-txt p{font-size:.84rem;font-weight:800;color:var(--ver);margin-bottom:4px;}
+.calif-aviso-txt span{font-size:.79rem;line-height:1.65;color:#2e7d32;display:block;}
+
+.lbl{font-size:.78rem;font-weight:800;color:var(--mo);display:block;margin-bottom:4px;margin-top:10px;}
+.inp{width:100%;padding:9px 12px;border:2px solid var(--gris2);border-radius:8px;font-size:.88rem;font-family:'Nunito';color:var(--tie);background:#fff;transition:border-color .2s;}
+.inp:focus{outline:none;border-color:var(--az2);}
+.inp.err{border-color:var(--roj)!important;}
+.inp.ok-field{border-color:var(--ver2)!important;box-shadow:0 0 0 2px rgba(82,183,136,.15);}
+textarea.inp{resize:vertical;min-height:70px;}
+
+.alg-wrap{margin-bottom:4px;}
+.alg-btn{background:#fff;border:1.5px solid var(--mo3);color:var(--mo2);border-radius:6px;
+  padding:4px 9px;font-size:.78rem;font-weight:800;cursor:pointer;font-family:'Nunito';
+  transition:background .15s,color .15s;line-height:1;flex-shrink:0;user-select:none;}
+.alg-btn:active,.alg-btn:hover{background:var(--mo2);color:#fff;border-color:var(--mo2);}
+.alg-btn.op{border-color:var(--gris2);color:var(--tie);}
+.alg-btn.op:hover{background:var(--tie);color:#fff;border-color:var(--tie);}
+.alg-btn.neg{border-color:var(--roj);color:var(--roj);}
+.alg-btn.neg:hover{background:var(--roj);color:#fff;}
+.alg-btn.clr{border-color:#aaa;color:#666;}
+.alg-btn.clr:hover{background:#666;color:#fff;}
+.alg-preview{min-height:32px;background:var(--gris);border-radius:7px;padding:5px 11px;
+  margin-top:4px;font-size:.95rem;color:var(--tie);border-left:3px solid var(--mo3);transition:background .2s;}
+.alg-preview.active{background:#fff;border-color:var(--az2);box-shadow:0 0 0 2px rgba(21,101,192,.1);}
+.alg-hint{font-size:.69rem;color:#888;font-style:italic;margin-top:2px;display:block;}
+
+.emsg{display:none;background:#fdecea;border:1.5px solid var(--roj);border-radius:8px;padding:8px 12px;font-size:.8rem;color:var(--roj);font-weight:700;margin:8px 0;}
+.emsg.show{display:block;}
+
+.t-wrap{overflow-x:auto;margin:10px 0;}
+table{width:100%;border-collapse:collapse;font-size:.82rem;}
+th{background:var(--tie);color:#fff;padding:8px 9px;text-align:center;font-weight:700;font-size:.75rem;white-space:nowrap;}
+td{padding:7px 9px;border:1.5px solid var(--gris2);vertical-align:middle;}
+td input.inp-cell{border:1.5px solid var(--gris2);border-radius:6px;padding:5px 7px;font-family:'Nunito';font-size:.82rem;text-align:center;width:100%;background:#fff;color:var(--tie);}
+td input.inp-cell:focus{outline:none;border-color:var(--az2);}
+.td-fix{background:var(--gris);font-weight:800;font-family:monospace;font-size:.85rem;}
+.td-h{background:var(--indigo);color:#fff;font-weight:800;text-align:center;font-size:.78rem;}
+
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.15;margin:0 3px;}
+.frac .num{border-bottom:2px solid currentColor;padding:1px 8px;font-weight:800;}
+.frac .den{padding:1px 8px;font-weight:800;}
+.frac-sm{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.1;margin:0 2px;}
+.frac-sm .num{border-bottom:1.5px solid currentColor;padding:0 5px;font-size:.85em;font-weight:800;}
+.frac-sm .den{padding:0 5px;font-size:.85em;font-weight:800;}
+.frac-lg{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.2;margin:0 4px;}
+.frac-lg .num{border-bottom:2.5px solid currentColor;padding:2px 10px;font-weight:800;font-size:1rem;}
+.frac-lg .den{padding:2px 10px;font-weight:800;font-size:1rem;}
+
+.pol-align{background:var(--gris);border-radius:10px;padding:12px 16px;margin:8px 0;font-family:'Courier New',monospace;font-size:.9rem;font-weight:700;line-height:2.2;display:inline-block;min-width:180px;}
+.pol-align .sep{border-top:2px solid var(--tie);margin:4px 0;}
+.pol-align .res{color:var(--ver);font-weight:900;}
+.pol-align .sign{color:var(--roj);margin-right:4px;}
+.pol-wrap{text-align:center;margin:10px 0;}
+
+.cuaderno{background:linear-gradient(135deg,#fffde7,#fff8e1);border:2.5px solid #f9a825;border-radius:14px;padding:16px;margin:12px 0;}
+.cuaderno-hdr{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.cuaderno-hdr .ico{font-size:1.6rem;}
+.cuaderno-hdr h3{font-family:'Bebas Neue';font-size:1.25rem;color:#4a3200;letter-spacing:.5px;}
+.cuaderno-regla{background:#fff;border-radius:9px;padding:11px 13px;margin-bottom:10px;border-left:4px solid #f9a825;}
+.cuaderno-confirm{display:flex;align-items:center;gap:10px;margin-top:12px;padding:10px 13px;background:#fff;border-radius:9px;border:1.5px solid #f9a825;}
+.cuaderno-confirm input[type=checkbox]{width:20px;height:20px;cursor:pointer;}
+.cuaderno-confirm label{font-size:.83rem;font-weight:700;cursor:pointer;}
+
+.paso-box{background:var(--gris);border-radius:10px;padding:12px;margin:8px 0;font-family:monospace;font-size:.87rem;line-height:2;font-weight:700;}
+.paso-box .d1{color:var(--roj);}
+.paso-box .d2{color:var(--ver);}
+.paso-box .d3{color:var(--az2);}
+.paso-box .d4{color:var(--mo2);}
+.paso-box .d5{color:var(--indigo2);}
+
+.papel-hint{background:linear-gradient(135deg,#fff8e1,#fffde7);border:2px dashed #f9a825;border-radius:10px;padding:11px 14px;margin:10px 0;display:flex;gap:10px;align-items:flex-start;}
+.papel-hint-ico{font-size:1.4rem;flex-shrink:0;}
+.papel-hint-txt{font-size:.79rem;line-height:1.65;color:#5d4037;font-weight:700;}
+
+.ej-bloque{background:#fff;border-radius:9px;padding:10px 13px;border:1.5px solid var(--gris2);margin-bottom:8px;}
+.ej-titulo{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--indigo2);margin-bottom:6px;}
+.ej-expr{text-align:center;margin:6px 0;font-size:1rem;}
+.ej-pasos{font-family:monospace;font-size:.8rem;line-height:1.8;background:var(--gris);border-radius:6px;padding:7px 10px;margin-top:6px;}
+
+.opt-grid{display:flex;flex-direction:column;gap:6px;margin-top:8px;}
+.opt-btn{display:flex;align-items:center;gap:10px;padding:10px 13px;border:2px solid var(--gris2);border-radius:9px;cursor:pointer;font-size:.85rem;font-weight:700;transition:all .18s;background:#fff;}
+.opt-btn:hover{border-color:var(--az2);background:#f0f4ff;}
+.opt-btn.sel-opt{border-color:var(--az2);background:#e8f0ff;}
+.opt-btn.ok-opt{border-color:var(--ver2);background:#e8f5e9;color:#1b5e20;}
+.opt-btn.ok-opt .opt-ico{background:var(--ver2);color:#fff;}
+.opt-btn.nok-opt{border-color:var(--roj);background:#fdecea;color:var(--roj);}
+.opt-btn.nok-opt .opt-ico{background:var(--roj);color:#fff;}
+.opt-ico{width:22px;height:22px;border-radius:50%;background:var(--gris2);font-weight:800;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.opt-fb{margin-top:6px;padding:7px 11px;border-radius:8px;font-size:.78rem;line-height:1.5;display:none;}
+.opt-fb.show{display:block;}
+.opt-fb.ok{background:#e8f5e9;color:#1b5e20;border:1.5px solid var(--ver2);}
+.opt-fb.nook{background:#fdecea;color:var(--roj);border:1.5px solid var(--roj);}
+
+.quiz-hdr{background:linear-gradient(135deg,#1a0a2e,var(--indigo));border-radius:14px;padding:16px;color:#fff;margin-bottom:12px;text-align:center;}
+.quiz-hdr h2{font-family:'Bebas Neue';font-size:1.5rem;}
+.qcard{background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:var(--som);border:2px solid var(--gris2);}
+.qcard-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.qnum{font-size:.65rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--indigo2);}
+.qnivel{font-size:.6rem;font-weight:800;padding:2px 7px;border-radius:8px;background:var(--gris);color:#666;}
+.qtext{font-size:.9rem;font-weight:700;margin-bottom:10px;line-height:1.6;}
+.qopts{display:flex;flex-direction:column;gap:7px;}
+.qopt{display:flex;align-items:center;gap:10px;padding:10px 12px;border:2.5px solid var(--gris2);border-radius:9px;cursor:pointer;transition:all .2s;font-size:.86rem;font-weight:700;}
+.qopt:hover{border-color:var(--indigo2);background:#e8eaf6;}
+.qopt.sel{border-color:var(--indigo2);background:#e8eaf6;}
+.qopt.correcto{border-color:var(--ver2);background:#e8f5e9;color:#1b5e20;}
+.qopt.incorrecto{border-color:var(--roj);background:#fdecea;color:var(--roj);}
+.qopt-letra{width:22px;height:22px;border-radius:50%;background:var(--gris2);font-weight:800;font-size:.8rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.qopt.correcto .qopt-letra{background:var(--ver2);color:#fff;}
+.qopt.incorrecto .qopt-letra{background:var(--roj);color:#fff;}
+.qfb{margin-top:8px;padding:8px 11px;border-radius:8px;font-size:.8rem;line-height:1.5;display:none;}
+.qfb.show{display:block;}
+.qfb.ok{background:#e8f5e9;color:#1b5e20;border:1.5px solid var(--ver2);}
+.qfb.nook{background:#fdecea;color:var(--roj);border:1.5px solid var(--roj);}
+
+.btn-sig{display:block;width:100%;padding:13px;background:var(--indigo2);color:#fff;border:none;border-radius:11px;font-size:.96rem;font-weight:800;cursor:pointer;font-family:'Nunito';margin-top:14px;transition:all .2s;}
+.btn-sig:hover{background:var(--indigo);}
+.btn-ver{display:block;width:100%;padding:13px;background:var(--mo2);color:#fff;border:none;border-radius:11px;font-size:.96rem;font-weight:800;cursor:pointer;font-family:'Nunito';margin-top:10px;}
+.btn-fin{display:block;width:100%;padding:13px;background:linear-gradient(135deg,var(--indigo),var(--ver));color:#fff;border:none;border-radius:11px;font-size:.96rem;font-weight:800;cursor:pointer;font-family:'Nunito';margin-top:14px;}
+.btn-sig-quiz{display:none;width:100%;padding:12px;background:var(--ver);color:#fff;border:none;border-radius:11px;font-size:.92rem;font-weight:800;cursor:pointer;font-family:'Nunito';margin-top:10px;}
+.btn-pdf{display:block;width:100%;padding:13px;background:var(--ver);color:#fff;border:none;border-radius:11px;font-size:.96rem;font-weight:800;cursor:pointer;font-family:'Nunito';margin-top:10px;}
+
+.sec-num{font-family:'Bebas Neue';font-size:2.2rem;color:var(--indigo2);line-height:1;margin-right:8px;}
+.sec-hdr{display:flex;align-items:center;margin-bottom:4px;}
+.sec-tit{font-size:1.05rem;font-weight:900;}
+.sec-sub{font-size:.74rem;color:#888;margin-top:1px;}
+.instr{font-size:.82rem;line-height:1.7;color:#444;}
+.narr{background:linear-gradient(135deg,#1a0a2e,var(--indigo));border-radius:12px;padding:15px;margin-bottom:12px;color:#fff;}
+.narr p{font-size:.87rem;line-height:1.75;opacity:.95;}
+.narr strong{color:var(--nar2);}
+.narr .narr-ico{font-size:1.6rem;margin-bottom:6px;display:block;}
+.ctx-card{background:linear-gradient(135deg,#e8eaf6,#f3ecfb);border:2px solid var(--mo3);border-radius:12px;padding:13px;margin-bottom:12px;}
+.zona-badge{display:inline-block;background:var(--indigo2);color:#fff;border-radius:8px;padding:4px 12px;font-size:.72rem;font-weight:800;margin-bottom:8px;}
+
+.res-hdr{background:linear-gradient(135deg,#1a0a2e,var(--indigo),#1B6B45);border-radius:14px;padding:20px;text-align:center;color:#fff;margin-bottom:14px;position:relative;overflow:hidden;}
+.res-wm{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-around;opacity:.04;pointer-events:none;overflow:hidden;font-weight:900;font-size:.8rem;text-transform:uppercase;color:#fff;}
+.res-wm-row{white-space:nowrap;}
+.res-nota{font-family:'Bebas Neue';font-size:3rem;line-height:1;margin:6px 0;}
+.res-tabla{width:100%;border-collapse:collapse;font-size:.8rem;}
+.res-tabla th{background:var(--tie);color:#fff;padding:7px 8px;text-align:left;font-size:.72rem;font-weight:700;}
+.res-tabla td{padding:6px 9px;border:1.5px solid var(--gris2);vertical-align:top;font-size:.79rem;}
+.res-tabla tr.ok-row td{background:#f0fff4;}
+.res-tabla tr.nook-row td{background:#fff5f5;}
+.res-tabla tr.par-row td{background:#f8f4ff;font-size:.74rem;color:#666;border-top:none;padding-bottom:9px;}
+
+.doc-modal{display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.6);align-items:center;justify-content:center;}
+.doc-modal.show{display:flex;}
+.doc-inner{background:#fff;border-radius:14px;padding:18px;max-width:420px;width:92%;box-shadow:0 10px 40px rgba(0,0,0,.3);max-height:92vh;overflow-y:auto;}
+.doc-inner h3{font-family:'Bebas Neue';font-size:1.4rem;color:var(--mo);margin-bottom:8px;}
+.doc-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--gris2);font-size:.79rem;}
+.doc-row:last-child{border-bottom:none;}
+.dbtn{width:100%;padding:10px;border:none;border-radius:9px;font-family:'Nunito';font-weight:800;font-size:.88rem;cursor:pointer;margin-top:7px;}
+.dbtn-mo{background:var(--mo2);color:#fff;}
+.dbtn-v{background:var(--ver);color:#fff;}
+.dbtn-out{background:transparent;border:2px solid var(--mo2);color:var(--mo2);}
+
+sup{font-size:.65em;vertical-align:super;line-height:0;}
+.separador{border:none;border-top:2px dashed var(--gris2);margin:14px 0;}
+
+.valid-badge{display:inline-block;font-size:.6rem;font-weight:800;padding:2px 7px;border-radius:8px;margin-left:6px;vertical-align:middle;}
+.valid-ok{background:#e8f5e9;color:#1b5e20;}
+.valid-nok{background:#fdecea;color:var(--roj);}
+.valid-unk{background:#fff3cd;color:#856404;}
+
+@media print{
+  .no-print,.prog-wrap,.doc-modal,.alg-btns,.alg-hint,.btn-sig,.btn-ver,.btn-sig-quiz{display:none!important;}
+  body{background:#fff!important;}
+  .card,.qcard{box-shadow:none!important;border:1px solid solid #ddd!important;}
+  .res-hdr{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+}
+</style>
+</head>
+<body>
+
+<!-- MODAL DOCENTE -->
+<div class="doc-modal" id="modal-doc">
+  <div class="doc-inner">
+    <h3>🔒 Panel Docente</h3>
+    <div id="doc-login">
+      <label class="lbl" style="color:var(--az2);">Código:</label>
+      <input class="inp" id="doc-cod" type="password" placeholder="••••" autocomplete="off"
+        onkeydown="if(event.key==='Enter')chkDoc()">
+      <div id="doc-err" style="display:none;color:var(--roj);font-size:.79rem;margin-top:4px;font-weight:700;">Código incorrecto.</div>
+      <div style="display:flex;gap:8px;margin-top:9px;">
+        <button class="dbtn dbtn-mo" style="flex:1;" onclick="chkDoc()">Entrar</button>
+        <button class="dbtn dbtn-out" style="flex:1;" onclick="cerrarDoc()">Cancelar</button>
+      </div>
+    </div>
+    <div id="doc-panel" style="display:none;">
+      <div style="background:var(--indigo2);border-radius:8px;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <span style="font-weight:800;color:#fff;font-size:.85rem;">👨‍🏫 Panel Docente · S13</span>
+        <button onclick="cerrarDoc()" style="background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:6px;padding:3px 9px;font-size:.73rem;cursor:pointer;font-family:'Nunito';font-weight:700;">Cerrar</button>
+      </div>
+      <div style="background:#e8eaf6;border-radius:9px;padding:11px 13px;margin-bottom:10px;">
+        <div class="doc-row"><span style="font-weight:700;">Actividad</span><span style="color:var(--indigo2);font-weight:800;">S13 · Suma y resta de polinomios</span></div>
+        <div class="doc-row"><span style="font-weight:700;">Secciones</span><span style="color:var(--indigo2);font-weight:800;">S0–S4 + Resultados</span></div>
+        <div class="doc-row"><span style="font-weight:700;">Quiz</span><span style="color:var(--indigo2);font-weight:800;">10 niveles × 6 preguntas</span></div>
+        <div class="doc-row"><span style="font-weight:700;">PF</span><span style="color:var(--indigo2);font-weight:800;">PF4 · Primera sesión</span></div>
+        <div class="doc-row"><span style="font-weight:700;">Validación</span><span style="color:var(--ver);font-weight:800;">Algebrite + math.js</span></div>
+      </div>
+      <div style="background:#fff;border-radius:9px;padding:11px 13px;margin-bottom:10px;font-size:.78rem;line-height:1.8;">
+        <strong style="color:var(--indigo2);">Estructura S13:</strong><br>
+        <strong>S1</strong> Orden descendente — paso previo obligatorio<br>
+        <strong>S2</strong> Suma de polinomios — método columna<br>
+        <strong>S3</strong> Resta de polinomios — distribución del (−)<br>
+        <strong>S4</strong> CDMX — presupuesto con 3 variables<br>
+        <strong>S5</strong> Quiz 10 preguntas + cierre
+      </div>
+      <div style="background:#fff3cd;border-radius:9px;padding:11px 13px;margin-bottom:10px;font-size:.78rem;line-height:1.75;border-left:4px solid var(--am);">
+        <strong>⚠️ Errores frecuentes S13:</strong><br>
+        ❌ No ordenar por grado antes de operar<br>
+        ❌ Sumar términos NO semejantes (x² + x = x³)<br>
+        ❌ No distribuir el (−) a todos los términos en la resta<br>
+        ❌ Perder el signo de términos que "no tienen pareja"<br>
+        ❌ Cambiar el exponente al sumar coeficientes
+      </div>
+      <button class="dbtn dbtn-mo" onclick="docSaltar()">⏭ Ir a resultados (demo)</button>
+      <button class="dbtn dbtn-v" style="margin-top:6px;" onclick="docRecorrer()">▶ Recorrer sin validar</button>
+      <button class="dbtn dbtn-out" style="margin-top:6px;" onclick="cerrarDoc()">Cerrar panel</button>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-tag">Pensamiento Matemático II · S13 · PF4</div>
+  <h1>Suma y Resta de <em>Polinomios</em></h1>
+  <div class="hdr-sub">Orden descendente · Términos semejantes · Método columna</div>
+  <div class="hdr-autor">Prof. Adrián Cruz</div>
+</div>
+
+<!-- BARRA DE PROGRESO -->
+<div class="prog-wrap no-print">
+  <div class="prog-bar-bg"><div class="prog-bar" id="prog-bar" style="width:0%"></div></div>
+  <div class="prog-steps">
+    <span id="ps0">Inicio</span><span id="ps1">Orden</span><span id="ps2">Suma</span>
+    <span id="ps3">Resta</span><span id="ps4">CDMX</span><span id="ps5">Quiz</span>
+    <span id="ps-fin">Resultados</span>
+  </div>
+</div>
+
+<!-- S0 — INICIO -->
+<div class="sec on" id="s0">
+  <div class="alerta" style="margin-top:4px;">
+    <div class="alerta-ico">⚠️</div>
+    <div class="alerta-txt">
+      <strong>Cuaderno y pluma listos — PF4 comienza hoy</strong>
+      Este bloque es el más complejo del semestre. Cada sesión construye sobre la anterior. No saltes pasos.
+    </div>
+  </div>
+  <div class="calif-aviso">
+    <div style="font-size:1.4rem;">📋</div>
+    <div class="calif-aviso-txt">
+      <p>Cuaderno + pantalla = calificación completa</p>
+      <span>El método columna se resuelve en papel. Solo el resultado final va en pantalla.</span>
+    </div>
+  </div>
+  <div class="card">
+    <label class="lbl">👤 Tu nombre (apellidos primero) y grupo:</label>
+    <input class="inp" id="inp-nombre" type="text" autocomplete="off"
+      placeholder="Apellidos Nombre — Grupo" style="font-size:.95rem;font-weight:700;">
+  </div>
+  <div class="card card-in">
+    <div class="pill p-in">Activación — Conecta con PF3</div>
+    <p class="instr" id="act-preg">Cargando...</p>
+    <label class="lbl">Tu respuesta (mínimo 50 caracteres):</label>
+    <textarea class="inp" id="act-resp" rows="3" data-req="1" data-ml="50"
+      oncopy="return false" onpaste="return false" oncut="return false" oncontextmenu="return false"
+      placeholder="Escribe con tus propias palabras..."></textarea>
+  </div>
+  <div class="emsg" id="s0-err">⚠️ Completa todos los campos para continuar.</div>
+  <button class="btn-sig" onclick="avanzar('s0','s1')">Comenzar →</button>
+  <div style="margin-top:8px;text-align:right;">
+    <span style="font-size:.6rem;color:#ccc;cursor:pointer;" onclick="abrirDoc()">v2.0 · KaTeX</span>
+  </div>
+</div>
+
+<!-- S1 — ORDEN DESCENDENTE -->
+<div class="sec" id="s1">
+  <div class="sec-hdr"><div class="sec-num">1</div>
+    <div><div class="sec-tit">Paso previo: orden descendente</div>
+    <div class="sec-sub">Antes de operar, siempre organiza de mayor a menor grado</div></div>
+  </div>
+  <div class="narr">
+    <span class="narr-ico">📐</span>
+    <p>Ya operaste monomios y binomios. Un <strong>polinomio</strong> tiene tres o más términos. Antes de sumar o restar, debes <strong>ordenarlos de mayor a menor grado</strong> — como acomodar libros del más alto al más bajo. Sin ese orden, es fácil perder términos o sumar los que no corresponden.</p>
+  </div>
+  <div class="cuaderno">
+    <div class="cuaderno-hdr"><div class="ico">📘</div>
+      <h3>PAUSA · COPIA EN TU CUADERNO</h3>
+    </div>
+    <div class="cuaderno-regla">
+      <p style="font-size:.78rem;font-weight:800;color:#856404;margin-bottom:8px;">Regla + 2 ejemplos de ordenamiento:</p>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <div class="ej-bloque" style="flex:1;min-width:155px;">
+          <div class="ej-titulo">Ejemplo 1</div>
+          <div class="ej-expr" style="font-size:.88rem;font-family:monospace;">5 + 3x² − 2x + x³</div>
+          <div class="ej-pasos">
+            Grados: 0, 2, 1, 3<br>
+            Orden ↓: <strong>x³ + 3x² − 2x + 5</strong>
+          </div>
+        </div>
+        <div class="ej-bloque" style="flex:1;min-width:155px;">
+          <div class="ej-titulo">Ejemplo 2</div>
+          <div class="ej-expr" style="font-size:.88rem;font-family:monospace;">4m − m³ + 7 − 2m²</div>
+          <div class="ej-pasos">
+            Grados: 1, 3, 0, 2<br>
+            Orden ↓: <strong>−m³ − 2m² + 4m + 7</strong>
+          </div>
+        </div>
+      </div>
+      <div style="background:#fdecea;border-radius:7px;padding:7px 12px;margin-top:8px;font-size:.78rem;font-weight:800;color:var(--roj);">
+        ⚠️ El término con mayor exponente va primero. Los signos se conservan al mover.
+      </div>
+    </div>
+    <div class="cuaderno-confirm">
+      <input type="checkbox" id="chk-s1">
+      <label for="chk-s1">✓ Ya copié la regla y los 2 ejemplos en mi cuaderno.</label>
+    </div>
+  </div>
+  <div class="papel-hint">
+    <div class="papel-hint-ico">✏️</div>
+    <div class="papel-hint-txt">Reordena cada polinomio en tu cuaderno. Escribe el polinomio ordenado aquí.</div>
+  </div>
+  <div class="card card-in">
+    <div class="pill p-in">Ejercicio · Ordena de mayor a menor grado — 3 polinomios</div>
+    <div class="t-wrap"><div id="tabla-orden"></div></div>
+  </div>
+  <div class="card card-am">
+    <div class="pill p-am">¿Por qué ordenar primero?</div>
+    <p class="instr">Si sumas <strong>3x + x³ − 2x²</strong> con <strong>x² + 4 − x</strong> sin ordenar, ¿qué problema encuentras?</p>
+    <div class="opt-grid" id="sel-orden">
+      <div class="opt-btn" onclick="selOpt('sel-orden',0,'fb-orden','ok','✓ Correcto. Sin orden es difícil ver qué términos son semejantes. Puedes sumar x³ con x² por error, o perder el término constante. El orden evita estos errores.')" data-v="0">
+        <div class="opt-ico">A</div><span>Es difícil identificar cuáles términos son semejantes y puedes combinar los que no corresponden</span>
+      </div>
+      <div class="opt-btn" onclick="selOpt('sel-orden',1,'fb-orden','nook','El resultado sería el mismo, pero el proceso sería mucho más lento y propenso a errores. El orden no cambia el resultado, pero sí reduce los errores.')" data-v="1">
+        <div class="opt-ico">B</div><span>No hay ningún problema, el resultado sería el mismo de todas formas</span>
+      </div>
+      <div class="opt-btn" onclick="selOpt('sel-orden',2,'fb-orden','nook','Los exponentes no cambian al sumar, siempre. El problema de no ordenar es perder términos semejantes, no cambiar exponentes.')" data-v="2">
+        <div class="opt-ico">C</div><span>Los exponentes podrían cambiar si los términos no están en orden</span>
+      </div>
+    </div>
+    <div class="opt-fb" id="fb-orden"></div>
+    <input type="hidden" id="sel-orden-val" value="">
+  </div>
+  <div class="emsg" id="s1-err">⚠️ Completa la tabla, marca el cuaderno y elige una opción.</div>
+  <button class="btn-sig" onclick="avanzar('s1','s2')">Siguiente → Suma de polinomios</button>
+</div>
+
+<!-- S2 — SUMA DE POLINOMIOS -->
+<div class="sec" id="s2">
+  <div class="sec-hdr"><div class="sec-num">2</div>
+    <div><div class="sec-tit">Suma de polinomios</div>
+    <div class="sec-sub">Método columna · Alinea semejantes · Suma hacia abajo</div></div>
+  </div>
+  <div class="narr">
+    <span class="narr-ico">➕</span>
+    <p>El <strong>método columna</strong> es la forma más ordenada de sumar polinomios: escribes uno debajo del otro alineando los términos semejantes en columnas. Los que no tienen pareja <strong>bajan solos</strong>. Es exactamente como sumar números de varios dígitos, pero con variables.</p>
+  </div>
+  <div class="cuaderno">
+    <div class="cuaderno-hdr"><div class="ico">📘</div>
+      <h3>PAUSA · COPIA EL MÉTODO COLUMNA</h3>
+    </div>
+    <div class="cuaderno-regla">
+      <p style="font-size:.78rem;font-weight:800;color:#856404;margin-bottom:10px;">Procedimiento + 2 ejemplos con columnas:</p>
+      <div class="ej-bloque">
+        <div class="ej-titulo">Ejemplo 1 · (3x² + 2x − 1) + (x² − 5x + 4)</div>
+        <div class="pol-wrap">
+          <div class="pol-align">
+            &nbsp;&nbsp;3x² + 2x − 1<br>
+            <span class="sign">+</span>&nbsp;x² − 5x + 4<br>
+            <div class="sep"></div>
+            <span class="res">4x² − 3x + 3</span>
+          </div>
+        </div>
+        <div class="ej-pasos">
+          Col. x²: 3x²+x²=<strong style="color:var(--ver);">4x²</strong><br>
+          Col. x&nbsp;: 2x+(−5x)=<strong style="color:var(--roj);">−3x</strong><br>
+          Col. cte: −1+4=<strong style="color:var(--az2);">3</strong>
+        </div>
+      </div>
+      <div class="ej-bloque">
+        <div class="ej-titulo">Ejemplo 2 · Con término sin pareja</div>
+        <div class="ej-expr" style="font-size:.85rem;font-family:monospace;">(2x³ + x − 3) + (4x² + 5)</div>
+        <div class="pol-wrap">
+          <div class="pol-align">
+            2x³ + &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x − 3<br>
+            <span class="sign">+</span>&nbsp;&nbsp;&nbsp;&nbsp;4x² &nbsp;&nbsp;&nbsp;&nbsp;+ 5<br>
+            <div class="sep"></div>
+            <span class="res">2x³ + 4x² + x + 2</span>
+          </div>
+        </div>
+        <div class="ej-pasos">
+          x³ sin pareja → baja solo: <strong style="color:var(--ver);">2x³</strong><br>
+          x² sin pareja → baja solo: <strong style="color:var(--ver);">4x²</strong><br>
+          Col. x: 0+x=<strong style="color:var(--roj);">x</strong><br>
+          Col. cte: −3+5=<strong style="color:var(--az2);">2</strong>
+        </div>
+      </div>
+      <div style="background:#e8eaf6;border-radius:7px;padding:7px 12px;margin-top:6px;font-size:.78rem;font-weight:800;color:var(--indigo);">
+        💡 Los espacios en blanco de una columna valen <strong>0</strong>. El término baja sin cambiar.
+      </div>
+    </div>
+    <div class="cuaderno-confirm">
+      <input type="checkbox" id="chk-s2">
+      <label for="chk-s2">✓ Ya copié el método columna y los 2 ejemplos en mi cuaderno.</label>
+    </div>
+  </div>
+  <div class="papel-hint">
+    <div class="papel-hint-ico">✏️</div>
+    <div class="papel-hint-txt">Dibuja las columnas en tu cuaderno para cada ejercicio. Alinea semejantes verticalmente. Escribe aquí solo el polinomio resultado.</div>
+  </div>
+  <div class="card card-a">
+    <div class="pill p-a">Ejercicio · Suma de polinomios — 4 operaciones</div>
+    <div class="t-wrap"><div id="tabla-suma"></div></div>
+  </div>
+  <div class="card card-r">
+    <div class="pill p-r">Detecta el error</div>
+    <p class="instr">Un alumno sumó <strong id="err-s-expr">—</strong> y obtuvo <strong id="err-s-res" style="color:var(--roj);">—</strong>. ¿Qué salió mal?</p>
+    <div class="opt-grid" id="sel-err-s">
+      <div class="opt-btn" onclick="selOpt('sel-err-s',0,'fb-err-s','ok',ERR_S_MSG[0])" data-v="0"><div class="opt-ico">A</div><span id="err-s-opt0">—</span></div>
+      <div class="opt-btn" onclick="selOpt('sel-err-s',1,'fb-err-s','nook',ERR_S_MSG[1])" data-v="1"><div class="opt-ico">B</div><span id="err-s-opt1">—</span></div>
+      <div class="opt-btn" onclick="selOpt('sel-err-s',2,'fb-err-s','nook',ERR_S_MSG[2])" data-v="2"><div class="opt-ico">C</div><span id="err-s-opt2">—</span></div>
+    </div>
+    <div class="opt-fb" id="fb-err-s"></div>
+    <input type="hidden" id="sel-err-s-val" value="">
+  </div>
+  <div class="emsg" id="s2-err">⚠️ Completa la tabla, marca el cuaderno y elige una opción.</div>
+  <button class="btn-sig" onclick="avanzar('s2','s3')">Siguiente → Resta de polinomios</button>
+</div>
+
+<!-- S3 — RESTA DE POLINOMIOS -->
+<div class="sec" id="s3">
+  <div class="sec-hdr"><div class="sec-num">3</div>
+    <div><div class="sec-tit">Resta de polinomios</div>
+    <div class="sec-sub">El (−) se distribuye a TODOS los términos del sustraendo</div></div>
+  </div>
+  <div class="narr">
+    <span class="narr-ico">➖</span>
+    <p>Restar un polinomio significa cambiarle el signo a <strong>todos sus términos</strong> y luego sumar. Es la misma idea que aprendiste con binomios en S11, pero ahora con más términos. El error más común: cambiar solo el primer signo y olvidar los demás.</p>
+  </div>
+  <div class="cuaderno">
+    <div class="cuaderno-hdr"><div class="ico">📘</div>
+      <h3>PAUSA · COPIA EL PROCEDIMIENTO DE RESTA</h3>
+    </div>
+    <div class="cuaderno-regla">
+      <p style="font-size:.78rem;font-weight:800;color:#856404;margin-bottom:10px;">Dos métodos — elige el que más te ayude:</p>
+      <div class="ej-bloque">
+        <div class="ej-titulo">Método A · Distribuye el (−) primero</div>
+        <div class="ej-expr" style="font-size:.85rem;font-family:monospace;">(4x² − 3x + 2) − (x² + x − 5)</div>
+        <div class="ej-pasos">
+          <span style="color:var(--roj);">Distribuye:</span> 4x²−3x+2 <strong>− x² − x + 5</strong><br>
+          <span style="color:var(--ver);">Agrupa:</span> (4x²−x²)+(−3x−x)+(2+5)<br>
+          <span style="color:var(--az2);">Resultado:</span> <strong>3x² − 4x + 7</strong>
+        </div>
+      </div>
+      <div class="ej-bloque">
+        <div class="ej-titulo">Método B · Columna con cambio de signo</div>
+        <div class="ej-expr" style="font-size:.85rem;font-family:monospace;">mismo ejemplo</div>
+        <div class="pol-wrap">
+          <div class="pol-align">
+            &nbsp;&nbsp;4x² − 3x + 2<br>
+            <span class="sign">−</span>&nbsp;(x² + &nbsp;x − 5) → cambia signos<br>
+            <div class="sep"></div>
+            &nbsp;&nbsp;4x² − 3x + 2<br>
+            <span class="sign">+</span>&nbsp;(−x² − x + 5)<br>
+            <div class="sep"></div>
+            <span class="res">3x² − 4x + 7</span>
+          </div>
+        </div>
+      </div>
+      <div style="background:#fdecea;border-radius:7px;padding:7px 12px;margin-top:6px;font-size:.78rem;font-weight:800;color:var(--roj);">
+        ⚠️ El signo cambia en TODOS los términos del sustraendo, no solo en el primero.
+      </div>
+    </div>
+    <div class="cuaderno-confirm">
+      <input type="checkbox" id="chk-s3">
+      <label for="chk-s3">✓ Ya copié ambos métodos y el ejemplo en mi cuaderno.</label>
+    </div>
+  </div>
+  <div class="papel-hint">
+    <div class="papel-hint-ico">✏️</div>
+    <div class="papel-hint-txt">Elige el método que prefieras y úsalo en tu cuaderno. Para la resta, subraya cada cambio de signo antes de operar. Escribe el resultado aquí.</div>
+  </div>
+  <div class="card card-mo">
+    <div class="pill p-mo">Ejercicio · Resta de polinomios — 3 operaciones</div>
+    <div class="t-wrap"><div id="tabla-resta"></div></div>
+  </div>
+  <div class="card card-v">
+    <div class="pill p-v">Operación mixta · Suma y resta combinadas</div>
+    <p class="instr">Resuelve en tu cuaderno con el método columna. Escribe el resultado:</p>
+    <div id="op-mixta-wrap"></div>
+  </div>
+  <div class="card card-am">
+    <div class="pill p-am">Reflexión conceptual</div>
+    <p class="instr">¿En qué se diferencia restar un polinomio de restar un monomio?</p>
+    <div class="opt-grid" id="sel-resta">
+      <div class="opt-btn" onclick="selOpt('sel-resta',0,'fb-resta','ok','✓ Correcto. Al restar un monomio solo hay un signo que cambiar. Al restar un polinomio, el signo (−) se distribuye a cada uno de sus términos, y pueden ser 3, 4 o más cambios simultáneos.')" data-v="0">
+        <div class="opt-ico">A</div><span>Al restar un polinomio hay que cambiar el signo de CADA uno de sus términos, no solo uno</span>
+      </div>
+      <div class="opt-btn" onclick="selOpt('sel-resta',1,'fb-resta','nook','No es lo mismo. Un monomio tiene un solo término (un signo). Un polinomio tiene varios, y cada uno recibe el (−).')" data-v="1">
+        <div class="opt-ico">B</div><span>No hay diferencia, en ambos casos solo se cambia el signo del primer término</span>
+      </div>
+      <div class="opt-btn" onclick="selOpt('sel-resta',2,'fb-resta','nook','No es correcto. Los exponentes nunca cambian al restar. Lo que cambia son los signos de los coeficientes.')" data-v="2">
+        <div class="opt-ico">C</div><span>En la resta de polinomios también cambian los exponentes de los términos</span>
+      </div>
+    </div>
+    <div class="opt-fb" id="fb-resta"></div>
+    <input type="hidden" id="sel-resta-val" value="">
+  </div>
+  <div class="emsg" id="s3-err">⚠️ Completa la tabla, la operación mixta, marca el cuaderno y elige una opción.</div>
+  <button class="btn-sig" onclick="avanzar('s3','s4')">Siguiente → Aplicación CDMX</button>
+</div>
+
+<!-- S4 — CDMX -->
+<div class="sec" id="s4">
+  <div class="sec-hdr"><div class="sec-num">4</div>
+    <div><div class="sec-tit" id="s4-zona-tit">Aplicación · CDMX</div>
+    <div class="sec-sub">Polinomios en presupuestos y situaciones reales</div></div>
+  </div>
+  <div class="ctx-card">
+    <div class="zona-badge" id="s4-zona-badge">Zona CDMX</div>
+    <div class="ctx-sit" id="s4-sit"></div>
+  </div>
+  <div class="papel-hint">
+    <div class="papel-hint-ico">✏️</div>
+    <div class="papel-hint-txt">Usa el método columna en tu cuaderno para las tres partes. Escribe solo el resultado final aquí.</div>
+  </div>
+  <div id="s4-partes"></div>
+  <div class="emsg" id="s4-err">⚠️ Completa todos los campos para continuar.</div>
+  <button class="btn-sig" onclick="avanzar('s4','s5')">Siguiente → Quiz + Cierre</button>
+</div>
+
+<!-- S5 — QUIZ + CIERRE -->
+<div class="sec" id="s5">
+  <div class="sec-hdr"><div class="sec-num">5</div>
+    <div><div class="sec-tit">Quiz integrador S13</div>
+    <div class="sec-sub">Orden · Suma · Resta · Mixto · 10 preguntas</div></div>
+  </div>
+  <div class="quiz-hdr">
+    <h2>🎯 QUIZ · S13 · 10 PREGUNTAS</h2>
+    <div style="font-size:.8rem;margin-top:4px;opacity:.75;">Suma y resta de polinomios · Banco de 60 preguntas · 10 niveles</div>
+  </div>
+  <div id="quiz-wrap"></div>
+  <div class="emsg" id="s5q-err">⚠️ Responde todas las preguntas antes de verificar.</div>
+  <button class="btn-ver" id="btn-ver-quiz" onclick="verificarQuiz()">Verificar respuestas ✓</button>
+  <button class="btn-sig-quiz" id="btn-sig-quiz" onclick="irCierre()">Siguiente → Cierre</button>
+  <div id="cierre-wrap" style="display:none;margin-top:14px;">
+    <div class="card card-in">
+      <div class="pill p-in">Cierre · Lo que construiste hoy</div>
+      <p style="font-size:.85rem;font-weight:800;margin:8px 0 4px;">"Sumar polinomios es igual que sumar monomios, pero con más términos. La diferencia es que..."</p>
+      <textarea class="inp" id="cierre-reflex" rows="3" data-req="1" data-ml="40"
+        oncopy="return false" onpaste="return false" oncontextmenu="return false"
+        placeholder="...necesitas ordenarlos primero y usar columnas para no perder ningún término..."></textarea>
+      <label class="lbl" style="margin-top:10px;">Escribe una suma de polinomios con su resultado (usa el teclado de abajo):</label>
+      <div class="alg-wrap">
+        <input class="inp" id="cierre-expr" type="text" data-req="1" data-ml="5" data-alg="1"
+          oncopy="return false" onpaste="return false" oncontextmenu="return false"
+          placeholder="Ej: (2x^2+3x-1)+(x^2-x+4) = 3x^2+2x+3">
+      </div>
+    </div>
+    <div class="emsg" id="s5-err">⚠️ Completa los campos de cierre para finalizar.</div>
+    <button class="btn-fin" onclick="finalizar()">✓ Finalizar y ver mi calificación</button>
+  </div>
+</div>
+
+<!-- FINAL -->
+<div class="sec" id="final">
+  <div id="res-contenido"></div>
+</div>
+
+<div style="text-align:center;padding:12px 0 20px;font-size:.7rem;color:#ccc;">
+  Pensamiento Matemático II &nbsp;·&nbsp; S13 · Suma y Resta de Polinomios &nbsp;·&nbsp; Prof. Adrián Cruz &nbsp;·&nbsp; KaTeX + Algebrite + math.js
+</div>
+
+<script>
+// ─── KATEX RENDERING ─────────────────────────────────────
+function mjxTypeset(el){
+  if(!el)return;
+  try{
+    if(typeof renderMathInElement==='function'){
+      renderMathInElement(el,{
+        delimiters:[
+          {left:'\\(',right:'\\)',display:false},
+          {left:'\\[',right:'\\]',display:true},
+          {left:'$$',right:'$$',display:true}
+        ],
+        throwOnError:false,
+        trust:true,
+        strict:false
+      });
+    }
+  }catch(e){}
+}
+
+// ─── NORMALIZACIÓN ALGEBRAICA ────────────────────────────
+function normalizarExpr(s){
+  if(!s||typeof s!=='string')return '';
+  var r=s.trim();
+  r=r.replace(/⁰/g,'^0').replace(/¹/g,'^1').replace(/²/g,'^2')
+     .replace(/³/g,'^3').replace(/⁴/g,'^4').replace(/⁵/g,'^5')
+     .replace(/⁶/g,'^6').replace(/⁷/g,'^7').replace(/⁸/g,'^8')
+     .replace(/⁹/g,'^9');
+  r=r.replace(/−/g,'-').replace(/–/g,'-').replace(/—/g,'-');
+  r=r.replace(/\s+/g,'');
+  r=r.replace(/(\d)([a-zA-Z])/g,'$1*$2');
+  r=r.replace(/\)\(/g,')*(');
+  r=r.replace(/\)([a-zA-Z\d])/g,')*$1');
+  r=r.replace(/([a-zA-Z\d])\(/g,'$1*(');
+  return r;
+}
+
+// ─── VALIDACIÓN CON ALGEBRITE ────────────────────────────
+function validarConAlgebrite(n1,n2){
+  try{
+    if(typeof Algebrite==='undefined'||!Algebrite.run)return null;
+    var expr='simplify(('+n1+')-('+n2+'))';
+    var result=Algebrite.run(expr);
+    if(!result)return null;
+    result=result.trim();
+    if(result==='0'||result==='0.0'||result==='-0')return true;
+    if(!isNaN(parseFloat(result))&&Math.abs(parseFloat(result))<1e-10)return true;
+    return false;
+  }catch(e){return null;}
+}
+
+// ─── VALIDACIÓN CON MATH.JS ──────────────────────────────
+function validarConMathJS(n1,n2){
+  try{
+    if(typeof math==='undefined'||!math.simplify)return null;
+    var diff=math.simplify(n1+'-('+n2+')');
+    var result=diff.toString();
+    if(result==='0'||result==='0.0')return true;
+    if(!isNaN(parseFloat(result))&&Math.abs(parseFloat(result))<1e-10)return true;
+    return false;
+  }catch(e){return null;}
+}
+
+// ─── EVALUACIÓN NUMÉRICA (FALLBACK) ─────────────────────
+function evaluarNumerica(expr1,expr2){
+  try{
+    if(typeof math==='undefined'||!math.evaluate)return null;
+    var vars=['x','m','a','n','p','v','t','k'];
+    var usedVar=null;
+    for(var i=0;i<vars.length;i++){
+      if(expr1.indexOf(vars[i])!==-1||expr2.indexOf(vars[i])!==-1){usedVar=vars[i];break;}
+    }
+    if(!usedVar){
+      var v1=math.evaluate(expr1),v2=math.evaluate(expr2);
+      return Math.abs(v1-v2)<1e-10;
+    }
+    var testVals=[0,1,-1,2,-2,3,0.5,-0.5,10,-3];
+    for(var i=0;i<testVals.length;i++){
+      var scope={};scope[usedVar]=testVals[i];
+      var v1=math.evaluate(expr1,scope);
+      var v2=math.evaluate(expr2,scope);
+      if(typeof v1==='number'&&typeof v2==='number'&&Math.abs(v1-v2)>1e-8)return false;
+    }
+    return true;
+  }catch(e){return null;}
+}
+
+// ─── VALIDACIÓN ALGEBRAICA UNIFICADA ─────────────────────
+function validarAlgebraica(respuesta,correcta){
+  if(!respuesta||!correcta)return null;
+  var n1=normalizarExpr(respuesta);
+  var n2=normalizarExpr(correcta);
+  if(!n1||!n2)return null;
+  var r=validarConAlgebrite(n1,n2);
+  if(r!==null)return r;
+  r=validarConMathJS(n1,n2);
+  if(r!==null)return r;
+  r=evaluarNumerica(n1,n2);
+  if(r!==null)return r;
+  return null;
+}
+
+// ─── CORRECT ANSWERS STORAGE ─────────────────────────────
+var CORRECT_ORDEN=[];
+var CORRECT_SUMA=[];
+var CORRECT_RESTA=[];
+var CORRECT_MIX='';
+var CORRECT_CDMX=[];
+
+// ─── SISTEMA ALGEBRAICO (preview) ────────────────────────
+function texDeInput(s){
+  if(!s)return'';
+  var r=s,prev='',iter=0;
+  while(prev!==r&&iter<5){
+    prev=r;iter++;
+    r=r.replace(/([\w\)\^\.]+)\/([\w\(\-][\w\.\^]*)/g,function(m,n,d){
+      return'\\dfrac{'+n+'}{'+d+'}';
+    });
+  }
+  r=r.replace(/\^([0-9]+)/g,function(m,p){return'^{'+p+'}';});
+  r=r.replace(/\^\(-([0-9]+)\)/g,function(m,p){return'^{-'+p+'}';});
+  r=r.replace(/\^-([0-9]+)/g,function(m,p){return'^{-'+p+'}';});
+  r=r.replace(/\*/g,'\\cdot ');
+  return r;
+}
+function renderPreview(id){
+  var el=document.getElementById(id),prev=document.getElementById('prev-'+id);
+  if(!el||!prev)return;
+  var v=el.value.trim();
+  if(!v){prev.innerHTML='<span style="color:#bbb;font-style:italic;font-size:.78rem;">Vista previa...</span>';prev.classList.remove('active');return;}
+  prev.innerHTML='\\('+texDeInput(v)+'\\)';prev.classList.add('active');mjxTypeset(prev);
+}
+function insSymbol(id,sym){
+  var el=document.getElementById(id);if(!el)return;el.focus();
+  var s=el.value,a=el.selectionStart!==undefined?el.selectionStart:s.length,b=el.selectionEnd!==undefined?el.selectionEnd:s.length;
+  el.value=s.substring(0,a)+sym+s.substring(b);var p=a+sym.length;
+  try{el.setSelectionRange(p,p);}catch(e){}renderPreview(id);
+}
+function borrarSym(id){
+  var el=document.getElementById(id);if(!el)return;el.focus();
+  var s=el.value,p=el.selectionStart!==undefined?el.selectionStart:s.length;
+  if(p>0){el.value=s.substring(0,p-1)+s.substring(p);try{el.setSelectionRange(p-1,p-1);}catch(e){}}renderPreview(id);
+}
+function algHTML(id){
+  return '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:5px;">'
+    +'<button class="alg-btn" type="button" onmousedown="return false" onclick="insSymbol(\''+id+'\',\'^\')">xⁿ ^</button>'
+    +'<button class="alg-btn op" type="button" onmousedown="return false" onclick="insSymbol(\''+id+'\',\'+\')">+</button>'
+    +'<button class="alg-btn neg" type="button" onmousedown="return false" onclick="insSymbol(\''+id+'\',\'-\')">−</button>'
+    +'<button class="alg-btn op" type="button" onmousedown="return false" onclick="insSymbol(\''+id+'\',\'(\')">( )</button>'
+    +'<button class="alg-btn op" type="button" onmousedown="return false" onclick="insSymbol(\''+id+'\',\'*\')">×</button>'
+    +'<button class="alg-btn" type="button" onmousedown="return false" onclick="insSymbol(\''+id+'\',\'/\')">÷</button>'
+    +'<button class="alg-btn clr" type="button" onmousedown="return false" onclick="borrarSym(\''+id+'\')">⌫</button>'
+    +'</div>'
+    +'<div class="alg-preview" id="prev-'+id+'"><span style="color:#bbb;font-style:italic;font-size:.78rem;">Vista previa...</span></div>'
+    +'<span class="alg-hint">^ = exponente (x^2) · ÷ = fracción vertical · * = multiplicación</span>';
+}
+function inyectarAlg(){
+  var campos=document.querySelectorAll('[data-alg]');
+  for(var i=0;i<campos.length;i++){
+    var el=campos[i],id=el.id;
+    if(!id||document.getElementById('prev-'+id))continue;
+    var wrap=el.parentNode;
+    if(!wrap.classList.contains('alg-wrap')){var w2=document.createElement('div');w2.className='alg-wrap';el.parentNode.insertBefore(w2,el);w2.appendChild(el);wrap=w2;}
+    wrap.insertAdjacentHTML('beforeend',algHTML(id));
+    el.addEventListener('input',(function(iid){return function(){renderPreview(iid);};})(id));
+  }
+  mjxTypeset(document.body);
+}
+
+// ─── SELECCIÓN MÚLTIPLE ──────────────────────────────────
+function selOpt(gridId,idx,fbId,tipo,msg){
+  var grid=document.getElementById(gridId);if(!grid)return;
+  var btns=grid.querySelectorAll('.opt-btn');
+  for(var i=0;i<btns.length;i++)btns[i].classList.remove('sel-opt');
+  btns[idx].classList.add('sel-opt');
+  var hid=document.getElementById(gridId+'-val');if(hid)hid.value=String(idx);
+  var fb=document.getElementById(fbId);
+  if(fb){fb.className='opt-fb show '+(tipo==='ok'?'ok':'nook');fb.innerHTML=(tipo==='ok'?'<strong>✓ Correcto.</strong> ':'<strong>✗ Incorrecto.</strong> ')+msg;fb.scrollIntoView({behavior:'smooth',block:'nearest'});}
+}
+
+// ─── DATOS GLOBALES ───────────────────────────────────────
+var ERR_S_MSG=['','',''];
+var LETRAS=['A','B','C','D'];
+var NV_COL=['','#3949ab','#039be5','#8e24aa','#e65100','#c62828','#006064','#37474f','#bf360c','#0d47a1','#1b5e20'];
+var NV_LBL=['','Ordenamiento','Identificación','Suma básica','Resta básica','Término sin pareja','Suma mixta','Resta con negativo','Error detectado','CDMX aplicado','Razonamiento'];
+
+var ACTIVACIONES=[
+  {q:'En PF3 sumaste monomios y binomios. Un polinomio tiene 3 o más términos. ¿Qué crees que cambia cuando sumas (3x²+2x−1) con (x²−5x+4)? ¿El procedimiento es el mismo o diferente?',kw:['semejant','columna','orden','términ','igual']},
+  {q:'Imagina que tienes dos presupuestos semanales: el primero tiene ingresos por trabajo (3x²), transporte (−2x) y comida (−150). El segundo tiene ingreso extra (x²) y gasto de celular (−80). ¿Cómo calcularías el presupuesto total de las dos semanas?',kw:['suma','agrupa','semejant','total','term']},
+  {q:'Ya sabes ordenar cosas en tu vida: ropa por talla, libros por altura. ¿Por qué crees que los matemáticos ordenan los polinomios de mayor a menor grado antes de operar?',kw:['orden','semejant','grado','error','fácil']},
+  {q:'Cuando sumas dos números de tres dígitos los alineas por columnas (centenas con centenas, decenas con decenas). ¿Crees que sumar polinomios funciona igual? ¿Por qué sí o por qué no?',kw:['columna','alinea','semejant','grado','igual']},
+  {q:'Si en S11 aprendiste que (3x+2)+(x-5) = 4x-3 sumando semejantes, ¿qué harías diferente si el polinomio tuviera también un término en x²? ¿Dónde iría ese término?',kw:['columna','grado','semejant','orden','apart']}
+];
+
+var ERR_S_CASOS=[
+  {expr:'(2x²+3x+1)+(x²+x+4)',mal:'3x⁴+4x²+5',
+   opts:['Sumó los exponentes al operar (2+1=3 → x⁴). Los exponentes no cambian al sumar','El término constante está mal','El coeficiente de x² está mal'],
+   msgs:['✓ Correcto. Al sumar monomios semejantes SOLO se suman coeficientes. El exponente queda igual: 2x²+x²=3x², no 3x⁴.','El constante 1+4=5 ✓ está bien. El error es en los exponentes.','2+1=3 ✓ está bien. El error es que escribió x⁴ en vez de x².']},
+  {expr:'(x³+2x+3)+(x²+4)',mal:'2x³+2x+7',
+   opts:['Sumó x³+x²=2x³ (no son semejantes, tienen distinto grado)','El término constante está mal: 3+4≠7','El término 2x está mal calculado'],
+   msgs:['✓ Correcto. x³ (grado 3) y x² (grado 2) no son semejantes. Cada uno baja solo a su columna. Correcto: x³+x²+2x+7.','3+4=7 ✓ está bien. El error es combinar x³ con x².','2x+0=2x ✓ está correcto. El error es combinar x³ con x².']},
+  {expr:'(4x²+2x+1)+(3x²+5)',mal:'7x²+2x+1+5',
+   opts:['No sumó los términos constantes: 1+5=6. Dejó los términos separados en vez de combinarlos','El coeficiente de x² está mal','El término con x está mal'],
+   msgs:['✓ Correcto. Los términos constantes 1 y 5 son semejantes y deben sumarse: 1+5=6. Correcto: 7x²+2x+6.','4+3=7 ✓ está bien.','2x+0=2x ✓ está bien.']}
+];
+
+var ZONAS=[
+  {nom:'Mercado Coyoacán',badge:'Tianguis Coyoacán',
+   sit:'Una artesana de Coyoacán lleva tres registros de su negocio: ingresos, costos y ahorros semanales. Cada registro es un polinomio que incluye ventas (x²), gastos fijos (x) y diferencias de temporada (constante).',
+   v:'x',
+   partes:[
+     {lbl:'Parte A · Suma de ingresos',ctx:'La artesana tuvo ingresos de (3x²+2x+500) pesos la semana 1 y (x²−x+300) pesos la semana 2. ¿Cuánto ingresó en total?',pol1:'3x²+2x+500',pol2:'x²−x+300',op:'suma'},
+     {lbl:'Parte B · Ganancia neta',ctx:'Sus ingresos totales son (4x²+x+800) y sus costos son (2x²+3x+200). ¿Cuál es su ganancia neta?',pol1:'4x²+x+800',pol2:'2x²+3x+200',op:'resta'},
+     {lbl:'Parte C · Suma de 3 semanas',ctx:'Sus ganancias fueron (x²+4x+100), (2x²−x+200) y (x²+3x−50) en tres semanas. ¿Cuánto acumuló?',pol1:'x²+4x+100',pol2:'2x²−x+200',pol3:'x²+3x−50',op:'suma3'}
+   ]},
+  {nom:'Metro Línea 3',badge:'Sistema Metro CDMX',
+   sit:'El área de operaciones del Metro modela el número de pasajeros, tiempos de espera y costos de mantenimiento con polinomios en función del número de vagones (v).',
+   v:'v',
+   partes:[
+     {lbl:'Parte A · Total de pasajeros',ctx:'En hora pico hay (4v²+3v+200) pasajeros y en hora normal (v²+2v+80). ¿Cuántos en total?',pol1:'4v²+3v+200',pol2:'v²+2v+80',op:'suma'},
+     {lbl:'Parte B · Diferencia entre turnos',ctx:'El turno matutino transportó (5v²+4v+300) pasajeros y el nocturno (2v²+v+100). ¿Cuántos más en el matutino?',pol1:'5v²+4v+300',pol2:'2v²+v+100',op:'resta'},
+     {lbl:'Parte C · Pasajeros acumulados 3 días',ctx:'Los totales fueron (3v²+v+180), (2v²+3v+220) y (v²+2v+160). ¿Cuántos en 3 días?',pol1:'3v²+v+180',pol2:'2v²+3v+220',pol3:'v²+2v+160',op:'suma3'}
+   ]},
+  {nom:'Xochimilco',badge:'Cooperativa Xochimilco',
+   sit:'Una cooperativa de trajineras modela sus finanzas con polinomios en función del número de trajineras (t): ingresos por renta, gastos de mantenimiento y ahorro semanal.',
+   v:'t',
+   partes:[
+     {lbl:'Parte A · Ingresos combinados',ctx:'Los ingresos del fin de semana fueron (5t²+3t+400) y los días entre semana (2t²+t+150). ¿Cuánto en total?',pol1:'5t²+3t+400',pol2:'2t²+t+150',op:'suma'},
+     {lbl:'Parte B · Ahorro neto',ctx:'Los ingresos totales fueron (7t²+4t+550) y los gastos (3t²+5t+200). ¿Cuánto ahorró?',pol1:'7t²+4t+550',pol2:'3t²+5t+200',op:'resta'},
+     {lbl:'Parte C · Balance trimestral',ctx:'Los balances mensuales fueron (4t²+2t+300), (3t²−t+250) y (2t²+4t+180). ¿Cuánto en el trimestre?',pol1:'4t²+2t+300',pol2:'3t²−t+250',pol3:'2t²+4t+180',op:'suma3'}
+   ]},
+  {nom:'La Merced',badge:'Mercado La Merced',
+   sit:'Un mayorista de La Merced registra sus ventas semanales por tipo de producto con polinomios en función del precio base (p): ventas de frutas, verduras y abarrotes.',
+   v:'p',
+   partes:[
+     {lbl:'Parte A · Total vendido dos días',ctx:'El lunes vendió (2p²+5p+300) pesos y el martes (3p²+2p+180). ¿Cuánto en los dos días?',pol1:'2p²+5p+300',pol2:'3p²+2p+180',op:'suma'},
+     {lbl:'Parte B · Ganancia del martes',ctx:'Las ventas fueron (5p²+7p+480) y los costos de mercancía (2p²+3p+150). ¿Cuál es la ganancia?',pol1:'5p²+7p+480',pol2:'2p²+3p+150',op:'resta'},
+     {lbl:'Parte C · Ventas acumuladas 3 días',ctx:'Las ventas fueron (p²+3p+200), (2p²+p+350) y (p²+4p+120). ¿Cuánto acumuló?',pol1:'p²+3p+200',pol2:'2p²+p+350',pol3:'p²+4p+120',op:'suma3'}
+   ]}
+];
+
+// ─── BANCO QUIZ 10 NIVELES × 6 ───────────────────────────
+var QB=[
+/* Nv1 */
+[{p:'¿Cuál es el orden correcto de 5 + 2x − x² + 3x³?',ops:['3x³ − x² + 2x + 5','x² + 2x + 5 + 3x³','5 + 2x − x² + 3x³','2x + 3x³ − x² + 5'],ok:0,ex:'Se ordena de mayor a menor grado: grado 3 → grado 2 → grado 1 → grado 0.'},
+ {p:'¿Cuál es el orden correcto de 4m − 3 + m³ − 2m²?',ops:['m³ − 2m² + 4m − 3','−3 + 4m − 2m² + m³','4m + m³ − 2m² − 3','m³ + 4m − 2m² − 3'],ok:0,ex:'De mayor a menor: m³ → −2m² → 4m → −3.'},
+ {p:'¿Cuál es el grado del polinomio 3x + 7 − 2x⁴ + x²?',ops:['4','2','1','7'],ok:0,ex:'El grado es el mayor exponente: −2x⁴ tiene grado 4.'},
+ {p:'¿Por qué se ordenan los polinomios antes de sumar?',ops:['Para alinear los términos semejantes en columnas y no perder ninguno','Porque es una regla sin explicación matemática','Para que los coeficientes sean más pequeños','Porque los exponentes cambian al cambiar el orden'],ok:0,ex:'Ordenar permite ver qué términos se pueden combinar y cuáles bajan solos.'},
+ {p:'En 6a² − a + 3a⁵ − 2, ¿qué término encabeza el orden descendente?',ops:['3a⁵','6a²','−a','−2'],ok:0,ex:'3a⁵ tiene grado 5, el mayor.'},
+ {p:'¿Cuál de estos polinomios ya está en orden descendente?',ops:['4n³ − n² + 2n − 7','n² + 4n³ − 7 + 2n','−7 + 2n − n² + 4n³','2n + 4n³ − 7 − n²'],ok:0,ex:'4n³(3) → −n²(2) → 2n(1) → −7(0). Correcto.'}],
+/* Nv2 */
+[{p:'¿Qué términos de 3x³ + 2x² − x³ + 5x² son semejantes?',ops:['3x³ y −x³; también 2x² y 5x²','3x³ y 2x²','−x³ y 5x²','Todos son semejantes'],ok:0,ex:'Semejantes = mismo exponente. 3x³≈−x³ (grado 3); 2x²≈5x² (grado 2).'},
+ {p:'¿Cuál de estos pares NO son semejantes?',ops:['3x² y 3x','4m³ y −2m³','5a y 7a','−p y 4p'],ok:0,ex:'3x² (grado 2) y 3x (grado 1): distinto exponente.'},
+ {p:'¿Cuántos pares semejantes hay en 2x³ + x² − 3x³ + 4x + x²?',ops:['Dos pares: {2x³,−3x³} y {x²,x²}','Un par: {2x³,−3x³}','Tres pares','Ninguno'],ok:0,ex:'Hay 2 pares: x³ con x³, y x² con x². El 4x no tiene pareja.'},
+ {p:'Simplifica 5m² + 3m − 2m² + m:',ops:['3m² + 4m','5m² + 4m','3m² + 3m','8m² + 4m'],ok:0,ex:'5m²−2m²=3m²; 3m+m=4m.'},
+ {p:'¿Por qué no se pueden combinar x² y x?',ops:['Porque tienen distinto exponente','Porque sus coeficientes son diferentes','Porque x² es positivo y x puede ser negativo','Porque están en distintas posiciones'],ok:0,ex:'x² y x son potencias distintas de x.'},
+ {p:'Simplifica 4a³ − 2a + a³ + 5a − 3:',ops:['5a³ + 3a − 3','5a³ − 3a − 3','3a³ + 3a − 3','5a³ + 3a + 3'],ok:0,ex:'a³:4+1=5a³; a:−2+5=3a; cte:−3.'}],
+/* Nv3 */
+[{p:'(2x² + 3x + 1) + (x² + x + 4) = ?',ops:['3x² + 4x + 5','3x² + 3x + 5','3x⁴ + 4x² + 5','2x² + 4x + 5'],ok:0,ex:'x²:2+1=3; x:3+1=4; cte:1+4=5.'},
+ {p:'(m³ + 2m + 5) + (m² + 3m − 2) = ?',ops:['m³ + m² + 5m + 3','m³ + m² + 2m + 3','m³ + m² + 5m + 7','2m³ + 5m + 3'],ok:0,ex:'m³→solo; m²→solo; m:2+3=5; cte:5−2=3.'},
+ {p:'(3a² + a + 6) + (2a² − a + 1) = ?',ops:['5a² + 7','5a² + 2a + 7','5a² + 7a','5a⁴ + 7'],ok:0,ex:'a²:3+2=5; a:1+(−1)=0; cte:6+1=7.'},
+ {p:'(n³ + 4n² − 2) + (3n² + n + 5) = ?',ops:['n³ + 7n² + n + 3','n³ + 4n² + n + 3','n³ + 7n² + 3','4n³ + n + 3'],ok:0,ex:'n³→solo; n²:4+3=7; n→solo; cte:−2+5=3.'},
+ {p:'¿Qué pasa con un término sin pareja en la suma?',ops:['Baja solo al resultado sin cambiar','Desaparece','Se suma con el más parecido','Se multiplica por cero'],ok:0,ex:'Baja intacto conservando coeficiente y exponente.'},
+ {p:'(2p² + 3p + 4) + (p² + p + 2) + (p² + 2p + 1) = ?',ops:['4p² + 6p + 7','4p² + 5p + 7','3p² + 6p + 7','4p² + 6p + 6'],ok:0,ex:'p²:2+1+1=4; p:3+1+2=6; cte:4+2+1=7.'}],
+/* Nv4 */
+[{p:'(4x² + 3x + 2) − (x² + x + 1) = ?',ops:['3x² + 2x + 1','3x² + 3x + 1','3x² + 2x + 3','4x² + 2x + 1'],ok:0,ex:'Distribuye: 4x²+3x+2−x²−x−1 = 3x²+2x+1.'},
+ {p:'(5m² − 2m + 7) − (2m² + m − 3) = ?',ops:['3m² − 3m + 10','3m² + m + 10','3m² − 3m + 4','7m² − 3m + 10'],ok:0,ex:'m²:5−2=3; m:−2−1=−3; cte:7+3=10.'},
+ {p:'Al calcular (3a² + 5) − (a² + 2a − 1), ¿signo del 1?',ops:['Positivo: −(−1)=+1','Negativo','Cero','No hay término 1'],ok:0,ex:'−(−1)=+1. Correcto: 2a²−2a+6.'},
+ {p:'(n³ + 3n + 8) − (n² + 2n + 5) = ?',ops:['n³ − n² + n + 3','n³ + n² + n + 3','n³ − n² + 5n + 3','n³ − n² + n + 13'],ok:0,ex:'n³→solo; −n²; n:3−2=1; cte:8−5=3.'},
+ {p:'(5p²+3p+4)−(2p²+p+2)=3p²+2p+2. ¿Hay error?',ops:['Sí: el constante está mal','Sí: coeficiente de p mal','No hay error','Sí: exponentes cambiaron'],ok:2,ex:'p²:5−2=3✓; p:3−1=2✓; cte:4−2=2✓. Correcto.'},
+ {p:'(6k³ + 2k² − k + 4) − (k³ + 3k² + 2k − 1) = ?',ops:['5k³ − k² − 3k + 5','5k³ + k² − 3k + 5','5k³ − k² − 3k + 3','5k³ − k² + k + 5'],ok:0,ex:'k³:6−1=5; k²:2−3=−1; k:−1−2=−3; cte:4+1=5.'}],
+/* Nv5 */
+[{p:'(x³ + 4) + (2x² + 3x − 1) = ?',ops:['x³ + 2x² + 3x + 3','x³ + 2x² + 3x − 1','3x³ + 3x + 3','x³ + 5x² + 3'],ok:0,ex:'x³→solo; 2x²→solo; 3x→solo; cte:4−1=3.'},
+ {p:'(2m³ + m + 5) − (3m² + 2m − 2) = ?',ops:['2m³ − 3m² − m + 7','2m³ − 3m² + m + 7','2m³ + 3m² − m + 7','5m³ − m + 7'],ok:0,ex:'2m³→solo; −3m²; m:1−2=−1; cte:5+2=7.'},
+ {p:'¿Cuándo un término "baja solo"?',ops:['Cuando no hay semejante en el otro polinomio','Cuando su coeficiente es 1','Cuando está al principio','Cuando el otro no tiene esa variable'],ok:0,ex:'Sin pareja = sin combinación posible. Baja intacto.'},
+ {p:'(4a² + 3) + (a³ − 2a + 1) + (2a² + a) = ?',ops:['a³ + 6a² − a + 4','a³ + 4a² − a + 4','a³ + 6a² + a + 4','a³ + 6a² − a − 4'],ok:0,ex:'a³→solo; a²:4+2=6; a:−2+1=−1; cte:3+1=4.'},
+ {p:'(3n⁴ + 2n + 7) − (n³ + 4n² − 3) = ?',ops:['3n⁴ − n³ − 4n² + 2n + 10','3n⁴ − n³ + 4n² + 2n + 10','3n⁴ + n³ − 4n² + 2n + 4','3n⁴ − n³ − 4n² + 2n + 4'],ok:0,ex:'3n⁴→solo; −n³; −4n²; 2n→solo; cte:7+3=10.'},
+ {p:'¿Por qué la suma de dos trinomios puede dar un binomio?',ops:['Porque pares semejantes pueden anularse (3x+(−3x)=0)','Porque siempre pierden un término','Porque el método columna elimina términos','Porque los exponentes se reducen'],ok:0,ex:'Si coeficientes son opuestos, la suma es 0 y el término desaparece.'}],
+/* Nv6 */
+[{p:'(x²+2x)+(3x²+x+4)+(x²−x+1) = ?',ops:['5x²+2x+5','5x²+3x+5','4x²+2x+5','5x²+2x+4'],ok:0,ex:'x²:1+3+1=5; x:2+1−1=2; cte:0+4+1=5.'},
+ {p:'(2m+5)+(m²+3m)+(2m²−1) = ?',ops:['3m²+5m+4','3m²+5m+5','m²+5m+4','3m²+4m+4'],ok:0,ex:'m²:0+1+2=3; m:2+3+0=5; cte:5+0−1=4.'},
+ {p:'(3a³+a)+(2a²+4)+(a³+3a−2) = ?',ops:['4a³+2a²+4a+2','3a³+2a²+4a+2','4a³+2a²+4a−2','4a³+2a+4a+2'],ok:0,ex:'a³:3+1=4; a²:0+2=2; a:1+3=4; cte:0+4−2=2.'},
+ {p:'(n²+3)+(2n²+n)+(−n²+4n+1) = ?',ops:['2n²+5n+4','3n²+5n+4','2n²+4n+4','2n²+5n+3'],ok:0,ex:'n²:1+2−1=2; n:0+1+4=5; cte:3+0+1=4.'},
+ {p:'Ventaja del método columna con 3 polinomios:',ops:['Alinea semejantes y evita mezclar grados','Multiplica coeficientes automáticamente','Ordena sin hacerlo antes','Elimina sin pareja'],ok:0,ex:'Cada grado en su columna vertical: imposible confundir.'},
+ {p:'(p³+p+2)+(p²−p+3)+(2p³+p²−1) = ?',ops:['3p³+2p²+4','3p³+2p²+2p+4','3p³+p²+4','3p³+2p²+p+4'],ok:0,ex:'p³:1+2=3; p²:0+1+1=2; p:1−1=0; cte:2+3−1=4.'}],
+/* Nv7 */
+[{p:'(3x²+2x+5)−(−x²+x+2) = ?',ops:['4x²+x+3','2x²+x+3','4x²+3x+3','4x²+x+7'],ok:0,ex:'Distribuye: 3x²+2x+5+x²−x−2 = 4x²+x+3.'},
+ {p:'(m²−3m+1)−(−2m²+m+4) = ?',ops:['3m²−4m−3','−m²−4m−3','3m²−2m−3','3m²−4m+5'],ok:0,ex:'m²:1+2=3; m:−3−1=−4; cte:1−4=−3.'},
+ {p:'(4a+3)−(−2a+1) = ?',ops:['6a+2','2a+2','6a+4','2a+4'],ok:0,ex:'a:4+2=6; cte:3−1=2.'},
+ {p:'Distribuye −(−3n²+2n−5):',ops:['+3n²−2n+5','−3n²+2n−5','+3n²+2n+5','+3n²−2n−5'],ok:0,ex:'Cada signo cambia: +3n²−2n+5.'},
+ {p:'(2p³+p−4)−(−p²+3p+2) = ?',ops:['2p³+p²−2p−6','2p³−p²−2p−6','2p³+p²+4p−6','2p³+p²−2p+6'],ok:0,ex:'p³→solo; p²:0+1=1; p:1−3=−2; cte:−4−2=−6.'},
+ {p:'¿Por qué −(−3x+2) = 3x−2?',ops:['El (−) multiplica a CADA término, cambiando todos los signos','Solo afecta al primer término','Los dos negativos se anulan y el segundo queda igual','Es una propiedad especial'],ok:0,ex:'(−1)(−3x)=+3x; (−1)(+2)=−2.'}],
+/* Nv8 */
+[{p:'(3x²+2x+1)+(x²+x+4)=3x⁴+4x²+5. Error:',ops:['Sumó exponentes: x²+x²≠x⁴, debe ser 4x²','Constante mal','Coeficiente de x mal','No hay error'],ok:0,ex:'Solo se suman COEFICIENTES. 3x²+x²=4x², no 3x⁴.'},
+ {p:'(5m²−3m+2)−(2m²+m−1)=3m²−4m+1. ¿Error?',ops:['Sí: cte es 2−(−1)=3, no 1. Correcto: 3m²−4m+3','No hay error','Signo de −4m mal','Coeficiente de m² mal'],ok:0,ex:'−(−1)=+1. 2+1=3. Correcto: 3m²−4m+3.'},
+ {p:'(a³+2a+3)+(a²+4)=2a³+2a+7. Error:',ops:['Sumó a³+a²=2a³ (no semejantes). Correcto: a³+a²+2a+7','Constante: 3+4≠7','Término 2a mal','No hay error'],ok:0,ex:'a³ y a² no son semejantes. Cada uno baja solo.'},
+ {p:'(4n²+3n)−(n²+2n−5)=3n²+5n−5. ¿Error?',ops:['Sí: n:3−2=n (no 5n). Cte:0+5=+5 (no −5). Correcto: 3n²+n+5','No hay error','n² mal calculado','Constante −5 correcto'],ok:0,ex:'n:3−2=n. Cte:0−(−5)=+5. Correcto: 3n²+n+5.'},
+ {p:'(2p+5)+(3p²+p)+(p²−2)=4p²+3p+3. ¿Error?',ops:['No hay error, resultado correcto','p² mal','p mal','Constante mal'],ok:0,ex:'p²:3+1=4✓; p:2+1=3✓; cte:5−2=3✓. Correcto.'},
+ {p:'(x²+3x+4)−(2x²+x+1)=−x²+2x+5. ¿Error?',ops:['Sí: cte es 4−1=3, no 5. Correcto: −x²+2x+3','No hay error','x² debería ser positivo','Coeficiente de x mal'],ok:0,ex:'x²:1−2=−1✓; x:3−1=2✓; cte:4−1=3, no 5.'}],
+/* Nv9 */
+[{p:'Ingresos (2x²+3x+500) y (x²+x+300). ¿Total?',ops:['3x²+4x+800','3x²+3x+800','2x²+4x+800','3x²+4x+500'],ok:0,ex:'x²:2+1=3; x:3+1=4; cte:500+300=800.'},
+ {p:'Gastos (3m²+2m+400), ingresos (5m²+4m+700). Ganancia:',ops:['2m²+2m+300','2m²+2m+1100','8m²+6m+300','2m²+6m+300'],ok:0,ex:'m²:5−3=2; m:4−2=2; cte:700−400=300.'},
+ {p:'Costos: (t²+3t+200), (2t²+t+150), (t²+2t+100). Total:',ops:['4t²+6t+450','3t²+6t+450','4t²+5t+450','4t²+6t+400'],ok:0,ex:'t²:1+2+1=4; t:3+1+2=6; cte:200+150+100=450.'},
+ {p:'Presupuesto (4p²+5p+1000), gasto (p²+2p+350). Queda:',ops:['3p²+3p+650','3p²+7p+650','5p²+3p+650','3p²+3p+1350'],ok:0,ex:'p²:4−1=3; p:5−2=3; cte:1000−350=650.'},
+ {p:'Ventas: (2v²+4v+180), (v²+2v+120), (3v²+v+90). Total:',ops:['6v²+7v+390','5v²+7v+390','6v²+6v+390','6v²+7v+300'],ok:0,ex:'v²:2+1+3=6; v:4+2+1=7; cte:180+120+90=390.'},
+ {p:'Ingresos (3k³+2k+500) y (k³+k²+3k+200). Total:',ops:['4k³+k²+5k+700','4k³+k²+5k+500','3k³+k²+5k+700','4k³+2k²+5k+700'],ok:0,ex:'k³:3+1=4; k²:0+1=1; k:2+3=5; cte:500+200=700.'}],
+/* Nv10 */
+[{p:'¿Cuándo la suma de dos trinomios da un monomio?',ops:['Si todos los semejantes se anulan, quedando solo un término','Si son idénticos','Si tienen el mismo coeficiente','Nunca puede'],ok:0,ex:'Ej: (x²+3x+1)+(−x²−3x+4)=5. Todo se anula menos la cte.'},
+ {p:'P(x)=3x²+2x−1, Q(x)=x²+x+4. ¿P−Q−Q?',ops:['x²−9','x²+4x+7','x²−2x−9','x²'],ok:0,ex:'P−2Q=(3x²+2x−1)−(2x²+2x+8)=x²+0x−9=x²−9.'},
+ {p:'Diferencia principal entre sumar polinomios y binomios:',ops:['En polinomios hay más sin pareja y más columnas','Procedimiento completamente diferente','En polinomios los exponentes cambian','No hay diferencia'],ok:0,ex:'Principio idéntico. Diferencia práctica: más columnas, más riesgo.'},
+ {p:'Si (ax²+bx+c)+(dx²+ex+f)=5x²+0x+3, ¿b y e?',ops:['b+e=0 (son opuestos)','b=e=0','b+e=3','No hay condición'],ok:0,ex:'Coef. de x es 0 → b+e=0 → e=−b.'},
+ {p:'¿Para qué sirve el método columna?',ops:['Alinear semejantes y operar columna por columna sin mezclar grados','Ordenar automáticamente','Verificar errores de signo','Calcular más rápido'],ok:0,ex:'Cada columna = un grado. Sumar hacia abajo = imposible mezclar.'},
+ {p:'P tiene 3 términos, Q tiene 4. ¿Términos de P+Q?',ops:['Máximo 7, mínimo 1','Máximo 7, mínimo 4','Máximo 4, mínimo 1','Siempre 7'],ok:0,ex:'Máx: sin semejantes → 3+4=7. Mín: todos se cancelan → 1.'}]
+];
+
+// ─── ESTADO GLOBAL ────────────────────────────────────────
+var ZONA_ACT,actQ;
+var QUIZ_SEL=[],estadoQuiz=[],quizVerificado=false;
+var modoDocente=false,modoRecorrer=false;
+var SECS=['s0','s1','s2','s3','s4','s5','final'];
+
+function rInt(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
+function pick(arr){return arr[Math.floor(Math.random()*arr.length)];}
+
+// ─── COMPUTAR CORRECTAS (helpers) ────────────────────────
+function polyAdd(/* args: strings */){
+  var terms={};
+  for(var ai=0;ai<arguments.length;ai++){
+    var expr=arguments[ai];
+    var re=/([+-]?\s*\d*\.?\d*)\s*\*?\s*([a-zA-Z])(?:\^(\d+))?|([+-]?\s*\d+\.?\d*)/g;
+    var m;
+    while((m=re.exec(expr))!==null){
+      var raw=m[0].trim();
+      if(m[4]!==undefined){
+        var c=parseFloat(m[4].replace(/\s/g,''));
+        terms[0]=(terms[0]||0)+c;
+      }else{
+        var coefStr=m[1].replace(/\s/g,'');
+        if(coefStr===''||coefStr==='+')coefStr='1';
+        else if(coefStr==='-')coefStr='-1';
+        var coef=parseFloat(coefStr);
+        var exp=m[3]?parseInt(m[3]):1;
+        terms[exp]=(terms[exp]||0)+coef;
+      }
+    }
+  }
+  return terms;
+}
+function polySub(t1,t2){
+  var res={};
+  for(var k in t1)res[k]=(res[k]||0)+t1[k];
+  for(var k in t2)res[k]=(res[k]||0)-t2[k];
+  return res;
+}
+function termsToString(terms,v){
+  var exps=Object.keys(terms).map(Number).sort(function(a,b){return b-a;});
+  var parts=[];
+  for(var i=0;i<exps.length;i++){
+    var e=exps[i];var c=terms[e];
+    if(Math.abs(c)<1e-12)continue;
+    var coef=Math.round(c*1000)/1000;
+    var s='';
+    if(e===0){s=String(coef);}
+    else{
+      if(coef===1)s=v;
+      else if(coef===-1)s='-'+v;
+      else s=coef+'*'+v;
+      if(e>1)s+='^'+e;
+    }
+    if(parts.length===0){parts.push(s);}
+    else{
+      if(coef>=0)parts.push('+'+s);
+      else parts.push(s);
+    }
+  }
+  return parts.length?parts.join(''):'0';
+}
+
+// ─── BUILD TABLA ORDEN ───────────────────────────────────
+function buildTablaOrden(){
+  var vars=['x','m','a','n','p'];
+  var v=vars[rInt(0,vars.length-1)];
+  var items=[
+    {des:'7 + 4'+v+' − 2'+v+'² + '+v+'³'},
+    {des:'3'+v+' − '+v+'³ + 5 − 2'+v+'²'},
+    {des:'6 − 4'+v+'² + '+v+'⁴ + 2'+v+'³ − '+v}
+  ];
+  CORRECT_ORDEN=[
+    v+'^3-2*'+v+'^2+4*'+v+'+7',
+    '-'+v+'^3-2*'+v+'^2+3*'+v+'+5',
+    v+'^4+2*'+v+'^3-4*'+v+'^2-'+v+'+6'
+  ];
+  var html='<table><thead><tr><th>Polinomio desordenado</th><th>Ordenado (grado mayor → menor)</th></tr></thead><tbody>';
+  for(var i=0;i<items.length;i++){
+    html+='<tr>'
+      +'<td class="td-fix" style="text-align:left;padding-left:12px;font-size:.85rem;">'+items[i].des+'</td>'
+      +'<td><input type="text" id="ord-'+i+'" data-req="1" data-ml="3" data-alg="1" class="inp-cell"'
+      +' placeholder="escribe ordenado" oncopy="return false" onpaste="return false" oncontextmenu="return false"></td>'
+      +'</tr>';
+  }
+  html+='</tbody></table>';
+  document.getElementById('tabla-orden').innerHTML=html;
+  setTimeout(inyectarAlg,80);
+}
+
+// ─── BUILD TABLA SUMA ────────────────────────────────────
+function buildTablaSuma(){
+  var vars=['x','m','a','n'];
+  var v=vars[rInt(0,vars.length-1)];
+  var items=[
+    {p1:'2'+v+'²+3'+v+'+1', p2:v+'²+'+v+'+4'},
+    {p1:'3'+v+'³+'+v+'+5', p2:'2'+v+'²+3'+v+'−2'},
+    {p1:'4'+v+'²+2'+v+'+3', p2:'−4'+v+'²+'+v+'+1'},
+    {p1:''+v+'³+2'+v+'²+1', p2:'3'+v+'³+'+v+'²−'+v+'+2'}
+  ];
+  CORRECT_SUMA=[
+    termsToString(polyAdd(items[0].p1,items[0].p2),v),
+    termsToString(polyAdd(items[1].p1,items[1].p2),v),
+    termsToString(polyAdd(items[2].p1,items[2].p2),v),
+    termsToString(polyAdd(items[3].p1,items[3].p2),v)
+  ];
+  var html='<table><thead><tr>'
+    +'<th>Polinomio 1</th><th>Polinomio 2</th>'
+    +'<th>Resultado<br><small>(columna en cuaderno)</small></th>'
+    +'</tr></thead><tbody>';
+  for(var i=0;i<items.length;i++){
+    var d=items[i];
+    html+='<tr>'
+      +'<td class="td-fix" style="font-size:.82rem;">'+d.p1+'</td>'
+      +'<td class="td-fix" style="font-size:.82rem;">'+d.p2+'</td>'
+      +'<td><input type="text" id="sum-'+i+'" data-req="1" data-ml="2" data-alg="1" class="inp-cell"'
+      +' placeholder="?" oncopy="return false" onpaste="return false" oncontextmenu="return false"></td>'
+      +'</tr>';
+  }
+  html+='</tbody></table>';
+  document.getElementById('tabla-suma').innerHTML=html;
+  var ec=ERR_S_CASOS[rInt(0,ERR_S_CASOS.length-1)];
+  document.getElementById('err-s-expr').textContent=ec.expr;
+  document.getElementById('err-s-res').textContent=ec.mal;
+  document.getElementById('err-s-opt0').textContent=ec.opts[0];
+  document.getElementById('err-s-opt1').textContent=ec.opts[1];
+  document.getElementById('err-s-opt2').textContent=ec.opts[2];
+  ERR_S_MSG[0]=ec.msgs[0];ERR_S_MSG[1]=ec.msgs[1];ERR_S_MSG[2]=ec.msgs[2];
+  setTimeout(inyectarAlg,80);
+}
+
+// ─── BUILD TABLA RESTA ───────────────────────────────────
+function buildTablaResta(){
+  var vars=['x','m','a','p'];
+  var v=vars[rInt(0,vars.length-1)];
+  var items=[
+    {p1:'4'+v+'²+3'+v+'+2', p2:v+'²+'+v+'+1'},
+    {p1:'5'+v+'²−2'+v+'+7', p2:'2'+v+'²+'+v+'−3'},
+    {p1:'3'+v+'³+'+v+'²+'+v+'+5', p2:v+'³+2'+v+'²−'+v+'+2'}
+  ];
+  CORRECT_RESTA=[];
+  for(var i=0;i<items.length;i++){
+    p1t=polyAdd(items[i].p1);p2t=polyAdd(items[i].p2);
+    CORRECT_RESTA.push(termsToString(polySub(p1t,p2t),v));
+  }
+  var html='</table><thead><tr>'
+    +'<th>Minuendo</th><th>Sustraendo</th>'
+    +'<th>Resultado<br><small>(cambia signos en cuaderno)</small></th>'
+    +'</tr></thead><tbody>';
+  for(var i=0;i<items.length;i++){
+    var d=items[i];
+    html+='<tr>'
+      +'<td class="td-fix" style="font-size:.82rem;">'+d.p1+'</tr>'
+      +'<td class="td-fix" style="font-size:.82rem;color:var(--roj);">−('+d.p2+')</td>'
+      +'<td><input type="text" id="res-'+i+'" data-req="1" data-ml="2" data-alg="1" class="inp-cell"'
+      +' placeholder="?" oncopy="return false" onpaste="return false" oncontextmenu="return false"></td>'
+      +'</tr>';
+  }
+  html+='</tbody></table>';
+  document.getElementById('tabla-resta').innerHTML=html;
+  var v2=['n','k','t'][rInt(0,2)];
+  var p1m=polyAdd('3*'+v2+'^2+2*'+v2+'+4');
+  var p2m=polyAdd(v2+'^2+'+v2+'+1');
+  var p3m=polyAdd('2*'+v2+'^2-'+v2+'+3');
+  var mixRes=polySub(polyAdd(p1m,p2m),p3m);
+  CORRECT_MIX=termsToString(mixRes,v2);
+  var mix={
+    p1:'(3'+v2+'²+2'+v2+'+4)',
+    p2:'('+v2+'²+'+v2+'+1)',
+    p3:'(2'+v2+'²−'+v2+'+3)',
+    enunciado:'Resuelve en tu cuaderno:'
+  };
+  document.getElementById('op-mixta-wrap').innerHTML=
+    '<p class="instr" style="margin-bottom:8px;">'+mix.enunciado+'</p>'
+    +'<p style="font-family:monospace;font-weight:800;font-size:.92rem;background:var(--gris);padding:8px 14px;border-radius:8px;margin-bottom:8px;text-align:center;">'
+    +mix.p1+' + '+mix.p2+' − '+mix.p3+'</p>'
+    +'<div class="alg-wrap"><input type="text" id="mix-0" data-req="1" data-ml="2" data-alg="1" class="inp"'
+    +' placeholder="Resultado simplificado"'
+    +' oncopy="return false" onpaste="return false" oncontextmenu="return false"></div>';
+  setTimeout(inyectarAlg,80);
+}
+
+// ─── CDMX ────────────────────────────────────────────────
+function buildCDMX(){
+  ZONA_ACT=pick(ZONAS);
+  document.getElementById('s4-zona-tit').textContent='Aplicación · '+ZONA_ACT.nom;
+  document.getElementById('s4-zona-badge').textContent=ZONA_ACT.badge;
+  document.getElementById('s4-sit').textContent=ZONA_ACT.sit;
+  var colores=['#283593','#1B6B45','#C1121F'];
+  CORRECT_CDMX=[];
+  var html='';
+  for(var i=0;i<ZONA_ACT.partes.length;i++){
+    var p=ZONA_ACT.partes[i];
+    var correct='';
+    if(p.op==='suma'){
+      var t=polyAdd(p.pol1);var t2=polyAdd(p.pol2);
+      correct=termsToString(polyAdd(t,t2),ZONA_ACT.v);
+    }else if(p.op==='resta'){
+      var t=polyAdd(p.pol1);var t2=polyAdd(p.pol2);
+      correct=termsToString(polySub(t,t2),ZONA_ACT.v);
+    }else{
+      var t=polyAdd(p.pol1);var t2=polyAdd(p.pol2);var t3=polyAdd(p.pol3);
+      correct=termsToString(polyAdd(polyAdd(t,t2),t3),ZONA_ACT.v);
+    }
+    CORRECT_CDMX.push(correct);
+    html+='<div class="card" style="border-left:4px solid '+colores[i]+';">'
+      +'<div class="pill" style="background:'+colores[i]+'22;color:'+colores[i]+';">'+p.lbl+'</div>'
+      +'<p class="instr" style="margin-bottom:8px;">'+p.ctx+'</p>'
+      +'<div style="background:var(--gris);border-radius:8px;padding:8px 14px;margin-bottom:8px;font-family:monospace;font-weight:800;font-size:.88rem;text-align:center;">'
+      +(p.op==='suma'?'('+p.pol1+') + ('+p.pol2+')':p.op==='resta'?'('+p.pol1+') − ('+p.pol2+')':'('+p.pol1+') + ('+p.pol2+') + ('+p.pol3+')')
+      +'</div>'
+      +'<div class="alg-wrap"><input type="text" id="cdmx-'+i+'" data-req="1" data-ml="2" data-alg="1" class="inp"'
+      +' placeholder="Resultado (método columna en tu cuaderno)"'
+      +' oncopy="return false" onpaste="return false" oncontextmenu="return false"></div>'
+      +'</div>';
+  }
+  document.getElementById('s4-partes').innerHTML=html;
+  setTimeout(inyectarAlg,80);
+}
+
+// ─── QUIZ ─────────────────────────────────────────────────
+function renderQuiz(){
+  var html='';window._quizOrdenes=[];
+  for(var i=0;i<QUIZ_SEL.length;i++){
+    var q=QUIZ_SEL[i],nv=0;
+    for(var ni=0;ni<QB.length;ni++){for(var qi=0;qi<QB[ni].length;qi++){if(QB[ni][qi]===q){nv=ni+1;break;}}if(nv)break;}
+    var ord=[0,1,2,3].sort(function(){return Math.random()-.5;});
+    window._quizOrdenes.push(ord);
+    html+='<div class="qcard" id="qcard-'+i+'">'
+      +'<div class="qcard-hdr"><div class="qnum">Pregunta '+(i+1)+' de 10</div>'
+      +'<div class="qnivel" style="background:'+NV_COL[nv]+'22;color:'+NV_COL[nv]+';">'+NV_LBL[nv]+'</div></div>'
+      +'<div class="qtext">'+q.p+'</div>'
+      +'<div class="qopts" id="qopts-'+i+'">';
+    for(var j=0;j<ord.length;j++){
+      var oi=ord[j];
+      html+='<div class="qopt" id="qopt-'+i+'-'+j+'" data-oi="'+oi+'" onclick="selQ('+i+','+j+')">'
+        +'<div class="qopt-letra">'+LETRAS[j]+'</div><div>'+q.ops[oi]+'</div></div>';
+    }
+    html+='</div><div class="qfb" id="qfb-'+i+'"></div></div>';
+  }
+  document.getElementById('quiz-wrap').innerHTML=html;
+  quizVerificado=false;
+  mjxTypeset(document.getElementById('quiz-wrap'));
+}
+
+function selQ(qi,li){
+  if(quizVerificado)return;
+  var oi=parseInt(document.getElementById('qopt-'+qi+'-'+li).getAttribute('data-oi'));
+  estadoQuiz[qi]=oi;
+  var opts=document.querySelectorAll('#qopts-'+qi+' .qopt');
+  for(var i=0;i<opts.length;i++)opts[i].classList.remove('sel');
+  document.getElementById('qopt-'+qi+'-'+li).classList.add('sel');
+}
+
+function verificarQuiz(){
+  var sinR=false;for(var i=0;i<QUIZ_SEL.length;i++)if(estadoQuiz[i]===-1){sinR=true;break;}
+  if(sinR){document.getElementById('s5q-err').classList.add('show');setTimeout(function(){document.getElementById('s5q-err').classList.remove('show');},2500);return;}
+  quizVerificado=true;
+  for(var i=0;i<QUIZ_SEL.length;i++){
+    var q=QUIZ_SEL[i],corr=estadoQuiz[i]===q.ok;
+    var opts=document.querySelectorAll('#qopts-'+i+' .qopt');
+    for(var j=0;j<opts.length;j++){var oi=parseInt(opts[j].getAttribute('data-oi'));if(oi===q.ok)opts[j].classList.add('correcto');else if(oi===estadoQuiz[i]&&!corr)opts[j].classList.add('incorrecto');}
+    var fb=document.getElementById('qfb-'+i);
+    fb.className='qfb show '+(corr?'ok':'nook');
+    fb.innerHTML=(corr?'<strong>✓ Correcto.</strong> ':'<strong>✗ Incorrecto.</strong> ')+q.ex;
+  }
+  document.getElementById('btn-ver-quiz').style.display='none';
+  document.getElementById('btn-sig-quiz').style.display='block';
+}
+
+function irCierre(){
+  document.getElementById('btn-sig-quiz').style.display='none';
+  document.getElementById('cierre-wrap').style.display='block';
+  document.getElementById('cierre-wrap').scrollIntoView({behavior:'smooth',block:'start'});
+  setTimeout(inyectarAlg,80);
+}
+
+// ─── NAVEGACIÓN ───────────────────────────────────────────
+function updProg(idx){
+  var pct=[0,17,33,50,67,83,100][Math.min(idx,6)]||0;
+  document.getElementById('prog-bar').style.width=pct+'%';
+  var ids=['ps0','ps1','ps2','ps3','ps4','ps5','ps-fin'];
+  for(var i=0;i<ids.length;i++){var el=document.getElementById(ids[i]);if(el)el.classList.toggle('done',i<=idx);}
+}
+function showSec(id){
+  var _afAnt = document.querySelector('.sec.on');
+  if (_afAnt) afSecExit(_afAnt.id);
+  for(var i=0;i<SECS.length;i++){var s=document.getElementById(SECS[i]);if(s)s.classList.toggle('on',SECS[i]===id);}
+  updProg(SECS.indexOf(id));
+  window.scrollTo({top:0,behavior:'smooth'});
+  var sec=document.getElementById(id);if(sec)mjxTypeset(sec);
+  afSecEnter(id);
+}
+function avanzar(from,to){if(modoRecorrer){showSec(to);return;}if(!validarSec(from))return;showSec(to);}
+
+// ─── VALIDACIÓN ───────────────────────────────────────────
+function validarSec(id){
+  var sec=document.getElementById(id);if(!sec||modoRecorrer)return true;
+  var ok=true;
+  var els=sec.querySelectorAll('[data-req]');
+  for(var i=0;i<els.length;i++){
+    var el=els[i];el.classList.remove('err');
+    var ml=parseInt(el.getAttribute('data-ml')||'1');
+    var v=el.tagName==='SELECT'?el.value:el.value.trim();
+    if(!v||v.length<ml){el.classList.add('err');ok=false;}
+  }
+  if(id==='s0'){var nom=document.getElementById('inp-nombre').value.trim();if(nom.length<5){document.getElementById('inp-nombre').classList.add('err');ok=false;}}
+  var chkMap={s1:'chk-s1',s2:'chk-s2',s3:'chk-s3'};
+  if(chkMap[id]){var chk=document.getElementById(chkMap[id]);if(chk&&!chk.checked)ok=false;}
+  var selMap={s1:['sel-orden-val'],s2:['sel-err-s-val'],s3:['sel-resta-val']};
+  if(selMap[id])for(var i=0;i<selMap[id].length;i++){var sv=document.getElementById(selMap[id][i]);if(!sv||sv.value==='')ok=false;}
+  var em=document.getElementById(id+'-err');
+  if(em)em.classList.toggle('show',!ok);
+  if(!ok){var f=sec.querySelector('[data-req].err');if(f)f.scrollIntoView({behavior:'smooth',block:'center'});else sec.scrollIntoView({behavior:'smooth',block:'start'});}
+  return ok;
+}
+
+// ─── ANTI COPY/PASTE ─────────────────────────────────────
+function aplicarAntiPaste(){
+  var els=document.querySelectorAll('textarea,input[type=text]');
+  for(var i=0;i<els.length;i++){
+    var el=els[i];if(el.id==='inp-nombre')continue;
+    el.addEventListener('paste',function(e){e.preventDefault();});
+    el.addEventListener('copy',function(e){e.preventDefault();});
+    el.addEventListener('cut',function(e){e.preventDefault();});
+    el.addEventListener('contextmenu',function(e){e.preventDefault();});
+  }
+}
+
+// ─── CALIFICACIÓN (CON VALIDACIÓN ALGEBRAICA) ────────────
+function evaluarCampo(id,correcta,ptsMax){
+  var el=document.getElementById(id);
+  if(!el)return{pts:0,estado:'vacio'};
+  var val=el.value.trim();
+  if(!val||val.length<2)return{pts:0,estado:'vacio'};
+  var res=validarAlgebraica(val,correcta);
+  if(res===true)return{pts:ptsMax,estado:'correcto'};
+  if(res===false)return{pts:Math.round(ptsMax*0.3*100)/100,estado:'incorrecto'};
+  return{pts:Math.round(ptsMax*0.6*100)/100,estado:'parcial'};
+}
+
+function calcNota(){
+  var pts=0,det=[];
+  var qc=0;for(var i=0;i<QUIZ_SEL.length;i++)if(estadoQuiz[i]===QUIZ_SEL[i].ok)qc++;
+  var qp=Math.round(qc*.5*10)/10;pts+=qp;det.push({cat:'Quiz (10 preg.)',pts:qp,max:5,estado:qc>=8?'correcto':qc>=5?'parcial':'incorrecto'});
+  var or_pts=0;
+  for(var i=0;i<3;i++){
+    var r=evaluarCampo('ord-'+i,CORRECT_ORDEN[i]||'',0.25);
+    or_pts+=r.pts;
+  }
+  or_pts=Math.round(or_pts*100)/100;
+  pts+=or_pts;
+  det.push({cat:'Ordenamiento',pts:or_pts,max:.75,estado:or_pts>=0.75?'correcto':or_pts>0?'parcial':'incorrecto'});
+  var sv=document.getElementById('sel-orden-val');var svp=sv&&sv.value==='0'?.25:0;pts+=svp;det.push({cat:'¿Por qué ordenar?',pts:svp,max:.25,estado:svp>0?'correcto':'incorrecto'});
+  var su_pts=0;
+  for(var i=0;i<4;i++){
+    var r=evaluarCampo('sum-'+i,CORRECT_SUMA[i]||'',0.25);
+    su_pts+=r.pts;
+  }
+  su_pts=Math.round(su_pts*100)/100;
+  pts+=su_pts;
+  det.push({cat:'Suma de polinomios',pts:su_pts,max:1,estado:su_pts>=1?'correcto':su_pts>0?'parcial':'incorrecto'});
+  var esv=document.getElementById('sel-err-s-val');var esvp=esv&&esv.value==='0'?.25:0;pts+=esvp;det.push({cat:'Error detectado',pts:esvp,max:.25,estado:esvp>0?'correcto':'incorrecto'});
+  var re_pts=0;
+  for(var i=0;i<3;i++){
+    var r=evaluarCampo('res-'+i,CORRECT_RESTA[i]||'',0.25);
+    re_pts+=r.pts;
+  }
+  re_pts=Math.round(re_pts*100)/100;
+  pts+=re_pts;
+  det.push({cat:'Resta de polinomios',pts:re_pts,max:.75,estado:re_pts>=.75?'correcto':re_pts>0?'parcial':'incorrecto'});
+  var mx_r=evaluarCampo('mix-0',CORRECT_MIX,0.25);
+  pts+=mx_r.pts;det.push({cat:'Operación mixta',pts:mx_r.pts,max:.25,estado:mx_r.estado});
+  var srv=document.getElementById('sel-resta-val');var srvp=srv&&srv.value==='0'?.25:0;pts+=srvp;det.push({cat:'Reflexión resta',pts:srvp,max:.25,estado:srvp>0?'correcto':'incorrecto'});
+  var cdp=0;
+  for(var i=0;i<3;i++){
+    var r=evaluarCampo('cdmx-'+i,CORRECT_CDMX[i]||'',0.17);
+    cdp+=r.pts;
+  }
+  cdp=Math.round(cdp*100)/100;
+  pts+=cdp;
+  det.push({cat:'CDMX',pts:cdp,max:.5,estado:cdp>=.5?'correcto':cdp>0?'parcial':'incorrecto'});
+  var cr=document.getElementById('cierre-reflex'),ce=document.getElementById('cierre-expr');
+  var cp=0;if(cr&&cr.value.trim().length>=40)cp+=.13;if(ce&&ce.value.trim().length>=5)cp+=.12;
+  pts+=cp;det.push({cat:'Cierre',pts:Math.round(cp*10)/10,max:.25,estado:cp>=.25?'correcto':cp>0?'parcial':'incorrecto'});
+  return{total:Math.min(Math.round(pts*10)/10,10),max:10,det:det};
+}
+
+// ─── FINALIZAR ────────────────────────────────────────────
+function finalizar(){
+  if(!modoRecorrer&&!validarSec('s5'))return;
+  var nom=document.getElementById('inp-nombre').value.trim()||'Sin nombre';
+  var nota=calcNota();
+  var msg=nota.total>=8?'Excelente. Dominas suma y resta de polinomios.':
+          nota.total>=6?'Buen trabajo. Repasa los puntos marcados.':'Hay áreas de oportunidad. Revisa con tu cuaderno.';
+  var emoji=nota.total>=8?'🎉':'📘';
+  var wmR='';for(var i=0;i<8;i++)wmR+='<div class="res-wm-row">'+nom+' · S13 Polinomios · '+nom+'</div>';
+
+  var quizFilas='';
+  for(var i=0;i<QUIZ_SEL.length;i++){
+    var q=QUIZ_SEL[i],nv=0;
+    for(var ni=0;ni<QB.length;ni++){for(var qi=0;qi<QB[ni].length;qi++){if(QB[ni][qi]===q){nv=ni+1;break;}}if(nv)break;}
+    var corr=estadoQuiz[i]===q.ok,tuResp='—';
+    var tuOpts=document.querySelectorAll('#qopts-'+i+' .qopt');
+    for(var j=0;j<tuOpts.length;j++){if(parseInt(tuOpts[j].getAttribute('data-oi'))===estadoQuiz[i]){var lc=tuOpts[j].lastElementChild;tuResp=lc?lc.innerHTML:'?';}}
+    quizFilas+='<tr class="'+(corr?'ok-row':'nook-row')+'">'
+      +'<td style="text-align:center;">'+(corr?'✅':'❌')+'</td>'
+      +'<td style="font-size:.72rem;font-weight:800;color:'+NV_COL[nv]+';">'+NV_LBL[nv]+'</td>'
+      +'<td>'+q.p+'</td><td>'+tuResp+'</td>'
+      +'<td style="color:var(--ver);font-weight:700;">'+q.ops[q.ok]+'</td>'
+      +'</tr><tr class="par-row"><td colspan="5">'+q.ex+'<tr></tr>';
+  }
+
+  function formatearExpresion(expr) {
+    if (!expr || expr === '—') return expr;
+    var s = expr;
+    s = s.replace(/\s/g, '');
+    s = s.replace(/\*/g, '');
+    s = s.replace(/\^(\d+)/g, '^{$1}');
+    s = s.replace(/([a-zA-Z])(\d+)/g, '$1^{$2}');
+    s = s.replace(/\+-/g, '-');
+    s = s.replace(/(^|[^0-9])1([a-zA-Z])/g, '$1$2');
+    s = s.replace(/(^|[^0-9])1\^/g, '$1^');
+    return s;
+  }
+
+  var ejFilas='';
+  var ejData=[
+    {ids:['ord-0','ord-1','ord-2'],lbl:'Ordenamiento',corrects:CORRECT_ORDEN},
+    {ids:['sum-0','sum-1','sum-2','sum-3'],lbl:'Suma',corrects:CORRECT_SUMA},
+    {ids:['res-0','res-1','res-2'],lbl:'Resta',corrects:CORRECT_RESTA},
+    {ids:['mix-0'],lbl:'Mixta',corrects:[CORRECT_MIX]},
+    {ids:['cdmx-0','cdmx-1','cdmx-2'],lbl:'CDMX',corrects:CORRECT_CDMX}
+  ];
+  for(var g=0;g<ejData.length;g++){
+    var grp=ejData[g];
+    for(var i=0;i<grp.ids.length;i++){
+      var el=document.getElementById(grp.ids[i]);
+      var val=el?el.value.trim():'—';
+      // CORRECCIÓN: envolver respuesta del usuario en \(...\) si es algebraica
+      var userDisplay = (el && el.hasAttribute('data-alg')) ? `\\(${formatearExpresion(val)}\\)` : val;
+      var res = validarAlgebraica(val, grp.corrects[i] || '');
+      var icon = res===true?'✅':(res===false?'❌':'📝');
+      var bg = res===true?'ok-row':(res===false?'nook-row':'par-row');
+      var correctDisplay = grp.corrects[i] ? `\\(${formatearExpresion(grp.corrects[i])}\\)` : '—';
+      ejFilas+='<tr class="'+bg+'">'
+        +'<td style="text-align:center;">'+icon+'</td>'
+        +'<td style="font-weight:800;">'+grp.lbl+' '+(i+1)+'</td>'
+        +'<td style="font-family:monospace;font-size:.75rem;">'+userDisplay+'</td>'
+        +'<td style="font-family:monospace;font-size:.75rem;color:var(--ver);">'+correctDisplay+'</td>'
+        +'</tr>';
+    }
+  }
+
+  function refRow(id,lbl,minL){
+    var val=document.getElementById(id)?document.getElementById(id).value.trim():'—';
+    var ok=val.length>=minL;
+    return'<tr class="'+(ok?'ok-row':'nook-row')+'"><td style="text-align:center;">'+(ok?'✅':'📝')+'</td>'
+      +'<td colspan="4">'+lbl+'<br><span style="font-size:.75rem;color:#555;">'+val.substring(0,120)+(val.length>120?'...':'')+'</span></td></tr>';
+  }
+
+  var html='<div class="res-hdr"><div class="res-wm">'+wmR+'</div>'
+    +'<div style="background:rgba(255,255,255,.18);border-radius:10px;padding:10px 18px;display:inline-block;margin-bottom:8px;">'
+    +'<span style="font-size:.62rem;font-weight:800;letter-spacing:1.5px;opacity:.75;display:block;text-transform:uppercase;">Alumno</span>'
+    +'<span style="font-size:1.1rem;font-weight:900;">'+nom+'</span></div><br>'
+    +'<div>'+emoji+'</div>'
+    +'<div class="res-nota">'+nota.total+'<span style="font-size:1.2rem;opacity:.7;">/10</span></div>'
+    +'<div style="font-size:.8rem;opacity:.8;">'+msg+'</div>'
+    +'<div style="display:flex;gap:8px;justify-content:center;margin-top:10px;flex-wrap:wrap;">';
+  for(var i=0;i<nota.det.length;i++){var d=nota.det[i];
+    var badgeClass=d.estado==='correcto'?'valid-ok':(d.estado==='incorrecto'?'valid-nok':'valid-unk');
+    html+='<div style="background:rgba(255,255,255,.15);border-radius:8px;padding:4px 11px;font-size:.75rem;font-weight:700;">'+d.cat+': <strong>'+d.pts+'/'+d.max+'</strong>'
+      +'<span class="valid-badge '+badgeClass+'">'+(d.estado==='correcto'?'✓':d.estado==='incorrecto'?'✗':'◐')+'</span></div>';
+  }
+  html+='</div></div>';
+
+  html+='<div style="background:#e8eaf6;border-radius:10px;padding:10px 14px;margin:10px 0;font-size:.78rem;line-height:1.6;display:flex;gap:10px;align-items:flex-start;">'
+    +'<span style="font-size:1.2rem;">🔬</span>'
+    +'<div><strong style="color:var(--indigo2);">Validación algebraica activa</strong><br>'
+    +'Las respuestas se verifican con <strong>Algebrite</strong> (simbólico) y <strong>math.js</strong> (numérico). '
+    +'Se compara algebraicamente, no por texto exacto. Reordenar términos no afecta la calificación.</div></div>';
+
+  html+='<div class="card card-v" style="margin-top:4px;"><div class="pill p-v">Quiz — Detalle completo</div>'
+    +'<div style="overflow-x:auto;"><table class="res-tabla"><thead><tr><th></th><th>Tema</th><th>Pregunta</th><th>Tu resp.</th><th>Correcta</th></tr></thead><tbody>'+quizFilas+'</tbody></table></div></div>';
+
+  html+='<div class="card card-a" style="margin-top:4px;"><div class="pill p-a">Ejercicios algebraicos — Verificación</div>'
+    +'<div style="overflow-x:auto;"><table class="res-tabla"><thead></tr><th></th><th>Ejercicio</th><th>Tu respuesta</th><th>Respuesta correcta</th></tr></thead><tbody>'+ejFilas+'</tbody></table></div></div>';
+
+  html+='<div class="card card-in" style="margin-top:4px;"><div class="pill p-in">Reflexiones</div>'
+    +'<div style="overflow-x:auto;"><table class="res-tabla"><tbody>'
+    +refRow('act-resp','Activación inicial',50)
+    +refRow('cierre-reflex','Cierre — suma y resta de polinomios',40)
+    +'</tbody></table></div></div>';
+
+  html+='<div style="background:linear-gradient(135deg,var(--indigo),var(--ver));border-radius:12px;padding:14px;margin:12px 0;">'
+    +'<div style="font-family:\'Bebas Neue\';font-size:1.2rem;color:#fff;margin-bottom:6px;">S14 — Multiplicación de polinomios</div>'
+    +'<div style="background:rgba(255,255,255,.12);border-radius:8px;padding:9px 12px;font-size:.82rem;color:#fff;line-height:1.65;">En la próxima sesión aplicarás la distributiva término a término con el método de tabla de multiplicación.</div></div>';
+
+  html+='<div style="background:#fff3cd;border:2px solid var(--am);border-radius:10px;padding:12px;font-size:.8rem;line-height:1.7;">'
+    +'<strong>📸 Entrega en Classroom:</strong> Captura de esta pantalla + foto de tu cuaderno con los ejercicios de columna.<br>'
+    +'<strong style="color:var(--roj);">⚠️ La foto del cuaderno es evidencia obligatoria del método columna.</strong></div>';
+
+  html += afGenerarReporte();
+
+  html+='<button class="btn-pdf" onclick="guardarPDF()" style="margin-top:12px;">💾 Guardar como PDF</button>'
+    +'<button style="background:#fff;color:var(--tie);border:2px solid var(--gris2);border-radius:10px;padding:11px 22px;font-family:\'Nunito\';font-weight:800;font-size:.9rem;cursor:pointer;margin-top:12px;display:inline-block;" onclick="if(confirm(\'¿Reiniciar?\'))location.reload();">↺ Reiniciar</button>';
+
+  document.getElementById('res-contenido').innerHTML=html;
+  showSec('final');
+  setTimeout(function(){mjxTypeset(document.getElementById('final'));},200);
+}
+function guardarPDF(){window.scrollTo(0,0);setTimeout(function(){window.print();},200);}
+
+// ─── DOCENTE ─────────────────────────────────────────────
+function abrirDoc(){document.getElementById('modal-doc').classList.add('show');}
+function cerrarDoc(){document.getElementById('modal-doc').classList.remove('show');document.getElementById('doc-cod').value='';document.getElementById('doc-err').style.display='none';}
+function chkDoc(){
+  var v=document.getElementById('doc-cod').value.trim();
+  if(v==='890'||v==='890ac'||v==='890AC'||v==='2025AC'){document.getElementById('doc-login').style.display='none';document.getElementById('doc-panel').style.display='block';}
+  else{document.getElementById('doc-err').style.display='block';document.getElementById('doc-cod').value='';}
+}
+function docSaltar(){cerrarDoc();modoDocente=true;document.getElementById('inp-nombre').value='Modo Docente — Demo';estadoQuiz=new Array(10).fill(0);finalizar();}
+function docRecorrer(){cerrarDoc();modoRecorrer=true;document.body.style.outline='3px dashed var(--indigo2)';document.body.style.outlineOffset='-3px';alert('Modo recorrido activo.');}
+
+/* ==================== MÓDULO ANTIFRAUDE (AF) ==================== */
+var AF = {
+  secNames: {},
+  umbralSwitches: 8,
+  switches: 0, splits: 0, floats: 0,
+  pastes: 0, copies: 0, keyBlocks: 0, devtools: 0,
+  isSplit: false, isFloat: false, isKeyboard: false,
+  kbFocusTime: 0,
+  baseH: window.innerHeight, baseW: window.innerWidth,
+  restingH: window.innerHeight, restingW: window.innerWidth,
+  screenH: window.screen ? window.screen.height : 0,
+  screenW: window.screen ? window.screen.width : 0,
+  events: [], secEntry: {}, secDur: {},
+  startTime: Date.now(),
+  log: function(type, detail) {
+    this.events.push({ t: Date.now(), e: type, d: detail || '' });
+  },
+  fmtTime: function(seg) {
+    var m = Math.floor(seg / 60);
+    var s = seg % 60;
+    return m + 'm ' + s + 's';
+  },
+  fmtHora: function(ts) {
+    try { return new Date(ts).toLocaleTimeString(); }
+    catch(e) { return '?'; }
+  }
+};
+
+document.addEventListener('visibilitychange', function() {
+  if (document.hidden) {
+    AF.switches++;
+    AF.log('app_salida', 'multitask #' + AF.switches);
+  } else {
+    AF.log('app_retorno', 'regreso #' + AF.switches);
+  }
+});
+window.addEventListener('blur', function() { AF.log('blur', 'foco perdido'); });
+window.addEventListener('focus', function() { AF.log('focus', 'foco recuperado'); });
+
+document.addEventListener('focusin', function(e) {
+  var tag = e.target.tagName;
+  if (tag === 'INPUT' || tag === 'TEXTAREA') {
+    AF.isKeyboard = true;
+    AF.kbFocusTime = Date.now();
+    AF.log('teclado_abierto', tag + (e.target.id ? '#' + e.target.id : ''));
+  }
+});
+document.addEventListener('focusout', function(e) {
+  var tag = e.target.tagName;
+  if (tag === 'INPUT' || tag === 'TEXTAREA') {
+    setTimeout(function() {
+      var active = document.activeElement;
+      var stillEditing = active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA');
+      if (!stillEditing) {
+        AF.isKeyboard = false;
+        setTimeout(function() {
+          AF.restingH = window.innerHeight;
+          AF.restingW = window.innerWidth;
+          AF.log('teclado_cerrado', 'base=' + AF.restingH + 'px');
+        }, 400);
+      }
+    }, 250);
+  }
+});
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', function() {
+    if (window.innerHeight - window.visualViewport.height > 120) {
+      AF.isKeyboard = true;
+    }
+  });
+}
+
+function afCheckPantalla() {
+  if (AF.isKeyboard) return;
+  if (Date.now() - AF.kbFocusTime < 600) return;
+  var h = window.innerHeight, w = window.innerWidth;
+  var ratioH = h / AF.restingH;
+  if (ratioH < 0.65 && ratioH > 0.15) {
+    if (!AF.isSplit) { AF.isSplit = true; AF.splits++; AF.log('split_inicio', h + '/' + AF.restingH); }
+  } else if (AF.isSplit) { AF.isSplit = false; AF.log('split_fin', 'restaurado'); }
+  var ratioW = w / AF.screenW;
+  if (ratioW < 0.85 && ratioW > 0.20) {
+    if (!AF.isFloat) { AF.isFloat = true; AF.floats++; AF.log('flotante_inicio', w + 'x' + h); }
+  } else if (AF.isFloat) { AF.isFloat = false; AF.log('flotante_fin', 'restaurado'); }
+}
+var afResizeTimer = null;
+window.addEventListener('resize', function() {
+  afCheckPantalla();
+  if (afResizeTimer) clearTimeout(afResizeTimer);
+  afResizeTimer = setTimeout(function() { AF.log('resize', window.innerWidth + 'x' + window.innerHeight); }, 500);
+});
+setInterval(afCheckPantalla, 3000);
+
+document.addEventListener('paste', function(e) {
+  e.preventDefault();
+  AF.pastes++;
+  AF.log('paste_bloqueado', '#' + AF.pastes);
+  if (AF.pastes >= 2) {
+    var av = document.createElement('div');
+    av.style.cssText = 'position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:9999;background:#C1121F;color:#fff;padding:10px 18px;border-radius:10px;font-family:Nunito,sans-serif;font-weight:800;font-size:.82rem;box-shadow:0 4px 20px rgba(0,0,0,.3);';
+    av.textContent = '⚠️ Intento de pegar detectado (' + AF.pastes + ')';
+    document.body.appendChild(av);
+    setTimeout(function() { av.remove(); }, 2500);
+  }
+});
+document.addEventListener('copy', function(e) {
+  e.preventDefault();
+  AF.copies++;
+  AF.log('copy_bloqueado', '#' + AF.copies);
+});
+
+document.addEventListener('keydown', function(e) {
+  var blocked = false;
+  if (e.key === 'F12') blocked = true;
+  if (e.key === 'PrintScreen') blocked = true;
+  if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) blocked = true;
+  if (e.ctrlKey && (e.key === 'u' || e.key === 'U')) blocked = true;
+  if (blocked) { e.preventDefault(); AF.keyBlocks++; AF.log('tecla_bloqueada', e.key); }
+});
+
+setInterval(function() {
+  if (window.outerWidth - window.innerWidth > 200) { AF.devtools++; AF.log('devtools_posible', ''); }
+}, 5000);
+
+window.addEventListener('orientationchange', function() {
+  AF.log('orientacion', screen.orientation ? screen.orientation.type : 'cambio');
+  setTimeout(function() { AF.restingH = window.innerHeight; AF.restingW = window.innerWidth; }, 500);
+});
+
+function afSecEnter(id) { AF.secEntry[id] = Date.now(); AF.log('sec_entrada', id); }
+function afSecExit(id) {
+  if (AF.secEntry[id]) {
+    var dur = Math.round((Date.now() - AF.secEntry[id]) / 1000);
+    AF.secDur[id] = (AF.secDur[id] || 0) + dur;
+    AF.log('sec_salida', id + ' (' + dur + 's)');
+  }
+}
+
+function afGenerarReporte() {
+  var totalSeg = Math.round((Date.now() - AF.startTime) / 1000);
+  var html = '<div class="card card-r" style="margin-top:12px;">'
+    + '<div class="pill p-r">📊 Registro de actividad</div>'
+    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:.8rem;margin-top:6px;">'
+    + '<div style="background:var(--gris,#ede8f5);padding:8px 10px;border-radius:8px;"><strong>Tiempo total:</strong> ' + AF.fmtTime(totalSeg) + '</div>'
+    + '<div style="background:' + (AF.switches > AF.umbralSwitches ? '#fdecea' : 'var(--gris,#ede8f5)') + ';padding:8px 10px;border-radius:8px;"><strong>Cambios de app:</strong> ' + AF.switches + (AF.switches > AF.umbralSwitches ? ' ⚠️' : '') + '</div>'
+    + '<div style="background:' + (AF.splits > 0 ? '#fff3cd' : 'var(--gris,#ede8f5)') + ';padding:8px 10px;border-radius:8px;"><strong>Pantalla dividida:</strong> ' + AF.splits + (AF.splits > 0 ? ' ⚡' : '') + '</div>'
+    + '<div style="background:' + (AF.floats > 0 ? '#fff3cd' : 'var(--gris,#ede8f5)') + ';padding:8px 10px;border-radius:8px;"><strong>Ventana flotante:</strong> ' + AF.floats + (AF.floats > 0 ? ' ⚡' : '') + '</div>'
+    + '<div style="background:' + (AF.pastes > 0 ? '#fdecea' : 'var(--gris,#ede8f5)') + ';padding:8px 10px;border-radius:8px;"><strong>Intentos pegar:</strong> ' + AF.pastes + (AF.pastes > 0 ? ' ⚠️' : '') + '</div>'
+    + '<div style="background:' + (AF.devtools > 0 ? '#fdecea' : 'var(--gris,#ede8f5)') + ';padding:8px 10px;border-radius:8px;"><strong>DevTools:</strong> ' + (AF.devtools > 0 ? 'Detectado ⚠️' : 'No') + '</div>'
+    + '<div style="background:' + (AF.keyBlocks > 0 ? '#fff3cd' : 'var(--gris,#ede8f5)') + ';padding:8px 10px;border-radius:8px;"><strong>Teclas bloqueadas:</strong> ' + AF.keyBlocks + '</div>'
+    + '<div style="background:' + (AF.copies > 0 ? '#fdecea' : 'var(--gris,#ede8f5)') + ';padding:8px 10px;border-radius:8px;"><strong>Intentos copiar:</strong> ' + AF.copies + (AF.copies > 0 ? ' ⚠️' : '') + '</div>'
+    + '</div>';
+  html += '<div style="margin-top:8px;font-size:.75rem;background:var(--gris,#ede8f5);padding:8px 10px;border-radius:8px;"><strong>Tiempo por sección:</strong><br>';
+  for (var sk in AF.secNames) {
+    if (AF.secDur[sk] !== undefined) html += AF.secNames[sk] + ': <strong>' + AF.fmtTime(AF.secDur[sk]) + '</strong> · ';
+  }
+  html += '</div>';
+  if (AF.events.length > 0) {
+    html += '<details style="margin-top:8px;font-size:.72rem;"><summary style="cursor:pointer;font-weight:800;color:#283593;">Timeline (' + AF.events.length + ' eventos)</summary><div style="max-height:250px;overflow-y:auto;background:var(--gris,#ede8f5);padding:8px;border-radius:8px;margin-top:4px;font-family:monospace;font-size:.7rem;">';
+    var show = AF.events.slice(-40);
+    for (var ei = 0; ei < show.length; ei++) html += AF.fmtHora(show[ei].t) + ' · <strong>' + show[ei].e + '</strong> ' + show[ei].d + '<br>';
+    html += '</div></details>';
+  }
+  html += '</div>';
+  return html;
+}
+
+AF.log('init', AF.screenW + 'x' + AF.screenH + ' | viewport ' + AF.baseW + 'x' + AF.baseH);
+AF.secNames = {'s0':'Inicio','s1':'Orden','s2':'Suma','s3':'Resta','s4':'CDMX','s5':'Quiz','final':'Resultados'};
+
+// ─── INIT ─────────────────────────────────────────────────
+function init(){
+  actQ=pick(ACTIVACIONES);
+  QUIZ_SEL=QB.map(function(niv){return pick(niv);});
+  estadoQuiz=new Array(10).fill(-1);
+  quizVerificado=false;
+  document.getElementById('act-preg').textContent=actQ.q;
+  buildTablaOrden();
+  buildTablaSuma();
+  buildTablaResta();
+  buildCDMX();
+  renderQuiz();
+  aplicarAntiPaste();
+  setTimeout(function(){inyectarAlg();mjxTypeset(document.body);
+    var libs=[];
+    if(typeof renderMathInElement==='function')libs.push('KaTeX ✓');
+    else libs.push('KaTeX ✗');
+    if(typeof math!=='undefined')libs.push('math.js ✓');
+    else libs.push('math.js ✗');
+    if(typeof Algebrite!=='undefined')libs.push('Algebrite ✓');
+    else libs.push('Algebrite ✗');
+    console.log('[S13] Librerías: '+libs.join(' | '));
+  },500);
+  afSecEnter('s0');
+}
+window.onload=function(){init();};
+</script>
+</body>
+</html>
