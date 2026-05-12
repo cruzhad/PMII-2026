@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Productos Notables Interactivos</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <style>
+        * {
+            user-select: none;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        input, textarea, .respuesta-input {
+            user-select: text;
+        }
+        body {
+            background: #0d1117;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 16px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            min-height: 100vh;
+            overscroll-behavior-y: none;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #161b22;
+            border-radius: 16px;
+            border: 1px solid #2d333b;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+            overflow: hidden;
+        }
+
+        /* ===== TABS ===== */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            background: #0d1117;
+            gap: 2px;
+            border-bottom: 1px solid #2d333b;
+        }
+        .tab-btn {
+            flex: 1;
+            background: #161b22;
+            border: none;
+            color: #8b949e;
+            padding: 14px 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            text-align: center;
+            letter-spacing: 0.3px;
+        }
+        .tab-btn:hover {
+            color: #e0e0e0;
+            background: #1c2333;
+        }
+        .tab-btn.active {
+            background: #1a5276;
+            color: white;
+            border-bottom: 3px solid #58a6ff;
+            box-shadow: 0 0 12px rgba(88,166,255,0.15);
+        }
+        .tab-btn.locked {
+            opacity: 0.35;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .tab-btn.locked:hover {
+            background: #161b22;
+            color: #8b949e;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px 18px 24px;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .tab-content h2,
+        .tab-content h3 {
+            color: #58a6ff;
+            margin-top: 0;
+        }
+
+        .id-field {
+            width: 100%;
+            padding: 14px;
+            margin: 12px 0;
+            border: 2px solid #2d333b;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: inherit;
+            background: #0d1117;
+            color: #e0e0e0;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .id-field:focus {
+            outline: none;
+            border-color: #58a6ff;
+            box-shadow: 0 0 0 3px rgba(88,166,255,0.15);
+        }
+        .id-field::placeholder {
+            color: #6e7681;
+        }
+
+        .card-pregunta {
+            background: #0d1117;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 24px;
+            border: 1px solid #2d333b;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+        }
+        .enunciado {
+            background: rgba(26,82,118,0.15);
+            padding: 16px;
+            border-radius: 12px;
+            margin: 10px 0;
+            font-weight: 500;
+            text-align: center;
+            overflow-x: auto;
+            white-space: normal;
+            word-break: break-word;
+            border: 1px solid #2d333b;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        .respuesta-area {
+            margin: 20px 0;
+        }
+        .respuesta-input {
+            width: 100%;
+            padding: 14px;
+            font-size: 1.1rem;
+            font-family: 'Courier New', monospace;
+            background: #0d1117;
+            color: #e0e0e0;
+            border: 2px solid #2d333b;
+            border-radius: 12px;
+            text-align: left;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .respuesta-input:focus {
+            outline: none;
+            border-color: #58a6ff;
+            box-shadow: 0 0 0 3px rgba(88,166,255,0.15);
+        }
+        .respuesta-input::placeholder {
+            color: #6e7681;
+        }
+
+        .live-preview {
+            background: #0d1117;
+            padding: 16px;
+            margin: 12px 0;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 1.2rem;
+            min-height: 70px;
+            border: 1px dashed #484f58;
+            color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: auto;
+        }
+
+        .botones-math {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            margin: 15px 0;
+        }
+        .btn-math {
+            background: #1a5276;
+            border: none;
+            color: white;
+            padding: 12px 4px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            transition: transform 0.1s, background 0.2s, box-shadow 0.2s;
+            touch-action: manipulation;
+        }
+        .btn-math:active {
+            transform: scale(0.95);
+            background: #154360;
+            box-shadow: 0 0 12px rgba(26,82,118,0.5);
+        }
+        .btn-clear {
+            background: #da3633;
+        }
+        .btn-clear:active {
+            background: #b62318;
+            box-shadow: 0 0 12px rgba(218,54,51,0.4);
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            gap: 12px;
+        }
+        .nav-buttons button {
+            flex: 1;
+            background: #1a5276;
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            touch-action: manipulation;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+        .nav-buttons button:active {
+            transform: scale(0.98);
+            background: #154360;
+            box-shadow: 0 0 12px rgba(26,82,118,0.5);
+        }
+
+        .guardarBtn {
+            background: #238636 !important;
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+            touch-action: manipulation;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+        .guardarBtn:active {
+            transform: scale(0.98);
+            background: #196c2e !important;
+            box-shadow: 0 0 12px rgba(35,134,54,0.4);
+        }
+
+        .msg-guardado {
+            color: #3fb950;
+            font-size: 0.85rem;
+            margin-top: 8px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .progreso {
+            background: #2d333b;
+            border-radius: 3px;
+            height: 6px;
+            margin: 15px 0;
+            width: 100%;
+            overflow: hidden;
+        }
+        .progreso-bar {
+            background: #58a6ff;
+            width: 0%;
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.3s;
+            box-shadow: 0 0 8px rgba(88,166,255,0.3);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+            color: #e0e0e0;
+        }
+        th {
+            background: #1a5276;
+            color: white;
+            padding: 10px 6px;
+            text-align: center;
+            border: 1px solid #2d333b;
+        }
+        td {
+            border: 1px solid #2d333b;
+            padding: 8px 6px;
+            text-align: center;
+            vertical-align: middle;
+        }
+        tr:nth-child(even) {
+            background: #0d1117;
+        }
+        tr:nth-child(odd) {
+            background: #161b22;
+        }
+        .correcto {
+            background: rgba(63,185,80,0.1) !important;
+            color: #3fb950;
+        }
+        .incorrecto {
+            background: rgba(248,81,73,0.08) !important;
+            color: #f85149;
+        }
+
+        footer {
+            text-align: center;
+            padding: 12px;
+            background: #0d1117;
+            font-size: 0.75rem;
+            color: #8b949e;
+            border-top: 1px solid #2d333b;
+        }
+
+        .calificacion-global {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #1a5276, #0d419d);
+            color: white;
+            padding: 24px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(26,82,118,0.4), 0 0 30px rgba(88,166,255,0.1);
+        }
+
+        .btn-pdf {
+            background: #da3633 !important;
+            margin-top: 20px;
+            width: 100%;
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+        .btn-pdf:active {
+            transform: scale(0.98);
+            background: #b62318 !important;
+        }
+
+        .num-ejercicio {
+            font-size: 0.8rem;
+            color: #8b949e;
+            text-align: right;
+            margin-bottom: 5px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .badge {
+            background: #1a5276;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            box-shadow: 0 0 8px rgba(26,82,118,0.4);
+        }
+
+        .instrucciones-box {
+            margin-top: 20px;
+            background: rgba(26,82,118,0.1);
+            border: 2px solid #2d333b;
+            border-radius: 12px;
+            padding: 16px;
+            color: #e0e0e0;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .instrucciones-box strong {
+            color: #58a6ff;
+        }
+        .instrucciones-box code {
+            background: #0d1117;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #58a6ff;
+            font-family: 'Courier New', monospace;
+        }
+
+        button {
+            background: #1a5276;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .warning-box {
+            background: rgba(210,153,34,0.1);
+            border: 2px solid #d29922;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            font-size: 0.9rem;
+            color: #e3b341;
+        }
+
+        .explain-box {
+            background: rgba(46,160,67,0.08);
+            border-left: 4px solid #3fb950;
+            padding: 14px;
+            border-radius: 0 12px 12px 0;
+            margin: 12px 0;
+            font-size: 0.95rem;
+            color: #e0e0e0;
+        }
+        .explain-box strong {
+            color: #3fb950;
+        }
+
+        #reinicioManualBtn {
+            background: #da3633;
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+        #reinicioManualBtn:active {
+            background: #b62318;
+            box-shadow: 0 0 12px rgba(218,54,51,0.4);
+        }
+        #guardarPerfil {
+            background: #1a5276;
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+        #guardarPerfil:active {
+            background: #154360;
+            box-shadow: 0 0 12px rgba(26,82,118,0.5);
+        }
+
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1a5276, #0d419d);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            box-shadow: 0 4px 20px rgba(26,82,118,0.4), 0 0 30px rgba(88,166,255,0.1);
+            text-align: center;
+        }
+        .score-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        .score-label {
+            font-size: 0.75rem;
+            opacity: 0.9;
+        }
+
+        .motivo-algebra {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 24px auto 8px;
+            padding: 10px;
+        }
+        .motivo-algebra svg {
+            width: 100%;
+            max-width: 340px;
+            height: auto;
+        }
+        .motivo-titulo {
+            text-align: center;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #58a6ff;
+            margin-bottom: 4px;
+            letter-spacing: 1px;
+        }
+        .motivo-subtitulo {
+            text-align: center;
+            font-size: 0.82rem;
+            color: #8b949e;
+            margin-bottom: 12px;
+        }
+        @keyframes fadeScaleIn {
+            from { opacity: 0; transform: scale(0.92); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+        .motivo-algebra svg {
+            animation: fadeScaleIn 0.8s ease forwards;
+        }
+        @keyframes floatUp {
+            0%   { opacity: 0; transform: translateY(18px); }
+            40%  { opacity: 1; }
+            100% { opacity: 0.7; transform: translateY(0); }
+        }
+        .float-sym {
+            animation: floatUp 1.2s ease forwards;
+        }
+        .float-sym:nth-child(2) { animation-delay: 0.15s; }
+        .float-sym:nth-child(3) { animation-delay: 0.3s; }
+        .float-sym:nth-child(4) { animation-delay: 0.45s; }
+        .float-sym:nth-child(5) { animation-delay: 0.6s; }
+        .float-sym:nth-child(6) { animation-delay: 0.75s; }
+        .float-sym:nth-child(7) { animation-delay: 0.9s; }
+        .float-sym:nth-child(8) { animation-delay: 1.05s; }
+
+        .msg-nombre-requerido {
+            color: #f85149;
+            font-size: 0.85rem;
+            margin-top: 6px;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+        .msg-nombre-guardado {
+            color: #3fb950;
+            font-size: 0.85rem;
+            margin-top: 6px;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+
+        @media (max-width: 550px) {
+            .tab-btn { font-size: 0.65rem; padding: 10px 4px; }
+            .btn-math { padding: 10px 2px; font-size: 1rem; }
+            .calificacion-global { font-size: 1.5rem; padding: 15px; }
+            .container { padding: 0; }
+            .tab-content { padding: 16px 12px 20px; }
+            .card-pregunta { padding: 16px; }
+            table { font-size: 0.7rem; }
+            .motivo-algebra svg { max-width: 260px; }
+        }
+
+        .katex { font-size: 1.05em; }
+
+        /* contador flotante */
+        .event-counter-float {
+            position: fixed;
+            bottom: 16px;
+            right: 16px;
+            background: #1a5276cc;
+            backdrop-filter: blur(6px);
+            color: white;
+            border-radius: 40px;
+            padding: 6px 14px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            font-family: monospace;
+            z-index: 9999;
+            border: 1px solid #58a6ff;
+            box-shadow: 0 0 12px rgba(0,0,0,0.5);
+            pointer-events: none;
+            letter-spacing: 0.3px;
+        }
+        .evento-informe {
+            margin-top: 24px;
+            background: #0d1117;
+            border-radius: 16px;
+            padding: 16px;
+            border: 1px solid #2d333b;
+        }
+        .evento-informe h4 {
+            margin: 0 0 12px 0;
+            color: #58a6ff;
+        }
+        .evento-informe ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .evento-informe li {
+            margin: 6px 0;
+            color: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="tab-inicio">📋 Inicio</button>
+        <button class="tab-btn locked" data-tab="tab-tema1">📘 Binomio²</button>
+        <button class="tab-btn locked" data-tab="tab-tema2">📙 Conjugados</button>
+        <button class="tab-btn locked" data-tab="tab-tema3">📕 Término común</button>
+        <button class="tab-btn locked" data-tab="tab-resultados">📊 Resultados</button>
+    </div>
+
+    <div id="tab-inicio" class="tab-content active">
+        <h2>Identificación del alumno</h2>
+        <div class="motivo-titulo">Productos Notables Interactivos</div>
+        <div class="motivo-subtitulo">Binomios al Cuadrado, Conjugados y con Término Común</div>
+        <div class="motivo-algebra">
+            <svg viewBox="0 0 340 160" xmlns="http://www.w3.org/2000/svg">
+                <defs><linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#1a5276;stop-opacity:0.18" /><stop offset="100%" style="stop-color:#0d419d;stop-opacity:0.10" /></linearGradient><linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#58a6ff;stop-opacity:0.0" /><stop offset="50%" style="stop-color:#58a6ff;stop-opacity:0.6" /><stop offset="100%" style="stop-color:#58a6ff;stop-opacity:0.0" /></linearGradient></defs>
+                <rect x="2" y="2" width="336" height="156" rx="18" ry="18" fill="url(#bgGrad)" stroke="#2d333b" stroke-width="1.5"/>
+                <g opacity="0.08" stroke="#58a6ff" stroke-width="0.5"><line x1="20" y1="0" x2="20" y2="160"/><line x1="60" y1="0" x2="60" y2="160"/><line x1="100" y1="0" x2="100" y2="160"/><line x1="140" y1="0" x2="140" y2="160"/><line x1="180" y1="0" x2="180" y2="160"/><line x1="220" y1="0" x2="220" y2="160"/><line x1="260" y1="0" x2="260" y2="160"/><line x1="300" y1="0" x2="300" y2="160"/><line x1="0" y1="30" x2="340" y2="30"/><line x1="0" y1="60" x2="340" y2="60"/><line x1="0" y1="90" x2="340" y2="90"/><line x1="0" y1="120" x2="340" y2="120"/></g>
+                <line x1="30" y1="135" x2="310" y2="135" stroke="url(#lineGrad)" stroke-width="1"/>
+                <g class="float-sym" font-family="Georgia, 'Times New Roman', serif" font-weight="700"><text x="30" y="50" font-size="22" fill="#58a6ff" opacity="0.85">x²</text></g>
+                <g class="float-sym" font-family="Georgia, 'Times New Roman', serif" font-weight="700"><text x="100" y="38" font-size="18" fill="#3fb950" opacity="0.75">+</text></g>
+                <g class="float-sym" font-family="Georgia, 'Times New Roman', serif" font-weight="700"><text x="160" y="55" font-size="24" fill="#e3b341" opacity="0.80">π</text></g>
+                <g class="float-sym" font-family="Georgia, 'Times New Roman', serif" font-weight="700"><text x="240" y="42" font-size="20" fill="#f85149" opacity="0.70">∑</text></g>
+                <g class="float-sym" font-family="Georgia, 'Times New Roman', serif" font-weight="700"><text x="290" y="58" font-size="18" fill="#a371f7" opacity="0.75">∞</text></g>
+                <g class="float-sym" font-family="Georgia, 'Times New Roman', serif" font-weight="300"><text x="55" y="100" font-size="48" fill="#58a6ff" opacity="0.25">(</text></g>
+                <g class="float-sym" font-family="Georgia, 'Times New Roman', serif" font-weight="300"><text x="260" y="100" font-size="48" fill="#58a6ff" opacity="0.25">)</text></g>
+                <g class="float-sym" font-family="Georgia, 'Times New Roman', serif"><text x="95" y="98" font-size="16" fill="#e0e0e0" opacity="0.90" font-weight="600">(a+b)²</text></g>
+                <g class="float-sym" font-family="Georgia, 'Times New Roman', serif"><text x="185" y="98" font-size="16" fill="#58a6ff" opacity="0.80" font-weight="600">=</text></g>
+                <g class="float-sym" font-family="Georgia, 'Times New Roman', serif"><text x="202" y="98" font-size="16" fill="#3fb950" opacity="0.90" font-weight="600">a²+2ab+b²</text></g>
+                <path d="M 40,125 Q 100,55 170,125" fill="none" stroke="#58a6ff" stroke-width="1.5" opacity="0.3" stroke-dasharray="4,3"/>
+                <path d="M 170,125 Q 240,55 310,125" fill="none" stroke="#3fb950" stroke-width="1.5" opacity="0.25" stroke-dasharray="4,3"/>
+                <circle cx="105" cy="88" r="3" fill="#58a6ff" opacity="0.6"/><circle cx="170" cy="125" r="3" fill="#58a6ff" opacity="0.6"/><circle cx="235" cy="88" r="3" fill="#3fb950" opacity="0.5"/>
+                <text x="170" y="150" text-anchor="middle" font-family="'Courier New', monospace" font-size="9" fill="#8b949e" opacity="0.55" letter-spacing="2">f(x) = ax² + bx + c</text>
+            </svg>
+        </div>
+
+        <label style="color:#8b949e;font-size:0.9rem;">Nombre completo:</label>
+        <input type="text" id="nombreAlumno" class="id-field" placeholder="Ej: Ana García Méndez">
+        <div id="msgNombreRequerido" class="msg-nombre-requerido">⚠️ Debes ingresar y guardar tu nombre antes de continuar.</div>
+        <div id="msgNombreGuardado" class="msg-nombre-guardado">✅ Nombre guardado correctamente. Ya puedes navegar a las demás pestañas. La pestaña de Inicio quedará bloqueada.</div>
+
+        <label style="color:#8b949e;font-size:0.9rem;">Grupo / Materia:</label>
+        <input type="text" id="materia" class="id-field" value="ÁLGEBRA" readonly>
+        <label style="color:#8b949e;font-size:0.9rem;">Profesor:</label>
+        <input type="text" id="profesor" class="id-field" value="Prof. Adrián Cruz H" readonly>
+        <div class="instrucciones-box">🔍 <strong>Instrucciones:</strong> Resuelve cada ejercicio de productos notables usando los botones táctiles. Usa <code>^</code> para potencias (ej: x^2). Escribe los términos en orden descendente de grado, sin espacios.<br>✅ Guarda cada respuesta antes de pasar a la siguiente. El reporte final solo estará disponible cuando hayas guardado los 15 problemas.<br>⚠️ No se permite copiar/pegar.</div>
+        <div style="margin-top:20px;"><button id="reinicioManualBtn">🔄 Reiniciar con nuevos problemas</button><button id="guardarPerfil">💾 Guardar datos</button></div>
+    </div>
+
+    <div id="tab-tema1" class="tab-content"><h3>📐 Tema 1: Binomio al cuadrado — $(a \pm b)^2$</h3><div class="progreso"><div class="progreso-bar" id="progT1"></div></div><div id="preguntaContainerT1"></div><div class="nav-buttons"><button id="prevT1">◀ Anterior</button><button id="nextT1">Siguiente ▶</button></div></div>
+    <div id="tab-tema2" class="tab-content"><h3>📏 Tema 2: Binomios conjugados — $(a+b)(a-b)$</h3><div class="progreso"><div class="progreso-bar" id="progT2"></div></div><div id="preguntaContainerT2"></div><div class="nav-buttons"><button id="prevT2">◀ Anterior</button><button id="nextT2">Siguiente ▶</button></div></div>
+    <div id="tab-tema3" class="tab-content"><h3>📕 Tema 3: Binomio con término común — $(x+a)(x+b)$</h3><div class="progreso"><div class="progreso-bar" id="progT3"></div></div><div id="preguntaContainerT3"></div><div class="nav-buttons"><button id="prevT3">◀ Anterior</button><button id="nextT3">Siguiente ▶</button></div></div>
+
+    <div id="tab-resultados" class="tab-content"><h2>📋 Reporte de resultados</h2><div id="resultadosHeader"></div><div id="resultadosPanel"></div><button id="guardarPDFBtn" class="btn-pdf">📄 Guardar como PDF</button></div>
+    <footer>Productos Notables — Respuestas exactas (sin espacios, usar ^ para potencias, términos en orden descendente)</footer>
+</div>
+
+<!-- contador flotante -->
+<div id="floatingEventCounter" class="event-counter-float">📋 Eventos: Copiar 0 | Pegar 0 | CambioApp 0</div>
+
+<script>
+    // ============================================================
+    //  CONTADOR DE EVENTOS (copiar, pegar, cambio de app/pestaña)
+    // ============================================================
+    let eventCounts = { copy: 0, paste: 0, visibility: 0 };
+
+    function updateFloatingCounter() {
+        const el = document.getElementById('floatingEventCounter');
+        if (el) {
+            el.innerText = `⚠️ Eventos: Copiar ${eventCounts.copy} | Pegar ${eventCounts.paste} | CambioApp ${eventCounts.visibility}`;
+        }
+    }
+
+    function incrementEvent(type) {
+        if (type === 'copy') eventCounts.copy++;
+        else if (type === 'paste') eventCounts.paste++;
+        else if (type === 'visibility') eventCounts.visibility++;
+        updateFloatingCounter();
+    }
+
+    document.addEventListener('copy', (e) => { incrementEvent('copy'); e.preventDefault(); });
+    document.addEventListener('cut',   (e) => { incrementEvent('copy'); e.preventDefault(); });
+    document.addEventListener('paste', (e) => { incrementEvent('paste'); e.preventDefault(); alert("No está permitido pegar texto en esta actividad."); });
+
+    function blockPasteOnInputs() {
+        document.querySelectorAll('input, textarea').forEach(el => {
+            el.addEventListener('paste', (e) => { e.preventDefault(); alert("Pegado no permitido"); });
+            el.addEventListener('copy',  (e) => e.preventDefault());
+            el.addEventListener('cut',   (e) => e.preventDefault());
+        });
+    }
+
+    let visibilityCounterActive = true;
+    window.addEventListener('visibilitychange', () => {
+        if (document.hidden) incrementEvent('visibility');
+    });
+
+    function resetEventCounters() {
+        eventCounts = { copy: 0, paste: 0, visibility: 0 };
+        updateFloatingCounter();
+    }
+
+    // ============================================================
+    //  BANCO COMPLETO DE 60 EJERCICIOS
+    //  3 temas × 5 tipos × 4 variantes = 60
+    // ============================================================
+    function obtenerBancoCompleto() {
+        return {
+            // ——— TEMA 1: BINOMIO AL CUADRADO ———
+            binomioCuadrado: [
+                // Tipo 1 — (x + a)²  (muy fácil)
+                [
+                    {texto:"Calcula: $(x+1)^2$",respuesta:"x^2+2x+1"},
+                    {texto:"Calcula: $(x+2)^2$",respuesta:"x^2+4x+4"},
+                    {texto:"Calcula: $(x+3)^2$",respuesta:"x^2+6x+9"},
+                    {texto:"Calcula: $(a+1)^2$",respuesta:"a^2+2a+1"}
+                ],
+                // Tipo 2 — (x − a)²  (fácil)
+                [
+                    {texto:"Calcula: $(x-3)^2$",respuesta:"x^2-6x+9"},
+                    {texto:"Calcula: $(x-4)^2$",respuesta:"x^2-8x+16"},
+                    {texto:"Calcula: $(x-5)^2$",respuesta:"x^2-10x+25"},
+                    {texto:"Calcula: $(a-2)^2$",respuesta:"a^2-4a+4"}
+                ],
+                // Tipo 3 — (ax + b)²  (medio)
+                [
+                    {texto:"Calcula: $(2x+3)^2$",respuesta:"4x^2+12x+9"},
+                    {texto:"Calcula: $(2x+5)^2$",respuesta:"4x^2+20x+25"},
+                    {texto:"Calcula: $(3x+2)^2$",respuesta:"9x^2+12x+4"},
+                    {texto:"Calcula: $(3x+4)^2$",respuesta:"9x^2+24x+16"}
+                ],
+                // Tipo 4 — (ax − by)²  (medio-alto)
+                [
+                    {texto:"Calcula: $(3x-2y)^2$",respuesta:"9x^2-12xy+4y^2"},
+                    {texto:"Calcula: $(2x-3y)^2$",respuesta:"4x^2-12xy+9y^2"},
+                    {texto:"Calcula: $(4x-y)^2$",respuesta:"16x^2-8xy+y^2"},
+                    {texto:"Calcula: $(3x-4y)^2$",respuesta:"9x^2-24xy+16y^2"}
+                ],
+                // Tipo 5 — (a² + b)²  (avanzado)
+                [
+                    {texto:"Calcula: $(4a^2+3)^2$",respuesta:"16a^4+24a^2+9"},
+                    {texto:"Calcula: $(2a^2+5)^2$",respuesta:"4a^4+20a^2+25"},
+                    {texto:"Calcula: $(3a^2-2)^2$",respuesta:"9a^4-12a^2+4"},
+                    {texto:"Calcula: $(5a^2+1)^2$",respuesta:"25a^4+10a^2+1"}
+                ]
+            ],
+
+            // ——— TEMA 2: BINOMIOS CONJUGADOS ———
+            conjugados: [
+                // Tipo 1 — (x + a)(x − a)  (muy fácil)
+                [
+                    {texto:"Calcula: $(x+1)(x-1)$",respuesta:"x^2-1"},
+                    {texto:"Calcula: $(x+2)(x-2)$",respuesta:"x^2-4"},
+                    {texto:"Calcula: $(x+3)(x-3)$",respuesta:"x^2-9"},
+                    {texto:"Calcula: $(a+5)(a-5)$",respuesta:"a^2-25"}
+                ],
+                // Tipo 2 — (x + a)(x − a) con a mayor  (fácil)
+                [
+                    {texto:"Calcula: $(x+4)(x-4)$",respuesta:"x^2-16"},
+                    {texto:"Calcula: $(x+6)(x-6)$",respuesta:"x^2-36"},
+                    {texto:"Calcula: $(a+7)(a-7)$",respuesta:"a^2-49"},
+                    {texto:"Calcula: $(b+8)(b-8)$",respuesta:"b^2-64"}
+                ],
+                // Tipo 3 — (ax + b)(ax − b)  (medio)
+                [
+                    {texto:"Calcula: $(2x+3)(2x-3)$",respuesta:"4x^2-9"},
+                    {texto:"Calcula: $(2x+5)(2x-5)$",respuesta:"4x^2-25"},
+                    {texto:"Calcula: $(3x+1)(3x-1)$",respuesta:"9x^2-1"},
+                    {texto:"Calcula: $(3x+4)(3x-4)$",respuesta:"9x^2-16"}
+                ],
+                // Tipo 4 — (ax + by)(ax − by)  (medio-alto)
+                [
+                    {texto:"Calcula: $(4x+3y)(4x-3y)$",respuesta:"16x^2-9y^2"},
+                    {texto:"Calcula: $(3x+2y)(3x-2y)$",respuesta:"9x^2-4y^2"},
+                    {texto:"Calcula: $(5x+y)(5x-y)$",respuesta:"25x^2-y^2"},
+                    {texto:"Calcula: $(2x+5y)(2x-5y)$",respuesta:"4x^2-25y^2"}
+                ],
+                // Tipo 5 — (a² + b)(a² − b)  (avanzado)
+                [
+                    {texto:"Calcula: $(3a^2+2b)(3a^2-2b)$",respuesta:"9a^4-4b^2"},
+                    {texto:"Calcula: $(2a^2+5b)(2a^2-5b)$",respuesta:"4a^4-25b^2"},
+                    {texto:"Calcula: $(4a^2+b)(4a^2-b)$",respuesta:"16a^4-b^2"},
+                    {texto:"Calcula: $(3a^2+4b)(3a^2-4b)$",respuesta:"9a^4-16b^2"}
+                ]
+            ],
+
+            // ——— TEMA 3: BINOMIO CON TÉRMINO COMÚN ———
+            terminoComun: [
+                // Tipo 1 — (x + a)(x + b) ambos positivos  (muy fácil)
+                [
+                    {texto:"Calcula: $(x+2)(x+3)$",respuesta:"x^2+5x+6"},
+                    {texto:"Calcula: $(x+1)(x+4)$",respuesta:"x^2+5x+4"},
+                    {texto:"Calcula: $(x+2)(x+5)$",respuesta:"x^2+7x+10"},
+                    {texto:"Calcula: $(x+3)(x+4)$",respuesta:"x^2+7x+12"}
+                ],
+                // Tipo 2 — (x + a)(x − b) signos mixtos  (fácil)
+                [
+                    {texto:"Calcula: $(x+3)(x-2)$",respuesta:"x^2+x-6"},
+                    {texto:"Calcula: $(x+4)(x-1)$",respuesta:"x^2+3x-4"},
+                    {texto:"Calcula: $(x+5)(x-3)$",respuesta:"x^2+2x-15"},
+                    {texto:"Calcula: $(x+2)(x-5)$",respuesta:"x^2-3x-10"}
+                ],
+                // Tipo 3 — (x − a)(x − b) ambos negativos  (medio)
+                [
+                    {texto:"Calcula: $(x-3)(x-4)$",respuesta:"x^2-7x+12"},
+                    {texto:"Calcula: $(x-2)(x-6)$",respuesta:"x^2-8x+12"},
+                    {texto:"Calcula: $(x-5)(x-1)$",respuesta:"x^2-6x+5"},
+                    {texto:"Calcula: $(x-6)(x-1)$",respuesta:"x^2-7x+6"}
+                ],
+                // Tipo 4 — (ax + b)(ax + c) con coeficiente  (medio-alto)
+                [
+                    {texto:"Calcula: $(2x+3)(2x+1)$",respuesta:"4x^2+8x+3"},
+                    {texto:"Calcula: $(2x+5)(2x+3)$",respuesta:"4x^2+16x+15"},
+                    {texto:"Calcula: $(3x+2)(3x+4)$",respuesta:"9x^2+18x+8"},
+                    {texto:"Calcula: $(3x+1)(3x+5)$",respuesta:"9x^2+18x+5"}
+                ],
+                // Tipo 5 — (ax − b)(ax − c) con coeficiente y negativos  (avanzado)
+                [
+                    {texto:"Calcula: $(3x-2)(3x-5)$",respuesta:"9x^2-21x+10"},
+                    {texto:"Calcula: $(4x-1)(4x-3)$",respuesta:"16x^2-16x+3"},
+                    {texto:"Calcula: $(2x-3)(2x-7)$",respuesta:"4x^2-20x+21"},
+                    {texto:"Calcula: $(5x-2)(5x-3)$",respuesta:"25x^2-25x+6"}
+                ]
+            ]
+        };
+    }
+
+    // ============================================================
+    //  VARIABLES GLOBALES
+    // ============================================================
+    let nombreGuardado = false;
+    let preguntasPorTema = { tema1: [], tema2: [], tema3: [] };
+    let respuestasAlumno = { tema1: [], tema2: [], tema3: [] };
+    let indicePreguntaActual = { tema1: 0, tema2: 0, tema3: 0 };
+
+    // ============================================================
+    //  INICIALIZACIÓN — Selección aleatoria de variantes
+    // ============================================================
+    function inicializarBancos() {
+        const banco = obtenerBancoCompleto();
+
+        // De cada tipo (array de 4 variantes), elegir 1 al azar
+        function elegirDeCadaTipo(tipos) {
+            return tipos.map(tipo => tipo[Math.floor(Math.random() * tipo.length)]);
+        }
+
+        preguntasPorTema.tema1 = elegirDeCadaTipo(banco.binomioCuadrado);
+        preguntasPorTema.tema2 = elegirDeCadaTipo(banco.conjugados);
+        preguntasPorTema.tema3 = elegirDeCadaTipo(banco.terminoComun);
+
+        for (let t of ['tema1', 'tema2', 'tema3']) {
+            respuestasAlumno[t] = [];
+            for (let i = 0; i < preguntasPorTema[t].length; i++) {
+                respuestasAlumno[t][i] = "";
+            }
+        }
+    }
+
+    // ============================================================
+    //  FUNCIONES DE RENDERIZADO KaTeX
+    // ============================================================
+    function renderizarTextoMixto(texto, elemento) {
+        if (!elemento) return;
+        const regex = /\$([^$]+)\$/g;
+        let lastIndex = 0, match, html = '';
+        while ((match = regex.exec(texto)) !== null) {
+            if (match.index > lastIndex) html += texto.substring(lastIndex, match.index);
+            try { html += katex.renderToString(match[1], { throwOnError: false, displayMode: false }); }
+            catch(e) { html += match[1]; }
+            lastIndex = match.index + match[0].length;
+        }
+        if (lastIndex < texto.length) html += texto.substring(lastIndex);
+        elemento.innerHTML = html;
+    }
+
+    function renderizarExpresionMath(expr, elemento) {
+        if (!elemento) return;
+        let raw = expr.trim();
+        if (raw === "") { elemento.innerHTML = ""; return; }
+        try { elemento.innerHTML = katex.renderToString(raw, { throwOnError: false, displayMode: false }); }
+        catch(e) { elemento.innerText = raw; }
+    }
+
+    // ============================================================
+    //  NAVEGACIÓN Y BLOQUEO DE PESTAÑAS
+    // ============================================================
+    function verificarNombreGuardado() { return nombreGuardado; }
+
+    function desbloquearPestanas() {
+        document.querySelectorAll('.tab-btn.locked').forEach(btn => btn.classList.remove('locked'));
+        document.querySelector('[data-tab="tab-inicio"]').classList.add('locked');
+    }
+
+    function actualizarLivePreview(inputId, previewId) {
+        let val = document.getElementById(inputId)?.value || "";
+        let preview = document.getElementById(previewId);
+        if (preview) renderizarExpresionMath(val, preview);
+    }
+
+    function actualizarProgreso(temaId) {
+        let total = preguntasPorTema[temaId].length;
+        let respondidas = respuestasAlumno[temaId].filter(r => r.trim() !== "").length;
+        let porcentaje = (respondidas / total) * 100;
+        let barId = (temaId === 'tema1' ? 'progT1' : (temaId === 'tema2' ? 'progT2' : 'progT3'));
+        let bar = document.getElementById(barId);
+        if (bar) bar.style.width = `${porcentaje}%`;
+    }
+
+    // ============================================================
+    //  RENDERIZAR UNA PREGUNTA
+    // ============================================================
+    function renderizarPregunta(temaId, containerId) {
+        let preguntas = preguntasPorTema[temaId];
+        let idx = indicePreguntaActual[temaId];
+        let pregunta = preguntas[idx];
+        let respuestaGuardada = respuestasAlumno[temaId][idx] || "";
+        let uniqueId = `resp_${temaId}_${idx}`;
+        let previewId = `preview_${temaId}_${idx}`;
+        let numEjercicio = idx + 1;
+        let total = preguntas.length;
+
+        let html = `<div class="card-pregunta">
+            <div class="num-ejercicio">Ejercicio ${numEjercicio} / ${total}</div>
+            <div class="enunciado" id="enunciado_${temaId}_${idx}"></div>
+            <div class="respuesta-area">
+                <input type="text" id="${uniqueId}" class="respuesta-input" value="${respuestaGuardada.replace(/"/g, '&quot;')}" placeholder="Ej: x^2+2x+1" autocomplete="off">
+                <div class="live-preview" id="${previewId}"></div>
+                <div class="botones-math">
+                    <button class="btn-math" data-char="+">+</button>
+                    <button class="btn-math" data-char="-">−</button>
+                    <button class="btn-math" data-char="*">*</button>
+                    <button class="btn-math" data-char="/">/</button>
+                    <button class="btn-math" data-char="^">^</button>
+                    <button class="btn-math" data-char="(">(</button>
+                    <button class="btn-math" data-char=")">)</button>
+                    <button class="btn-math" data-char=".">.</button>
+                    <button class="btn-math" data-char="=">=</button>
+                    <button class="btn-math btn-clear" data-char="clear">Limpiar</button>
+                    <button class="btn-math" data-char="←" style="grid-column:span 2;">⌫ Borrar</button>
+                </div>
+                <button class="guardarBtn" data-tema="${temaId}" data-idx="${idx}">💾 Guardar respuesta</button>
+                <div id="msg_${uniqueId}" class="msg-guardado"></div>
+            </div>
+        </div>`;
+
+        document.getElementById(containerId).innerHTML = html;
+
+        // Renderizar enunciado con KaTeX
+        let enunciadoDiv = document.getElementById(`enunciado_${temaId}_${idx}`);
+        if (enunciadoDiv) renderizarTextoMixto(pregunta.texto, enunciadoDiv);
+
+        // Configurar input y live preview
+        let inputField = document.getElementById(uniqueId);
+        if (inputField) {
+            inputField.addEventListener('input', () => actualizarLivePreview(uniqueId, previewId));
+            actualizarLivePreview(uniqueId, previewId);
+            inputField.addEventListener('paste', (e) => { e.preventDefault(); alert("Pegado no permitido"); });
+        }
+
+        // Botones matemáticos
+        let btns = document.querySelectorAll(`#${containerId} .btn-math`);
+        btns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                let char = btn.getAttribute('data-char');
+                if (char === 'clear') { if (inputField) inputField.value = ''; }
+                else if (char === '←') { if (inputField) inputField.value = inputField.value.slice(0, -1); }
+                else { if (inputField) inputField.value += char; }
+                if (inputField) { inputField.dispatchEvent(new Event('input')); inputField.focus(); }
+            });
+        });
+
+        // Botón guardar
+        let guardar = document.querySelector(`#${containerId} .guardarBtn`);
+        if (guardar) {
+            guardar.addEventListener('click', () => {
+                let val = inputField ? inputField.value.trim() : "";
+                respuestasAlumno[temaId][idx] = val;
+                let msgDiv = document.getElementById(`msg_${uniqueId}`);
+                if (msgDiv) { msgDiv.textContent = "✅ Respuesta guardada"; setTimeout(() => msgDiv.textContent = "", 1500); }
+                actualizarProgreso(temaId);
+            });
+        }
+
+        actualizarProgreso(temaId);
+    }
+
+    // ============================================================
+    //  NAVEGACIÓN ENTRE PREGUNTAS
+    // ============================================================
+    function navegar(temaId, direccion, containerId) {
+        let nuevo = indicePreguntaActual[temaId] + direccion;
+        if (nuevo >= 0 && nuevo < preguntasPorTema[temaId].length) {
+            indicePreguntaActual[temaId] = nuevo;
+            renderizarPregunta(temaId, containerId);
+        }
+    }
+
+    // ============================================================
+    //  VERIFICAR COMPLETITUD
+    // ============================================================
+    function todasRespuestasCompletas() {
+        for (let t of ['tema1', 'tema2', 'tema3']) {
+            for (let i = 0; i < preguntasPorTema[t].length; i++) {
+                if (!respuestasAlumno[t][i] || respuestasAlumno[t][i].trim() === "") return false;
+            }
+        }
+        return true;
+    }
+
+    function escapeHtml(str) {
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    // ============================================================
+    //  MOSTRAR RESULTADOS
+    // ============================================================
+    function mostrarResultados() {
+        let completas = todasRespuestasCompletas();
+        let nombre = document.getElementById('nombreAlumno').value || "Anónimo";
+        let headerDiv = document.getElementById('resultadosHeader');
+        let panel = document.getElementById('resultadosPanel');
+        let totalGlobal = preguntasPorTema.tema1.length + preguntasPorTema.tema2.length + preguntasPorTema.tema3.length;
+
+        if (!completas) {
+            headerDiv.innerHTML = "";
+            panel.innerHTML = `<div class="warning-box">⚠️ Aún no has guardado respuesta en todos los problemas. Completa los ${totalGlobal} ejercicios y guarda cada respuesta para ver tu calificación.</div>`;
+            return;
+        }
+
+        let aciertos = 0, total = 0, detalles = [];
+        let temaNombres = {
+            tema1: "Binomio al cuadrado",
+            tema2: "Binomios conjugados",
+            tema3: "Término común"
+        };
+
+        for (let t of ['tema1', 'tema2', 'tema3']) {
+            let preg = preguntasPorTema[t];
+            let resp = respuestasAlumno[t];
+            for (let i = 0; i < preg.length; i++) {
+                total++;
+                let userResp = resp[i] || "";
+                let correcta = preg[i].respuesta;
+                let ok = (userResp.replace(/\s/g, '').toLowerCase() === correcta.replace(/\s/g, '').toLowerCase());
+                if (ok) aciertos++;
+                detalles.push({ temaNombre: temaNombres[t], pregunta: preg[i].texto, userResp, correcta, ok });
+            }
+        }
+
+        let calificacion = Math.round(aciertos / total * 100);
+
+        headerDiv.innerHTML = `
+            <div class="score-circle">
+                <div class="score-number">${aciertos}/${total}</div>
+                <div class="score-label">Calificación: ${calificacion}%</div>
+            </div>
+            <div style="text-align:center;margin-bottom:20px;color:#8b949e;">
+                <strong style="color:#58a6ff;">Alumno:</strong>
+                <span style="color:#e0e0e0;">${nombre}</span>
+            </div>`;
+
+        let html = `<div class="card-pregunta"><table><thead><tr>
+            <th>#</th><th>Tema</th><th>Pregunta</th><th>Tu respuesta</th><th>Correcta?</th>
+        </tr></thead><tbody>`;
+
+        for (let i = 0; i < detalles.length; i++) {
+            let d = detalles[i];
+            let idx = i + 1;
+            html += `<tr class="${d.ok ? 'correcto' : 'incorrecto'}">
+                <td>${idx}</td>
+                <td>${d.temaNombre}</td>
+                <td><div id="preg_${idx}" class="pregunta-mixta"></div></td>
+                <td><span id="user_${idx}">${escapeHtml(d.userResp) || "—"}</span></td>
+                <td>${d.ok ? "✓" : `✗ (Esperado: <span id="exp_${idx}">${escapeHtml(d.correcta)}</span>)`}</td>
+            </tr>`;
+        }
+        html += `</tbody></table></div>`;
+        panel.innerHTML = html;
+
+        // Renderizar KaTeX en la tabla de resultados
+        for (let i = 1; i <= detalles.length; i++) {
+            let pregDiv = document.getElementById(`preg_${i}`);
+            if (pregDiv) renderizarTextoMixto(detalles[i - 1].pregunta, pregDiv);
+            let userSpan = document.getElementById(`user_${i}`);
+            if (userSpan && userSpan.innerText.trim()) renderizarExpresionMath(userSpan.innerText, userSpan);
+            let expSpan = document.getElementById(`exp_${i}`);
+            if (expSpan && expSpan.innerText.trim()) renderizarExpresionMath(expSpan.innerText, expSpan);
+        }
+
+        // Informe de eventos
+        let informeHTML = `<div class="evento-informe">
+            <h4>📊 Registro de intentos de distracción</h4>
+            <ul>
+                <li>📋 Intentos de copiar: ${eventCounts.copy}</li>
+                <li>📌 Intentos de pegar: ${eventCounts.paste}</li>
+                <li>🪟 Cambios de pestaña / minimizar / otra app: ${eventCounts.visibility}</li>
+                <li>🔍 Nota: No se incluyen cambios internos de pestaña ni uso de teclado.</li>
+            </ul>
+        </div>`;
+        panel.insertAdjacentHTML('beforeend', informeHTML);
+    }
+
+    // ============================================================
+    //  REINICIAR CON NUEVOS PROBLEMAS
+    // ============================================================
+    function reiniciarConNuevosProblemas() {
+        inicializarBancos();
+        for (let t of ['tema1', 'tema2', 'tema3']) indicePreguntaActual[t] = 0;
+        renderizarPregunta('tema1', 'preguntaContainerT1');
+        renderizarPregunta('tema2', 'preguntaContainerT2');
+        renderizarPregunta('tema3', 'preguntaContainerT3');
+        document.getElementById('resultadosHeader').innerHTML = "";
+        document.getElementById('resultadosPanel').innerHTML = "";
+        resetEventCounters();
+        alert("Se han generado nuevos problemas. Tus respuestas anteriores se borraron.");
+    }
+
+    // ============================================================
+    //  CONFIGURACIÓN DE PESTAÑAS Y BOTONES
+    // ============================================================
+    function cargarTabs() {
+        const tabs = document.querySelectorAll('.tab-btn');
+        const contents = document.querySelectorAll('.tab-content');
+
+        tabs.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabId = btn.dataset.tab;
+
+                if (btn.classList.contains('locked')) {
+                    if (tabId !== 'tab-inicio') {
+                        if (!verificarNombreGuardado()) {
+                            document.getElementById('msgNombreRequerido').style.display = 'block';
+                            document.getElementById('msgNombreGuardado').style.display = 'none';
+                            contents.forEach(c => c.classList.remove('active'));
+                            document.getElementById('tab-inicio').classList.add('active');
+                            tabs.forEach(b => b.classList.remove('active'));
+                            document.querySelector('[data-tab="tab-inicio"]').classList.add('active');
+                            return;
+                        }
+                    }
+                    return;
+                }
+
+                contents.forEach(c => c.classList.remove('active'));
+                document.getElementById(tabId).classList.add('active');
+                tabs.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                if (tabId === 'tab-tema1') renderizarPregunta('tema1', 'preguntaContainerT1');
+                if (tabId === 'tab-tema2') renderizarPregunta('tema2', 'preguntaContainerT2');
+                if (tabId === 'tab-tema3') renderizarPregunta('tema3', 'preguntaContainerT3');
+                if (tabId === 'tab-resultados') mostrarResultados();
+            });
+        });
+
+        // Navegación dentro de cada tema
+        document.getElementById('prevT1').onclick = () => navegar('tema1', -1, 'preguntaContainerT1');
+        document.getElementById('nextT1').onclick = () => navegar('tema1',  1, 'preguntaContainerT1');
+        document.getElementById('prevT2').onclick = () => navegar('tema2', -1, 'preguntaContainerT2');
+        document.getElementById('nextT2').onclick = () => navegar('tema2',  1, 'preguntaContainerT2');
+        document.getElementById('prevT3').onclick = () => navegar('tema3', -1, 'preguntaContainerT3');
+        document.getElementById('nextT3').onclick = () => navegar('tema3',  1, 'preguntaContainerT3');
+
+        // Guardar perfil
+        document.getElementById('guardarPerfil').onclick = () => {
+            let nombreVal = document.getElementById('nombreAlumno').value.trim();
+            if (nombreVal === "") {
+                document.getElementById('msgNombreRequerido').style.display = 'block';
+                document.getElementById('msgNombreGuardado').style.display = 'none';
+                return;
+            }
+            nombreGuardado = true;
+            desbloquearPestanas();
+            document.getElementById('msgNombreRequerido').style.display = 'none';
+            document.getElementById('msgNombreGuardado').style.display = 'block';
+            document.getElementById('nombreAlumno').setAttribute('readonly', true);
+            document.getElementById('nombreAlumno').style.opacity = '0.6';
+            document.getElementById('guardarPerfil').disabled = true;
+            document.getElementById('guardarPerfil').style.opacity = '0.4';
+            document.getElementById('guardarPerfil').style.cursor = 'not-allowed';
+        };
+
+        // Reiniciar y PDF
+        document.getElementById('reinicioManualBtn').onclick = () => reiniciarConNuevosProblemas();
+        document.getElementById('guardarPDFBtn').onclick = () => window.print();
+    }
+
+    // ============================================================
+    //  ARRANQUE
+    // ============================================================
+    inicializarBancos();
+    cargarTabs();
+
+    window.addEventListener('load', () => {
+        renderizarPregunta('tema1', 'preguntaContainerT1');
+        renderizarPregunta('tema2', 'preguntaContainerT2');
+        renderizarPregunta('tema3', 'preguntaContainerT3');
+        blockPasteOnInputs();
+    });
+</script>
+</body>
+</html>
