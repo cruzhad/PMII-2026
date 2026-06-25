@@ -1,0 +1,1867 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guía del Extraordinario — Pensamiento Matemático II — Plan 2025</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #faf7f2;
+      --surface: #ffffff;
+      --surface-alt: #f3eee6;
+      --primary: #1a2744;
+      --primary-light: #2d4a7a;
+      --accent: #c0762b;
+      --accent-hover: #a8641f;
+      --accent-light: #fdf0e3;
+      --text: #2c3344;
+      --text-muted: #6b7280;
+      --border: #e2dbd0;
+      --border-light: #ece7de;
+      --p1: #2d6a4f;
+      --p1-bg: #edf5f0;
+      --p2: #5c4b8a;
+      --p2-bg: #f0edf5;
+      --p3: #92400e;
+      --p3-bg: #fef3e2;
+      --p4: #7b341e;
+      --p4-bg: #fef0e7;
+      --p5: #2b6cb0;
+      --p5-bg: #ebf4ff;
+      --p6: #9b2c2c;
+      --p6-bg: #fef2f2;
+      --solution-bg: #f7faf8;
+      --solution-border: #b7d4c8;
+      --note-bg: #fffbeb;
+      --note-border: #f59e0b;
+      --radius: 8px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 24px rgba(0,0,0,0.1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Source Serif 4', Georgia, serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 17px;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    .guide-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 1.5rem 4rem;
+    }
+
+    /* ============ INSTITUTIONAL BANNER ============ */
+    .inst-banner {
+      background: var(--primary);
+      margin: 0 -1.5rem;
+      padding: 1.2rem 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 3px solid var(--accent);
+      text-align: center;
+    }
+
+    .inst-banner .line1 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #f0ece4;
+      letter-spacing: 0.05em;
+    }
+
+    .inst-banner .line2 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 400;
+      font-size: 1.2rem;
+      color: #b8b0a4;
+      margin-top: 0.1rem;
+    }
+
+    .inst-banner .line3 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 600;
+      font-size: 1.3rem;
+      color: var(--accent);
+      margin-top: 0.1rem;
+    }
+
+    .inst-banner .line4 {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.8rem;
+      color: #8a8279;
+      margin-top: 0.2rem;
+    }
+
+    /* ============ GUIDE HEADER ============ */
+    .guide-header {
+      background: linear-gradient(135deg, #1a2744 0%, #2a1a44 100%);
+      color: #f0ece4;
+      margin: 0 -1.5rem;
+      padding: 3rem 2rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .guide-header::before {
+      content: '';
+      position: absolute;
+      top: -60%;
+      right: -20%;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(192,118,43,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .guide-header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent), var(--accent) 50%, transparent 50%);
+    }
+
+    .header-tag {
+      display: inline-block;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+      background: rgba(192,118,43,0.12);
+      padding: 0.3rem 0.8rem;
+      border-radius: 3px;
+      margin-bottom: 1.2rem;
+    }
+
+    .guide-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 0.4rem;
+    }
+
+    .guide-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 400;
+      font-size: 1.2rem;
+      color: #b8b0a4;
+      margin-bottom: 1.5rem;
+    }
+
+    .header-meta {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.8rem;
+      color: #8a8279;
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .header-meta span { display: inline-flex; align-items: center; gap: 0.4rem; }
+
+    /* ============ SECTIONS ============ */
+    .section-intro {
+      margin: 2.5rem 0 2rem;
+      padding: 2rem;
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .section-intro h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    .section-intro p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .section-intro p:last-child { margin-bottom: 0; }
+
+    .section-intro ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .section-intro ul li {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 0.6rem;
+      padding-left: 1.4rem;
+      position: relative;
+    }
+
+    .section-intro ul li::before {
+      content: '•';
+      position: absolute;
+      left: 0.2rem;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .highlight-box {
+      background: var(--accent-light);
+      border: 1.5px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 1.2rem 1.5rem;
+      margin: 1.2rem 0;
+    }
+
+    .highlight-box p {
+      color: #4a3520;
+      font-size: 0.95rem;
+    }
+
+    .highlight-box strong {
+      color: #2c1e10;
+    }
+
+    /* ============ PONDERATION TABLE ============ */
+    .ponderation-table-wrap { overflow-x: auto; margin: 1.5rem 0; }
+
+    .ponderation-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    .ponderation-table th {
+      background: var(--primary);
+      color: #f0ece4;
+      padding: 0.7rem 1rem;
+      text-align: left;
+      font-family: 'DM Mono', monospace;
+      font-weight: 500;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .ponderation-table th:first-child { border-radius: var(--radius) 0 0 0; }
+    .ponderation-table th:last-child { border-radius: 0 var(--radius) 0 0; }
+
+    .ponderation-table td {
+      padding: 0.7rem 1rem;
+      border-bottom: 1px solid var(--border-light);
+      vertical-align: top;
+    }
+
+    .ponderation-table tr:last-child td { border-bottom: none; }
+    .ponderation-table tr:nth-child(even) td { background: var(--surface-alt); }
+
+    .tag {
+      display: inline-block;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 500;
+      padding: 0.15rem 0.5rem;
+      border-radius: 3px;
+    }
+
+    .tag-p1 { background: var(--p1-bg); color: var(--p1); }
+    .tag-p2 { background: var(--p2-bg); color: var(--p2); }
+    .tag-p3 { background: var(--p3-bg); color: var(--p3); }
+    .tag-p4 { background: var(--p4-bg); color: var(--p4); }
+    .tag-p5 { background: var(--p5-bg); color: var(--p5); }
+    .tag-p6 { background: var(--p6-bg); color: var(--p6); }
+
+    .rationale {
+      margin: 1.5rem 0;
+      padding: 1.2rem 1.5rem;
+      background: var(--surface-alt);
+      border-radius: var(--radius);
+      border-left: 3px solid var(--accent);
+    }
+
+    .rationale p {
+      font-size: 0.9rem;
+      margin-bottom: 0.6rem;
+      color: var(--text-muted);
+    }
+
+    .rationale p:last-child { margin-bottom: 0; }
+    .rationale strong { color: var(--text); }
+
+    /* ============ PURPOSE SECTIONS ============ */
+    .purpose-section { margin: 3rem 0; }
+
+    .purpose-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .purpose-number {
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: #fff;
+    }
+
+    .purpose-number.p1 { background: var(--p1); }
+    .purpose-number.p2 { background: var(--p2); }
+    .purpose-number.p3 { background: var(--p3); }
+    .purpose-number.p4 { background: var(--p4); }
+    .purpose-number.p5 { background: var(--p5); }
+    .purpose-number.p6 { background: var(--p6); }
+
+    .purpose-header h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--primary);
+      line-height: 1.3;
+    }
+
+    .purpose-header p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-top: 0.3rem;
+    }
+
+    /* ============ EXERCISE CARDS ============ */
+    .exercise-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+      transition: box-shadow 0.2s ease;
+    }
+
+    .exercise-card:hover { box-shadow: var(--shadow-md); }
+
+    .exercise-top {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 1.2rem 1.5rem 0;
+    }
+
+    .exercise-num {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'DM Mono', monospace;
+      font-weight: 500;
+      font-size: 0.85rem;
+      color: #fff;
+    }
+
+    .exercise-num.p1 { background: var(--p1); }
+    .exercise-num.p2 { background: var(--p2); }
+    .exercise-num.p3 { background: var(--p3); }
+    .exercise-num.p4 { background: var(--p4); }
+    .exercise-num.p5 { background: var(--p5); }
+    .exercise-num.p6 { background: var(--p6); }
+
+    .exercise-topic {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+
+    .exercise-statement { padding: 0.8rem 1.5rem 1.2rem; }
+
+    .exercise-statement p {
+      margin-bottom: 0.6rem;
+      font-size: 1rem;
+    }
+
+    .exercise-statement p:last-child { margin-bottom: 0; }
+
+    .math-expr {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.95rem;
+      color: var(--primary);
+      padding: 0.15rem 0;
+      letter-spacing: 0.01em;
+    }
+
+    .math-expr.sub { padding-left: 1.2rem; }
+
+    .word-problem {
+      background: #f8f6f2;
+      border-left: 3px solid #c9bfae;
+      padding: 0.8rem 1rem;
+      margin: 0.4rem 0 0.6rem;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-size: 0.95rem;
+      line-height: 1.65;
+    }
+
+    .word-problem p { color: var(--text); margin-bottom: 0; }
+
+    /* ============ MINI NOTE ============ */
+    .mini-note {
+      margin: 0 1.5rem;
+      padding: 1rem 1.2rem;
+      background: var(--note-bg);
+      border-left: 3px solid var(--note-border);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-size: 0.88rem;
+    }
+
+    .mini-note-label {
+      font-family: 'DM Mono', monospace;
+      font-weight: 500;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+      display: block;
+    }
+
+    .mini-note p {
+      color: #6b5c3a;
+      line-height: 1.6;
+      margin-bottom: 0.3rem;
+    }
+
+    .mini-note p:last-child { margin-bottom: 0; }
+    .mini-note strong { color: #4a3e28; }
+
+    /* ============ PRACTICE REMINDER ============ */
+    .practice-reminder {
+      margin: 1rem 1.5rem;
+      padding: 0.7rem 1.2rem;
+      background: var(--surface-alt);
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    .practice-icon {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--text-muted);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-style: normal;
+      font-size: 0.7rem;
+      opacity: 0.6;
+    }
+
+    /* ============ REVEAL BUTTON ============ */
+    .reveal-btn {
+      display: block;
+      width: calc(100% - 3rem);
+      margin: 0.8rem 1.5rem 1.5rem;
+      padding: 0.7rem 1.2rem;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.82rem;
+      color: var(--accent);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s ease;
+      letter-spacing: 0.02em;
+    }
+
+    .reveal-btn:hover {
+      background: var(--accent-light);
+      border-color: var(--accent);
+    }
+
+    .reveal-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .reveal-btn::before { content: '\25B8 '; display: inline; }
+    .reveal-btn.active::before { content: '\25BE '; }
+
+    /* ============ SOLUTION ============ */
+    .solution {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                  opacity 0.4s ease,
+                  padding 0.3s ease;
+      margin: 0 1.5rem;
+      padding: 0 1.2rem;
+      background: var(--solution-bg);
+      border-radius: var(--radius);
+      border: 1px solid var(--solution-border);
+    }
+
+    .solution.visible {
+      max-height: 3000px;
+      opacity: 1;
+      padding: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .solution-label {
+      font-family: 'DM Mono', monospace;
+      font-weight: 500;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--p1);
+      margin-bottom: 0.8rem;
+      display: block;
+    }
+
+    .step { margin-bottom: 0.8rem; }
+    .step:last-child { margin-bottom: 0; }
+
+    .step-label {
+      font-family: 'DM Mono', monospace;
+      font-weight: 500;
+      font-size: 0.78rem;
+      color: var(--p1);
+      display: inline;
+    }
+
+    .step p { display: inline; font-size: 0.93rem; }
+    .step .math-expr { margin: 0.2rem 0 0.2rem 1rem; display: block; }
+
+    .result {
+      margin-top: 0.8rem;
+      padding: 0.6rem 1rem;
+      background: #e8f5ee;
+      border-radius: var(--radius);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.92rem;
+      color: var(--p1);
+      font-weight: 500;
+    }
+
+    .result-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 0.2rem;
+      display: block;
+      font-weight: 400;
+    }
+
+    .verify {
+      margin-top: 0.6rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* ============ FOOTER ============ */
+    .guide-footer {
+      margin-top: 4rem;
+      padding: 2rem;
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .guide-footer h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      color: var(--primary);
+      margin-bottom: 0.6rem;
+    }
+
+    .guide-footer p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .footer-divider {
+      width: 60px;
+      height: 3px;
+      background: var(--accent);
+      margin: 1.5rem auto;
+      border-radius: 2px;
+    }
+
+    .footer-credit {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      opacity: 0.6;
+      margin-top: 1rem;
+    }
+
+    /* ============ PRINT ============ */
+    @media print {
+      body::before { display: none; }
+      .inst-banner { background: #1a2744 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .guide-header { background: #1a2744 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .solution { max-height: none !important; opacity: 1 !important; display: block !important; padding: 1.2rem !important; margin-bottom: 0.5rem !important; }
+      .reveal-btn { display: none !important; }
+      .practice-reminder { display: none !important; }
+      .exercise-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+    }
+
+    /* ============ RESPONSIVE ============ */
+    @media (max-width: 640px) {
+      body { font-size: 15px; }
+      .inst-banner { padding: 1rem; }
+      .inst-banner .line1 { font-size: 1.2rem; }
+      .inst-banner .line2 { font-size: 1rem; }
+      .inst-banner .line3 { font-size: 1.1rem; }
+      .guide-header { padding: 2.5rem 1.2rem 2rem; margin: 0 -1.5rem; }
+      .guide-header h1 { font-size: 1.7rem; }
+      .guide-header h2 { font-size: 1.05rem; }
+      .guide-container { padding: 0 1rem 3rem; }
+      .inst-banner, .guide-header { margin-left: -1rem; margin-right: -1rem; }
+      .exercise-statement, .mini-note, .practice-reminder, .solution, .reveal-btn { margin-left: 1rem; margin-right: 1rem; }
+      .reveal-btn { width: calc(100% - 2rem); }
+      .header-meta { flex-direction: column; gap: 0.5rem; }
+      .purpose-header { flex-direction: column; gap: 0.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="guide-container">
+
+  <!-- ========== INSTITUTIONAL BANNER (actualizado con el texto de la imagen) ========== -->
+  <header class="inst-banner">
+    <div class="line1">Orgullosamente DGR</div>
+    <div class="line2">Centro de Estudios de Bachillerato 4/2</div>
+    <div class="line3">"Lic. Jesús Reyes Heroles"</div>
+    <div class="line4">Ciudad de México</div>
+  </header>
+
+  <!-- ========== GUIDE HEADER ========== -->
+  <header class="guide-header">
+    <span class="header-tag">Plan 2025 &middot; Prop&oacute;sitos 1 al 6</span>
+    <h1>Gu&iacute;a del Extraordinario de PENSAMIENTO MATEM&Aacute;TICO II</h1>
+    <h2>PLAN 2025 &mdash; Introducci&oacute;n al &Aacute;lgebra</h2>
+    <div class="header-meta">
+      <span>Prop&oacute;sitos 1 al 6</span>
+      <span>24 ejercicios representativos</span>
+      <span>Segundo semestre &middot; 4 hrs/sem</span>
+    </div>
+  </header>
+
+  <!-- ========== PURPOSE ========== -->
+  <div class="section-intro">
+    <h3>Prop&oacute;sito de la gu&iacute;a</h3>
+    <div class="highlight-box">
+      <p>En esta gu&iacute;a se muestran problemas similares a los que se preguntar&aacute;n en el examen extraordinario. Rev&iacute;sala por completo y resp&oacute;ndela correctamente; podr&aacute;s usarla como apoyo el d&iacute;a del examen extraordinario.</p>
+      <p style="margin-top:0.5rem;"><strong>LA GU&Iacute;A SOLO MUESTRA PROBLEMAS TIPO EN EL EXAMEN EXTRAORDINARIO. Puede haber problemas similares con diferentes signos y diferentes contextos.</strong></p>
+    </div>
+  </div>
+
+  <!-- ========== GENERAL INSTRUCTIONS ========== -->
+  <div class="section-intro">
+    <h3>Indicaciones generales</h3>
+    <ul>
+      <li>No se permitir&aacute; la entrada al examen despu&eacute;s de los primeros 10 minutos de inicio de la hora programada por la direcci&oacute;n del plantel.</li>
+      <li>La realizaci&oacute;n de la gu&iacute;a no otorga ninguna calificaci&oacute;n extra, no es necesario entregar la gu&iacute;a resuelta. Si quieres, puedes llevarla al examen como material de apoyo.</li>
+      <li>El d&iacute;a del examen <strong>NO</strong> se permitir&aacute; el uso de calculadora.</li>
+      <li>No se permitir&aacute; el uso de tel&eacute;fonos celulares.</li>
+      <li>Los resultados del examen se pegar&aacute;n en las ventanas de la direcci&oacute;n 3 d&iacute;as h&aacute;biles despu&eacute;s del examen, a partir de las 16:00 hrs.</li>
+      <li>Debes investigar los temas en fuentes de informaci&oacute;n que te ayuden a comprender y entender los temas del examen.</li>
+    </ul>
+  </div>
+
+  <!-- ========== USAGE INSTRUCTIONS ========== -->
+  <div class="section-intro">
+    <h3>Instrucciones de uso de los ejercicios</h3>
+    <p>Esta gu&iacute;a cubre los seis prop&oacute;sitos formativos de Pensamiento Matem&aacute;tico II. Los ejercicios fueron seleccionados y ponderados para representar lo m&iacute;nimo que un estudiante debe dominar al finalizar el curso.</p>
+    <p><strong>Para cada ejercicio:</strong></p>
+    <p>1. Lee el enunciado con atenci&oacute;n y revisa la nota de apoyo.</p>
+    <p>2. Intenta resolver el ejercicio en tu cuaderno <em>antes</em> de consultar la soluci&oacute;n.</p>
+    <p>3. Solo despu&eacute;s de haberlo intentado, presiona el bot&oacute;n para verificar tu respuesta.</p>
+    <p>4. Si cometiste errores, analiza los pasos, vuelve a intentarlo con otros valores y repite hasta dominar el tipo de problema.</p>
+  </div>
+
+  <!-- ========== PONDERATION (actualizada) ========== -->
+  <div class="section-intro">
+    <h3>Ponderaci&oacute;n y selecci&oacute;n de temas</h3>
+    <p>La distribuci&oacute;n de los 24 ejercicios se basa en la relevancia de cada prop&oacute;sito para los cursos posteriores (Pensamiento Matem&aacute;tico III en adelante):</p>
+
+    <div class="ponderation-table-wrap">
+      <table class="ponderation-table">
+        <thead>
+          <tr>
+            <th>Prop&oacute;sito</th>
+            <th>Ejercicios</th>
+            <th>Ponderaci&oacute;n</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="tag tag-p1">P1</span> Lenguaje algebraico</td>
+            <td>3 (Ej. 1&ndash;3)</td>
+            <td>10%</td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-p2">P2</span> Clasificaci&oacute;n de expresiones</td>
+            <td>3 (Ej. 4&ndash;6)</td>
+            <td>10%</td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-p3">P3</span> Operaciones y factorizaci&oacute;n</td>
+            <td>9 (Ej. 7&ndash;15)</td>
+            <td>25%</td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-p4">P4</span> Operaciones avanzadas</td>
+            <td>2 (Ej. 16&ndash;17)</td>
+            <td>10%</td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-p5">P5</span> Aplicaci&oacute;n en situaciones de inter&eacute;s</td>
+            <td>3 (Ej. 18&ndash;20)</td>
+            <td>15%</td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-p6">P6</span> Ecuaciones e igualdades</td>
+            <td>4 (Ej. 21&ndash;24)</td>
+            <td>30%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="rationale">
+      <p><strong>Prop&oacute;sito 1 (10%):</strong> Es la base conceptual. Sin comprender el lenguaje algebraico, el estudiante no podr&aacute; avanzar en ecuaciones (PM III), funciones (PM IV-V) ni modelado (PM VI).</p>
+      <p><strong>Prop&oacute;sito 2 (10%):</strong> Identificar coeficiente, variable, exponente y grado es una competencia transversal necesaria para factorizar, simplificar y resolver ecuaciones en todos los semestres posteriores.</p>
+      <p><strong>Prop&oacute;sito 3 (25%):</strong> Las operaciones con polinomios y la factorizaci&oacute;n son el n&uacute;cleo operativo. Son prerrequisito directo para ecuaciones lineales y cuadr&aacute;ticas (PM III), funciones polinomiales (PM IV) y derivadas de polinomios (PM V).</p>
+      <p><strong>Prop&oacute;sito 4 (10%):</strong> Profundiza las operaciones del Prop&oacute;sito 3 con multiplicaciones m&aacute;s complejas y factorizaciones avanzadas (diferencia de cuadrados). Son operaciones que se usan constantemente en la resoluci&oacute;n de ecuaciones cuadr&aacute;ticas de PM III.</p>
+      <p><strong>Prop&oacute;sito 5 (15%):</strong> Los problemas verbales con contexto real (presupuesto, recetas, descuentos) desarrollan la capacidad de <strong>modelar</strong> situaciones algebraicamente. Esta competencia es transversal a todos los semestres y suele ser la m&aacute;s dif&iacute;cil para el estudiantado.</p>
+      <p><strong>Prop&oacute;sito 6 (30%):</strong> La comprensi&oacute;n de la igualdad y la resoluci&oacute;n de ecuaciones es <strong>el puente directo hacia PM III</strong> (ecuaciones lineales, sistemas de ecuaciones, ecuaciones cuadr&aacute;ticas). El peso m&aacute;s alto refleja que sin dominar este prop&oacute;sito, los cursos posteriores se vuelven inaccesibles.</p>
+      <p><strong>Nota:</strong> La divisi&oacute;n larga de polinomios, aunque aparece en el programa, no se incluy&oacute; como ejercicio independiente por su menor frecuencia en ex&aacute;menes extraordinarios. Se recomienda practicarla por separado.</p>
+    </div>
+  </div>
+
+  <!-- ======================================================= -->
+  <!-- ==================== PURPOSE 1 ======================== -->
+  <!-- ======================================================= -->
+  <div class="purpose-section">
+    <div class="purpose-header">
+      <div class="purpose-number p1">1</div>
+      <div>
+        <h3>Prop&oacute;sito 1 &mdash; Lenguaje algebraico</h3>
+        <p>Representa operaciones aritm&eacute;ticas utilizadas en situaciones de inter&eacute;s, mediante letras y s&iacute;mbolos, para comprender el lenguaje algebraico.</p>
+      </div>
+    </div>
+
+    <!-- Ejercicio 1 -->
+    <div class="exercise-card">
+      <div class="exercise-top">
+        <div class="exercise-num p1">1</div>
+        <span class="exercise-topic">Traducci&oacute;n verbal &rarr; algebraica</span>
+      </div>
+      <div class="exercise-statement">
+        <p>Escribe en lenguaje algebraico cada una de las siguientes expresiones verbales:</p>
+        <p class="math-expr">a) El doble de un n&uacute;mero disminuido en 5.</p>
+        <p class="math-expr">b) La suma de dos n&uacute;meros consecutivos.</p>
+        <p class="math-expr">c) El cuadrado de un n&uacute;mero aumentado en su triple.</p>
+      </div>
+      <div class="mini-note">
+        <span class="mini-note-label">Ideas fundamentales</span>
+        <p>Identifica las <strong>palabras clave</strong>: "doble" = &times;2, "triple" = &times;3, "cuadrado" = (&hellip;)<sup>2</sup>, "aumentado en" = +, "disminuido en" = &minus;.</p>
+        <p>Usa una <strong>variable</strong> (generalmente <em>x</em> o <em>n</em>) para representar "un n&uacute;mero". Si hay dos n&uacute;meros consecutivos, el segundo se expresa como <em>n + 1</em>.</p>
+      </div>
+      <div class="practice-reminder">
+        <span class="practice-icon">&#9998;</span>
+        Resuelve primero en tu cuaderno antes de ver la soluci&oacute;n.
+      </div>
+      <button class="reveal-btn" onclick="toggleSol(this)">Mostrar soluci&oacute;n</button>
+      <div class="solution">
+        <span class="solution-label">Soluci&oacute;n paso a paso</span>
+        <div class="step">
+          <span class="step-label">a) </span><p>El doble de un n&uacute;mero = 2<em>x</em>. Disminuido en 5 = &minus; 5</p>
+          <p class="math-expr sub">2x &minus; 5</p>
+        </div>
+        <div class="step">
+          <span class="step-label">b) </span><p>Si el primer n&uacute;mero es <em>n</em>, el consecutivo es <em>n + 1</em>.</p>
+          <p class="math-expr sub">n + (n + 1) = 2n + 1</p>
+        </div>
+        <div class="step">
+          <span class="step-label">c) </span><p>El cuadrado de un n&uacute;mero = x<sup>2</sup>. Su triple = 3<em>x</em>. Aumentado = +</p>
+          <p class="math-expr sub">x<sup>2</sup> + 3x</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ejercicio 2 -->
+    <div class="exercise-card">
+      <div class="exercise-top">
+        <div class="exercise-num p1">2</div>
+        <span class="exercise-topic">Identificaci&oacute;n de componentes</span>
+      </div>
+      <div class="exercise-statement">
+        <p>Dada la expresi&oacute;n algebraica:</p>
+        <p class="math-expr" style="font-size:1.05rem; padding: 0.3rem 0;">5a<sup>2</sup>b &minus; 3ab + 7b &minus; 2</p>
+        <p>Identifica:</p>
+        <p class="math-expr">a) Cada uno de los t&eacute;rminos.</p>
+        <p class="math-expr">b) La variable o variables presentes.</p>
+        <p class="math-expr">c) El t&eacute;rmino constante (independiente).</p>
+        <p class="math-expr">d) Indica si existen t&eacute;rminos semejantes.</p>
+      </div>
+      <div class="mini-note">
+        <span class="mini-note-label">Ideas fundamentales</span>
+        <p>Cada <strong>t&eacute;rmino</strong> est&aacute; separado por los signos + o &minus;. La <strong>inc&oacute;gnita</strong> es la letra cuyo valor se desconoce.</p>
+        <p><strong>T&eacute;rminos semejantes</strong> son aquellos que tienen exactamente las mismas variables con los mismos exponentes.</p>
+        <p>El <strong>t&eacute;rmino constante</strong> es el &uacute;nico que no tiene variable.</p>
+      </div>
+      <div class="practice-reminder">
+        <span class="practice-icon">&#9998;</span>
+        Resuelve primero en tu cuaderno antes de ver la soluci&oacute;n.
+      </div>
+      <button class="reveal-btn" onclick="toggleSol(this)">Mostrar soluci&oacute;n</button>
+      <div class="solution">
+        <span class="solution-label">Soluci&oacute;n paso a paso</span>
+        <div class="step">
+          <span class="step-label">a) </span><p>T&eacute;rminos (4):</p>
+          <p class="math-expr sub">5a<sup>2</sup>b &nbsp;&nbsp;|&nbsp;&nbsp; &minus;3ab &nbsp;&nbsp;|&nbsp;&nbsp; 7b &nbsp;&nbsp;|&nbsp;&nbsp; &minus;2</p>
+        </div>
+        <div class="step">
+          <span class="step-label">b) </span><p>Variables presentes: <strong>a</strong> y <strong>b</strong></p>
+        </div>
+        <div class="step">
+          <span class="step-label">c) </span><p>T&eacute;rmino constante: <strong>&minus;2</strong> (es el &uacute;nico sin variable)</p>
+        </div>
+        <div class="step">
+          <span class="step-label">d) </span><p>No hay t&eacute;rminos semejantes: cada t&eacute;rmino tiene una combinaci&oacute;n diferente de variables y exponentes (a<sup>2</sup>b, ab, b, constante).</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ejercicio 3 -->
+    <div class="exercise-card">
+      <div class="exercise-top">
+        <div class="exercise-num p1">3</div>
+        <span class="exercise-topic">Situaci&oacute;n cotidiana &rarr; expresi&oacute;n algebraica</span>
+      </div>
+      <div class="exercise-statement">
+        <p>Un trabajador gana <strong>$x</strong> pesos diarios durante 5 d&iacute;as a la semana. Adem&aacute;s, recibe una bonificaci&oacute;n mensual de <strong>$1,500</strong>.</p>
+        <p class="math-expr">a) Escribe una expresi&oacute;n para su ganancia semanal.</p>
+        <p class="math-expr">b) Escribe una expresi&oacute;n para su ganancia mensual (4 semanas).</p>
+      </div>
+      <div class="mini-note">
+        <span class="mini-note-label">Ideas fundamentales</span>
+        <p>Asigna la variable <em>x</em> a la cantidad desconocida (sueldo diario). Luego traduce las relaciones descritas usando operaciones aritm&eacute;ticas expresadas con s&iacute;mbolos algebraicos.</p>
+        <p>Para el inciso b), recuerda que un mes tiene 4 semanas y se agrega la bonificaci&oacute;n como una <strong>constante</strong>.</p>
+      </div>
+      <div class="practice-reminder">
+        <span class="practice-icon">&#9998;</span>
+        Resuelve primero en tu cuaderno antes de ver la soluci&oacute;n.
+      </div>
+      <button class="reveal-btn" onclick="toggleSol(this)">Mostrar soluci&oacute;n</button>
+      <div class="solution">
+        <span class="solution-label">Soluci&oacute;n paso a paso</span>
+        <div class="step">
+          <span class="step-label">a) </span><p>Ganancia semanal = sueldo diario &times; 5 d&iacute;as</p>
+          <p class="math-expr sub">5x</p>
+        </div>
+        <div class="step">
+          <span class="step-label">b) </span><p>Ganancia mensual = ganancia semanal &times; 4 + bonificaci&oacute;n</p>
+          <p class="math-expr sub">4(5x) + 1500 = 20x + 1500</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================= -->
+  <!-- ==================== PURPOSE 2 ======================== -->
+  <!-- ======================================================= -->
+  <div class="purpose-section">
+    <div class="purpose-header">
+      <div class="purpose-number p2">2</div>
+      <div>
+        <h3>Prop&oacute;sito 2 &mdash; Clasificaci&oacute;n de expresiones algebraicas</h3>
+        <p>Comprende la clasificaci&oacute;n de las expresiones algebraicas para construir e identificar monomios, binomios, trinomios y polinomios.</p>
+      </div>
+    </div>
+
+    <!-- Ejercicio 4 -->
+    <div class="exercise-card">
+      <div class="exercise-top">
+        <div class="exercise-num p2">4</div>
+        <span class="exercise-topic">Clasificaci&oacute;n por tipo</span>
+      </div>
+      <div class="exercise-statement">
+        <p>Clasifica cada expresi&oacute;n como <strong>monomio</strong>, <strong>binomio</strong>, <strong>trinomio</strong> o <strong>polinomio</strong>:</p>
+        <p class="math-expr">a) &minus;9a<sup>5</sup></p>
+        <p class="math-expr">b) 3m<sup>2</sup> &minus; 2n</p>
+        <p class="math-expr">c) x<sup>2</sup> + 5x &minus; 8</p>
+        <p class="math-expr">d) 2x<sup>4</sup> &minus; x<sup>3</sup> + 5x<sup>2</sup> &minus; 3</p>
+        <p class="math-expr">e) 7xy</p>
+        <p class="math-expr">f) a<sup>2</sup> + b<sup>2</sup></p>
+      </div>
+      <div class="mini-note">
+        <span class="mini-note-label">Ideas fundamentales</span>
+        <p>Cuenta los <strong>t&eacute;rminos</strong> (separados por + o &minus;):</p>
+        <p><strong>Monomio</strong>: 1 t&eacute;rmino. <strong>Binomio</strong>: 2 t&eacute;rminos. <strong>Trinomio</strong>: 3 t&eacute;rminos. <strong>Polinomio</strong>: 4 o m&aacute;s t&eacute;rminos.</p>
+        <p>Un monomio con dos variables (como 7xy) sigue siendo un solo t&eacute;rmino.</p>
+      </div>
+      <div class="practice-reminder">
+        <span class="practice-icon">&#9998;</span>
+        Resuelve primero en tu cuaderno antes de ver la soluci&oacute;n.
+      </div>
+      <button class="reveal-btn" onclick="toggleSol(this)">Mostrar soluci&oacute;n</button>
+      <div class="solution">
+        <span class="solution-label">Soluci&oacute;n</span>
+        <div class="step"><span class="step-label">a) </span><p>&minus;9a<sup>5</sup> &rarr; <strong>Monomio</strong> (1 t&eacute;rmino)</p></div>
+        <div class="step"><span class="step-label">b) </span><p>3m<sup>2</sup> &minus; 2n &rarr; <strong>Binomio</strong> (2 t&eacute;rminos)</p></div>
+        <div class="step"><span class="step-label">c) </span><p>x<sup>2</sup> + 5x &minus; 8 &rarr; <strong>Trinomio</strong> (3 t&eacute;rminos)</p></div>
+        <div class="step"><span class="step-label">d) </span><p>2x<sup>4</sup> &minus; x<sup>3</sup> + 5x<sup>2</sup> &minus; 3 &rarr; <strong>Polinomio</strong> (4 t&eacute;rminos)</p></div>
+        <div class="step"><span class="step-label">e) </span><p>7xy &rarr; <strong>Monomio</strong> (1 t&eacute;rmino, aunque tiene dos variables)</p></div>
+        <div class="step"><span class="step-label">f) </span><p>a<sup>2</sup> + b<sup>2</sup> &rarr; <strong>Binomio</strong> (2 t&eacute;rminos)</p></div>
+      </div>
+    </div>
+
+    <!-- Ejercicio 5 -->
+    <div class="exercise-card">
+      <div class="exercise-top">
+        <div class="exercise-num p2">5</div>
+        <span class="exercise-topic">Componentes del monomio</span>
+      </div>
+      <div class="exercise-statement">
+        <p>Para cada monomio, indica: <strong>coeficiente</strong>, <strong>variables</strong>, <strong>exponentes</strong> de cada variable y <strong>grado</strong>:</p>
+        <p class="math-expr">a) &minus;7x<sup>4</sup>y<sup>2</sup></p>
+        <p class="math-expr">b) 3a<sup>2</sup>b</p>
+        <p class="math-expr">c) 2m<sup>3</sup>n<sup>2</sup>p</p>
+      </div>
+      <div class="mini-note">
+        <span class="mini-note-label">Ideas fundamentales</span>
+        <p><strong>Coeficiente</strong>: el n&uacute;mero que multiplica a las variables (incluye el signo).</p>
+        <p><strong>Exponentes</strong>: las potencias a las que est&aacute;n elevadas cada variable. Si una variable no tiene exponente visible, su exponente es 1.</p>
+        <p><strong>Grado</strong>: la <em>suma</em> de todos los exponentes de las variables del monomio.</p>
+      </div>
+      <div class="practice-reminder">
+        <span class="practice-icon">&#9998;</span>
+        Resuelve primero en tu cuaderno antes de ver la soluci&oacute;n.
+      </div>
+      <button class="reveal-btn" onclick="toggleSol(this)">Mostrar soluci&oacute;n</button>
+      <div class="solution">
+        <span class="solution-label">Soluci&oacute;n</span>
+        <div class="step">
+          <span class="step-label">a) &minus;7x<sup>4</sup>y<sup>2</sup></span>
+          <p class="math-expr sub">Coeficiente: <strong>&minus;7</strong></p>
+          <p class="math-expr sub">Variables: <strong>x</strong>, <strong>y</strong></p>
+          <p class="math-expr sub">Exponentes: x &rarr; 4, y &rarr; 2</p>
+          <p class="math-expr sub">Grado: 4 + 2 = <strong>6</strong></p>
+        </div>
+        <div class="step">
+          <span class="step-label">b) 3a<sup>2</sup>b</span>
+          <p class="math-expr sub">Coeficiente: <strong>3</strong></p>
+          <p class="math-expr sub">Variables: <strong>a</strong>, <strong>b</strong></p>
+          <p class="math-expr sub">Exponentes: a &rarr; 2, b &rarr; 1</p>
+          <p class="math-expr sub">Grado: 2 + 1 = <strong>3</strong></p>
+        </div>
+        <div class="step">
+          <span class="step-label">c) 2m<sup>3</sup>n<sup>2</sup>p</span>
+          <p class="math-expr sub">Coeficiente: <strong>2</strong></p>
+          <p class="math-expr sub">Variables: <strong>m</strong>, <strong>n</strong>, <strong>p</strong></p>
+          <p class="math-expr sub">Exponentes: m &rarr; 3, n &rarr; 2, p &rarr; 1</p>
+          <p class="math-expr sub">Grado: 3 + 2 + 1 = <strong>6</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ejercicio 6 -->
+    <div class="exercise-card">
+      <div class="exercise-top">
+        <div class="exercise-num p2">6</div>
+        <span class="exercise-topic">Representaci&oacute;n y clasificaci&oacute;n</span>
+      </div>
+      <div class="exercise-statement">
+        <p>Escribe una expresi&oacute;n algebraica para cada situaci&oacute;n y clasif&iacute;cala como <strong>monomio</strong>, <strong>binomio</strong> o <strong>trinomio</strong>:</p>
+        <p class="math-expr">a) El cuadrado de un n&uacute;mero <em>n</em>.</p>
+        <p class="math-expr">b) La suma del cuadrado de un n&uacute;mero y el triple de ese mismo n&uacute;mero.</p>
+        <p class="math-expr">c) Un n&uacute;mero al cuadrado, menos el doble de ese n&uacute;mero, m&aacute;s 4.</p>
+      </div>
+      <div class="mini-note">
+        <span class="mini-note-label">Ideas fundamentales</span>
+        <p>Primero traduce la situaci&oacute;n verbal a una expresi&oacute;n algebraica (Prop&oacute;sito 1). Luego cuenta los t&eacute;rminos para clasificar (Prop&oacute;sito 2).</p>
+        <p>Recuerda: el "cuadrado de un n&uacute;mero" = n<sup>2</sup>. El "triple" = 3n. El "doble" = 2n.</p>
+      </div>
+      <div class="practice-reminder">
+        <span class="practice-icon">&#9998;</span>
+        Resuelve primero en tu cuaderno antes de ver la soluci&oacute;n.
+      </div>
+      <button class="reveal-btn" onclick="toggleSol(this)">Mostrar soluci&oacute;n</button>
+      <div class="solution">
+        <span class="solution-label">Soluci&oacute;n paso a paso</span>
+        <div class="step">
+          <span class="step-label">a) </span><p>El cuadrado de un n&uacute;mero <em>n</em>:</p>
+          <p class="math-expr sub">n<sup>2</sup> &rarr; <strong>Monomio</strong> (1 t&eacute;rmino)</p>
+        </div>
+        <div class="step">
+          <span class="step-label">b) </span><p>Cuadrado + triple del n&uacute;mero:</p>
+          <p class="math-expr sub">n<sup>2</sup> + 3n &rarr; <strong>Binomio</strong> (2 t&eacute;rminos)</p>
+        </div>
+        <div class="step">
+          <span class="step-label">c) </span><p>N&uacute;mero al cuadrado, menos el doble, m&aacute;s 4:</p>
+          <p class="math-expr sub">n<sup>2</sup> &minus; 2n + 4 &rarr; <strong>Trinomio</strong> (3 t&eacute;rminos)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================= -->
+  <!-- ==================== PURPOSE 3 ======================== -->
+  <!-- ======================================================= -->
+  <div class="purpose-section">
+    <div class="purpose-header">
+      <div class="purpose-number p3">3</div>
+      <div>
+        <h3>Prop&oacute;sito 3 &mdash; Operaciones y factorizaci&oacute;n</h3>
+        <p>Aplica la aritm&eacute;tica y el manejo del &aacute;lgebra para realizar operaciones con monomios, binomios, trinomios y polinomios, referentes a situaciones de inter&eacute;s.</p>
+      </div>
+    </div>
+
+    <!-- Ejercicio 7 -->
+    <div class="exercise-card">
+      <div class="exercise-top">
+        <div class="exercise-num p3">7</div>
+        <span class="exercise-topic">Operaciones con monomios</span>
+      </div>
+      <div class="exercise-statement">
+        <p>Realiza las siguientes operaciones:</p>
+        <p class="math-expr">a) (3x<sup>2</sup>y)(&minus;4xy<sup>3</sup>)</p>
+        <p class="math-expr">b) 24a<sup>5</sup>b<sup>3</sup> &divide; (&minus;6a<sup>2</sup>b)</p>
+      </div>
+      <div class="mini-note">
+        <span class="mini-note-label">Ideas fundamentales</span>
+        <p><strong>Multiplicar monomios:</strong> multiplica los coeficientes entre s&iacute; y <em>suma</em> los exponentes de la misma variable.</p>
+        <p><strong>Dividir monomios:</strong> divide los coeficientes y <em>resta</em> los exponentes (dividendo menos divisor).</p>
+        <p>Cuidado con los <strong>signos</strong>: (+)(&minus;) = (&minus;). Y recuerda que si una variable no tiene exponente visible, su exponente es 1.</p>
+      </div>
+      <div class="practice-reminder">
+        <span class="practice-icon">&#9998;</span>
+        Resuelve primero en tu cuaderno antes de ver la soluci&oacute;n.
+      </div>
+      <button class="reveal-btn" onclick="toggleSol(this)">Mostrar soluci&oacute;n</button>
+      <div class="solution">
+        <span class="solution-label">Soluci&oacute;n paso a paso</span>
+        <div class="step">
+          <span class="step-label">a) </span><p>(3x<sup>2</sup>y)(&minus;4xy<sup>3</sup>)</p>
+          <p class="math-expr sub">Coeficientes: 3 &times; (&minus;4) = &minus;12</p>
+          <p class="math-expr sub">Variable x: x<sup>2</sup> &middot; x<sup>1</sup> = x<sup>2+1</sup> = x<sup>3</sup></p>
+          <p class="math-expr sub">Variable y: y<sup>1</sup> &middot; y<sup>3</sup> = y<sup>1+3</sup> = y<sup>4</sup></p>
+          <div class="result"><span class="result-label">Resultado:</span>&minus;12x<sup>3</sup>y<sup>4</sup></div>
+        </div>
+        <div class="step">
+          <span class="step-label">b) </span><p>24a<sup>5</sup>b<sup>3</sup> &divide; (&minus;6a<sup>2</sup>b)</p>
+          <p class="math-expr sub">Coeficientes: 24 &divide; (&minus;6) = &minus;4</p>
+          <p class="math-expr sub">Variable a: a<sup>5</sup> &divide; a<sup>2</sup> = a<sup>5&minus;2</sup> = a<sup>3</sup></p>
+          <p class="math-expr sub">Variable b: b<sup>3</sup> &divide; b<sup>1</sup> = b<sup>3&minus;1</sup> = b<sup>2</sup></p>
+          <div class="result"><span class="result-label">Resultado:</span>&minus;4a<sup>3</sup>b<sup>2</sup></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ejercicio 8 -->
+    <div class="exercise-card">
+      <div class="exercise-top">
+        <div class="exercise-num p3">8</div>
+        <span class="exercise-topic">Suma y resta de polinomios</span>
+      </div>
+      <div class="exercise-statement">
+        <p>Realiza la siguiente operaci&oacute;n:</p>
+        <p class="math-expr" style="font-size:1rem;">(5x<sup>3</sup> &minus; 2x<sup>2</sup> + 3x &minus; 1) &minus; (2x<sup>3</sup> + 4x<sup>2</sup> &minus; x + 6)</p>
+      </div>
+      <div class="mini-note">
+        <span class="mini-note-label">Ideas fundamentales</span>
+        <p>Para <strong>restar polinomios</strong>: cambia el signo de <em>todos</em> los t&eacute;rminos del segundo polinomio y despu&eacute;s suma.</p>
+        <p>Agrupa los <strong>t&eacute;rminos semejantes</strong> (misma variable y exponente) y opera solo los coeficientes.</p>
+        <p>Error com&uacute;n: olvidar cambiar el signo del &uacute;ltimo t&eacute;rmino del segundo polinomio.</p>
+      </div>
+      <div class="practice-reminder">
+        <span class="practice-icon">&#9998;</span>
+        Resuelve primero en tu cuaderno antes de ver la soluci&oacute;n.
+      </div>
+      <button class="reveal-btn" onclick="toggleSol(this)">Mostrar soluci&oacute;n</button>
+      <div class="solution">
+        <span class="solution-label">Soluci&oacute;n paso a paso</span>
+        <div class="step">
+          <span class="step-label">Paso 1: </span><p>Distribuir el signo negativo al segundo polinomio:</p>
+          <p class="math-expr sub">5x<sup>3</sup> &minus; 2x<sup>2</sup> + 3x &minus; 1 &minus; 2x<sup>3</sup> &minus; 4x<sup>2</sup> + x &minus; 6</p>
+        </div>
+        <div class="step">
+          <span class="step-label">Paso 2: </span><p>Agrupar t&eacute;rminos semejantes:</p>
+          <p class="math-expr sub">(5x<sup>3</sup> &minus; 2x<sup>3</sup>) + (&minus;2x<sup>2</sup> &minus; 4x<sup>2</sup>) + (3x + x) + (&minus;1 &minus; 6)</p>
+        </div>
+        <div class="step">
+          <span class="step-label">Paso 3: </span><p>Operar los coeficientes:</p>
+          <div class="result"><span class="result-label">Resultado:</span>3x<sup>3</sup> &minus; 6x<sup>2</sup> + 4x &minus; 7</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ejercicio 9 -->
+    <div class="exercise-card">
+      <div class="exercise-top">
+        <div class="exercise-num p3">9</div>
+        <span class="exercise-topic">Polinomio &times; monomio</span>
+      </div>
+      <div class="exercise-statement">
+        <p>Realiza la siguiente multiplicaci&oacute;n:</p>
+        <p class="math-expr" style="font-size:1rem;">&minus;3x(4x<sup>2</sup> &minus; 6x + 2)</p>
+      </div>
+      <div class="mini-note">
+        <span class="mini-note-label">Ideas fundamentales</span>
+        <p>Aplica la <strong>propiedad distributiva</strong>: multiplica el monomio exterior por <em>cada</em> t&eacute;rmino del polinomio.</p>
+        <p>Respeta la <strong>regla de signos</strong>: (&minus;)(+) = (&minus;) y (&minus;)(&minus;) = (+).</p>
+        <p>Recuerda sumar exponentes al multiplicar variables.</p>
+      </div>
+      <div class="practice-reminder">
+        <span class="practice-icon">&#9998;</span>
+        Resuelve primero en tu cuaderno antes de ver la soluci&oacute;n.
+      </div>
+      <button class="reveal-btn" onclick="toggleSol(this)">Mostrar soluci&oacute;n</button>
+      <div class="solution">
+        <span class="solution-label">Soluci&oacute;n paso a paso</span>
+        <div class="step">
+          <span class="step-label">Paso 1: </span><p>Multiplicar &minus;3x por cada t&eacute;rmino:</p>
+          <p class="math-expr sub">&minus;3x &middot; 4x<sup>2</sup> = &minus;12x<sup>3</sup></p>
+          <p class="math-expr sub">&minus;3x &middot; (&minus;6x) = +18x<sup>2</sup></p>
+          <p class="math-expr sub">&minus;3x &middot; 2 = &minus;6x</p>
+        </div>
+        <div class="step">
+          <span class="step-label">Paso 2: </span><p>Unir los resultados:</p>
+          <div class="result"><span class="result-label">Resultado:</span>&minus;12x<sup>3</sup> + 18x<sup>2</sup> &minus; 6x</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ejercicio 10 -->
+    <div class="exercise-card">
+      <div class="exercise-top">
+        <div class="exercise-num p3">10</div>
+        <span class="exercise-topic">Multiplicaci&oacute;n de binomios</span>
+      </div>
+      <div class="exercise-statement">
+        <p>Multiplica los siguientes binomios:</p>
+        <p class="math-expr" style="font-size:1.05rem;">(2x + 3)(x &minus; 4)</p>
+      </div>
+      <div class="mini-note">
+        <span class="mini-note-label">Ideas fundamentales</span>
+        <p>Aplica la propiedad distributiva: multiplica <em>cada</em> t&eacute;rmino del primer binomio por <em>cada</em> t&eacute;rmino del segundo.</p>
+        <p>M&eacute;todo FOIL: <strong>F</strong>irst (primeros), <strong>O</strong>uter (exteriores), <strong>I</strong>nner (interiores), <strong>L</strong>ast (&uacute;ltimos). Despu&eacute;s simplifica los t&eacute;rminos semejantes.</p>
+      </div>
+      <div class="practice-reminder">
+        <span class="practice-icon">&#9998;</span>
+        Resuelve primero en tu cuaderno antes de ver la soluci&oacute;n.
+      </div>
+      <button class="reveal-btn" onclick="toggleSol(this)">Mostrar soluci&oacute;n</button>
+      <div class="solution">
+        <span class="solution-label">Soluci&oacute;n paso a paso</span>
+        <div class="step">
+          <span class="step-label">Paso 1 (FOIL): </span>
+          <p class="math-expr sub"><strong>F</strong>irst: 2x &middot; x = 2x<sup>2</sup></p>
+          <p class="math-expr sub"><strong>O</strong>uter: 2x &middot; (&minus;4) = &minus;8x</p>
+          <p class="math-expr sub"><strong>I</strong>nner: 3 &middot; x = 3x</p>
+          <p class="math-expr sub"><strong>L</strong>ast: 3 &middot; (&minus;4) = &minus;12</p>
+        </div>
+        <div class="step">
+          <span class="step-label">Paso 2: </span><p>Sumar todos los t&eacute;rminos y combinar semejantes:</p>
+          <p class="math-expr sub">2x<sup>2</sup> &minus; 8x + 3x &minus; 12</p>
+          <p class="math-expr sub">&minus;8x + 3x = &minus;5x</p>
+        </div>
+        <div class="result"><span class="result-label">Resultado:</span>2x<sup>2</sup> &minus; 5x &minus; 12</div>
+      </div>
+    </div>
+
+    <!-- ====== NUEVOS EJERCICIOS 11 a 15 (procedentes de 1code) ====== -->
+    <!-- Ejercicio 11 -->
+    <div class="exercise-card">
+      <div class="exercise-top">
+        <div class="exercise-num p3">11</div>
+        <span class="exercise-topic">Producto notable: binomio al cuadrado</span>
+      </div>
+      <div class="exercise-statement">
+        <p>Desarrolla el siguiente producto notable:</p>
+        <p class="math-expr" style="font-size:1.05rem;">(3x &minus; 2)<sup>2</sup></p>
+      </div>
+      <div class="mini-note">
+        <span class="mini-note-label">Ideas fundamentales</span>
+        <p>Formula: <strong>(a + b)<sup>2</sup> = a<sup>2</sup> + 2ab + b<sup>2</sup></strong> y <strong>(a &minus; b)<sup>2</sup> = a<sup>2</sup> &minus; 2ab + b<sup>2</sup></strong></p>
+        <p>Identifica <em>a</em> y <em>b</em> en tu expresion y sustituye en la formula. El termino medio <em>siempre</em> es el doble del producto de <em>a</em> por <em>b</em>.</p>
+        <p>Error comun: olvidar el factor 2 en el termino medio.</p>
+      </div>
+      <div class="practice-reminder">
+        <span class="practice-icon">&#9998;</span>
+        Resuelve primero en tu cuaderno antes de ver la solucion.
+      </div>
+      <button class="reveal-btn" onclick="toggleSol(this)">Mostrar solucion</button>
+      <div class="solution">
+        <span class="solution-label">Solucion paso a paso</span>
+        <div class="step">
+          <span class="step-label">Identificacion: </span><p>a = 3x, b = 2. Usamos (a &minus; b)<sup>2</sup> = a<sup>2</sup> &minus; 2ab + b<sup>2</sup></p>
+        </div>
+        <div class="step">
+          <span class="step-label">Paso 1: </span><p>a<sup>2</sup> = (3x)<sup>2</sup> = 9x<sup>2</sup></p>
+        </div>
+        <div class="step">
+          <span class="step-label">Paso 2: </span><p>2ab = 2(3x)(2) = 12x</p>
+        </div>
+        <div class="step">
+          <span class="step-label">Paso 3: </span><p>b<sup>2</sup> = (2)<sup>2</sup> = 4</p>
+        </div>
+        <div class="step">
+          <span class="step-label">Paso 4: </span><p>Unir con el signo correspondiente:</p>
+          <div class="result"><span class="result-label">Resultado:</span>9x<sup>2</sup> &minus; 12x + 4</div>
+        </div>
+        <p class="verify">Verificacion: (3x &minus; 2)(3x &minus; 2) = 9x<sup>2</sup> &minus; 6x &minus; 6x + 4 = 9x<sup>2</sup> &minus; 12x + 4 &#10003;</p>
+      </div>
+    </div>
+
+    <!-- Ejercicio 12 -->
+    <div class="exercise-card">
+      <div class="exercise-top">
+        <div class="exercise-num p3">12</div>
+        <span class="exercise-topic">Producto notable: conjugados</span>
+      </div>
+      <div class="exercise-statement">
+        <p>Desarrolla el siguiente producto notable:</p>
+        <p class="math-expr" style="font-size:1.05rem;">(5x + 2y)(5x &minus; 2y)</p>
+      </div>
+      <div class="mini-note">
+        <span class="mini-note-label">Ideas fundamentales</span>
+        <p>Formula: <strong>(a + b)(a &minus; b) = a<sup>2</sup> &minus; b<sup>2</strong></p>
+        <p>Este es el producto de <strong>conjugados</strong>: dos binomios que solo difieren en el signo del segundo termino. El resultado es la diferencia de cuadrados.</p>
+        <p>Identifica que los dos terminos son iguales (5x) y (2y), solo cambia el signo.</p>
+      </div>
+      <div class="practice-reminder">
+        <span class="practice-icon">&#9998;</span>
+        Resuelve primero en tu cuaderno antes de ver la solucion.
+      </div>
+      <button class="reveal-btn" onclick="toggleSol(this)">Mostrar solucion</button>
+      <div class="solution">
+        <span class="solution-label">Solucion paso a paso</span>
+        <div class="step">
+          <span class="step-label">Identificacion: </span><p>a = 5x, b = 2y. Usamos (a + b)(a &minus; b) = a<sup>2</sup> &minus; b<sup>2</sup></p>
+        </div>
+        <div class="step">
+          <span class="step-label">Paso 1: </span><p>a<sup>2</sup> = (5x)<sup>2</sup> = 25x<sup>2</sup></p>
+        </div>
+        <div class="step">
+          <span class="step-label">Paso 2: </span><p>b<sup>2</sup> = (2y)<sup>2</sup> = 4y<sup>2</sup></p>
+        </div>
+        <div class="step">
+          <span class="step-label">Paso 3: </span><p>Restar:</p>
+          <div class="result"><span class="result-label">Resultado:</span>25x<sup>2</sup> &minus; 4y<sup>2</sup></div>
+        </div>
+        <p class="verify">Verificacion: (5x + 2y)(5x &minus; 2y) = 25x<sup>2</sup> &minus; 10xy + 10xy &minus; 4y<sup>2</sup> = 25x<sup>2</sup> &minus; 4y<sup>2</sup> &#10003;</p>
+      </div>
+    </div>
+
+    <!-- Ejercicio 13 -->
+    <div class="exercise-card">
+      <div class="exercise-top">
+        <div class="exercise-num p3">13</div>
+        <span class="exercise-topic">Factorizacion: factor comun</span>
+      </div>
+      <div class="exercise-statement">
+        <p>Factoriza la siguiente expresion:</p>
+        <p class="math-expr" style="font-size:1rem;">12x<sup>3</sup>y &minus; 8x<sup>2</sup>y<sup>2</sup> + 4xy<sup>3</sup></p>
+      </div>
+      <div class="mini-note">
+        <span class="mini-note-label">Ideas fundamentales</span>
+        <p>Para factorizar por <strong>factor comun</strong>: identifica el mayor factor (numero y variables) que divide a <em>todos</em> los terminos.</p>
+        <p>Para los <strong>coeficientes</strong>: busca el MCD. Para las <strong>variables</strong>: toma el exponente menor que aparezca en todos los terminos.</p>
+        <p>Despues divide cada termino entre el factor comun y coloca el resultado dentro del parentesis.</p>
+      </div>
+      <div class="practice-reminder">
+        <span class="practice-icon">&#9998;</span>
+        Resuelve primero en tu cuaderno antes de ver la solucion.
+      </div>
+      <button class="reveal-btn" onclick="toggleSol(this)">Mostrar solucion</button>
+      <div class="solution">
+        <span class="solution-label">Solucion paso a paso</span>
+        <div class="step">
+          <span class="step-label">Paso 1: </span><p>Encontrar el factor comun:</p>
+          <p class="math-expr sub">Coeficientes: MCD(12, 8, 4) = 4</p>
+          <p class="math-expr sub">Variable x: menor exponente = x<sup>1</sup> = x</p>
+          <p class="math-expr sub">Variable y: menor exponente = y<sup>1</sup> = y</p>
+          <p class="math-expr sub"><strong>Factor comun = 4xy</strong></p>
+        </div>
+        <div class="step">
+          <span class="step-label">Paso 2: </span><p>Dividir cada termino entre 4xy:</p>
+          <p class="math-expr sub">12x<sup>3</sup>y &divide; 4xy = 3x<sup>2</sup></p>
+          <p class="math-expr sub">&minus;8x<sup>2</sup>y<sup>2</sup> &divide; 4xy = &minus;2xy</p>
+          <p class="math-expr sub">4xy<sup>3</sup> &divide; 4xy = y<sup>2</sup></p>
+        </div>
+        <div class="step">
+          <span class="step-label">Paso 3: </span><p>Escribir la factorizacion:</p>
+          <div class="result"><span class="result-label">Resultado:</span>4xy(3x<sup>2</sup> &minus; 2xy + y<sup>2</sup>)</div>
+        </div>
+        <p class="verify">Verificacion: 4xy(3x<sup>2</sup>) = 12x<sup>3</sup>y, 4xy(&minus;2xy) = &minus;8x<sup>2</sup>y<sup>2</sup>, 4xy(y<sup>2</sup>) = 4xy<sup>3</sup> &#10003;</p>
+      </div>
+    </div>
+
+    <!-- Ejercicio 14 -->
+    <div class="exercise-card">
+      <div class="exercise-top">
+        <div class="exercise-num p3">14</div>
+        <span class="exercise-topic">Factorizacion: trinomio</span>
+      </div>
+      <div class="exercise-statement">
+        <p>Factoriza el siguiente trinomio:</p>
+        <p class="math-expr" style="font-size:1.05rem;">x<sup>2</sup> + 7x + 12</p>
+      </div>
+      <div class="mini-note">
+        <span class="mini-note-label">Ideas fundamentales</span>
+        <p>Para factorizar un trinomio de la forma <strong>x<sup>2</sup> + bx + c</strong>: busca <strong>dos numeros</strong> que <em>multiplicados</em> den <em>c</em> y <em>sumados</em> den <em>b</em>.</p>
+        <p>Si ambos numeros son positivos, ambos signos en los factores son +. Si <em>c</em> es positivo y <em>b</em> es negativo, ambos signos son &minus;.</p>
+        <p>El trinomio se factoriza como: <strong>(x + __)(x + __)</strong></p>
+      </div>
+      <div class="practice-reminder">
+        <span class="practice-icon">&#9998;</span>
+        Resuelve primero en tu cuaderno antes de ver la solucion.
+      </div>
+      <button class="reveal-btn" onclick="toggleSol(this)">Mostrar solucion</button>
+      <div class="solution">
+        <span class="solution-label">Solucion paso a paso</span>
+        <div class="step">
+          <span class="step-label">Paso 1: </span><p>Identificar b = 7 y c = 12.</p>
+          <p class="math-expr sub">Buscamos dos numeros que <strong>multiplicados den 12</strong> y <strong>sumados den 7</strong>.</p>
+        </div>
+        <div class="step">
+          <span class="step-label">Paso 2: </span><p>Posibles parejas de factores de 12:</p>
+          <p class="math-expr sub">1 &times; 12 = 12 &ensp;|&ensp; 1 + 12 = 13 &ensp;(&#10007;)</p>
+          <p class="math-expr sub">2 &times; 6 = 12 &ensp;|&ensp; 2 + 6 = 8 &ensp;(&#10007;)</p>
+          <p class="math-expr sub">3 &times; 4 = 12 &ensp;|&ensp; 3 + 4 = 7 &ensp;(&#10003;)</p>
+        </div>
+        <div class="step">
+          <span class="step-label">Paso 3: </span><p>Escribir la factorizacion:</p>
+          <div class="result"><span class="result-label">Resultado:</span>(x + 3)(x + 4)</div>
+        </div>
+        <p class="verify">Verificacion: (x + 3)(x + 4) = x<sup>2</sup> + 4x + 3x + 12 = x<sup>2</sup> + 7x + 12 &#10003;</p>
+      </div>
+    </div>
+
+    <!-- Ejercicio 15 -->
+    <div class="exercise-card">
+      <div class="exercise-top">
+        <div class="exercise-num p3">15</div>
+        <span class="exercise-topic">Factorizacion: trinomio cuadrado perfecto</span>
+      </div>
+      <div class="exercise-statement">
+        <p>Factoriza el siguiente trinomio cuadrado perfecto:</p>
+        <p class="math-expr" style="font-size:1.05rem;">4x<sup>2</sup> &minus; 20x + 25</p>
+      </div>
+      <div class="mini-note">
+        <span class="mini-note-label">Ideas fundamentales</span>
+        <p>Un <strong>trinomio cuadrado perfecto</strong> tiene la forma a<sup>2</sup> &plusmn; 2ab + b<sup>2</sup> y se factoriza como <strong>(a &plusmn; b)<sup>2</sup></strong>.</p>
+        <p>Para verificar: el <em>primer</em> y el <em>ultimo</em> termino deben ser <strong>cuadrados perfectos</strong>, y el <em>termino medio</em> debe ser <strong>el doble del producto</strong> de sus raices.</p>
+        <p>Primer termino: 4x<sup>2</sup> = (2x)<sup>2</sup>. Ultimo termino: 25 = 5<sup>2</sup>. Termino medio: 20x = 2(2x)(5).</p>
+      </div>
+      <div class="practice-reminder">
+        <span class="practice-icon">&#9998;</span>
+        Resuelve primero en tu cuaderno antes de ver la solucion.
+      </div>
+      <button class="reveal-btn" onclick="toggleSol(this)">Mostrar solucion</button>
+      <div class="solution">
+        <span class="solution-label">Solucion paso a paso</span>
+        <div class="step">
+          <span class="step-label">Paso 1: </span><p>Verificar que es trinomio cuadrado perfecto:</p>
+          <p class="math-expr sub">4x<sup>2</sup> = (2x)<sup>2</sup> &ensp;&#10003;</p>
+          <p class="math-expr sub">25 = (5)<sup>2</sup> &ensp;&#10003;</p>
+          <p class="math-expr sub">20x = 2 &middot; (2x) &middot; (5) &ensp;&#10003;</p>
+        </div>
+        <div class="step">
+          <span class="step-label">Paso 2: </span><p>Identificar a = 2x y b = 5. El signo del termino medio es (&minus;), usamos (a &minus; b)<sup>2</sup>:</p>
+        </div>
+        <div class="step">
+          <span class="step-label">Paso 3: </span><p>Aplicar la formula:</p>
+          <div class="result"><span class="result-label">Resultado:</span>(2x &minus; 5)<sup>2</sup></div>
+        </div>
+        <p class="verify">Verificacion: (2x &minus; 5)(2x &minus; 5) = 4x<sup>2</sup> &minus; 10x &minus; 10x + 25 = 4x<sup>2</sup> &minus; 20x + 25 &#10003;</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ======================================================= -->
+  <!-- ==================== PURPOSE 4 ======================== -->
+  <!-- ======================================================= -->
+  <div class="purpose-section">
+    <div class="purpose-header">
+      <div class="purpose-number p4">4</div>
+      <div>
+        <h3>Prop&oacute;sito 4 &mdash; Operaciones avanzadas con polinomios</h3>
+        <p>Aplica la aritm&eacute;tica y el manejo del &aacute;lgebra para realizar operaciones con trinomios y polinomios, referentes a situaciones de inter&eacute;s, a partir del an&aacute;lisis de sus componentes.</p>
+      </div>
+    </div>
+
+    <!-- Ejercicio 16 (original 11) -->
+    <div class="exercise-card">
+      <div class="exercise-top">
+        <div class="exercise-num p4">16</div>
+        <span class="exercise-topic">Trinomio &times; binomio</span>
+      </div>
+      <div class="exercise-statement">
+        <p>Realiza la siguiente multiplicaci&oacute;n:</p>
+        <p class="math-expr" style="font-size:1.02rem;">(x + 3)(x<sup>2</sup> &minus; 2x + 1)</p>
+      </div>
+      <div class="mini-note">
+        <span class="mini-note-label">Ideas fundamentales</span>
+        <p>Aplica la <strong>propiedad distributiva</strong>: multiplica cada t&eacute;rmino del binomio por <em>todos</em> los t&eacute;rminos del trinomio.</p>
+        <p>Organiza el trabajo: primero multiplica todo por <em>x</em>, luego todo por <em>3</em>, y finalmente suma los t&eacute;rminos semejantes.</p>
+      </div>
+      <div class="practice-reminder">
+        <span class="practice-icon">&#9998;</span>
+        Resuelve primero en tu cuaderno antes de ver la soluci&oacute;n.
+      </div>
+      <button class="reveal-btn" onclick="toggleSol(this)">Mostrar soluci&oacute;n</button>
+      <div class="solution">
+        <span class="solution-label">Soluci&oacute;n paso a paso</span>
+        <div class="step">
+          <span class="step-label">Paso 1: </span><p>Multiplicar x por cada t&eacute;rmino del trinomio:</p>
+          <p class="math-expr sub">x &middot; x<sup>2</sup> = x<sup>3</sup></p>
+          <p class="math-expr sub">x &middot; (&minus;2x) = &minus;2x<sup>2</sup></p>
+          <p class="math-expr sub">x &middot; 1 = x</p>
+        </div>
+        <div class="step">
+          <span class="step-label">Paso 2: </span><p>Multiplicar 3 por cada t&eacute;rmino del trinomio:</p>
+          <p class="math-expr sub">3 &middot; x<sup>2</sup> = 3x<sup>2</sup></p>
+          <p class="math-expr sub">3 &middot; (&minus;2x) = &minus;6x</p>
+          <p class="math-expr sub">3 &middot; 1 = 3</p>
+        </div>
+        <div class="step">
+          <span class="step-label">Paso 3: </span><p>Sumar todos los t&eacute;rminos y combinar semejantes:</p>
+          <p class="math-expr sub">x<sup>3</sup> &minus; 2x<sup>2</sup> + x + 3x<sup>2</sup> &minus; 6x + 3</p>
+          <p class="math-expr sub">&minus;2x<sup>2</sup> + 3x<sup>2</sup> = x<sup>2</sup></p>
+          <p class="math-expr sub">x &minus; 6x = &minus;5x</p>
+        </div>
+        <div class="result"><span class="result-label">Resultado:</span>x<sup>3</sup> + x<sup>2</sup> &minus; 5x + 3</div>
+      </div>
+    </div>
+
+    <!-- Ejercicio 17 (original 12) -->
+    <div class="exercise-card">
+      <div class="exercise-top">
+        <div class="exercise-num p4">17</div>
+        <span class="exercise-topic">Factorizaci&oacute;n: diferencia de cuadrados</span>
+      </div>
+      <div class="exercise-statement">
+        <p>Factoriza las siguientes expresiones:</p>
+        <p class="math-expr">a) 25x<sup>2</sup> &minus; 16</p>
+        <p class="math-expr">b) 49a<sup>2</sup> &minus; 64b<sup>2</sup></p>
+      </div>
+      <div class="mini-note">
+        <span class="mini-note-label">Ideas fundamentales</span>
+        <p>La <strong>diferencia de cuadrados</strong> factoriza as&iacute;: <strong>a<sup>2</sup> &minus; b<sup>2</sup> = (a + b)(a &minus; b)</strong></p>
+        <p>Para usarla, verifica que ambos t&eacute;rminos sean <strong>cuadrados perfectos</strong> y que est&eacute;n <strong>separados por un signo menos</strong>.</p>
+        <p>Ra&iacute;ces &uacute;tiles: 25 = 5<sup>2</sup>, 16 = 4<sup>2</sup>, 49 = 7<sup>2</sup>, 64 = 8<sup>2</sup>.</p>
+      </div>
+      <div class="practice-reminder">
+        <span class="practice-icon">&#9998;</span>
+        Resuelve primero en tu cuaderno antes de ver la soluci&oacute;n.
+      </div>
+      <button class="reveal-btn" onclick="toggleSol(this)">Mostrar soluci&oacute;n</button>
+      <div class="solution">
+        <span class="solution-label">Soluci&oacute;n paso a paso</span>
+        <div class="step">
+          <span class="step-label">a) </span><p>25x<sup>2</sup> = (5x)<sup>2</sup> y 16 = (4)<sup>2</sup>. Son cuadrados perfectos con resta.</p>
+          <div class="result"><span class="result-label">Resultado:</span>(5x + 4)(5x &minus; 4)</div>
+          <p class="verify">Verificaci&oacute;n: 25x<sup>2</sup> &minus; 20x + 20x &minus; 16 = 25x<sup>2</sup> &minus; 16 &#10003;</p>
+        </div>
+        <div class="step">
+          <span class="step-label">b) </span><p>49a<sup>2</sup> = (7a)<sup>2</sup> y 64b<sup>2</sup> = (8b)<sup>2</sup>.</p>
+          <div class="result"><span class="result-label">Resultado:</span>(7a + 8b)(7a &minus; 8b)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================= -->
+  <!-- ==================== PURPOSE 5 ======================== -->
+  <!-- ======================================================= -->
+  <div class="purpose-section">
+    <div class="purpose-header">
+      <div class="purpose-number p5">5</div>
+      <div>
+        <h3>Prop&oacute;sito 5 &mdash; Aplicaci&oacute;n en situaciones de inter&eacute;s</h3>
+        <p>Aplica el &aacute;lgebra en situaciones de inter&eacute;s para comprender su relevancia en otras &aacute;reas del conocimiento, fen&oacute;menos naturales o en distintas esferas de la vida humana.</p>
+      </div>
+    </div>
+
+    <!-- Ejercicio 18 (original 13) -->
+    <div class="exercise-card">
+      <div class="exercise-top">
+        <div class="exercise-num p5">18</div>
+        <span class="exercise-topic">Presupuesto personal</span>
+      </div>
+      <div class="exercise-statement">
+        <div class="word-problem">
+          <p>Una persona tiene un ingreso mensual de <strong>$x</strong> pesos. Cada mes destina: <strong>$2,500</strong> a renta, <strong>$1,800</strong> a alimentaci&oacute;n y <strong>$900</strong> a transporte. Adem&aacute;s, ahorra el <strong>15%</strong> de su ingreso.</p>
+        </div>
+        <p class="math-expr">a) Escribe una expresi&oacute;n para sus gastos fijos totales (renta + alimento + transporte).</p>
+        <p class="math-expr">b) Escribe una expresi&oacute;n para su ahorro mensual.</p>
+        <p class="math-expr">c) Escribe una expresi&oacute;n que represente lo que le queda para otros gastos.</p>
+      </div>
+      <div class="mini-note">
+        <span class="mini-note-label">Ideas fundamentales</span>
+        <p><strong>Ingreso &minus; Gastos = Sobrante.</strong> Los gastos fijos son constantes (n&uacute;meros). El ahorro es un porcentaje del ingreso (variable).</p>
+        <p>El 15% de <em>x</em> se escribe como <strong>0.15x</strong> o <strong>15x/100</strong>.</p>
+        <p>Para el inciso c): "lo que le queda" = ingreso &minus; gastos fijos &minus; ahorro.</p>
+      </div>
+      <div class="practice-reminder">
+        <span class="practice-icon">&#9998;</span>
+        Resuelve primero en tu cuaderno antes de ver la soluci&oacute;n.
+      </div>
+      <button class="reveal-btn" onclick="toggleSol(this)">Mostrar soluci&oacute;n</button>
+      <div class="solution">
+        <span class="solution-label">Soluci&oacute;n paso a paso</span>
+        <div class="step">
+          <span class="step-label">a) </span><p>Gastos fijos = renta + alimentaci&oacute;n + transporte</p>
+          <p class="math-expr sub">2500 + 1800 + 900 = $5,200</p>
+        </div>
+        <div class="step">
+          <span class="step-label">b) </span><p>Ahorro = 15% del ingreso</p>
+          <p class="math-expr sub">0.15x</p>
+        </div>
+        <div class="step">
+          <span class="step-label">c) </span><p>Otros gastos = ingreso &minus; gastos fijos &minus; ahorro</p>
+          <p class="math-expr sub">x &minus; 5200 &minus; 0.15x</p>
+        </div>
+        <div class="result"><span class="result-label">Resultado c):</span>0.85x &minus; 5200</div>
+      </div>
+    </div>
+
+    <!-- Ejercicio 19 (original 14) -->
+    <div class="exercise-card">
+      <div class="exercise-top">
+        <div class="exercise-num p5">19</div>
+        <span class="exercise-topic">Proporciones en receta</span>
+      </div>
+      <div class="exercise-statement">
+        <div class="word-problem">
+          <p>Una receta para preparar pastel indica que se necesitan <strong>3 tazas de harina</strong>, <strong>4 huevos</strong> y <strong>2 tazas de az&uacute;car</strong> para <strong>8 porciones</strong>.</p>
+        </div>
+        <p class="math-expr">a) &iquest;Cu&aacute;ntas tazas de harina se necesitan para <strong>20 porciones</strong>?</p>
+        <p class="math-expr">b) Si solo tienes <strong>10 huevos</strong>, &iquest;cu&aacute;ntas porciones m&aacute;ximas puedes preparar?</p>
+      </div>
+      <div class="mini-note">
+        <span class="mini-note-label">Ideas fundamentales</span>
+        <p>Plantea una <strong>raz&oacute;n</strong>: ingrediente/porciones = constante.</p>
+        <p>Para el inciso a): 3 tazas / 8 porciones = <em>y</em> tazas / 20 porciones. Despeja <em>y</em>.</p>
+        <p>Para el inciso b): 4 huevos / 8 porciones = 10 huevos / <em>p</em> porciones. Despeja <em>p</em>.</p>
+      </div>
+      <div class="practice-reminder">
+        <span class="practice-icon">&#9998;</span>
+        Resuelve primero en tu cuaderno antes de ver la soluci&oacute;n.
+      </div>
+      <button class="reveal-btn" onclick="toggleSol(this)">Mostrar soluci&oacute;n</button>
+      <div class="solution">
+        <span class="solution-label">Soluci&oacute;n paso a paso</span>
+        <div class="step">
+          <span class="step-label">a) </span><p>Raz&oacute;n: 3 tazas / 8 porciones = y / 20 porciones</p>
+          <p class="math-expr sub">y = (3 &times; 20) / 8 = 60 / 8 = 7.5</p>
+          <div class="result"><span class="result-label">Resultado a):</span>7.5 tazas de harina</div>
+        </div>
+        <div class="step">
+          <span class="step-label">b) </span><p>Raz&oacute;n: 4 huevos / 8 porciones = 10 huevos / p porciones</p>
+          <p class="math-expr sub">p = (10 &times; 8) / 4 = 80 / 4 = 20</p>
+          <div class="result"><span class="result-label">Resultado b):</span>20 porciones m&aacute;ximo</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ejercicio 20 (original 15) -->
+    <div class="exercise-card">
+      <div class="exercise-top">
+        <div class="exercise-num p5">20</div>
+        <span class="exercise-topic">Descuentos y porcentajes</span>
+      </div>
+      <div class="exercise-statement">
+        <div class="word-problem">
+          <p>Una tienda ofrece un <strong>20% de descuento</strong> en un producto cuyo precio original es de <strong>$850</strong>. Adem&aacute;s, al pagar con tarjeta de cr&eacute;dito se aplica un <strong>5% adicional</strong> sobre el precio ya descontado.</p>
+        </div>
+        <p class="math-expr">a) &iquest;Cu&aacute;l es el precio despu&eacute;s del primer descuento?</p>
+        <p class="math-expr">b) &iquest;Cu&aacute;l es el precio final despu&eacute;s de ambos descuentos?</p>
+      </div>
+      <div class="mini-note">
+        <span class="mini-note-label">Ideas fundamentales</span>
+        <p><strong>Descuento del 20%</strong> = pagar el 80% del precio. Multiplica por <strong>0.80</strong>.</p>
+        <p><strong>Descuento adicional del 5%</strong> = pagar el 95% del precio ya rebajado. Multiplica por <strong>0.95</strong>.</p>
+        <p>Importante: el segundo descuento se aplica <em>sobre el precio ya descontado</em>, no sobre el original.</p>
+      </div>
+      <div class="practice-reminder">
+        <span class="practice-icon">&#9998;</span>
+        Resuelve primero en tu cuaderno antes de ver la soluci&oacute;n.
+      </div>
+      <button class="reveal-btn" onclick="toggleSol(this)">Mostrar soluci&oacute;n</button>
+      <div class="solution">
+        <span class="solution-label">Soluci&oacute;n paso a paso</span>
+        <div class="step">
+          <span class="step-label">a) </span><p>Descuento del 20%: pagar el 80%</p>
+          <p class="math-expr sub">850 &times; 0.80 = $680</p>
+          <div class="result"><span class="result-label">Resultado a):</span>$680.00</div>
+        </div>
+        <div class="step">
+          <span class="step-label">b) </span><p>Descuento adicional del 5% sobre $680:</p>
+          <p class="math-expr sub">680 &times; 0.95 = $646</p>
+          <div class="result"><span class="result-label">Resultado b):</span>$646.00</div>
+        </div>
+        <p class="verify">Ahorro total: 850 &minus; 646 = $204 (equivale a un 24% del precio original)</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================= -->
+  <!-- ==================== PURPOSE 6 ======================== -->
+  <!-- ======================================================= -->
+  <div class="purpose-section">
+    <div class="purpose-header">
+      <div class="purpose-number p6">6</div>
+      <div>
+        <h3>Prop&oacute;sito 6 &mdash; Ecuaciones e igualdades</h3>
+        <p>Comprende el concepto de ecuaci&oacute;n a partir de las igualdades matem&aacute;ticas para encontrar el valor de una inc&oacute;gnita utilizando situaciones de inter&eacute;s.</p>
+      </div>
+    </div>
+
+    <!-- Ejercicio 21 (original 16) -->
+    <div class="exercise-card">
+      <div class="exercise-top">
+        <div class="exercise-num p6">21</div>
+        <span class="exercise-topic">Ecuaci&oacute;n vs. identidad algebraica</span>
+      </div>
+      <div class="exercise-statement">
+        <p>Indica si cada expresi&oacute;n es una <strong>ecuaci&oacute;n</strong> (cierta solo para ciertos valores) o una <strong>identidad</strong> (cierta para cualquier valor):</p>
+        <p class="math-expr">a) 2(x + 3) = 2x + 6</p>
+        <p class="math-expr">b) x + 5 = 12</p>
+        <p class="math-expr">c) (a + b)<sup>2</sup> = a<sup>2</sup> + 2ab + b<sup>2</sup></p>
+        <p class="math-expr">d) 3x &minus; 1 = 2x + 4</p>
+      </div>
+      <div class="mini-note">
+        <span class="mini-note-label">Ideas fundamentales</span>
+        <p><strong>Identidad:</strong> se cumple para <em>todos</em> los valores de la variable. Generalmente se obtiene al simplificar ambos miembros y resultan iguales.</p>
+        <p><strong>Ecuaci&oacute;n:</strong> se cumple <em>solo</em> para ciertos valores de la variable. Para verificar, sustituye un valor arbitrario (como x = 0 o x = 1) y comprueba si ambos lados son distintos.</p>
+      </div>
+      <div class="practice-reminder">
+        <span class="practice-icon">&#9998;</span>
+        Resuelve primero en tu cuaderno antes de ver la soluci&oacute;n.
+      </div>
+      <button class="reveal-btn" onclick="toggleSol(this)">Mostrar soluci&oacute;n</button>
+      <div class="solution">
+        <span class="solution-label">Soluci&oacute;n</span>
+        <div class="step">
+          <span class="step-label">a) </span><p>2(x + 3) = 2x + 6 &rarr; simplificando: 2x + 6 = 2x + 6. Se cumple siempre. <strong>Identidad.</strong></p>
+        </div>
+        <div class="step">
+          <span class="step-label">b) </span><p>x + 5 = 12 &rarr; solo se cumple si x = 7. <strong>Ecuaci&oacute;n.</strong></p>
+        </div>
+        <div class="step">
+          <span class="step-label">c) </span><p>(a + b)<sup>2</sup> = a<sup>2</sup> + 2ab + b<sup>2</sup> &rarr; es la f&oacute;rmula del binomio al cuadrado, v&aacute;lida siempre. <strong>Identidad.</strong></p>
+        </div>
+        <div class="step">
+          <span class="step-label">d) </span><p>3x &minus; 1 = 2x + 4 &rarr; solo se cumple si x = 5. <strong>Ecuaci&oacute;n.</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ejercicio 22 (original 17) -->
+    <div class="exercise-card">
+      <div class="exercise-top">
+        <div class="exercise-num p6">22</div>
+        <span class="exercise-topic">Propiedades de la igualdad</span>
+      </div>
+      <div class="exercise-statement">
+        <p>Identifica qu&eacute; <strong>propiedad de la igualdad</strong> se utiliza en cada caso:</p>
+        <p class="math-expr">a) Si x = 7, entonces 7 = x.</p>
+        <p class="math-expr">b) 4x + 3 = 4x + 3.</p>
+        <p class="math-expr">c) Si 2a = 10 y 10 = 5b, entonces 2a = 5b.</p>
+        <p class="math-expr">d) Si x + 3 = 10, entonces x + 3 &minus; 3 = 10 &minus; 3.</p>
+      </div>
+      <div class="mini-note">
+        <span class="mini-note-label">Ideas fundamentales</span>
+        <p><strong>Reflexiva:</strong> a = a (toda cantidad es igual a s&iacute; misma).</p>
+        <p><strong>Sim&eacute;trica:</strong> si a = b, entonces b = a (se puede invertir).</p>
+        <p><strong>Transitiva:</strong> si a = b y b = c, entonces a = c (se puede encadenar).</p>
+        <p><strong>Uniformidad:</strong> si a = b, entonces a + c = b + c y a &times; c = b &times; c (se opera igual en ambos lados).</p>
+      </div>
+      <div class="practice-reminder">
+        <span class="practice-icon">&#9998;</span>
+        Resuelve primero en tu cuaderno antes de ver la soluci&oacute;n.
+      </div>
+      <button class="reveal-btn" onclick="toggleSol(this)">Mostrar soluci&oacute;n</button>
+      <div class="solution">
+        <span class="solution-label">Soluci&oacute;n</span>
+        <div class="step">
+          <span class="step-label">a) </span><p>Si x = 7, entonces 7 = x &rarr; se invierte la igualdad. <strong>Propiedad sim&eacute;trica.</strong></p>
+        </div>
+        <div class="step">
+          <span class="step-label">b) </span><p>4x + 3 = 4x + 3 &rarr; toda cantidad es igual a s&iacute; misma. <strong>Propiedad reflexiva.</strong></p>
+        </div>
+        <div class="step">
+          <span class="step-label">c) </span><p>Si 2a = 10 y 10 = 5b, entonces 2a = 5b &rarr; encadena por el t&eacute;rmino com&uacute;n (10). <strong>Propiedad transitiva.</strong></p>
+        </div>
+        <div class="step">
+          <span class="step-label">d) </span><p>Si x + 3 = 10, se resta 3 en ambos miembros. <strong>Propiedad de uniformidad.</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ejercicio 23 (original 18) -->
+    <div class="exercise-card">
+      <div class="exercise-top">
+        <div class="exercise-num p6">23</div>
+        <span class="exercise-topic">Ecuaci&oacute;n lineal de un paso</span>
+      </div>
+      <div class="exercise-statement">
+        <p>Resuelve la siguiente ecuaci&oacute;n:</p>
+        <p class="math-expr" style="font-size:1.05rem;">7x &minus; 5 = 30</p>
+      </div>
+      <div class="mini-note">
+        <span class="mini-note-label">Ideas fundamentales</span>
+        <p>Para despejar <em>x</em>, aplica la <strong>propiedad de uniformidad</strong>: opera en ambos lados para aislar la variable.</p>
+        <p><strong>Orden:</strong> primero elimina t&eacute;rminos adicionales (+ o &minus;), luego el coeficiente de x (&times; o &divide;).</p>
+        <p>Verifica sustituyendo el resultado en la ecuaci&oacute;n original.</p>
+      </div>
+      <div class="practice-reminder">
+        <span class="practice-icon">&#9998;</span>
+        Resuelve primero en tu cuaderno antes de ver la soluci&oacute;n.
+      </div>
+      <button class="reveal-btn" onclick="toggleSol(this)">Mostrar soluci&oacute;n</button>
+      <div class="solution">
+        <span class="solution-label">Soluci&oacute;n paso a paso</span>
+        <div class="step">
+          <span class="step-label">Paso 1: </span><p>Sumar 5 en ambos miembros:</p>
+          <p class="math-expr sub">7x &minus; 5 + 5 = 30 + 5</p>
+          <p class="math-expr sub">7x = 35</p>
+        </div>
+        <div class="step">
+          <span class="step-label">Paso 2: </span><p>Dividir entre 7 en ambos miembros:</p>
+          <p class="math-expr sub">x = 35 / 7 = 5</p>
+        </div>
+        <div class="result"><span class="result-label">Resultado:</span>x = 5</div>
+        <p class="verify">Verificaci&oacute;n: 7(5) &minus; 5 = 35 &minus; 5 = 30 &#10003;</p>
+      </div>
+    </div>
+
+    <!-- Ejercicio 24 (original 19) -->
+    <div class="exercise-card">
+      <div class="exercise-top">
+        <div class="exercise-num p6">24</div>
+        <span class="exercise-topic">Ecuaci&oacute;n aplicada: horas de trabajo</span>
+      </div>
+      <div class="exercise-statement">
+        <div class="word-problem">
+          <p>Ana y Luis trabajan en un restaurante los fines de semana. Ana trabaja el <strong>triple</strong> de horas que Luis. Si entre ambos trabajaron un total de <strong>24 horas</strong> el s&aacute;bado, &iquest;cu&aacute;ntas horas trabaj&oacute; cada uno?</p>
+        </div>
+        <p>Plantea la ecuaci&oacute;n y resuelve.</p>
+      </div>
+      <div class="mini-note">
+        <span class="mini-note-label">Ideas fundamentales</span>
+        <p><strong>Define la variable:</strong> sea <em>x</em> las horas que trabaja Luis.</p>
+        <p><strong>Traduce cada dato:</strong> "el triple" = 3<em>x</em> (horas de Ana). "Entre ambos 24 horas" = x + 3x = 24.</p>
+        <p>Siempre define la variable en funci&oacute;n de lo m&aacute;s sencillo. Si piden dos cantidades relacionadas, usa una sola variable.</p>
+      </div>
+      <div class="practice-reminder">
+        <span class="practice-icon">&#9998;</span>
+        Resuelve primero en tu cuaderno antes de ver la soluci&oacute;n.
+      </div>
+      <button class="reveal-btn" onclick="toggleSol(this)">Mostrar soluci&oacute;n</button>
+      <div class="solution">
+        <span class="solution-label">Soluci&oacute;n paso a paso</span>
+        <div class="step">
+          <span class="step-label">Paso 1: </span><p>Definir variable:</p>
+          <p class="math-expr sub">Horas de Luis = x</p>
+          <p class="math-expr sub">Horas de Ana = 3x</p>
+        </div>
+        <div class="step">
+          <span class="step-label">Paso 2: </span><p>Plantear la ecuaci&oacute;n:</p>
+          <p class="math-expr sub">x + 3x = 24</p>
+          <p class="math-expr sub">4x = 24</p>
+        </div>
+        <div class="step">
+          <span class="step-label">Paso 3: </span><p>Despejar x:</p>
+          <p class="math-expr sub">x = 24 / 4 = 6</p>
+        </div>
+        <div class="result"><span class="result-label">Resultado:</span>Luis trabaj&oacute; 6 horas y Ana trabaj&oacute; 3(6) = 18 horas</div>
+        <p class="verify">Verificaci&oacute;n: 6 + 18 = 24 &#10003; y 18 = 3 &times; 6 &#10003;</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="guide-footer">
+    <h4>Fin de la Gu&iacute;a del Extraordinario</h4>
+    <div class="footer-divider"></div>
+    <p>Has completado los 24 ejercicios que cubren los 6 prop&oacute;sitos formativos de Pensamiento Matem&aacute;tico II. Los temas con mayor peso en el examen extraordinario ser&aacute;n: <strong>factorizaci&oacute;n</strong>, <strong>productos notables</strong> y <strong>resoluci&oacute;n de ecuaciones</strong>.</p>
+    <p style="margin-top:0.8rem; font-size:0.85rem;">Recomendaci&oacute;n final: resuelve los 24 ejercicios en orden cronol&oacute;gico sin consultar las soluciones. Identifica los tipos de problema donde tuviste m&aacute;s dificultad y pract&iacute;calos adicionalmente con datos diferentes.</p>
+    <p class="footer-credit">CEB 4/2 Jes&uacute;s Reyes Heroles &middot; Academia de Matem&aacute;ticas TV &middot; Plan 2025</p>
+  </footer>
+
+</div>
+
+<script>
+  function toggleSol(btn) {
+    const solution = btn.nextElementSibling;
+    const isOpen = solution.classList.toggle('visible');
+    btn.classList.toggle('active', isOpen);
+    btn.textContent = isOpen ? 'Ocultar soluci\u00f3n' : 'Mostrar soluci\u00f3n';
+  }
+</script>
+
+</body>
+</html>
